@@ -1,0 +1,77 @@
+.modal_show {
+    position: fixed; /* Fijo en la ventana del navegador */
+    top: 50%;        /* Posiciona en el 50% desde la parte superior */
+    left: 50%;       /* Posiciona en el 50% desde la izquierda */
+    transform: translate(-50%, -50%); /* Centra el elemento usando transformación */
+    z-index: 1000;   /* Asegúrate de que esté por encima de otros elementos */
+    background-color: white; /* Fondo del modal */
+    padding: 20px;   /* Espaciado interno */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra */
+    border-radius: 8px; /* Opcional: esquinas redondeadas */
+    width: 90%;      /* Ancho responsivo */
+    max-width: 500px;
+    min-height: 70vh;
+    overflow-y: auto;
+
+    header {
+        border: 1px solid;
+    }
+
+    .modal_content_container {
+        display: flex;
+        height: 100%;
+
+        .modal_content {
+            border: 1px solid;
+            width: 70%;
+
+            .tags_container {
+                // display: grid;
+                // grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+                h3 {
+                    border: 1px solid;
+                    display: block;
+                }
+
+                .tags {
+                    position: relative;
+                    button {
+                        height: 35px;
+                        margin: 3px;
+                        padding: 4px;
+                        border-radius: 6px;
+                        border: none;
+                    }
+
+                    .btn_add_tag {
+                        width: 40px;
+                        cursor: pointer;
+                    }
+
+                    .btn_add_tag:hover {
+                        background-color: #ccc;
+                    }
+                }
+            }
+        }
+
+        .sidebar_modal {
+            width: 30%;
+            padding: 5px;
+
+            button {
+                display: block;
+                width: 100%;
+                margin: 5px 0;
+                padding: 5px;
+                border-radius: 6px;
+                border: none;
+                cursor: pointer;
+            }
+
+            button:hover {
+                background-color: #ccc;
+            }
+        }
+    }
+}

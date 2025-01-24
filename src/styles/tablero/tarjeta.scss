@@ -1,0 +1,26 @@
+.target {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    width: 100%;
+    
+
+    .color_top {
+        height: 30px;
+        border-radius: 8px 8px 0 0;
+        width: 100%;
+        background-color: aqua;
+    }
+
+    .content_target {
+        padding: 10px;
+
+        .btns_target {
+            display: flex;
+            gap: 10px;        
+        }
+    }
+}
+
+.modal_hidden {
+    display: none;
+}

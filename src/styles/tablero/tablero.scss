@@ -1,0 +1,19 @@
+.board {
+    border: 1px solid black;
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+
+    header {
+        padding: 10px;   
+    }
+
+    .board_content {
+        width: 100;
+        height: 100%;
+        overflow-x: auto;
+        padding: 10px;
+        display: flex;
+        gap: 10px;
+    }
+}

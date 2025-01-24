@@ -1,0 +1,46 @@
+.board_list {
+    border: 2px solid red;
+    width: 280px;
+    border-radius: 11px;
+    background-color: #f4f5f7;
+    background-color: brown;
+    padding: 10px;
+
+    header {
+        display: flex;
+        justify-content: space-between;
+
+        .title_list {
+            font-size: 22px;
+        }
+
+
+        .btns_header_list {
+            display: flex;
+            gap: 6px;
+
+            button {
+                background-color: #f4f5f7;
+                border: none;
+                border-radius: 9px;
+                padding: 5px;
+                cursor: pointer;
+                transition: background-color 0.3s;
+
+                &:hover {
+                    background-color: #e3e4e8;
+                }
+                
+                .icon_collapse_list {
+                    font-size: 22px;
+                }
+            }
+        }
+    }
+
+    footer {
+        .btn_add_target {
+
+        }
+    }
+}
