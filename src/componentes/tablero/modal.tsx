@@ -44,7 +44,7 @@ export const Modal: React.FC<ModalProps> = ({nameList, nameTarget, tags, handleC
                             })
                             }
                             <button className='btn_add_tag' onClick={() => setShowTags(true)}>+</button>
-                            {showTags && <TagSettings tags={tags} />}
+                            {showTags && <TagSettings tags={tags} closeTagsSettings={() => setShowTags(false)} />}
                         </div>
                     </div>                   
                 </div>

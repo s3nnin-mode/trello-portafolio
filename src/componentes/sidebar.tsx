@@ -1,10 +1,12 @@
 import { useState } from "react";
 import '../styles/sidebar.scss';
 import { MdLeaderboard } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 
 export const Sidebar = () => {
     const [sidebar, setSidebar] = useState(true);
     const toggleSidebar = () => setSidebar(!sidebar);
+    const navigate = useNavigate();
 
     return (
         <div className={sidebar ? 'sidebar' : 'sidebar-desactive'}>
@@ -20,7 +22,7 @@ export const Sidebar = () => {
             </header>
 
             <div>
-                <button className='btn-boards'>
+                <button className='btn-boards' onClick={() => navigate('/')}>
                     <MdLeaderboard className='icon-board' />
                     Boards
                 </button>

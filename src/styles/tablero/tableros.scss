@@ -1,0 +1,36 @@
+.boards_container {
+    width: 85%;
+
+    .divider {
+        margin: 1rem 0;
+        border-bottom: 1px solid;
+    }
+
+    .boards {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1rem;
+
+        .board {
+            border: 1px solid white;
+            max-width: 250px;
+            min-width: 150px;
+            width: 100%;
+            height: 120px;
+            // width: 250px;
+            border-radius: 4px;
+            display: flex;
+            background-color: peru;
+            padding: 5px;
+            cursor: pointer;
+            
+            .name_board {
+            }
+
+            .icon_fav {
+                align-self: flex-end;
+                margin-left: auto;
+            }
+        }
+    }
+}

@@ -2,13 +2,21 @@ import './App.css'
 
 import { Sidebar } from './componentes/sidebar';
 import { Tablero } from './componentes/tablero/tablero';
+import { Routes, Route, useParams } from 'react-router-dom';
+import { Tableros } from './componentes/rutas/tableros';
 
 function App() {
+
+  const { board } = useParams();
 
   return (
     <div className='App'>
       <Sidebar />
-      <Tablero />
+      <Routes>
+        {/* <Route path='/tablero' element={<Tablero />} /> */}
+        <Route path='/' element={<Tableros />} />
+        <Route path='/:board' element={<Tablero />}/>
+      </Routes>
     </div>
   )
 }

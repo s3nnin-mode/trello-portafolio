@@ -3,10 +3,10 @@ import '../../../styles/tablero/tagsSettings.scss';
 
 interface TagsSettingsProps {
     tags: {color: string, active: boolean, name: string}[]
+    closeTagsSettings: () => void
 }
 
-export const TagSettings: React.FC<TagsSettingsProps> = ({ tags }) => {
-
+export const TagSettings: React.FC<TagsSettingsProps> = ({ tags, closeTagsSettings }) => {
     const [myTags, setMyTags] = useState(tags);
 
     return (
@@ -14,7 +14,7 @@ export const TagSettings: React.FC<TagsSettingsProps> = ({ tags }) => {
             <header className='tags_settings_header'>
                 <div></div>
                 <span>Tags</span>
-                <button>X</button>
+                <button onClick={closeTagsSettings}>X</button>
             </header>
             <input type="text" placeholder='buscar etiquetas...' />
             <span>Etiquetas</span>

@@ -20,6 +20,7 @@ interface TargetProps {
 
 export const List: React.FC<ListProps> = ({ nameList }) => {
     const [targets, setTargets] = useState<TargetProps[]>([]);
+    const [isOptionsActive, setIsOptionsActive] = useState(false);
 
     const createTarget = (name: string) => {
         const newTarget = {
@@ -42,9 +43,15 @@ export const List: React.FC<ListProps> = ({ nameList }) => {
                     <button className='btn_collapse_list'>
                         <RiCollapseHorizontalLine className='icon_collapse_list' />
                     </button>
-                    <button className='options'>
-                        <PiDotsThreeOutlineFill className='icon_options_list' />
-                    </button>
+                    <div className='options'>
+                        <button onClick={() => setIsOptionsActive(true)}>
+                            <PiDotsThreeOutlineFill className='icon_options_list' />
+                        </button>
+                        <div className={`settings_list_${isOptionsActive ? 'show' : 'hidden'}`}>
+                            <button>Cambiar color</button>
+                            <button>Eliminar lista</button>
+                        </div>
+                    </div>
                 </div>
             </header>
             <div className='content-list'>
@@ -54,7 +61,9 @@ export const List: React.FC<ListProps> = ({ nameList }) => {
                         nameTarget={target.nameTarget} 
                         nameList={target.nameList} 
                         tags={target.tags}
-                        key={target.nameTarget} />
+                        
+                        key={target.nameTarget}
+                        />
                     ))
                 }
             </div>
