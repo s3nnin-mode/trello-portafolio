@@ -10,12 +10,8 @@ import { Target } from "./tarjeta";
 
 import { useState } from "react";
 import { useBoards } from "../rutas/tableros";
-import { TargetProps } from "../../types/boardProps";
 
 interface ListProps {
-    nameList: string
-    board: string
-    targets: TargetProps[]
     indexList: number
     indexBoard: number
 }
@@ -46,21 +42,19 @@ const useList = () => {
         localStorage.setItem('boards', JSON.stringify(BOARDS));
         setBoards(BOARDS);        
     }
-    return { addNewTarget, deleteList };
+    return { addNewTarget, deleteList, boards };
 }
 
-export const List: React.FC<ListProps> = ({ nameList, board, indexList, indexBoard, targets }) => {
+export const List: React.FC<ListProps> = ({ indexList, indexBoard }) => {
     const [isOptionsActive, setIsOptionsActive] = useState(false);
-    const { addNewTarget, deleteList } = useList();
+    const { addNewTarget, deleteList, boards } = useList();
 
-    const createTarget = (nameTarget: string) => {        
-        addNewTarget({nameTarget, indexBoard, indexList})
-    }
+    const createTarget = (nameTarget: string) => addNewTarget({nameTarget, indexBoard, indexList});
 
     return (
-        <div className='board_list' id={nameList}>
+        <div className='board_list'>
             <header className='header_list'>
-                <p className='title_list'>{nameList}</p>  {/*NAMELIST */}
+                <p className='title_list'>{boards[indexBoard].lists[indexList].nameList}</p>                    {/* NAMELIST */}
                 <div className='btns_header_list'>
                     <button className='btn_collapse_list'>
                         <RiCollapseHorizontalLine className='icon_collapse_list' />
@@ -81,13 +75,13 @@ export const List: React.FC<ListProps> = ({ nameList, board, indexList, indexBoa
             </header>
             <div className='content-list'>
                 {
-                    targets.map((target, index) => (
+                    boards[indexBoard].lists[indexList].targets.map((target, index) => (
                         <Target 
                         nameTarget={target.nameTarget} 
                         tags={target.tags}
 
-                        nameList={nameList} 
-                        nameBoard={board}
+                        nameList={boards[indexBoard].lists[indexList].nameList} 
+                        nameBoard={boards[indexBoard].nameBoard}
                         
                         key={target.nameTarget}
                         />

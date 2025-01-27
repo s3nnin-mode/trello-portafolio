@@ -39,9 +39,7 @@ export const Tablero = () => {
                 {
                     currentBoard !== undefined && (
                         currentBoard.lists.map((list, index) => {
-                            
-                            // <List nameList={list.listName} targets={list.targets} indexList={index} board={board} key={list.listName} />
-                            return <List nameList={list.nameList} targets={list.targets} indexBoard={indexBoard} indexList={index} board={board} key={list.nameList} />
+                            return <List indexBoard={indexBoard} indexList={index} key={list.nameList} />
                         })
                     )
                 }
