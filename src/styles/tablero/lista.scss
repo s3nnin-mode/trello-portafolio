@@ -1,18 +1,21 @@
 .board_list {
     border: 2px solid black;
-    width: 260px;
+    min-width: 260px;
        
     border-radius: 11px;
     background-color: #f4f5f7;
     background-color: brown;
     padding: 10px;
 
-    header {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+
+    .header_list {
         display: flex;
         justify-content: space-between;
         align-items: center;
         padding: 0;
-        border: 1px solid;
 
         .title_list {
             font-size: 22px;
@@ -43,7 +46,8 @@
                 border-radius: 9px;
                 position: relative;
 
-                button {
+                .btn_active_options {
+
                     background-color: #f4f5f7;
                     padding: 5px;
                     border-radius: 9px;
@@ -63,9 +67,42 @@
                     height: auto;
                     width: 300px;
                     border: 2px solid;
+                    z-index: 111;
 
                     background-color: #e3e4e8;
                     color: black;
+
+                    .header_settings_list {
+                        display: flex;
+                        justify-content: flex-end;
+                        align-items: center;
+                        padding: 10px 5px;
+
+                        .icon-close {
+                            font-size: 22px;
+                            border-radius: 5px;
+                            cursor: pointer;
+                        }
+
+                        .icon-close:hover {
+                            background-color: #2a2c2c;
+                            color: white;
+                        }
+                    }
+
+                    button {
+                        display: block;
+                        border: none;
+                        width: 100%;
+                        text-align: left;
+                        padding: 10px;
+                        cursor: pointer;
+                    }
+
+                    button:hover {
+                        color: white;
+                        background-color: #2a2c2c;
+                    }
                 }
 
                 .settings_list_hidden {
@@ -76,8 +113,121 @@
     }
 
     footer {
-        .btn_add_target {
+        .container_btn_add_target {
+            cursor: pointer;
+            border-radius: 7px;
+            background-color: rgb(255, 255, 255, .2);
+            width: 100%;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            
+            .icon_add {
+                font-size: 20px;
+                color: white;
+            }    
 
+            span {
+                padding: 0;
+                margin: 0;
+                color: white;
+            }
+        }
+
+        .btn_add_target_hidden {
+            display: none;
+        }
+
+        .btn_add_show {
+            cursor: pointer;
+            border-radius: 7px;
+            background-color: rgb(255, 255, 255, .2);
+            padding: 7px;
+            width: 100%;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            
+            .icon_add {
+                font-size: 20px;
+                color: white;
+            }    
+    
+            span {
+                padding: 0;
+                margin: 0;
+                color: white;
+            }
+        }
+    
+        .btn_add_hidden {
+            display: none;
+        }
+    
+        .btn_add_show:hover {
+            background-color: rgb(255, 255, 255, .3);
+        } 
+    
+        .form_add_show {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 10px;
+            background-color: rgb(255, 255, 255, .2);
+            border-radius: 7px;
+            margin-top: 10px;
+    
+            .input_add {
+                border: 1px solid brown;
+                border-radius: 7px;
+                padding: 7px;
+                background-color: white;
+                color: black;
+            }
+    
+            .actions {
+                display: flex;
+                gap: 10px;
+    
+                button {
+                    cursor: pointer;
+                }
+    
+                .btn_add {
+                    cursor: pointer;
+                    border-radius: 7px;
+                    background-color: royalblue;
+                    color: white;
+                    padding: 7px;
+                    border: none;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 9px;
+                    
+                    .icon_add_list {
+                        font-size: 20px;
+                        color: white;
+                    }    
+    
+                    span {
+                        padding: 0;
+                        margin: 0;
+                        color: white;
+                    }
+                }
+    
+                .btn_add:hover {
+                    color: #2a2c2c;
+                    color: black;
+                }
+            }
+        }
+    
+        .form_add_hidden {
+            display: none;
         }
     }
 }

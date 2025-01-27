@@ -5,11 +5,13 @@ import { Modal } from "./modal";
 
 interface TargetProps {
     nameTarget: string
+    tags: {color: string, active: boolean, nameTag: string}[];
+
     nameList: string
-    tags: {color: string, active: boolean, name: string}[];
+    nameBoard: string
 }
 
-export const Target: React.FC<TargetProps> = ({nameTarget, nameList, tags}) => {
+export const Target: React.FC<TargetProps> = ({nameTarget, tags, nameList, nameBoard}) => {
     const [modal, setModal] = useState<boolean>(false);
 
     return(
@@ -18,7 +20,7 @@ export const Target: React.FC<TargetProps> = ({nameTarget, nameList, tags}) => {
             <div className='color_top'></div>
             <div className='content_target'>
                 <div className='targets_actives'></div>
-                <p>{nameTarget}</p>
+                <p>{nameTarget}</p>   {/*NOMBRE DE LA TARJETA*/}
                 <div className='btns_target'>
                     <button className='btn-target'>Ver</button>
                     <button className='btn-target'>Editar</button>
@@ -32,8 +34,9 @@ export const Target: React.FC<TargetProps> = ({nameTarget, nameList, tags}) => {
         {modal && (
             <Modal 
             nameTarget={nameTarget} 
-            nameList={nameList} 
             tags={tags}
+
+            nameList={nameList} 
             handleClick={() => setModal(false)} 
             key={nameTarget}
             />

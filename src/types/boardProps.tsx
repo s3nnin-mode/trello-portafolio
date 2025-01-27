@@ -1,11 +1,15 @@
+export interface TargetProps {
+    nameTarget: string, 
+    tags: { color: string, active: boolean, nameTag: string }[]
+}
+
+export interface ListProps {
+    nameList: string
+    targets: TargetProps[]
+}
+
+
 export interface BoardProps {
-    name: string
-    lists: { 
-        listName: string,
-        targets: { 
-            nameTarget: string, 
-            nameList: string,  
-            tags: { color: string, active: boolean, nameTag: string }[]
-        }[]
-    }[]
+    nameBoard: string
+    lists: ListProps[]
 }

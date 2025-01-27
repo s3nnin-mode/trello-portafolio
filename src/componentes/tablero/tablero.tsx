@@ -7,25 +7,9 @@ import { useParams } from 'react-router-dom';
 import { useBoards } from '../rutas/tableros';
 import { BoardProps } from '../../types/boardProps';
 
-interface ListaProps {
-    name: string
-}
-
-interface TableroProps {
-    nameBoard: string
-}
-
-interface ListProps {
-    listName: string,
-    targets: { 
-        nameTarget: string, 
-        nameList: string,  
-        tags: { color: string, active: boolean, nameTag: string }[]
-    }[]
-}
-
 export const Tablero = () => {
     const [currentBoard, setCurrentBoard] = useState<BoardProps>();
+    const [indexBoard, setIndexBoard] = useState(1000);
 
     const { boards, addNewList } = useBoards();
     const { board } = useParams();
@@ -35,10 +19,11 @@ export const Tablero = () => {
     }
 
     useEffect(()=> {
-        const index = boards.findIndex(b => b.name === board);
+        const index = boards.findIndex(b => b.nameBoard === board);
         if (index > -1) {
             console.log('si se halló el board', boards[index])
             setCurrentBoard(boards[index]);
+            setIndexBoard(index);
             return
         }
         console.log('No se hallo el board', board, boards)
@@ -48,17 +33,23 @@ export const Tablero = () => {
     return (
         <div className='board' >
             <header>
-                <h2>{currentBoard?.name}</h2>
+                <h2>{currentBoard?.nameBoard}</h2>
             </header>
             <div className='board_content'>
                 {
                     currentBoard !== undefined && (
-                        currentBoard.lists.map((list) => (
-                            <List nameList={list.listName} key={list.listName} />
-                        ))
+                        currentBoard.lists.map((list, index) => {
+                            
+                            // <List nameList={list.listName} targets={list.targets} indexList={index} board={board} key={list.listName} />
+                            return <List nameList={list.nameList} targets={list.targets} indexBoard={indexBoard} indexList={index} board={board} key={list.nameList} />
+                        })
                     )
                 }
-                <BtnAdd createListOrTargetName={(nameList: string) => addNewList({nameList, board})} btnName='list'/>
+                <BtnAdd 
+                    createListOrTargetName={(nameList: string) => addNewList({nameList, board})} 
+                    btnName='list' 
+                    className='container_btn_add_list'
+                />
             </div>
         </div>
     )

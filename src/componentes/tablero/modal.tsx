@@ -5,7 +5,7 @@ import { TagSettings } from "./modalComp/tagsSettings";
 interface ModalProps {
     nameTarget: string
     nameList: string
-    tags: {color: string, active: boolean, name: string}[];
+    tags: {color: string, active: boolean, nameTag: string}[];
     handleClick: () => void
 }
 
@@ -40,7 +40,7 @@ export const Modal: React.FC<ModalProps> = ({nameList, nameTarget, tags, handleC
                         <div className='tags'>
 
                             {tags.map((tag) => {
-                                return tag.active ? <button key={tag.name} style={{backgroundColor: tag.color}}>{tag.name}</button> : ''
+                                return tag.active ? <button key={tag.nameTag} style={{backgroundColor: tag.color}}>{tag.nameTag}</button> : ''
                             })
                             }
                             <button className='btn_add_tag' onClick={() => setShowTags(true)}>+</button>

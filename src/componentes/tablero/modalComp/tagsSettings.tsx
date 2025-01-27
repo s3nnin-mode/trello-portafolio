@@ -2,7 +2,7 @@ import { useState } from 'react';
 import '../../../styles/tablero/tagsSettings.scss';
 
 interface TagsSettingsProps {
-    tags: {color: string, active: boolean, name: string}[]
+    tags: {color: string, active: boolean, nameTag: string}[]
     closeTagsSettings: () => void
 }
 
@@ -22,7 +22,7 @@ export const TagSettings: React.FC<TagsSettingsProps> = ({ tags, closeTagsSettin
                 {
                     myTags.map((tag) => {
                         return (
-                        <li key={tag.name}>
+                        <li key={tag.nameTag}>
                             <input type='checkbox' checked={tag.active} />
                             <div style={{backgroundColor: tag.color}} />
                             <span>edit</span>

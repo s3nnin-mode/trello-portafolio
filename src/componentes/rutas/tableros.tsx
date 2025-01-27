@@ -23,7 +23,7 @@ export const Tableros = () => {
   
   const addNewBoard = (nameBoard: string) => {
     const newBoard = { 
-      name: nameBoard,
+      nameBoard: nameBoard,
       lists: []
     }
     
@@ -35,15 +35,15 @@ export const Tableros = () => {
   return (
     <div className='boards_container'>
       <h3>Tableros</h3>
-      <BtnAdd createListOrTargetName={addNewBoard} btnName='board' />
+      <BtnAdd createListOrTargetName={addNewBoard} btnName='board' className='container_btn_add_board'/>
       <div className='divider'></div>
       <div className='boards'>
 
         {
           boards.map(board => {
             return (
-              <Link className='board' to={`/${board.name}`} key={board.name}>
-                <span className='name_board'>{board.name}</span>
+              <Link className='board' to={`/${board.nameBoard}`} key={board.nameBoard}>
+                <span className='name_board'>{board.nameBoard}</span>
                 <span className='icon_fav'>Star fav</span>
               </Link>
             )

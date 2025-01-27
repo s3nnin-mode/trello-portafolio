@@ -6,9 +6,10 @@ import { useState } from 'react';
 interface BtnAddProps {
     createListOrTargetName: (name: string) => void;
     btnName: string;
+    className: string
 }
 
-export const BtnAdd: React.FC<BtnAddProps> = ({ createListOrTargetName,  btnName}) => {
+export const BtnAdd: React.FC<BtnAddProps> = ({ createListOrTargetName,  btnName, className}) => {
     const [showForm, setShowForm] = useState(false);
     const [listName, setListName] = useState('');
 
@@ -24,7 +25,7 @@ export const BtnAdd: React.FC<BtnAddProps> = ({ createListOrTargetName,  btnName
     }
 
     return (
-        <div className='container_btn_add' style={{backgroundColor: showForm ? '#f4f5f7' : 'transparent'}}>
+        <div className={className} style={{backgroundColor: showForm ? '#f4f5f7' : 'transparent'}}>
             <button className={`btn_add_${showForm ? 'hidden' : 'show'}`} onClick={() => setShowForm(true)}>
                 <AiOutlinePlus className='icon_add' style={{color: btnName === 'list' ? 'white' : 'black'}} />
                 <span style={{color: btnName === 'list' ? 'white' : 'black' }}>Agregar {btnName}</span>

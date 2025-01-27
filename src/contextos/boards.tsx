@@ -12,16 +12,12 @@ export const BoardsContext = createContext<BoardContextType | undefined>(undefin
 export const BoardsData: React.FC<PropsWithChildren<{}>> = ({children}) => {
     const [boards, setBoards] = useState<BoardProps[]>([]);
 
-    const addNewBoard = () => {
-        
-    }
-
     const addNewList = ({nameList, board}: {nameList: string, board: string}) => {
-        const index = boards.findIndex(b => b.name === board);
+        const index = boards.findIndex(b => b.nameBoard === board);
 
         if (index > -1) {
             const BOARDS = [...boards];
-            BOARDS[index].lists = [...BOARDS[index].lists, {listName: nameList, targets: []}]
+            BOARDS[index].lists = [...BOARDS[index].lists, {nameList: nameList, targets: []}]
             
             localStorage.setItem('boards', JSON.stringify(BOARDS));
             setBoards(BOARDS);
