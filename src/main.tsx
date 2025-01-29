@@ -8,9 +8,7 @@ import { BoardsData } from './contextos/boards.tsx';
 createRoot(document.getElementById('root')!).render(
   <BrowserRouter>
     <StrictMode>
-      <BoardsData>
         <App />
-      </BoardsData>
     </StrictMode>
   </BrowserRouter>,
 )

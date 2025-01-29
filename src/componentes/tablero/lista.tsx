@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import '../../styles/tablero/lista.scss';
 import { AiOutlinePlus } from "react-icons/ai";
 import { IoMdClose } from "react-icons/io";
@@ -9,18 +9,21 @@ import { BtnAdd } from "./btnAgregar";
 import { Target } from "./tarjeta";
 
 import { useState } from "react";
-import { useBoards } from "../rutas/tableros";
+import { SettingsList } from "./settingsList";
+import { useBoardsStore } from "../../store/boardsStore";
+import { ListProps } from "../../types/boardProps";
 
-interface ListProps {
-    indexList: number
-    indexBoard: number
+interface ListPropsComponent {
+    idBoard: string
+    idList: string
 }
 
 const useList = () => {
-    const { boards, setBoards } = useBoards();
+    const { boards, setTarget } = useBoardsStore();
 
-    const addNewTarget = ({nameTarget, indexBoard, indexList}: { nameTarget: string, indexBoard: number, indexList: number }) => {
+    const addNewTarget = ({idBoard, idList, nameTarget}: { idBoard: string, idList: string, nameTarget: string }) => {
         const newTarget = {
+            idTarget: (nameTarget + Date.now()).toString(),
             nameTarget: nameTarget, 
             tags: [
                 {color: 'red', active: false, nameTag: 'tag1'}, 
@@ -28,69 +31,69 @@ const useList = () => {
                 {color: 'green', active: false, nameTag: 'tag3'}
             ]
         };
-        const BOARDS = [...boards];
-        BOARDS[indexBoard].lists[indexList].targets = [...BOARDS[indexBoard].lists[indexList].targets, newTarget];
-        setBoards(BOARDS);
-        localStorage.setItem('boards', JSON.stringify(BOARDS));
-        console.log(`Se agregó la tarjeta ${nameTarget} en la lista ${BOARDS[indexBoard].lists[indexList]} correctamente`);
-        console.log('update', BOARDS)
+        setTarget({idBoard, idList, newTarget});        
     }
 
-    const deleteList = ({indexBoard, indexList}: {indexBoard: number, indexList: number}) => {
-        const BOARDS = [...boards];
-        BOARDS[indexBoard].lists = BOARDS[indexBoard].lists.filter((list, index) => index !== indexList);
-        localStorage.setItem('boards', JSON.stringify(BOARDS));
-        setBoards(BOARDS);        
-    }
-    return { addNewTarget, deleteList, boards };
+    return { addNewTarget, boards };
 }
 
-export const List: React.FC<ListProps> = ({ indexList, indexBoard }) => {
-    const [isOptionsActive, setIsOptionsActive] = useState(false);
-    const { addNewTarget, deleteList, boards } = useList();
+export const List: React.FC<ListPropsComponent> = ({ idBoard, idList }) => {
+    const { addNewTarget, boards } = useList();
+    const [isListCollapse, setIsListCollapse] = useState(false);
+    const [list, setList] = useState<ListProps>();
 
-    const createTarget = (nameTarget: string) => addNewTarget({nameTarget, indexBoard, indexList});
+    // const createTarget = (nameTarget: string) => addNewTarget({idBoard, idList, nameTarget});
+
+    useEffect(() => {
+        const indexBoard = boards.findIndex(board => board.idBoard === idBoard);
+
+        if (indexBoard > -1) {
+            const indexList = boards[indexBoard].lists.findIndex(list => list.idList === idList);
+            if (indexList > -1) {
+                const list = boards[indexBoard].lists[indexList]
+                setList(list);
+            }
+        }
+    })
+
+    // if (!boards[indexBoard] || !boards[indexBoard].lists[indexList]) {
+    //     return null; // Evita el error
+    // }
+    if (!list) {
+        return null
+    }
 
     return (
-        <div className='board_list'>
+        <div className={isListCollapse ? 'board_list_collapse' : 'board_list'} style={{backgroundColor: list.colorList}}>    {/* COLOR LIST */}
             <header className='header_list'>
-                <p className='title_list'>{boards[indexBoard].lists[indexList].nameList}</p>                    {/* NAMELIST */}
+                <p className='title_list'>{list.nameList}</p>                       {/* NAMELIST */}
                 <div className='btns_header_list'>
-                    <button className='btn_collapse_list'>
+                    <button className='btn_collapse_list' onClick={() => setIsListCollapse(!isListCollapse)}>
                         <RiCollapseHorizontalLine className='icon_collapse_list' />
                     </button>
-                    <div className='options'>
-                        <button onClick={() => setIsOptionsActive(true)} className='btn_active_options'>
-                            <PiDotsThreeOutlineFill className='icon_options_list' />
-                        </button>
-                        <div className={`settings_list_${isOptionsActive ? 'show' : 'hidden'}`}>
-                            <div className='header_settings_list'>
-                                <IoMdClose className='icon-close' onClick={() => setIsOptionsActive(false)} />
-                            </div>
-                            <button>Cambiar color</button>
-                            <button onClick={() => deleteList({indexBoard, indexList})}>Eliminar lista</button>
-                        </div>
-                    </div>
+                    <SettingsList idBoard={idBoard} idList={idList} list={list}/>
                 </div>
             </header>
-            <div className='content-list'>
+            <div className='content_list'>
                 {
-                    boards[indexBoard].lists[indexList].targets.map((target, index) => (
-                        <Target 
+                    list.targets.map((target, index) => {
+                        const indexBoard = boards.findIndex(board => board.idBoard === idBoard);
+
+                        return <Target 
                         nameTarget={target.nameTarget} 
                         tags={target.tags}
 
-                        nameList={boards[indexBoard].lists[indexList].nameList} 
+                        nameList={list.nameList} 
                         nameBoard={boards[indexBoard].nameBoard}
                         
                         key={target.nameTarget}
                         />
-                    ))
+                    })
                 }
             </div>
             <footer>
                 <BtnAdd 
-                    createListOrTargetName={createTarget} 
+                    createListOrTargetName={(nameTarget: string) => addNewTarget({idBoard, idList, nameTarget})} 
                     btnName='target' 
                     className='container_btn_add_target' 
                 />

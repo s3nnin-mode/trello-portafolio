@@ -15,7 +15,7 @@ function App() {
       <Routes>
         {/* <Route path='/tablero' element={<Tablero />} /> */}
         <Route path='/' element={<Tableros />} />
-        <Route path='/:board' element={<Tablero />}/>
+        <Route path='/:currentIdBoard' element={<Tablero />}/>
       </Routes>
     </div>
   )

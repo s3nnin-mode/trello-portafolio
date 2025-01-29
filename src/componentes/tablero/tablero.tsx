@@ -4,29 +4,45 @@ import { BtnAdd } from './btnAgregar';
 import { useEffect, useState } from "react";
 import { Target } from "./tarjeta";
 import { useParams } from 'react-router-dom';
-import { useBoards } from '../rutas/tableros';
 import { BoardProps } from '../../types/boardProps';
+import { useBoardsStore } from '../../store/boardsStore';
+
+const useCustomBoard = () => {
+    const { boards, setList } = useBoardsStore();
+
+    const addNewList = ({nameList, idBoard}: {nameList: string, idBoard: string}) => {
+        const newList = { 
+            idList: (nameList + Date.now()).toString(), 
+            nameList: nameList, 
+            colorList: 'brown', 
+            targets: []
+        }
+        setList({idBoard, newList});
+    }
+
+    return { addNewList, boards }
+}
 
 export const Tablero = () => {
     const [currentBoard, setCurrentBoard] = useState<BoardProps>();
-    const [indexBoard, setIndexBoard] = useState(1000);
+    const [idBoard, setIdBoard] = useState('');
 
-    const { boards, addNewList } = useBoards();
-    const { board } = useParams();
+    const { boards, addNewList } = useCustomBoard();
+    const { currentIdBoard } = useParams();
 
-    if (!board) {
+    if (!currentIdBoard) {
         return <p>Tablero no encontrado</p>
     }
 
     useEffect(()=> {
-        const index = boards.findIndex(b => b.nameBoard === board);
-        if (index > -1) {
-            console.log('si se halló el board', boards[index])
-            setCurrentBoard(boards[index]);
-            setIndexBoard(index);
+        const indexBoard = boards.findIndex(b => b.idBoard === currentIdBoard);
+        if (indexBoard > -1) {
+            console.log('si se halló el board', boards[indexBoard])
+            setCurrentBoard(boards[indexBoard]);
+            setIdBoard(boards[indexBoard].idBoard);
             return
         }
-        console.log('No se hallo el board', board, boards)
+        console.log('No se hallo el board', idBoard, boards)
 
     }, [boards]);
 
@@ -39,12 +55,13 @@ export const Tablero = () => {
                 {
                     currentBoard !== undefined && (
                         currentBoard.lists.map((list, index) => {
-                            return <List indexBoard={indexBoard} indexList={index} key={list.nameList} />
+                            return <List idBoard={idBoard} idList={list.idList} key={list.idList} />
                         })
                     )
                 }
+
                 <BtnAdd 
-                    createListOrTargetName={(nameList: string) => addNewList({nameList, board})} 
+                    createListOrTargetName={(nameList: string) => addNewList({nameList, idBoard})} 
                     btnName='list' 
                     className='container_btn_add_list'
                 />
