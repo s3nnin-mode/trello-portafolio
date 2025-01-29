@@ -17,6 +17,7 @@ const useCustomBoard = () => {
             colorList: 'brown', 
             targets: []
         }
+
         setList({idBoard, newList});
     }
 
@@ -26,7 +27,6 @@ const useCustomBoard = () => {
 export const Tablero = () => {
     const [currentBoard, setCurrentBoard] = useState<BoardProps>();
     const [idBoard, setIdBoard] = useState('');
-
     const { boards, addNewList } = useCustomBoard();
     const { currentIdBoard } = useParams();
 
@@ -42,7 +42,7 @@ export const Tablero = () => {
             setIdBoard(boards[indexBoard].idBoard);
             return
         }
-        console.log('No se hallo el board', idBoard, boards)
+        console.log('No se hallo el board', currentBoard?.idBoard, boards)
 
     }, [boards]);
 

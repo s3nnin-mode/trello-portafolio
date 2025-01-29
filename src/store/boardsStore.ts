@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { BoardProps, ListProps, TargetProps } from '../types/boardProps';
 import { List } from '../componentes/tablero/lista';
+import { persist } from 'zustand/middleware';
 
 interface State {
   boards: BoardProps[]
@@ -12,64 +13,71 @@ interface State {
   setColorList: (props: {idBoard: string, idList: string, color: string}) => void
 }
 
-export const useBoardsStore = create<State>((set) => ({
-  boards: [],
-  setBoards: (boards) => set((state) => {
-    return { boards: boards }
-  }),
-  setBoard: (newBoard) => set((state) => ({
-    boards: [...state.boards, newBoard]
-  })),
-  setList: ({idBoard, newList}) => set((state) => ({
-    boards: state.boards.map((board) => 
-      idBoard === board.idBoard 
-      ?
-      { ...board, lists: [...board.lists, newList] }
-      :
-      board
-    )
-  })),
-  setColorList: ({idBoard, idList, color}) => set((state) => ({
-    boards: state.boards.map((board) =>
-    idBoard === board.idBoard
-    ?
-    {
-      ...board,
-      lists: board.lists.map((list) => idList === list.idList ? { ...list, colorList: color } : list
-      )
-    }
-    :
-    board
-  )
-  })),
-  deleteList: ({idBoard, idList}) => set((state) => ({
-    boards: state.boards.map((board) =>
-    idBoard === board.idBoard
-    ?
-      {
-        ...board,
-        lists: board.lists.filter(list => list.idList !== idList)
-      }
-    :
-      board
-    )
-  })),
-  setTarget: ({idBoard, idList, newTarget}) => set((state) => ({
-    boards: state.boards.map((board) => 
-      idBoard === board.idBoard
-      ?
+export const useBoardsStore = create<State>()(
+  persist(
+    (set) => ({
+      boards: [],
+      setBoards: (boards) => set((state) => {
+        return { boards: boards }
+      }),
+      setBoard: (newBoard) => set((state) => ({
+        boards: [...state.boards, newBoard]
+      })),
+      setList: ({idBoard, newList}) => set((state) => ({
+        boards: state.boards.map((board) => 
+          idBoard === board.idBoard 
+          ?
+          { ...board, lists: [...board.lists, newList] }
+          :
+          board
+        )
+      })),
+      setColorList: ({idBoard, idList, color}) => set((state) => ({
+        boards: state.boards.map((board) =>
+        idBoard === board.idBoard
+        ?
         {
           ...board,
-          lists: board.lists.map((list) => 
-            idList === list.idList
-            ?
-              { ...list, targets: [...list.targets, newTarget] }
-            :
-             list
+          lists: board.lists.map((list) => idList === list.idList ? { ...list, colorList: color } : list
           )
         }
-      :
+        :
         board
-    )
-  }))
-}))
+      )
+      })),
+      deleteList: ({idBoard, idList}) => set((state) => ({
+        boards: state.boards.map((board) =>
+        idBoard === board.idBoard
+        ?
+          {
+            ...board,
+            lists: board.lists.filter(list => list.idList !== idList)
+          }
+        :
+          board
+        )
+      })),
+      setTarget: ({idBoard, idList, newTarget}) => set((state) => ({
+        boards: state.boards.map((board) => 
+          idBoard === board.idBoard
+          ?
+            {
+              ...board,
+              lists: board.lists.map((list) => 
+                idList === list.idList
+                ?
+                  { ...list, targets: [...list.targets, newTarget] }
+                :
+                 list
+              )
+            }
+          :
+            board
+        )
+      }))
+    }),
+    {
+      name: 'boards-storage'
+    }
+  )
+)

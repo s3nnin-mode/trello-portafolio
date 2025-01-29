@@ -34,15 +34,18 @@ const useList = () => {
         setTarget({idBoard, idList, newTarget});        
     }
 
-    return { addNewTarget, boards };
+    const changeNameList = (newName: string) => {
+
+    }
+
+    return { addNewTarget, changeNameList, boards };
 }
 
 export const List: React.FC<ListPropsComponent> = ({ idBoard, idList }) => {
-    const { addNewTarget, boards } = useList();
+    const { addNewTarget, changeNameList, boards } = useList();
     const [isListCollapse, setIsListCollapse] = useState(false);
     const [list, setList] = useState<ListProps>();
 
-    // const createTarget = (nameTarget: string) => addNewTarget({idBoard, idList, nameTarget});
 
     useEffect(() => {
         const indexBoard = boards.findIndex(board => board.idBoard === idBoard);
@@ -54,7 +57,7 @@ export const List: React.FC<ListPropsComponent> = ({ idBoard, idList }) => {
                 setList(list);
             }
         }
-    })
+    }, []);
 
     // if (!boards[indexBoard] || !boards[indexBoard].lists[indexList]) {
     //     return null; // Evita el error
@@ -63,10 +66,20 @@ export const List: React.FC<ListPropsComponent> = ({ idBoard, idList }) => {
         return null
     }
 
+    const [isOpenChangeListInterfaz, setIsOpenChangeListInterfaz] = useState(false);
+
     return (
         <div className={isListCollapse ? 'board_list_collapse' : 'board_list'} style={{backgroundColor: list.colorList}}>    {/* COLOR LIST */}
             <header className='header_list'>
-                <p className='title_list'>{list.nameList}</p>                       {/* NAMELIST */}
+                <p className='title_list'>
+                    {list.nameList}
+
+                    <BtnAdd 
+                    createListOrTargetName={changeNameList} 
+                    className="" 
+                    
+                    />
+                </p>                       {/* NAMELIST */}
                 <div className='btns_header_list'>
                     <button className='btn_collapse_list' onClick={() => setIsListCollapse(!isListCollapse)}>
                         <RiCollapseHorizontalLine className='icon_collapse_list' />

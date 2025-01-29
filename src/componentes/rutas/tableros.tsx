@@ -18,15 +18,15 @@ export const Tableros = () => {
   }
 
   useEffect(() => {
-    const dataLS = localStorage.getItem('boards');
+    // const dataLS = localStorage.getItem('boards');
 
-    if (dataLS) {
-        setBoards(JSON.parse(dataLS));
-        console.log('hay LS', JSON.parse(dataLS))
-    } else {
-        console.log('no hay LS')
-        localStorage.setItem('boards', JSON.stringify([]))
-    }
+    // if (dataLS) {
+    //     setBoards(JSON.parse(dataLS));
+    //     console.log('hay LS', JSON.parse(dataLS))
+    // } else {
+    //     console.log('no hay LS')
+    //     localStorage.setItem('boards', JSON.stringify([]))
+    // }
   }, []);
 
   return (
