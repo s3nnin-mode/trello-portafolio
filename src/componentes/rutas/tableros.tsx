@@ -1,12 +1,10 @@
-import { useContext, useEffect, useState } from 'react';
 import '../../styles/tablero/tableros.scss';
 import { BtnAdd } from '../tablero/btnAgregar';
-import { Link, useNavigate } from 'react-router-dom';
-import { BoardsContext } from '../../contextos/boards';
+import { Link } from 'react-router-dom';
 import { useBoardsStore } from '../../store/boardsStore';
 
 export const Tableros = () => {
-  const { boards, setBoards, setBoard } = useBoardsStore();
+  const { boards, setBoard } = useBoardsStore();
   
   const addNewBoard = (nameBoard: string) => {
     const newBoard = { 
@@ -23,7 +21,6 @@ export const Tableros = () => {
       <BtnAdd createListOrTargetName={addNewBoard} btnName='board' className='container_btn_add_board'/>
       <div className='divider'></div>
       <div className='boards'>
-
         {
           boards.map(board => {
             console.log(board)

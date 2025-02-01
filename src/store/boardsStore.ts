@@ -10,6 +10,7 @@ interface State {
   setList: (props: {idBoard: string, newList: ListProps}) => void
   setNewNameList: (props: {idBoard: string, idList: string, newNameList: string}) => void;
   deleteList: (props: {idBoard: string, idList: string}) => void
+  setLists: (props: {idBoard: string, lists: ListProps[]}) => void
   setTarget: (props: {idBoard: string, idList: string, newTarget: TargetProps}) => void
   setColorList: (props: {idBoard: string, idList: string, color: string}) => void
 }
@@ -44,6 +45,10 @@ export const useBoardsStore = create<State>()(
         :
         board
         )
+      }))
+      ,
+      setLists: ({idBoard, lists}) => set((state) => ({
+        boards: state.boards.map((board) => board.idBoard === idBoard ? { ...board, lists: lists } : board)
       }))
       ,
       setList: ({idBoard, newList}) => set((state) => ({

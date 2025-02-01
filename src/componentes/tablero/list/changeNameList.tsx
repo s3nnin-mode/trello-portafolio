@@ -25,31 +25,35 @@ export const NameList: React.FC<NameListPropsComponent> = ({idBoard, list}) => {
     const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const idList = list.idList;
         const newNameList = e.target.value;
-
         setNameList(e.target.value);
         setNewNameList({idBoard, idList, newNameList})
     }
 
+    const onInput = (e: React.FormEvent<HTMLTextAreaElement>) => {
+        e.stopPropagation();
+        const target = e.target as HTMLInputElement;
+        target.style.height = "auto"; 
+        target.style.height = `${target.scrollHeight}px`;
+    }
+
     return (
         <div className='title_list'>
-            <p className='name_list'
+            <p className='name_list'                                         //abrir input
              style={{display: isOpenInput ? 'none' : 'block'}}
-             onClick={() => setIsOpenInput(true)}>
+             onClick={() => setIsOpenInput(true)}
+             onPointerDown={(e) => e.stopPropagation()}
+             >        
                 {nameList}
             </p>
 
             {isOpenInput && (
                 <textarea
-                style={{overflow: "hidden", resize: "none", fontSize: 22}}
-                onInput={(e) => {
-                    const target = e.target as HTMLTextAreaElement;
-
-                    target.style.height = "auto"; 
-                    target.style.height = `${target.scrollHeight}px`;
-                }}
-                value={nameList}
-                onChange={(e) => handleChange(e)} 
-                onBlur={() => setIsOpenInput(false)} // Ocultar textarea al perder el foco 
+                    onPointerDown={(e) => e.stopPropagation()}
+                    style={{overflow: "hidden", resize: "none", fontSize: 22}}
+                    onInput={onInput}
+                    value={nameList}
+                    onChange={handleChange} 
+                    onBlur={() => setIsOpenInput(false)} // Ocultar textarea al perder el foco 
                 />
             )}
         </div> 

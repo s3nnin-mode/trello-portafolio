@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEvent, useEffect, useRef } from 'react';
 import '../../styles/tablero/agregarLista.scss';
 import { AiOutlinePlus } from "react-icons/ai";
 import { useState } from 'react';
@@ -26,7 +26,7 @@ export const BtnAdd: React.FC<BtnAddProps> = ({ createListOrTargetName,  btnName
 
     return (
         <div className={className} style={{backgroundColor: showForm ? '#f4f5f7' : 'transparent'}}>
-            <button className={`btn_add_${showForm ? 'hidden' : 'show'}`} onClick={() => setShowForm(true)}>
+            <button className={`btn_add_${showForm ? 'hidden' : 'show'}`} onClick={() => setShowForm(true)} onPointerDown={(e) => e.stopPropagation()}>
                 <AiOutlinePlus className='icon_add' style={{color: btnName === 'list' ? 'white' : 'black'}} />
                 <span style={{color: btnName === 'list' ? 'white' : 'black' }}>Agregar {btnName}</span>
             </button>
@@ -37,10 +37,11 @@ export const BtnAdd: React.FC<BtnAddProps> = ({ createListOrTargetName,  btnName
                     placeholder={`Nombre de ${btnName == 'list' ? 'la list' : 'la tarjeta'}`}
                     value={listName}
                     onChange={(e) => setListName(e.target.value)}
+                    onPointerDown={(e) => e.stopPropagation()}
                 />
                 <div className='actions'>
-                    <button type='button' className='btn_add' onClick={handleClick}>Agregar</button>
-                    <button type='button' className='btn_cancel' onClick={cancel}>Cancelar</button>
+                    <button type='button' className='btn_add' onClick={handleClick} onPointerDown={(e) => e.stopPropagation()}>Agregar</button>
+                    <button type='button' className='btn_cancel' onClick={cancel} onPointerDown={(e) => e.stopPropagation()}>Cancelar</button>
                 </div>
             </form>
         </div>
