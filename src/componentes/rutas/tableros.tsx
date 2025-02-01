@@ -17,18 +17,6 @@ export const Tableros = () => {
     setBoard(newBoard);
   }
 
-  useEffect(() => {
-    // const dataLS = localStorage.getItem('boards');
-
-    // if (dataLS) {
-    //     setBoards(JSON.parse(dataLS));
-    //     console.log('hay LS', JSON.parse(dataLS))
-    // } else {
-    //     console.log('no hay LS')
-    //     localStorage.setItem('boards', JSON.stringify([]))
-    // }
-  }, []);
-
   return (
     <div className='boards_container'>
       <h3>Tableros</h3>

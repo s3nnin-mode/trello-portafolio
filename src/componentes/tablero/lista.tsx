@@ -12,6 +12,7 @@ import { useState } from "react";
 import { SettingsList } from "./settingsList";
 import { useBoardsStore } from "../../store/boardsStore";
 import { ListProps } from "../../types/boardProps";
+import { NameList } from "./list/changeNameList";
 
 interface ListPropsComponent {
     idBoard: string
@@ -59,27 +60,15 @@ export const List: React.FC<ListPropsComponent> = ({ idBoard, idList }) => {
         }
     }, []);
 
-    // if (!boards[indexBoard] || !boards[indexBoard].lists[indexList]) {
-    //     return null; // Evita el error
-    // }
     if (!list) {
         return null
     }
 
-    const [isOpenChangeListInterfaz, setIsOpenChangeListInterfaz] = useState(false);
 
     return (
         <div className={isListCollapse ? 'board_list_collapse' : 'board_list'} style={{backgroundColor: list.colorList}}>    {/* COLOR LIST */}
             <header className='header_list'>
-                <p className='title_list'>
-                    {list.nameList}
-
-                    <BtnAdd 
-                    createListOrTargetName={changeNameList} 
-                    className="" 
-                    
-                    />
-                </p>                       {/* NAMELIST */}
+                <NameList idBoard={idBoard} list={list} />                     {/* NAMELIST */}
                 <div className='btns_header_list'>
                     <button className='btn_collapse_list' onClick={() => setIsListCollapse(!isListCollapse)}>
                         <RiCollapseHorizontalLine className='icon_collapse_list' />
