@@ -7,6 +7,8 @@ import '../../styles/tablero/settingsList.scss';
 import { BtnAdd } from "./btnAgregar";
 import { useBoardsStore } from "../../store/boardsStore";
 import { ListProps } from "../../types/boardProps";
+import { FormCopyElement } from "./copiarElemento";
+import { FormMoveList } from "./list/formMoverLista";
 
 interface SettingsListProps {
     idBoard: string
@@ -24,14 +26,14 @@ const useSettingsList = () => {
         setColorList({idBoard, idList, color});
     }
 
-    const copyList = ({idBoard, list}: {idBoard: string, list: ListProps}) => {
+    const copyList = ({idBoard, list, inputText}: {idBoard: string, list: ListProps, inputText: string}) => {
         const idListToCopy = list.idList;  //id a buscar
         const boardIndex = boards.findIndex(board => board.idBoard === idBoard);
         const indexListToCopy = boards[boardIndex].lists.findIndex(list => list.idList === idListToCopy);
 
         const listCopy = {...list, 
             idList: (Date.now() + list.nameList).toString(),
-            nameList: 'copiaaa'
+            nameList: inputText
         }
 
         const LISTS = [...boards[boardIndex].lists];
@@ -46,27 +48,114 @@ const useSettingsList = () => {
         setLists({idBoard, lists})
     }
 
+    const moveListt = ({idBoard, list, position}: {idBoard: string, list: ListProps, position: number}) => {
+        const boardIndex = boards.findIndex(board => board.idBoard === idBoard);
 
-    return { deleteListt, changeColorList, copyList, setLists, boards };
+        let lists: ListProps[] = []
+
+        for (let i = 0; i < boards[boardIndex].lists.length; i++) { 
+            let LIST: ListProps = {idList: '', nameList: '', colorList: '', targets: []};
+            let index: number | null = null;
+
+            for (let j = 0; j < boards[boardIndex].lists.length; j++) {
+                if (j === position) {
+                    LIST = boards[boardIndex].lists[j];
+                }
+
+                if (boards[boardIndex].lists[j].idList === list.idList) {
+                    index = j;
+                }
+            }
+
+            if (i === position) {
+                lists.push(list)
+                continue
+            }
+
+            if (i === index) {
+                lists.push(LIST)
+                continue
+            }
+
+            lists.push(boards[boardIndex].lists[i]);
+            
+        }
+
+        setLists({idBoard, lists});
+    }
+
+    const moveList = ({idBoard, list, position}: {idBoard: string, list: ListProps, position: number}) => {
+        const indexBoard = boards.findIndex(board => board.idBoard === idBoard);
+
+        let INDEX: number;
+        let LIST: ListProps;
+
+        for (let i = 0; i < boards[indexBoard].lists.length; i++) {
+            if (boards[indexBoard].lists[i].idList === list.idList) {
+                INDEX = i
+            }
+            if (i === position) {
+                LIST = boards[indexBoard].lists[i];
+            }
+        }
+
+        const lists = boards[indexBoard].lists.map((l, index) => {
+            if (index === position) {
+                return list
+            }
+
+            if (index === INDEX) {
+                return LIST
+            }
+
+            return l
+        })
+
+        setLists({idBoard, lists});
+    }
+
+    return { deleteListt, changeColorList, copyList, moveListt, moveList, setLists, boards };
 }
 
 export const SettingsList: React.FC<SettingsListProps> = ({ idBoard, list }) => {
-    const { deleteListt, changeColorList, copyList, boards } = useSettingsList();
+    const { deleteListt, changeColorList, copyList, moveList, boards } = useSettingsList();
     const [isBtnCopyClicked, setIsBtnCopyClicked] = useState(false);
     const [isOptionsActive, setIsOptionsActive] = useState(false);
     const [colorsWrapper, setColorsWrappers] = useState(true);
+    const [showFormMoveList, setShowFormMoveList] = useState(false);
 
     const idList = list.idList;
 
 
     const colors = ["brown", "blue", "green", "yellow", "black", "white", "orange", "purple", "gray", "pink"];
 
-    const handleClick = () => {
+    const handleCopyList = () => {
         setIsBtnCopyClicked(true); //para activar interfaz necesito ocultar los demas botones
         setIsOptionsActive(false);
     }
 
-    
+    const callbackCopyList = (inputText: string) => {
+        copyList({idBoard, list, inputText});
+        setIsBtnCopyClicked(false);
+        setIsOptionsActive(true)
+    }
+
+    const handleMoveList = () => {
+        setShowFormMoveList(true);
+        setIsOptionsActive(false);
+    }
+
+    const closeFormMoveList = () => {
+        setShowFormMoveList(false);
+        setIsOptionsActive(true);
+    }
+
+    const callbackMoveList = (position: number) => {
+        console.log('se ejecuto el callback', position)
+        moveList({idBoard, list, position});
+        setIsOptionsActive(true);
+        setShowFormMoveList(false);
+    }
 
     return (
         <div className='options' onPointerDown={(e) => e.stopPropagation()}>       
@@ -74,23 +163,38 @@ export const SettingsList: React.FC<SettingsListProps> = ({ idBoard, list }) => 
                 <PiDotsThreeOutlineFill className='icon_options_list' />
             </button>
 
-            <div className={`interfaze_copy_list_${isBtnCopyClicked ? 'show' : 'hidden'}`}>
-                <div>
-                <p>Copiar lista</p>
-                <span onClick={() => setIsBtnCopyClicked(false)}>salir</span>
-                </div>
-                <input></input>
-            </div>
+            {isBtnCopyClicked && (           //Mostrar interfaz para copiar lista
+                <FormCopyElement
+                 closeForm={() => {setIsBtnCopyClicked(false), setIsOptionsActive(true)}} 
+                 callback={callbackCopyList}
+                 nameElement='lista' 
+                 value={list.nameList}
+                 />
+            )}
+
+            {
+                showFormMoveList && (
+                    <FormMoveList 
+                     idBoard={idBoard} 
+                     list={list} 
+                     closeForm={closeFormMoveList} 
+                     callback={callbackMoveList} />
+                )
+            }
 
             <div className={`settings_list_${isOptionsActive ? 'show' : 'hidden'}`}>
                 <div className='header_settings_list'>
-                    <IoMdClose className='icon-close'
+                    <IoMdClose className='icon-close'                                       //Active options
                      onClick={() => setIsOptionsActive(false)} 
                      />
                 </div>
 
-                <button className='btn_setting_list' onClick={() => copyList({idBoard, list})}>             {/* COPY LIST*/}
+                <button className='btn_setting_list' onClick={handleCopyList}>             {/* COPY LIST*/}
                     Copiar lista
+                </button>
+
+                <button className='btn_setting_list' onClick={handleMoveList}>
+                    Mover lista
                 </button>
 
                 <div className='container_change_bg_list'>                                                      {/* CHANGE COLOR CONTAINER*/}

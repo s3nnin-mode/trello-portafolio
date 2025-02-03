@@ -1,7 +1,7 @@
 import '../../styles/tablero/tablero.scss';
 import { List } from './lista';
 import { BtnAdd } from './btnAgregar';
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useParams } from 'react-router-dom';
 import { BoardProps } from '../../types/boardProps';
 import { useBoardsStore } from '../../store/boardsStore';
@@ -40,32 +40,43 @@ export const Tablero = () => {
         const indexBoard = boards.findIndex(b => b.idBoard === currentIdBoard);
         if (indexBoard > -1) {
             console.log('si se halló el board', boards[indexBoard])
+           
             setCurrentBoard(boards[indexBoard]);
             setIdBoard(boards[indexBoard].idBoard);
             return
         }
-        console.log('No se hallo el board', currentBoard?.idBoard, boards)
+        console.log('No se hallo el board', currentBoard?.idBoard, boards);
 
     }, [boards]);
 
     const onDragEnd = (event: DragEndEvent) => {
         const { active, over } = event;
-        
+
+        if (!currentBoard || !over) return;
+
         const oldIndex = currentBoard?.lists.findIndex(list => list.idList === active.id);
         const newIndex = currentBoard?.lists.findIndex(list => list.idList === over?.id);
 
-        if (!currentBoard || oldIndex === undefined || newIndex === undefined) {
-            return
+        // if (!currentBoard || oldIndex === undefined || newIndex === undefined) {
+        //     return
+        // }
+
+        if (oldIndex === -1 || newIndex === -1 || oldIndex === newIndex) {
+            console.log('Se canceló el drag (no hay cambios en la posición)');
+            return;
         }
 
         const lists = arrayMove(currentBoard.lists, oldIndex, newIndex);
+
         setLists({idBoard, lists});
-    }
+    };
+
+    
 
     return (
         <div className='board' >
             <header>
-                <h2>{currentBoard?.nameBoard}</h2>
+                <h2>{currentBoard?.nameBoard}</h2>                                      {/* NAME BOARD */}
             </header>
             <DndContext collisionDetection={closestCenter} onDragEnd={onDragEnd}>
                 {
