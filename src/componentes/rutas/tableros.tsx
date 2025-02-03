@@ -2,17 +2,24 @@ import '../../styles/tablero/tableros.scss';
 import { BtnAdd } from '../tablero/btnAgregar';
 import { Link } from 'react-router-dom';
 import { useBoardsStore } from '../../store/boardsStore';
+import { useBoardsStoree } from '../../store/boardsStoredos';
+import { useListsStore } from '../../store/listsStore';
 
 export const Tableros = () => {
-  const { boards, setBoard } = useBoardsStore();
+  // const { boards, setBoard } = useBoardsStore();
+  const { boards, setBoard } = useBoardsStoree();
+  const { setListGroup } = useListsStore();
+
   
   const addNewBoard = (nameBoard: string) => {
+    const idBoard = (nameBoard + Date.now()).toString()
     const newBoard = { 
-      idBoard: (nameBoard + Date.now()).toString(),
+      idBoard: idBoard,
       nameBoard: nameBoard,
       lists: []
     }
     setBoard(newBoard);
+    setListGroup({idBoard});     //crear objeto con idBoard para saber que pertenece a este board e inicializar un array lists vacio
   }
 
   return (

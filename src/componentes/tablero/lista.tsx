@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from "react";
 import '../../styles/tablero/lista.scss';
-
+//REACT-ICONS
 import { RiCollapseHorizontalLine } from "react-icons/ri";
+//COMPONENTS
+import { SettingsList } from "./settingsList";
+import { NameList } from "./list/changeNameList";
 import { BtnAdd } from "./btnAgregar";
 import { Target } from "./tarjeta";
-
-import { SettingsList } from "./settingsList";
-import { useBoardsStore } from "../../store/boardsStore";
-import { ListProps } from "../../types/boardProps";
-import { NameList } from "./list/changeNameList";
-
+//DRAG AND DROP
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+//STORES
+import { useBoardsStoree } from "../../store/boardsStoredos";
+import { useTargetsStore } from "../../store/targetsStore";
+//TYPES
+import { ListProps, TargetProps } from "../../types/boardProps";
 
 interface ListPropsComponent {
     idBoard: string
@@ -19,7 +22,8 @@ interface ListPropsComponent {
 }
 
 const useList = () => {
-    const { boards, setTarget } = useBoardsStore();
+    const { boards } = useBoardsStoree();
+    const { setTarget, targetsGroup } = useTargetsStore();
 
     const addNewTarget = ({idBoard, idList, nameTarget}: { idBoard: string, idList: string, nameTarget: string }) => {
         const newTarget = {
@@ -31,24 +35,32 @@ const useList = () => {
                 {color: 'green', active: false, nameTag: 'tag3'}
             ]
         };
-        setTarget({idBoard, idList, newTarget});        
+        setTarget({idBoard, idList, newTarget});      
     }
 
-    return { addNewTarget, boards };
+    return { addNewTarget, boards, targetsGroup };
 }
 
 export const List: React.FC<ListPropsComponent> = ({ idBoard, list }) => {               
-    const { addNewTarget, boards } = useList();
+    const { addNewTarget, boards, targetsGroup } = useList();
     const [isListCollapse, setIsListCollapse] = useState(false);
     const idList = list.idList;
 
+    const [currentTargets, setCurrentTargets] = useState<TargetProps[]>([])
+ 
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({id: list.idList});
-
     const style = { 
         transform: CSS.Transform.toString(transform),
         transition,
         backgroundColor: list.colorList
     }
+
+    useEffect(() => {
+        const indexTargets = targetsGroup.findIndex((targetGroup) => targetGroup.idBoard === idBoard && targetGroup.idList === idList);
+        if (indexTargets > -1) {
+            setCurrentTargets(targetsGroup[indexTargets].targets);
+        }
+    }, [targetsGroup]);
 
     if (!list) {
         return null
@@ -72,7 +84,7 @@ export const List: React.FC<ListPropsComponent> = ({ idBoard, list }) => {
             </header>
             <div className='content_list'>
                 {
-                    list.targets.map((target, index) => {
+                    currentTargets.map((target, index) => {
                         const indexBoard = boards.findIndex(board => board.idBoard === idBoard);
 
                         return <Target 

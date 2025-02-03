@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import '../../../styles/formMoverLista.scss';
-import { BoardProps, ListProps } from '../../../types/boardProps';
+import { BoardProps } from '../../../types/boardProps';
 import { useBoardsStore } from '../../../store/boardsStore';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
+import { ListProps, useListsStore } from '../../../store/listsStore';
 
 interface FormMoveListProps {
     idBoard: string
@@ -12,15 +13,19 @@ interface FormMoveListProps {
 }
 
 export const FormMoveList: React.FC<FormMoveListProps> = ({idBoard, list, closeForm, callback}) => {
-    const { boards } = useBoardsStore();
+    // const { boards } = useBoardsStore();
+    const { listsGroup } = useListsStore();
     const [position, setPosition] = useState<number>();
-    const [currentBoard, setCurrentBoard] = useState<BoardProps>();
+    // const [currentBoard, setCurrentBoard] = useState<BoardProps>();
+    const [currentLists, setCurrentLists] = useState<ListProps[]>();
 
     useEffect(() => {
-        const indexBoard = boards.findIndex(board => board.idBoard === idBoard);
-        if (indexBoard > -1) {
-            setCurrentBoard(boards[indexBoard]);
-            const indexList = boards[indexBoard].lists.findIndex(l => l.idList === list.idList);
+        const indexListGroup = listsGroup.findIndex(listGroup => listGroup.idBoard === idBoard);
+        
+        if (indexListGroup > -1) {
+            setCurrentLists(listsGroup[indexListGroup].lists);
+
+            const indexList = listsGroup[indexListGroup].lists.findIndex(l => l.idList === list.idList);
             if (indexList > -1) {
                 console.log('current position: ', indexList + 1);
                 const currentPosition = indexList + 1;
@@ -51,7 +56,7 @@ export const FormMoveList: React.FC<FormMoveListProps> = ({idBoard, list, closeF
                     showOPtions && (
                     <div className='positions'>
                         {
-                            currentBoard?.lists.map((list, index) => (
+                            currentLists?.map((list, index) => (
                                 <button type='button' key={list.idList} onClick={() => setPosition(index + 1)}>
                                     {index + 1 === position ? `${index + 1} current` : index + 1}
                                 </button>

@@ -1,35 +1,48 @@
 import '../../styles/tablero/tablero.scss';
+//HOOKS
+import { useEffect, useState } from "react";
+import { useParams } from 'react-router-dom';
+//COMPONENTS
 import { List } from './lista';
 import { BtnAdd } from './btnAgregar';
-import { useCallback, useEffect, useState } from "react";
-import { useParams } from 'react-router-dom';
-import { BoardProps } from '../../types/boardProps';
-import { useBoardsStore } from '../../store/boardsStore';
+//DND-KIT
 import { closestCenter, DndContext, DragEndEvent } from '@dnd-kit/core';
 import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 
+//STORES
+import { useListsStore } from '../../store/listsStore';
+import { useBoardsStoree } from '../../store/boardsStoredos';
+import { useTargetsStore } from '../../store/targetsStore';
+//TYPES
+import { BoardProps, ListProps } from '../../types/boardProps';
 
 const useCustomBoard = () => {
-    const { boards, setList, setLists } = useBoardsStore();
+    const { setList, setLists, listsGroup } = useListsStore();
+    const { setTargetsGroup } = useTargetsStore();
+    const { boards } = useBoardsStoree();
 
     const addNewList = ({nameList, idBoard}: {nameList: string, idBoard: string}) => {
+        const idList = (nameList + Date.now()).toString();
         const newList = { 
-            idList: (nameList + Date.now()).toString(), 
+            idList: idList, 
             nameList: nameList, 
             colorList: 'brown', 
             targets: []
         }
-
         setList({idBoard, newList});
+        setTargetsGroup({idBoard, idList});  //crear obejeto con propieda idBoard y idList para saber que pertenece a este ->tablero->lista. Se incializa con un array vacío
     }
 
-    return { addNewList, setLists, boards }
+    return { addNewList, setLists, boards, listsGroup }
 }
 
 export const Tablero = () => {
+    const { boards, listsGroup, addNewList, setLists } = useCustomBoard();
+
     const [currentBoard, setCurrentBoard] = useState<BoardProps>();
     const [idBoard, setIdBoard] = useState('');
-    const { boards, addNewList, setLists } = useCustomBoard();
+
+    const [currentLists, setCurrentLists] = useState<ListProps[]>()
     const { currentIdBoard } = useParams();
 
     if (!currentIdBoard) {
@@ -49,13 +62,25 @@ export const Tablero = () => {
 
     }, [boards]);
 
+    useEffect(() => {
+        const indexListGroup = listsGroup.findIndex((listGroup) => listGroup.idBoard === currentIdBoard);
+        if (indexListGroup > -1) {
+            setCurrentLists(listsGroup[indexListGroup].lists);
+        }
+        console.log('se re-renderizó lists')
+    }, [listsGroup]);
+
     const onDragEnd = (event: DragEndEvent) => {
         const { active, over } = event;
 
-        if (!currentBoard || !over) return;
+        // if (!currentBoard || !over) return;
+        if (!currentLists || !over) return
 
-        const oldIndex = currentBoard?.lists.findIndex(list => list.idList === active.id);
-        const newIndex = currentBoard?.lists.findIndex(list => list.idList === over?.id);
+        // const oldIndex = currentBoard?.lists.findIndex(list => list.idList === active.id);
+        // const newIndex = currentBoard?.lists.findIndex(list => list.idList === over?.id);
+
+        const oldIndex = currentLists.findIndex(list => list.idList === active.id);
+        const newIndex = currentLists.findIndex(list => list.idList === over?.id);
 
         // if (!currentBoard || oldIndex === undefined || newIndex === undefined) {
         //     return
@@ -66,7 +91,7 @@ export const Tablero = () => {
             return;
         }
 
-        const lists = arrayMove(currentBoard.lists, oldIndex, newIndex);
+        const lists = arrayMove(currentLists, oldIndex, newIndex);
 
         setLists({idBoard, lists});
     };
@@ -80,11 +105,11 @@ export const Tablero = () => {
             </header>
             <DndContext collisionDetection={closestCenter} onDragEnd={onDragEnd}>
                 {
-                    currentBoard?.lists !== undefined && (
-                        <SortableContext items={currentBoard?.lists.map((list) => list.idList)} strategy={verticalListSortingStrategy}>
+                    currentLists !== undefined && (
+                        <SortableContext items={currentLists.map((list) => list.idList)} strategy={verticalListSortingStrategy}>
                             <div className='board_content'>
                                 {
-                                currentBoard.lists.map((list, index) => {
+                                currentLists.map((list) => {
                                     return <List idBoard={idBoard} list={list} key={list.idList} />
                                 })
                                 }

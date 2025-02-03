@@ -1,19 +1,15 @@
-import { useEffect, useRef, useState } from "react";
-import { ListProps } from "../../../types/boardProps";
+import { useEffect, useState } from "react";
 import '../../../styles/tablero/nameList.scss';
-import { useBoardsStore } from "../../../store/boardsStore";
+import {  useListsStore } from "../../../store/listsStore";
+import { ListProps } from "../../../types/boardProps";
 
 interface NameListPropsComponent {
     idBoard: string
     list: ListProps
 }
 
-export const useNameList = () => {
-    
-}
-
 export const NameList: React.FC<NameListPropsComponent> = ({idBoard, list}) => {
-    const { setNewNameList } = useBoardsStore();
+    const { setNewNameList } = useListsStore();
 
     const [isOpenInput, setIsOpenInput] = useState(false);
     const [nameList, setNameList] = useState('');

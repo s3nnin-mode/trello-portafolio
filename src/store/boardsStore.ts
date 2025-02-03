@@ -105,7 +105,7 @@ export const useBoardsStore = create<State>()(
       }))
     }),
     {
-      name: 'boards-storage'
+      name: 'boards-storageNull'
     }
   )
 )

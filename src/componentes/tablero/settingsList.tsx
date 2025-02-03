@@ -1,14 +1,18 @@
 import { useState } from "react";
+import '../../styles/tablero/settingsList.scss';
+
+//REACT-ICONS
 import { IoMdClose } from "react-icons/io";
 import { PiDotsThreeOutlineFill } from "react-icons/pi";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
-
-import '../../styles/tablero/settingsList.scss';
-import { BtnAdd } from "./btnAgregar";
-import { useBoardsStore } from "../../store/boardsStore";
-import { ListProps } from "../../types/boardProps";
+//COMPONENTS
 import { FormCopyElement } from "./copiarElemento";
 import { FormMoveList } from "./list/formMoverLista";
+//STORES
+import { useListsStore } from "../../store/listsStore";
+import { useBoardsStoree } from "../../store/boardsStoredos";
+//TYPES
+import { ListProps } from "../../types/boardProps";
 
 interface SettingsListProps {
     idBoard: string
@@ -16,8 +20,8 @@ interface SettingsListProps {
 }
 
 const useSettingsList = () => {
-    const { boards, deleteList, setColorList, setLists } = useBoardsStore();
-
+    const { boards } = useBoardsStoree();
+    const { deleteList, setColorList, setLists, listsGroup } = useListsStore();
     const deleteListt = ({idBoard, idList}: {idBoard: string, idList: string}) => {
         deleteList({idBoard, idList});
     }
@@ -28,15 +32,18 @@ const useSettingsList = () => {
 
     const copyList = ({idBoard, list, inputText}: {idBoard: string, list: ListProps, inputText: string}) => {
         const idListToCopy = list.idList;  //id a buscar
-        const boardIndex = boards.findIndex(board => board.idBoard === idBoard);
-        const indexListToCopy = boards[boardIndex].lists.findIndex(list => list.idList === idListToCopy);
+        // const boardIndex = boards.findIndex(board => board.idBoard === idBoard);
+        // const indexListToCopy = boards[boardIndex].lists.findIndex(list => list.idList === idListToCopy);
+        const indexListGroup = listsGroup.findIndex(listGroup => listGroup.idBoard === idBoard);
+        const indexListToCopy = listsGroup[indexListGroup].lists.findIndex(list => list.idList === idListToCopy);
 
         const listCopy = {...list, 
             idList: (Date.now() + list.nameList).toString(),
             nameList: inputText
         }
 
-        const LISTS = [...boards[boardIndex].lists];
+        // const LISTS = [...boards[boardIndex].lists];
+        const LISTS = [...listsGroup[indexListGroup].lists];
         let lists: ListProps[] = [];
 
         for (let i = 0; i < LISTS.length; i++) {
@@ -48,58 +55,22 @@ const useSettingsList = () => {
         setLists({idBoard, lists})
     }
 
-    const moveListt = ({idBoard, list, position}: {idBoard: string, list: ListProps, position: number}) => {
-        const boardIndex = boards.findIndex(board => board.idBoard === idBoard);
-
-        let lists: ListProps[] = []
-
-        for (let i = 0; i < boards[boardIndex].lists.length; i++) { 
-            let LIST: ListProps = {idList: '', nameList: '', colorList: '', targets: []};
-            let index: number | null = null;
-
-            for (let j = 0; j < boards[boardIndex].lists.length; j++) {
-                if (j === position) {
-                    LIST = boards[boardIndex].lists[j];
-                }
-
-                if (boards[boardIndex].lists[j].idList === list.idList) {
-                    index = j;
-                }
-            }
-
-            if (i === position) {
-                lists.push(list)
-                continue
-            }
-
-            if (i === index) {
-                lists.push(LIST)
-                continue
-            }
-
-            lists.push(boards[boardIndex].lists[i]);
-            
-        }
-
-        setLists({idBoard, lists});
-    }
-
     const moveList = ({idBoard, list, position}: {idBoard: string, list: ListProps, position: number}) => {
-        const indexBoard = boards.findIndex(board => board.idBoard === idBoard);
+        const indexListGroup = listsGroup.findIndex(listGroup => listGroup.idBoard === idBoard);
 
         let INDEX: number;
         let LIST: ListProps;
 
-        for (let i = 0; i < boards[indexBoard].lists.length; i++) {
-            if (boards[indexBoard].lists[i].idList === list.idList) {
+        for (let i = 0; i < listsGroup[indexListGroup].lists.length; i++) {
+            if (listsGroup[indexListGroup].lists[i].idList === list.idList) {
                 INDEX = i
             }
             if (i === position) {
-                LIST = boards[indexBoard].lists[i];
+                LIST = listsGroup[indexListGroup].lists[i];
             }
         }
 
-        const lists = boards[indexBoard].lists.map((l, index) => {
+        const lists = listsGroup[indexListGroup].lists.map((l, index) => {
             if (index === position) {
                 return list
             }
@@ -114,59 +85,74 @@ const useSettingsList = () => {
         setLists({idBoard, lists});
     }
 
-    return { deleteListt, changeColorList, copyList, moveListt, moveList, setLists, boards };
+    return { deleteListt, changeColorList, copyList, moveList, setLists, boards };
+}
+
+export const useSettingsModalList = () => {
+    const [isModalOptionsActive, setIsModalOptionsActive] = useState(false);          //BTN OPEN MODAL OPTIONS
+
+    return { isModalOptionsActive, setIsModalOptionsActive }
+}
+
+const useCopyList = () => {
+    const { copyList } = useSettingsList();
+    const { setIsModalOptionsActive } = useSettingsModalList();
+
+    const [showFormCopyList, setShowFormCopyList] = useState(false);        //BTN COPY LIST
+
+    const handleCopyList = () => {
+        setShowFormCopyList(true); //para activar interfaz necesito ocultar los demas botones
+        setIsModalOptionsActive(false);
+    }
+
+    const callbackCopyList = ({idBoard, list, inputText}: {idBoard: string, list: ListProps, inputText: string}) => {
+        copyList({idBoard, list, inputText});
+        setShowFormCopyList(false);
+        setIsModalOptionsActive(true)
+    }
+
+    return { showFormCopyList, setShowFormCopyList, handleCopyList, callbackCopyList }
 }
 
 export const SettingsList: React.FC<SettingsListProps> = ({ idBoard, list }) => {
-    const { deleteListt, changeColorList, copyList, moveList, boards } = useSettingsList();
-    const [isBtnCopyClicked, setIsBtnCopyClicked] = useState(false);
-    const [isOptionsActive, setIsOptionsActive] = useState(false);
-    const [colorsWrapper, setColorsWrappers] = useState(true);
-    const [showFormMoveList, setShowFormMoveList] = useState(false);
+    const { deleteListt, changeColorList, moveList } = useSettingsList();
+
+    const { showFormCopyList, handleCopyList, callbackCopyList, setShowFormCopyList } = useCopyList();
+    const { isModalOptionsActive, setIsModalOptionsActive } = useSettingsModalList();
+
+    const [colorsWrapper, setColorsWrappers] = useState(true);              //COLORS WRAPPER
+    const [showFormMoveList, setShowFormMoveList] = useState(false);        //FORM MOVE LIST
 
     const idList = list.idList;
-
-
     const colors = ["brown", "blue", "green", "yellow", "black", "white", "orange", "purple", "gray", "pink"];
-
-    const handleCopyList = () => {
-        setIsBtnCopyClicked(true); //para activar interfaz necesito ocultar los demas botones
-        setIsOptionsActive(false);
-    }
-
-    const callbackCopyList = (inputText: string) => {
-        copyList({idBoard, list, inputText});
-        setIsBtnCopyClicked(false);
-        setIsOptionsActive(true)
-    }
 
     const handleMoveList = () => {
         setShowFormMoveList(true);
-        setIsOptionsActive(false);
+        setIsModalOptionsActive(false);
     }
 
     const closeFormMoveList = () => {
         setShowFormMoveList(false);
-        setIsOptionsActive(true);
+        setIsModalOptionsActive(true);
     }
 
     const callbackMoveList = (position: number) => {
         console.log('se ejecuto el callback', position)
         moveList({idBoard, list, position});
-        setIsOptionsActive(true);
+        setIsModalOptionsActive(true);
         setShowFormMoveList(false);
     }
 
     return (
         <div className='options' onPointerDown={(e) => e.stopPropagation()}>       
-            <button onClick={() => setIsOptionsActive(true)} className='btn_active_options'>
+            <button onClick={() => setIsModalOptionsActive(true)} className='btn_active_options'>
                 <PiDotsThreeOutlineFill className='icon_options_list' />
             </button>
 
-            {isBtnCopyClicked && (           //Mostrar interfaz para copiar lista
+            {showFormCopyList && (           //Mostrar interfaz para copiar lista
                 <FormCopyElement
-                 closeForm={() => {setIsBtnCopyClicked(false), setIsOptionsActive(true)}} 
-                 callback={callbackCopyList}
+                 closeForm={() => {setShowFormCopyList(false), setIsModalOptionsActive(true)}} 
+                 callback={(inputText) => callbackCopyList({idBoard, list, inputText})}
                  nameElement='lista' 
                  value={list.nameList}
                  />
@@ -182,10 +168,10 @@ export const SettingsList: React.FC<SettingsListProps> = ({ idBoard, list }) => 
                 )
             }
 
-            <div className={`settings_list_${isOptionsActive ? 'show' : 'hidden'}`}>
+            <div className={`settings_list_${isModalOptionsActive ? 'show' : 'hidden'}`}>
                 <div className='header_settings_list'>
                     <IoMdClose className='icon-close'                                       //Active options
-                     onClick={() => setIsOptionsActive(false)} 
+                     onClick={() => setIsModalOptionsActive(false)} 
                      />
                 </div>
 
