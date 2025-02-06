@@ -3,13 +3,14 @@ import '../../styles/tablero/copiarElement.scss';
 import { FaArrowLeft } from "react-icons/fa";
 
 interface FormCopyElementProps {
-    callback: (inputText: string) => void
+    value: string            //actual nombre del tablero/lista/target
+    nameElement: string     //Elemento a copiar? lista, tablero, target etc
     closeForm: () => void
-    value: string
-    nameElement: string
+    closeAll: () => void
+    callbackName: (inputText: string) => void
 }
 
-export const FormCopyElement: React.FC<FormCopyElementProps> = ({closeForm, callback, value, nameElement}) => {
+export const FormCopyElement: React.FC<FormCopyElementProps> = ({value, nameElement, closeForm, closeAll, callbackName}) => {
 
     const [inputText, setInputText] = useState('');
 
@@ -27,14 +28,15 @@ export const FormCopyElement: React.FC<FormCopyElementProps> = ({closeForm, call
     return (
         <div className='interfaz_copy_element'>
             <header>
-                <span onClick={closeForm} style={{cursor: 'pointer'}}>
+                <button onClick={closeForm}>
                     <FaArrowLeft />
-                </span>
+                </button>
                 <span>
                     copiar {nameElement}
                 </span>
-                <span>
-                </span>
+                <button onClick={closeAll}>
+                    x
+                </button>
             </header>
 
             <form>
@@ -42,7 +44,7 @@ export const FormCopyElement: React.FC<FormCopyElementProps> = ({closeForm, call
                 value={inputText} 
                 onInput={onInput}
                 onChange={(e) => setInputText(e.target.value)}/>
-                <button type='button' onClick={() => callback(inputText)}>Copiar</button>
+                <button type='button' onClick={() => callbackName(inputText)}>Copiar</button>
             </form>
         </div>
     )

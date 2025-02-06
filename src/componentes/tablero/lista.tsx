@@ -62,7 +62,7 @@ export const List: React.FC<ListPropsComponent> = ({ idBoard, list }) => {
         }
     }, [targetsGroup]);
 
-    if (!list) {
+    if (!list || !currentTargets) {
         return null
     }
 
@@ -88,13 +88,13 @@ export const List: React.FC<ListPropsComponent> = ({ idBoard, list }) => {
                         const indexBoard = boards.findIndex(board => board.idBoard === idBoard);
 
                         return <Target 
-                        nameTarget={target.nameTarget} 
-                        tags={target.tags}
+                            nameTarget={target.nameTarget} 
+                            tags={target.tags}
 
-                        nameList={list.nameList} 
-                        nameBoard={boards[indexBoard].nameBoard}
-                        
-                        key={target.nameTarget}
+                            nameList={list.nameList} 
+                            nameBoard={boards[indexBoard].nameBoard}
+                            
+                            key={target.nameTarget}
                         />
                     })
                 }

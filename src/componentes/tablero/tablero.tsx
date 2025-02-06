@@ -14,7 +14,7 @@ import { useListsStore } from '../../store/listsStore';
 import { useBoardsStoree } from '../../store/boardsStoredos';
 import { useTargetsStore } from '../../store/targetsStore';
 //TYPES
-import { BoardProps, ListProps } from '../../types/boardProps';
+import { BoardProps, ListProps, TargetProps } from '../../types/boardProps';
 
 const useCustomBoard = () => {
     const { setList, setLists, listsGroup } = useListsStore();
@@ -30,7 +30,8 @@ const useCustomBoard = () => {
             targets: []
         }
         setList({idBoard, newList});
-        setTargetsGroup({idBoard, idList});  //crear obejeto con propieda idBoard y idList para saber que pertenece a este ->tablero->lista. Se incializa con un array vacío
+        const targets: TargetProps[] = [];
+        setTargetsGroup({idBoard, idList, targets});  //crear obejeto con propieda idBoard y idList para saber que pertenece a este ->tablero->lista. Se incializa con un array vacío
     }
 
     return { addNewList, setLists, boards, listsGroup }
