@@ -49,122 +49,38 @@
     }
 
     footer {
-        .container_btn_add_target {
-            cursor: pointer;
-            border-radius: 7px;
-            background-color: rgb(255, 255, 255, .2);
-            width: 100%;
-            border: none;
-            display: flex;
-            align-items: center;
-            gap: 9px;
-            
-            .icon_add {
-                font-size: 20px;
-                color: white;
-            }    
+        
+        .form_add_target {
 
-            span {
-                padding: 0;
-                margin: 0;
-                color: white;
-            }
-        }
-
-        .btn_add_target_hidden {
-            display: none;
-        }
-
-        .btn_add_show {
-            cursor: pointer;
-            border-radius: 7px;
-            background-color: rgb(255, 255, 255, .2);
-            padding: 7px;
-            width: 100%;
-            border: none;
-            display: flex;
-            align-items: center;
-            gap: 9px;
-            
-            .icon_add {
-                font-size: 20px;
-                color: white;
-            }    
-    
-            span {
-                padding: 0;
-                margin: 0;
-                color: white;
-            }
-        }
-    
-        .btn_add_hidden {
-            display: none;
-        }
-    
-        .btn_add_show:hover {
-            background-color: rgb(255, 255, 255, .3);
-        } 
-    
-        .form_add_show {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            padding: 10px;
-            background-color: rgb(255, 255, 255, .2);
-            border-radius: 7px;
-            margin-top: 10px;
-    
-            .input_add {
-                border: 1px solid brown;
+            .btn_add_some {                      //btn_add_target
+                cursor: pointer;
                 border-radius: 7px;
                 padding: 7px;
-                background-color: white;
-                color: black;
-            }
-    
-            .actions {
+                width: 100%;
+                border: none;
                 display: flex;
-                gap: 10px;
-    
-                button {
-                    cursor: pointer;
-                }
-    
-                .btn_add {
-                    cursor: pointer;
-                    border-radius: 7px;
-                    background-color: royalblue;
-                    color: white;
-                    padding: 7px;
-                    border: none;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    gap: 9px;
-                    
-                    .icon_add_list {
-                        font-size: 20px;
-                        color: white;
-                    }    
-    
-                    span {
-                        padding: 0;
-                        margin: 0;
-                        color: white;
-                    }
-                }
-    
-                .btn_add:hover {
-                    color: #2a2c2c;
+                align-items: center;
+                gap: 9px;
+                background-color: transparent;
+                
+                .icon_add {
+                    font-size: 20px;
+                    color: black;
+                }    
+        
+                span {
+                    padding: 0;
+                    margin: 0;
                     color: black;
                 }
             }
+        
+            .btn_add_some:hover {
+                background-color: rgba(255, 255, 255, 0.3);
+            } 
         }
-    
-        .form_add_hidden {
-            display: none;
-        }
+
+        
     }
 }
 

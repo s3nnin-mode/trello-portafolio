@@ -5,45 +5,68 @@ import { useState } from 'react';
 
 interface BtnAddProps {
     createListOrTargetName: (name: string) => void;
-    btnName: string;
+    nameComponentToAdd: 'board' | 'list' | 'target'
     className: string
 }
 
-export const BtnAdd: React.FC<BtnAddProps> = ({ createListOrTargetName,  btnName, className}) => {
+export const BtnAdd: React.FC<BtnAddProps> = ({ createListOrTargetName, nameComponentToAdd, className }) => {
     const [showForm, setShowForm] = useState(false);
-    const [listName, setListName] = useState('');
+    const [inputValue, setInputValue] = useState('');
 
     const cancel = () => {
-        setShowForm(false);
-        setListName('');
+        setInputValue('');
+        setShowForm(false)
     }
 
     const handleClick = () => {
-        if (listName.trim() === '') return;
-        createListOrTargetName(listName);
         setShowForm(false);
+        if (inputValue.trim() === '') return;
+        createListOrTargetName(inputValue);
+    }
+
+    const components = {
+        board: 'el tablero',
+        list: 'la lista',
+        target: 'la tarjeta'
     }
 
     return (
-        <div className={className} style={{backgroundColor: showForm ? '#f4f5f7' : 'transparent'}}>
-            <button className={`btn_add_${showForm ? 'hidden' : 'show'}`} onClick={() => setShowForm(true)} onPointerDown={(e) => e.stopPropagation()}>
-                <AiOutlinePlus className='icon_add' style={{color: btnName === 'list' ? 'white' : 'black'}} />
-                <span style={{color: btnName === 'list' ? 'white' : 'black' }}>Agregar {btnName}</span>
-            </button>
-            <form className={`form_add_${showForm ? 'show' : 'hidden'}`}>
-                <input
-                    type='text'
-                    className='input_add'
-                    placeholder={`Nombre de ${btnName == 'list' ? 'la list' : 'la tarjeta'}`}
-                    value={listName}
-                    onChange={(e) => setListName(e.target.value)}
-                    onPointerDown={(e) => e.stopPropagation()}
-                />
-                <div className='actions'>
-                    <button type='button' className='btn_add' onClick={handleClick} onPointerDown={(e) => e.stopPropagation()}>Agregar</button>
-                    <button type='button' className='btn_cancel' onClick={cancel} onPointerDown={(e) => e.stopPropagation()}>Cancelar</button>
-                </div>
-            </form>
+        <div 
+            className={`container_btn_add ${className}`} style={{backgroundColor: showForm ? '#f4f5f7' : 'transparent'}} 
+            onPointerDown={(e) => e.stopPropagation()} >
+            {
+                !showForm && (
+                    <button 
+                        className='btn_add_some'
+                        onClick={() => setShowForm(true)} >
+                        <AiOutlinePlus className='icon_add' />
+                        <span>
+                            Add {nameComponentToAdd}
+                        </span>
+                    </button>
+                )
+            }
+            {
+                showForm && (
+                    <form className='form_add_some'>
+                        <input
+                            type='text'
+                            className='input_add'
+                            placeholder={`Nombre de ${components[nameComponentToAdd]}`}
+                            value={inputValue}
+                            onChange={(e) => setInputValue(e.target.value)}
+                        />
+                        <div className='actions'>
+                            <button type='button' className='btn_add' onClick={handleClick} >Agregar</button>
+                            <button type='button' className='btn_cancel' onClick={cancel} >Cancelar</button>
+                        </div>
+                    </form>
+                )
+            }
         </div>
     )
 }
+
+// className={`btn_add_${showForm ? 'hidden' : 'show'}`}
+
+// className={`form_add_${showForm ? 'show' : 'hidden'}`}

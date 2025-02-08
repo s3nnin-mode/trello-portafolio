@@ -9,6 +9,7 @@ import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { FormCopyElement } from "./copiarElemento";
 import { FormMoveList } from "./list/formMoverLista";
 import { ColorsToList } from "./list/colorsList";
+import { ModalToRemoveList } from "./list/options/interfaces/modal";
 //STORES
 import { useListsStore } from "../../store/listsStore";
 import { useBoardsStoree } from "../../store/boardsStoredos";
@@ -17,35 +18,27 @@ import { ListProps } from "../../types/boardProps";
 //HOOKS
 import { useFormCopyList } from "../../customHooks/list/formCopyList";
 import { useFormMoveList } from "../../customHooks/list/formMoveList";
+import { BtnAdd } from "./btnAgregar";
+import { useList } from "./lista";
+import { useAccesDirectToAddTarget } from "../../customHooks/list/accesDirectAddTarget";
 
 interface SettingsListProps {
     idBoard: string
     list: ListProps
 }
 
-const useSettingsList = () => {
-    const { boards } = useBoardsStoree();
-    const { deleteList, setColorList, setLists } = useListsStore();
-
-    const deleteListt = ({idBoard, idList}: {idBoard: string, idList: string}) => {
-        deleteList({idBoard, idList});
-    }
-
-    return { deleteListt, setLists, boards };
-}
-
 export const useSettingsModalList = () => {
-    const [isModalOptionsActive, setIsModalOptionsActive] = useState(false);          //modal OPTIONS
-    return { isModalOptionsActive, setIsModalOptionsActive }
+    const [isModalOptionsActive, setIsModalOptionsActive] = useState(false);          //El estado de las opciones esta en un customHook para poder acceder a esta instancia y manipular el estado
+    return { isModalOptionsActive, setIsModalOptionsActive }                           //desde otros customsHooks(pasandoles este 'set' como parametro)
 }
 
 export const SettingsList: React.FC<SettingsListProps> = ({ idBoard, list }) => {
-    const { deleteListt } = useSettingsList();
     const { isModalOptionsActive, setIsModalOptionsActive} = useSettingsModalList();
     const { showFormCopyList, openFormCopyList, closeFormCopyList, closeAllFormCopy, callbackHandleCopyList } = useFormCopyList({ setIsModalOptionsActive });
     const { showFormMoveList, openFormMoveList, closeFormMoveList, closeAllMoveList, callbackHandleMoveList } = useFormMoveList({setIsModalOptionsActive});
-
-    const idList = list.idList;
+    const [ show, setShow ] = useState(false);
+    const openModal = () => setShow(true);
+    const handleClose = () => setShow(false);
 
     return (
         <div className='options' onPointerDown={(e) => e.stopPropagation()}>       
@@ -57,6 +50,12 @@ export const SettingsList: React.FC<SettingsListProps> = ({ idBoard, list }) => 
                 <div className='header_settings_list'>
                     <IoMdClose className='icon-close' onClick={() => setIsModalOptionsActive(false)} />  {/*CLOSE OPTIONS*/}
                 </div>
+
+                <BtnAdd 
+                className='form_add_target_to_top'
+                nameComponentToAdd='target'
+                createListOrTargetName={() => {}} />
+
                 <button className='btn_setting_list' onClick={openFormCopyList}>             {/*BTN OPEN FORM COPY LIST*/}
                     Copiar lista
                 </button>
@@ -66,10 +65,12 @@ export const SettingsList: React.FC<SettingsListProps> = ({ idBoard, list }) => 
 
                 <ColorsToList idBoard={idBoard} list={list} />                              {/*CHANGE COLOR LIST*/}
 
-                <button className='btn_setting_list' onClick={() => deleteListt({idBoard, idList})}>             {/* REMOVE LIST */}
+                <button className='btn_setting_list' onClick={openModal}>             {/* REMOVE LIST */}
                     Eliminar lista
                 </button>   
             </div>
+
+            
 
             {
             showFormCopyList &&            //Form interfaz que devuelve un string para copiar lista con nuevo nombre
@@ -92,6 +93,8 @@ export const SettingsList: React.FC<SettingsListProps> = ({ idBoard, list }) => 
                      callback={(position) => callbackHandleMoveList({idBoard, list, position})} />
                 )
             }
+
+            <ModalToRemoveList show={show} onHide={handleClose} idBoard={idBoard} list={list} />
         </div>
     )
 }

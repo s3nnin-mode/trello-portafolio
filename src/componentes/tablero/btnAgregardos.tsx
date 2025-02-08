@@ -1,66 +1,104 @@
-import React, { Children, ReactNode } from 'react';
-import '../../styles/tablero/agregarLista.scss';
+import React, { useState } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
-import { useState } from 'react';
 
 interface BtnAddProps {
-    createListWithThisName: (name: string) => void;
-    btnName: string;
-    // btnAdd: (props: any) => JSX.Element;
-    BtnAdd: ReactNode;
-    Form: ReactNode;
-    Actions: ReactNode;
+  onSubmit: (value: string) => void;
+  children: React.ReactNode
 }
 
+// 📌 Componente principal que maneja el estado
+const BtnAdd = ({ onSubmit, children }: { onSubmit: (value: string) => void; children: React.ReactNode }) => {
+  const [showForm, setShowForm] = useState(false);
+  const [inputValue, setInputValue] = useState("");
 
-export const CompountBtnAdd: React.FC<BtnAddProps> = ({ props,  children}: any) => {
-    const [showForm, setShowForm] = useState(false);
-    const [listName, setListName] = useState('');
+  const openForm = () => setShowForm(true);
 
-    const cancel = () => {
-        setShowForm(false);
-        setListName('');
-    }
+  const $closeForm = () => {
+    setShowForm(false);
+    setInputValue("");
+  };
 
-    const handleClick = () => {
-        if (listName.trim() === '') return;
-        // createListWithThisName(listName);
-        setShowForm(false);
-    }
+  const submit = () => {
+    if (inputValue.trim() === '') return;
+    onSubmit(inputValue);
+    $closeForm();
+  };
 
-    return (
-        <div {...props}>
-            {children}
-        </div>
-    )
+  // Pasamos estado y funciones como props a los hijos
+  return (
+    <div className="btn-add">
+      {React.Children.map(children, (child) =>
+        isValidElement(child)
+          ? cloneElement(child, {
+              setShowForm,
+              showForm,
+              inputValue,
+              setInputValue,
+              handleSubmit,
+            })
+          : child
+      )}
+    </div>
+  );
+};
+
+// 📌 Subcomponentes
+
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  openForm?: () => void
+  showForm?: boolean
 }
 
+const Button: React.FC<ButtonProps> = ({children, className, showForm, openForm, ...props }) => {
+  if (showForm) return null;
+
+  return (
+    <button className={className} onClick={() => openForm?.()} {...props}>
+      <AiOutlinePlus />
+      {children}
+    </button>
+  );
+};
+
+const Form = ({ children, showForm, ...props }: { children: React.ReactNode; showForm?: boolean }) => {
+  if (!showForm) return null;
+  return <form {...props}>{children}</form>;
+};
+
+interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  inputValue?: string
+  setInputValue?:  (value: string) => void
+}
+
+const Input = ({ inputValue = "", setInputValue = (e: any) => {}, ...props }) => {
+  return <input value={inputValue} onChange={(e) => setInputValue(e.target.value)} {...props} />;
+};
 
 
-const BtnAdd = ({props, children}: any) => <button {...props}>{children}</button>;
-const Icono = ({props}: any) => <AiOutlinePlus {...props} />;
-const BtnName = ({props, children}: any) => <span {...props}>{children}</span>;
+interface ActionsProps {
+  $closeForm?: () => void
+  submit?: () => void
+}
 
-BtnAdd.Icono = Icono;
-BtnAdd.BtnName = BtnName;
-
-
-const Form = ({props, children}: any) => <form {...props}>{children}</form>;
-const Input = ({props}: any) => <input {...props} />;
-const Actions = ({props, children}: any) => <div {...props}>{children}</div>;
-
-Form.Input = Input;
-Form.Actions = Actions;
-
-
-const Button = ({props, children}: any) => <button {...props}>{children}</button>;
-
-// CompountBtnAdd.BtnAdd = BtnAdd;
-// CompountBtnAdd.Form = Form;
-// CompountBtnAdd.Actions = Button;
-// CompountBtnAdd.btnAdd = btnAdd;
+const Actions = ({...props }: ActionsProps) => {
+  const { submit, $closeForm } = props
+  return (
+  <div className="actions" {...props}>
+    <button type="button" onClick={submit}>
+      Agregar
+    </button>
+    <button type="button" onClick={$closeForm}>
+      Cancelar
+    </button>
+  </div>
+  )
+};
 
 
+// 📌 Asignamos los subcomponentes a `BtnAdd`
+BtnAdd.Button = Button;
+BtnAdd.Form = Form;
+BtnAdd.Input = Input;
+BtnAdd.Actions = Actions;
 
-
-
+export default BtnAdd;

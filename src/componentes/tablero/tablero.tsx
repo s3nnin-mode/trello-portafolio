@@ -21,7 +21,8 @@ const useCustomBoard = () => {
     const { setTargetsGroup } = useTargetsStore();
     const { boards } = useBoardsStoree();
 
-    const addNewList = ({nameList, idBoard}: {nameList: string, idBoard: string}) => {
+    const addNewList = ({value, idBoard}: {value: string, idBoard: string}) => {
+        const nameList = value;
         const idList = (nameList + Date.now()).toString();
         const newList = { 
             idList: idList, 
@@ -74,18 +75,10 @@ export const Tablero = () => {
     const onDragEnd = (event: DragEndEvent) => {
         const { active, over } = event;
 
-        // if (!currentBoard || !over) return;
         if (!currentLists || !over) return
-
-        // const oldIndex = currentBoard?.lists.findIndex(list => list.idList === active.id);
-        // const newIndex = currentBoard?.lists.findIndex(list => list.idList === over?.id);
 
         const oldIndex = currentLists.findIndex(list => list.idList === active.id);
         const newIndex = currentLists.findIndex(list => list.idList === over?.id);
-
-        // if (!currentBoard || oldIndex === undefined || newIndex === undefined) {
-        //     return
-        // }
 
         if (oldIndex === -1 || newIndex === -1 || oldIndex === newIndex) {
             console.log('Se canceló el drag (no hay cambios en la posición)');
@@ -110,15 +103,17 @@ export const Tablero = () => {
                         <SortableContext items={currentLists.map((list) => list.idList)} strategy={verticalListSortingStrategy}>
                             <div className='board_content'>
                                 {
-                                currentLists.map((list) => {
-                                    return <List idBoard={idBoard} list={list} key={list.idList} />
-                                })
+                                    currentBoard && (               //antes de pasar board verifico que exista
+                                        currentLists.map((list) => {
+                                            return <List board={currentBoard} list={list} key={list.idList} />
+                                        })
+                                    )
                                 }
 
                                 <BtnAdd 
-                                    createListOrTargetName={(nameList: string) => addNewList({nameList, idBoard})} 
-                                    btnName='list' 
-                                    className='container_btn_add_list'
+                                    className='form_add_list'
+                                    createListOrTargetName={(value: string) => addNewList({value, idBoard})} 
+                                    nameComponentToAdd='list' 
                                 />
                             </div>
                         </SortableContext>

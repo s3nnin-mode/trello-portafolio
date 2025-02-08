@@ -1,6 +1,10 @@
 .boards_container {
     width: 85%;
 
+    .form_add_board {
+        max-width: 250px;
+    }
+
     .divider {
         margin: 1rem 0;
         border-bottom: 1px solid;

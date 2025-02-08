@@ -12,9 +12,21 @@
     max-width: 500px;
     min-height: 70vh;
     overflow-y: auto;
+    cursor: auto;
+
+    display: flex;
+    flex-direction: column;
 
     header {
-        border: 1px solid;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border: 4px solid green;
+        div {
+            p, h4 {
+                margin: 0;
+            }
+        }
     }
 
     .modal_content_container {
@@ -26,8 +38,10 @@
             width: 70%;
 
             .tags_container {
-                // display: grid;
-                // grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+                display: flex;
+                flex-direction: column;
+                border: 1px solid red;
+
                 h3 {
                     border: 1px solid;
                     display: block;
@@ -35,6 +49,7 @@
 
                 .tags {
                     position: relative;
+
                     button {
                         height: 35px;
                         margin: 3px;
@@ -58,6 +73,7 @@
         .sidebar_modal {
             width: 30%;
             padding: 5px;
+            border: 1px solid red;
 
             button {
                 display: block;

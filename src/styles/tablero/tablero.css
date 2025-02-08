@@ -1,0 +1,18 @@
+.board {
+  border: 1px solid black;
+  width: 80%;
+  height: 100vh;
+}
+.board header {
+  padding: 10px;
+  height: 10vh;
+}
+.board .board_content {
+  width: 100%;
+  height: 90vh;
+  overflow: auto;
+  padding: 10px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}/*# sourceMappingURL=tablero.css.map */

@@ -39,6 +39,12 @@ export interface TargetProps {
     tags: { color: string, active: boolean, nameTag: string }[]
 }
 
+export interface TargetTagsProps {
+    color: string
+    active: boolean,
+    nameTag: string
+}
+
 export interface TargetsGroup {
     idBoard: string
     idList: string

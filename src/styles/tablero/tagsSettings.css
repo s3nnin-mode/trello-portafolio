@@ -1,0 +1,40 @@
+.tags_settings {
+  border: 1px solid red;
+  position: absolute;
+  width: 300px;
+  border-radius: 8px;
+  min-height: 40vh;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.tags_settings .tags_settings_header {
+  background-color: red;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0;
+}
+.tags_settings .tags_settings_header span {
+  font-size: 22px;
+}
+.tags_settings .tags_settings_header button {
+  align-self: flex-start;
+  padding: 0;
+  margin: 0;
+  background-color: transparent;
+}
+.tags_settings .tags_settings_header button:hover {
+  background-color: #ccc;
+}
+.tags_settings ul {
+  list-style: none;
+}
+.tags_settings ul li {
+  border: 1px solid;
+  display: flex;
+  gap: 5px;
+}
+.tags_settings ul li div {
+  width: 100%;
+}/*# sourceMappingURL=tagsSettings.css.map */

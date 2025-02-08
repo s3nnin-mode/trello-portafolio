@@ -1,0 +1,106 @@
+.container_btn_add {
+  min-height: 40px;
+  max-height: 100%;
+  width: 100%;
+  border-radius: 7px;
+}
+.container_btn_add .btn_add_some {
+  cursor: pointer;
+  border-radius: 7px;
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 7px;
+  width: 100%;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.container_btn_add .btn_add_some .icon_add {
+  font-size: 20px;
+  color: white;
+}
+.container_btn_add .btn_add_some span {
+  padding: 0;
+  margin: 0;
+  color: white;
+}
+.container_btn_add .btn_add_hidden {
+  display: none;
+}
+.container_btn_add .btn_add_some:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+.container_btn_add .btn_add_target {
+  cursor: pointer;
+  border-radius: 7px;
+  padding: 7px;
+  width: 100%;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  background-color: transparent;
+}
+.container_btn_add .btn_add_target .icon_add {
+  font-size: 20px;
+  color: black;
+}
+.container_btn_add .btn_add_target span {
+  padding: 0;
+  margin: 0;
+  color: black;
+}
+.container_btn_add .btn_add_target:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+.container_btn_add .form_add_some {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 7px;
+  margin-top: 10px;
+}
+.container_btn_add .form_add_some .input_add {
+  border: 1px solid brown;
+  border-radius: 7px;
+  padding: 7px;
+  background-color: white;
+  color: black;
+}
+.container_btn_add .form_add_some .actions {
+  display: flex;
+  gap: 10px;
+}
+.container_btn_add .form_add_some .actions button {
+  cursor: pointer;
+}
+.container_btn_add .form_add_some .actions .btn_add {
+  cursor: pointer;
+  border-radius: 7px;
+  background-color: royalblue;
+  color: white;
+  padding: 7px;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+}
+.container_btn_add .form_add_some .actions .btn_add .icon_add_list {
+  font-size: 20px;
+  color: white;
+}
+.container_btn_add .form_add_some .actions .btn_add span {
+  padding: 0;
+  margin: 0;
+  color: white;
+}
+.container_btn_add .form_add_some .actions .btn_add:hover {
+  color: #2a2c2c;
+  color: black;
+}
+.container_btn_add .form_add_hidden {
+  display: none;
+}/*# sourceMappingURL=agregarLista.css.map */

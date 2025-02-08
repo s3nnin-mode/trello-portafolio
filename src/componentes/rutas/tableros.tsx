@@ -1,7 +1,6 @@
 import '../../styles/tablero/tableros.scss';
 import { BtnAdd } from '../tablero/btnAgregar';
 import { Link } from 'react-router-dom';
-import { useBoardsStore } from '../../store/boardsStore';
 import { useBoardsStoree } from '../../store/boardsStoredos';
 import { useListsStore } from '../../store/listsStore';
 
@@ -25,8 +24,15 @@ export const Tableros = () => {
   return (
     <div className='boards_container'>
       <h3>Tableros</h3>
-      <BtnAdd createListOrTargetName={addNewBoard} btnName='board' className='container_btn_add_board'/>
+
+      <BtnAdd 
+        createListOrTargetName={addNewBoard} 
+        nameComponentToAdd='board' 
+        className='form_add_board'
+      />
+
       <div className='divider'></div>
+      
       <div className='boards'>
         {
           boards.map(board => {

@@ -1,0 +1,68 @@
+.options {
+  border-radius: 9px;
+  position: relative;
+}
+.options .btn_active_options {
+  background-color: #f4f5f7;
+  background-color: transparent;
+  padding: 5px;
+  border-radius: 9px;
+  cursor: pointer;
+  border: none;
+}
+.options .btn_active_options .icon_options_list {
+  font-size: 16px;
+}
+.options .btn_active_options:hover {
+  background-color: #e3e4e8;
+}
+.options .settings_list_show {
+  position: absolute;
+  top: 10px;
+  left: 0;
+  height: 200px;
+  height: auto;
+  width: 300px;
+  border: 2px solid;
+  z-index: 100;
+  background-color: #e3e4e8;
+  color: black;
+  animation-delay: 1s;
+  transition: display 1s ease-in-out;
+}
+.options .settings_list_show .header_settings_list {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 10px 5px;
+}
+.options .settings_list_show .header_settings_list .icon-close {
+  font-size: 22px;
+  border-radius: 5px;
+  cursor: pointer;
+  border: 1px solid;
+}
+.options .settings_list_show .header_settings_list .icon-close:hover {
+  background-color: #2a2c2c;
+  color: white;
+}
+.options .settings_list_show .btn_setting_list {
+  display: block;
+  border: none;
+  width: 100%;
+  text-align: left;
+  padding: 10px;
+  cursor: pointer;
+}
+.options .settings_list_show .btn_setting_list:hover {
+  color: white;
+  background-color: #2a2c2c;
+}
+.options .settings_list_hidden {
+  display: none;
+  z-index: 10000;
+  transition: display 1s ease-in-out;
+}
+.options .interfaze_copy_list_hidden {
+  display: none;
+}/*# sourceMappingURL=settingsList.css.map */

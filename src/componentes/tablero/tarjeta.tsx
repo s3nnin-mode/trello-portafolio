@@ -2,25 +2,28 @@ import React, { useEffect } from "react";
 import '../../styles/tablero/tarjeta.scss';
 import { useState } from "react";
 import { Modal } from "./modal";
+import { BoardProps, ListProps, TargetProps } from "../../types/boardProps";
 
-interface TargetProps {
-    nameTarget: string
-    tags: {color: string, active: boolean, nameTag: string}[];
-
-    nameList: string
-    nameBoard: string
+interface TargetComponentProps {
+    target: TargetProps
+    board: BoardProps
+    list: ListProps
 }
 
-export const Target: React.FC<TargetProps> = ({nameTarget, tags, nameList, nameBoard}) => {
+export const Target: React.FC<TargetComponentProps> = ({target, board, list}) => {
     const [modal, setModal] = useState<boolean>(false);
+
+    if (!target) {
+        return null
+    }
 
     return(
         <>
-        <div className='target' id={nameTarget} onClick={() => setModal(true)}>
+        <div className='target' onClick={() => setModal(true)} onPointerDown={(e) => e.stopPropagation()}>
             <div className='color_top'></div>
             <div className='content_target'>
                 <div className='targets_actives'></div>
-                <p>{nameTarget}</p>   {/*NOMBRE DE LA TARJETA*/}
+                <p>{target.nameTarget}</p>   {/*NOMBRE DE LA TARJETA*/}
                 <div className='btns_target'>
                     <button className='btn-target'>Ver</button>
                     <button className='btn-target'>Editar</button>
@@ -33,12 +36,9 @@ export const Target: React.FC<TargetProps> = ({nameTarget, tags, nameList, nameB
 
         {modal && (
             <Modal 
-            nameTarget={nameTarget} 
-            tags={tags}
-
-            nameList={nameList} 
-            handleClick={() => setModal(false)} 
-            key={nameTarget}
+                target={target}
+                list={list}
+                board={board}
             />
         )
         }

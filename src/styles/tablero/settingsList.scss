@@ -45,11 +45,37 @@
                 font-size: 22px;
                 border-radius: 5px;
                 cursor: pointer;
+                border: 1px solid;
             }
 
             .icon-close:hover {
                 background-color: #2a2c2c;
                 color: white;
+            }
+        }
+
+        .form_add_target_to_top {
+            width: 100%;
+            text-align: left;
+
+            .btn_add_some {
+                border-radius: 0;
+
+                .icon_add {
+                    display: none;
+                }
+                span {
+                    color: black;
+                    padding: 3px;  //el componente BtnAdd ya tiene un paddin de 7px y para que halla consistencia con los demas botones le agrego 3px, asi cada elemento tiene 10px
+                }
+            }
+
+            .btn_add_some:hover {
+                background-color: #2a2c2c;
+
+                span {
+                    color: white;
+                }
             }
         }
 

@@ -1,0 +1,22 @@
+.target {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  width: 100%;
+}
+.target .color_top {
+  height: 30px;
+  border-radius: 8px 8px 0 0;
+  width: 100%;
+  background-color: aqua;
+}
+.target .content_target {
+  padding: 10px;
+}
+.target .content_target .btns_target {
+  display: flex;
+  gap: 10px;
+}
+
+.modal_hidden {
+  display: none;
+}/*# sourceMappingURL=tarjeta.css.map */
