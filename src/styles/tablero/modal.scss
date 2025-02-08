@@ -17,11 +17,11 @@
     display: flex;
     flex-direction: column;
 
-    header {
+    .header_modal_target {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        border: 4px solid green;
+        
         div {
             p, h4 {
                 margin: 0;

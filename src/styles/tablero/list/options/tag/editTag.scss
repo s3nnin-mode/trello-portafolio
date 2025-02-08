@@ -1,0 +1,62 @@
+.container_edit_tag {
+    border: 2px solid blue;
+    position: absolute;
+    top: -10rem;
+    background-color: white;
+    width: 100%;
+    max-width: 300px;
+    overflow-y: auto;
+
+    header {
+        width: 100%;
+        max-width: 300px;
+        border: 1px solid;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    main {
+        .current_tag_to_edit {
+            padding: 25px 20px;
+            border: 1px solid;
+            div {
+                border-radius: 4px;
+                padding: 5px;
+            }
+        }
+
+        .input_to_edit_tag {
+            border: 1px solid;
+            padding: 5px;
+
+            p {
+                margin: 0;
+                font-weight: bold;
+            }
+
+            input {
+                width: 100%;
+                padding: 4px;
+                outline-color: blue;
+                border-radius: 4px;
+                border: 2px solid saddlebrown;
+            }
+        }
+
+        .tag_colors {
+            padding: 5px;
+            p {
+                margin: 0;
+            }
+
+            div {
+                display: grid;
+                grid-template-columns: repeat(5, 1fr);
+                button {
+                    border: 1px solid red;
+                }
+            }
+        }
+    }
+}

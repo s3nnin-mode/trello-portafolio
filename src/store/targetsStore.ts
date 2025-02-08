@@ -8,6 +8,7 @@ interface State {
     setTarget: (props: {idBoard: string, idList: string, newTarget: TargetProps}) => void
     setTargetToTop: ({idBoard, idList, targetToAdd}: {idBoard: string, idList: string, targetToAdd: TargetProps}) => void
     setActiveTag: ({idBoard, idList, idTarget, nameTag}: {idBoard: string, idList: string, idTarget: string, nameTag: string}) => void
+    setUpdateTag: ({idBoard, idList, idTarget, nameTag, color}: {idBoard: string, idList: string, idTarget:string, idTag: string, nameTag: string, color: string}) => void
 }
 
 export const useTargetsStore = create<State>()(
@@ -66,6 +67,33 @@ export const useTargetsStore = create<State>()(
                     }
                     :
                     targetGroup
+                )
+            })),
+            setUpdateTag: ({idBoard, idList, idTarget, idTag, nameTag, color}) => set((state) => ({
+                targetsGroup: state.targetsGroup.map((targetGroup) => 
+                    targetGroup.idBoard === idBoard && targetGroup.idList === idList
+                    ?
+                    {
+                        ...targetGroup,
+                        targets: targetGroup.targets.map((target) => 
+                            target.idTarget === idTarget 
+                            ?
+                            {
+                                ...target,
+                                tags: target.tags.map((tag) => 
+                                    tag.idTag === idTag
+                                    ?
+                                    { ...tag, nameTag: nameTag, color: color}
+                                    :
+                                    tag
+                                )
+                            }
+                            :
+                            target
+                        )
+                    }   
+                    :
+                    targetGroup         
                 )
             }))
         }),

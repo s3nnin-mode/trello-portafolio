@@ -26,7 +26,7 @@ export const Modal: React.FC<ModalTargetComponentProps> = ({ target, list, board
 
     return (
         <div className='modal_show' onPointerDown={(e) => e.stopPropagation()}>
-            <header>
+            <header className='header_modal_target'>
                 <div>
                     <h4>Target: {target.nameTarget}</h4>
                     <p>en la lista {list.nameList}</p>

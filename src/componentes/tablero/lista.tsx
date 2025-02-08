@@ -33,9 +33,9 @@ export const useList = () => {
             idTarget: (nameTarget + Date.now()).toString(),
             nameTarget: nameTarget, 
             tags: [
-                {color: 'red', active: false, nameTag: 'tag1'}, 
-                {color: 'blue', active: true, nameTag: 'tag2'}, 
-                {color: 'green', active: false, nameTag: 'tag3'}
+                {idTag: (Date.now() * 1).toString(), color: 'red', active: false, nameTag: 'tag1'}, 
+                {idTag: (Date.now() * 2).toString(), color: 'blue', active: true, nameTag: 'tag2'}, 
+                {idTag: (Date.now() * 4).toString(), color: 'green', active: false, nameTag: 'tag3'}
             ]
         };
         setTarget({idBoard, idList, newTarget});      
