@@ -29,23 +29,18 @@ export const useList = () => {
         const idList = list.idList;
         const idBoard = board.idBoard;
         
-        const newTarget = {
-            idTarget: (nameTarget + Date.now()).toString(),
-            nameTarget: nameTarget, 
-            tags: [
-                {idTag: (Date.now() * 1).toString(), color: 'red', active: false, nameTag: 'tag1'}, 
-                {idTag: (Date.now() * 2).toString(), color: 'blue', active: true, nameTag: 'tag2'}, 
-                {idTag: (Date.now() * 4).toString(), color: 'green', active: false, nameTag: 'tag3'}
-            ]
+        const newTarget: TargetProps = {
+            idTarget: (nameTarget + Date.now()).toString(), 
+            nameTarget: nameTarget
         };
-        setTarget({idBoard, idList, newTarget});      
+        setTarget({idBoard, idList, newTarget})     
     }
 
     return { addNewTarget, boards, targetsGroup };
 }
 
 export const List: React.FC<ListPropsComponent> = ({ board, list }) => {               
-    const { addNewTarget, boards, targetsGroup } = useList();
+    const { addNewTarget, targetsGroup } = useList();
     const [isListCollapse, setIsListCollapse] = useState(false);
     const [currentTargets, setCurrentTargets] = useState<TargetProps[]>([]);
 

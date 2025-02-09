@@ -33,17 +33,16 @@ export interface ListsGroup {
 
 //TARGETS TYPES
 
-export interface TargetTagsProps {
+export interface TagsProps {
     idTag: string
     color: string
-    active: boolean,
     nameTag: string
+    targetsThatUseIt: {idBoard: string, idList: string, idTarget: string}[]
 }
 
 export interface TargetProps {
     idTarget: string
     nameTarget: string
-    tags: TargetTagsProps[]
 }
 
 export interface TargetsGroup {

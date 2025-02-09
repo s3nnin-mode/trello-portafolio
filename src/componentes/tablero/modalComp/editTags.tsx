@@ -1,29 +1,14 @@
 import '../../../styles/tablero/list/options/tag/editTag.scss';
 import React, { useEffect, useState } from "react";
-import { TargetTagsProps } from "../../../types/boardProps"
-import { Button } from "react-bootstrap";
-import { useTargetsStore } from '../../../store/targetsStore';
+import { TagsProps } from "../../../types/boardProps"
+import { useTagsStore } from '../../../store/tagsStore';
 
 interface EditTagsProps {
-    idBoard: string
-    idList: string
-    idTarget: string
-    tag: TargetTagsProps
-}
+    tag: TagsProps
+} 
 
-const colors = [
-    "#FF5733", "#FF6F61", "#FF8C42", "#FFA07A", "#FF4500", // Tonos de naranja/rojo
-    "#33FF57", "#61FF6F", "#42FF8C", "#7AFFA0", "#00FF45", // Tonos de verde
-    "#3357FF", "#6F61FF", "#8C42FF", "#A07AFF", "#4500FF", // Tonos de azul/morado
-    "rgba(255, 87, 51, 0.5)", "rgba(255, 111, 97, 0.5)", // Naranjas con opacidad
-    "rgba(51, 255, 87, 0.7)", "rgba(97, 255, 111, 0.7)", // Verdes con opacidad
-    "rgba(51, 87, 255, 0.8)", "rgba(111, 97, 255, 0.8)",  // Azules con opacidad
-    'red', 'blue', 'green'
-  ];
-  
-
-export const EditTags: React.FC<EditTagsProps> = ({tag, idBoard, idList, idTarget}) => {
-    const { setUpdateTag } = useTargetsStore()
+export const EditTags: React.FC<EditTagsProps> = ({tag}) => {
+    const { setUpdateTag, tags } = useTagsStore()
     const [inputValue, setInputValue] = useState('');
     const [colorTag, setColorTag] = useState('');
 
@@ -36,8 +21,7 @@ export const EditTags: React.FC<EditTagsProps> = ({tag, idBoard, idList, idTarge
         const idTag = tag.idTag;
         const nameTag = inputValue;
         const color = colorTag;
-
-        setUpdateTag({idBoard, idList, idTarget, idTag, nameTag, color});
+        setUpdateTag({idTag, nameTag, color});
     }
 
     return (
@@ -61,10 +45,10 @@ export const EditTags: React.FC<EditTagsProps> = ({tag, idBoard, idList, idTarge
                     <p>Selecciona un color</p>
                     <div>
                         {
-                        colors.map((color) => (
+                        tags.map((tag) => (
                             <button 
-                            onClick={() => setColorTag(color)}
-                            style={{backgroundColor: color, border: color === colorTag ? '2px solid' : 'none'}} />
+                            onClick={() => setColorTag(tag.color)}
+                            style={{backgroundColor: tag.color, border: tag.color === colorTag ? '2px solid' : 'none'}} />
                             )
                         )
                         }

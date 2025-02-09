@@ -1,13 +1,8 @@
 import { useEffect, useState } from "react";
 import '../../styles/tablero/modal.scss';
 import { TagSettings } from "./modalComp/tagsSettings";
-import { BoardProps, ListProps, TargetProps } from "../../types/boardProps";
-
-interface TagsProps {
-    color: string
-    active: boolean
-    nameTag: string
-}
+import { BoardProps, ListProps, TagsProps, TargetProps } from "../../types/boardProps";
+import { useTagsStore } from "../../store/tagsStore";
 
 interface ModalTargetComponentProps {
     target: TargetProps
@@ -15,14 +10,33 @@ interface ModalTargetComponentProps {
     board: BoardProps
 }
 
-export const Modal: React.FC<ModalTargetComponentProps> = ({ target, list, board }) => {
+interface Tags {           //puedes
+    idTag: string
+    nameTag: string
+    color: string 
+}
 
-    const [myTags, setMyTags] = useState<TagsProps[]>([]);
+export const Modal: React.FC<ModalTargetComponentProps> = ({ target, list, board }) => {
+    const { tags } = useTagsStore();
+    const [currentActiveTags, setCurrentActiveTags] = useState<Tags[]>([]);
     const [showTags, setShowTags] = useState(false);
 
     useEffect(() => {
-        setMyTags(target.tags);
-    });
+        console.log('TAGS: ', tags)
+        const activeTags: TagsProps[] = [];
+
+        tags.map((tag) => 
+            tag.targetsThatUseIt.some((t) =>t.idBoard === board.idBoard && t.idList === list.idList && t.idTarget === target.idTarget
+            ?
+            activeTags.push(tag)
+            :
+            null
+            )
+        )
+
+        setCurrentActiveTags(activeTags);
+        console.log('current tags: ', activeTags)
+    }, [tags]);
 
     return (
         <div className='modal_show' onPointerDown={(e) => e.stopPropagation()}>
@@ -37,13 +51,11 @@ export const Modal: React.FC<ModalTargetComponentProps> = ({ target, list, board
                 <div className='modal_content'>
                     <div className='tags_container'>
                         <h3>Tags</h3>
-                        <div className='tags'>
+                        <div className='tags'>           {/* PUEDES Y DEBES SEPARAR EL COMPONENTE DE ETIQUETAS PARA QUE ESTÉ MAS LIMPIO */}
                             {
-                                myTags.map((tag) => {
-                                    return tag.active ? <button key={tag.nameTag} style={{backgroundColor: tag.color}}>{tag.nameTag}</button> : ''
-                                })
+                                currentActiveTags.map((tag) => <button key={tag.idTag} style={{backgroundColor: tag.color}}>{tag.nameTag}</button>)
                             }
-                            <button className='btn_add_tag' onClick={() => setShowTags(true)}>+</button>
+                            <button className='btn_add_tag' onClick={() => setShowTags(true)}>+</button>  {/*PARA ACTIVAR EL MODAL*/}
                             {
                                 showTags && (
                                     <TagSettings 
@@ -51,7 +63,7 @@ export const Modal: React.FC<ModalTargetComponentProps> = ({ target, list, board
                                     list={list} 
                                     target={target} 
                                     closeTagsSettings={() => setShowTags(false)} />
-                                    )
+                                )
                             }
                         </div>
                     </div>                   

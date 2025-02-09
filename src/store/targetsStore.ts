@@ -1,14 +1,12 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { TargetsGroup, TargetProps } from "../types/boardProps";
+import { TargetProps, TargetsGroup } from "../types/boardProps";
 
 interface State {
     targetsGroup: TargetsGroup[]
     setTargetsGroup: (props: {idBoard: string, idList: string, targets: TargetProps[]}) => void      //setTargetGroup es para inicializar un objeto con un idBoard, idList para saber a que board y list pertenece, se incializa con un array vacio
-    setTarget: (props: {idBoard: string, idList: string, newTarget: TargetProps}) => void
+    setTarget: ({idBoard, idList, newTarget} : {idBoard: string, idList: string, newTarget: TargetProps}) => void
     setTargetToTop: ({idBoard, idList, targetToAdd}: {idBoard: string, idList: string, targetToAdd: TargetProps}) => void
-    setActiveTag: ({idBoard, idList, idTarget, nameTag}: {idBoard: string, idList: string, idTarget: string, nameTag: string}) => void
-    setUpdateTag: ({idBoard, idList, idTarget, nameTag, color}: {idBoard: string, idList: string, idTarget:string, idTag: string, nameTag: string, color: string}) => void
 }
 
 export const useTargetsStore = create<State>()(
@@ -42,63 +40,38 @@ export const useTargetsStore = create<State>()(
                 targetGroup
                 )
             })),
-            setActiveTag: ({idBoard, idList, idTarget, nameTag}) => set((state) => ({
-                targetsGroup: state.targetsGroup.map((targetGroup) => 
-                    targetGroup.idBoard === idBoard && targetGroup.idList === idList
-                    ?
-                    {
-                        ...targetGroup,
-                        targets: targetGroup.targets.map((target) => 
-                            target.idTarget === idTarget
-                            ?
-                            {
-                                ...target, 
-                                tags: target.tags.map((tag) =>
-                                    tag.nameTag === nameTag 
-                                    ?
-                                    { ...tag, active: !tag.active }
-                                    :
-                                    tag
-                                )
-                            }
-                            :
-                            target
-                        )
-                    }
-                    :
-                    targetGroup
-                )
-            })),
-            setUpdateTag: ({idBoard, idList, idTarget, idTag, nameTag, color}) => set((state) => ({
-                targetsGroup: state.targetsGroup.map((targetGroup) => 
-                    targetGroup.idBoard === idBoard && targetGroup.idList === idList
-                    ?
-                    {
-                        ...targetGroup,
-                        targets: targetGroup.targets.map((target) => 
-                            target.idTarget === idTarget 
-                            ?
-                            {
-                                ...target,
-                                tags: target.tags.map((tag) => 
-                                    tag.idTag === idTag
-                                    ?
-                                    { ...tag, nameTag: nameTag, color: color}
-                                    :
-                                    tag
-                                )
-                            }
-                            :
-                            target
-                        )
-                    }   
-                    :
-                    targetGroup         
-                )
-            }))
+            
         }),
         {
             name: 'targets-storage'
         }
     )
 )
+
+// setActiveTag: ({idBoard, idList, idTarget, nameTag}) => set((state) => ({
+//     targetsGroup: state.targetsGroup.map((targetGroup) => 
+//         targetGroup.idBoard === idBoard && targetGroup.idList === idList
+//         ?
+//         {
+//             ...targetGroup,
+//             targets: targetGroup.targets.map((target) => 
+//                 target.idTarget === idTarget
+//                 ?
+//                 {
+//                     ...target, 
+//                     tags: target.tags.map((tag) =>
+//                         tag.nameTag === nameTag 
+//                         ?
+//                         { ...tag, active: !tag.active }
+//                         :
+//                         tag
+//                     )
+//                 }
+//                 :
+//                 target
+//             )
+//         }
+//         :
+//         targetGroup
+//     )
+// })),
