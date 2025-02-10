@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import '../../styles/tablero/modal.scss';
-import { TagSettings } from "./modalComp/tagsSettings";
+import { Tags } from "./modalComp/tags";
 import { BoardProps, ListProps, TagsProps, TargetProps } from "../../types/boardProps";
 import { useTagsStore } from "../../store/tagsStore";
 
@@ -8,6 +8,7 @@ interface ModalTargetComponentProps {
     target: TargetProps
     list: ListProps
     board: BoardProps
+    closeModal: () => void
 }
 
 interface Tags {           //puedes
@@ -16,7 +17,7 @@ interface Tags {           //puedes
     color: string 
 }
 
-export const Modal: React.FC<ModalTargetComponentProps> = ({ target, list, board }) => {
+export const Modal: React.FC<ModalTargetComponentProps> = ({ target, list, board, closeModal }) => {
     const { tags } = useTagsStore();
     const [currentActiveTags, setCurrentActiveTags] = useState<Tags[]>([]);
     const [showTags, setShowTags] = useState(false);
@@ -45,27 +46,32 @@ export const Modal: React.FC<ModalTargetComponentProps> = ({ target, list, board
                     <h4>Target: {target.nameTarget}</h4>
                     <p>en la lista {list.nameList}</p>
                 </div>
-                <button>X</button>
+                <button onClick={closeModal}>X</button>
             </header>
             <div className='modal_content_container'>         {/*CONTENIDO*/}
                 <div className='modal_content'>
                     <div className='tags_container'>
-                        <h3>Tags</h3>
-                        <div className='tags'>           {/* PUEDES Y DEBES SEPARAR EL COMPONENTE DE ETIQUETAS PARA QUE ESTÉ MAS LIMPIO */}
-                            {
-                                currentActiveTags.map((tag) => <button key={tag.idTag} style={{backgroundColor: tag.color}}>{tag.nameTag}</button>)
-                            }
-                            <button className='btn_add_tag' onClick={() => setShowTags(true)}>+</button>  {/*PARA ACTIVAR EL MODAL*/}
-                            {
-                                showTags && (
-                                    <TagSettings 
-                                    board={board} 
-                                    list={list} 
-                                    target={target} 
-                                    closeTagsSettings={() => setShowTags(false)} />
-                                )
-                            }
-                        </div>
+                        <h3>Etiquetas activas</h3>
+                        {
+                            currentActiveTags.length > 0 
+                            ?
+                            (
+                                <div className='tags'>           {/* PUEDES Y DEBES SEPARAR EL COMPONENTE DE ETIQUETAS PARA QUE ESTÉ MAS LIMPIO */}
+                                {
+                                    currentActiveTags.map((tag) => <button key={tag.idTag} style={{backgroundColor: tag.color}} className='tag_active'>{tag.nameTag}</button>)
+                                }
+                                    <button className='btn_add_tag' onClick={() => setShowTags(true)}>+</button>  {/*PARA ACTIVAR EL MODAL*/}
+                            
+                                </div>
+                            )
+                            :
+                            <>
+                                <span style={{fontStyle: 'italic'}}>No hay etiquetas para esta tarjeta..</span>
+                                <button className='btn_add_tag' onClick={() => setShowTags(true)}>+</button>  {/*PARA ACTIVAR EL MODAL*/}
+                            </>
+
+                        }
+                        
                     </div>                   
                 </div>
 
@@ -75,6 +81,16 @@ export const Modal: React.FC<ModalTargetComponentProps> = ({ target, list, board
                     <button>Eliminar</button>
                 </div> 
             </div>
+
+            {
+                showTags && (
+                    <Tags 
+                    board={board} 
+                    list={list} 
+                    target={target} 
+                    closeTagsSettings={() => setShowTags(false)} />
+                )
+            }
         </div>
     )
 }

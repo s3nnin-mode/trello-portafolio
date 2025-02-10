@@ -1,7 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { TagsProps } from "../types/boardProps";
-import { Target } from "../componentes/tablero/tarjeta";
 
 const tags: TagsProps[] = [
     { idTag: "1", color: "#FF5733", nameTag: "Urgente", targetsThatUseIt: [] },
@@ -29,14 +28,19 @@ const tags: TagsProps[] = [
 
 interface State {
     tags: TagsProps[]
+    setCreateTag: (newTag: TagsProps) => void
     setUpdateTag: ({idTag, nameTag, color}: {idTag: string, nameTag: string, color: string}) => void
     setTagUsage: ({idBoard, idList, idTarget, idTag}: {idBoard: string, idList: string, idTarget: string, idTag: string}) => void
+    setRemoveTag: (idTag: string) => void
 }
 
 export const useTagsStore = create<State>()(
     persist(
         (set) => ({
             tags: tags,
+            setCreateTag: (newTag) => set((state) => ({
+                tags: [newTag, ...state.tags]
+            })),
             setUpdateTag: ({idTag, nameTag, color}) => set((state) => ({
                 tags: state.tags.map((tag) => 
                     tag.idTag === idTag
@@ -66,6 +70,9 @@ export const useTagsStore = create<State>()(
                     :
                     tag
                 )
+            })),
+            setRemoveTag: (idTag) => set((state) => ({
+                tags: state.tags.filter(tag => tag.idTag !== idTag)
             }))
         }),
         {

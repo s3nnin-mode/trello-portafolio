@@ -39,6 +39,7 @@ export const Target: React.FC<TargetComponentProps> = ({target, board, list}) =>
                 target={target}
                 list={list}
                 board={board}
+                closeModal={() => setModal(false)}
             />
         )
         }
