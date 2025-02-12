@@ -43,6 +43,9 @@ export interface TagsProps {
 export interface TargetProps {
     idTarget: string
     nameTarget: string
+    coverCard: string
+    coverCardImgs: string[]
+    currentCoverType: 'color' | 'img'
 }
 
 export interface TargetsGroup {

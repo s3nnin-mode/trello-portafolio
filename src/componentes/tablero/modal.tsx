@@ -3,6 +3,7 @@ import '../../styles/tablero/modal.scss';
 import { Tags } from "./modalComp/tags";
 import { BoardProps, ListProps, TagsProps, TargetProps } from "../../types/boardProps";
 import { useTagsStore } from "../../store/tagsStore";
+import { CardModalCover } from "./modalComp/cardModalCover";
 
 interface ModalTargetComponentProps {
     target: TargetProps
@@ -41,17 +42,22 @@ export const Modal: React.FC<ModalTargetComponentProps> = ({ target, list, board
 
     return (
         <div className='modal_show' onPointerDown={(e) => e.stopPropagation()}>
-            <header className='header_modal_target'>
-                <div>
-                    <h4>Target: {target.nameTarget}</h4>
-                    <p>en la lista {list.nameList}</p>
-                </div>
-                <button onClick={closeModal}>X</button>
-            </header>
+            <CardModalCover 
+                card={target}
+                idBoard={board.idBoard}
+                idList={list.idList} 
+                closeModal={closeModal} 
+            />
+
+            <article className='name_card_container'>
+                <h3>Target: {target.nameTarget}</h3>
+                <p>en la lista {list.nameList}</p>
+            </article>
+            
             <div className='modal_content_container'>         {/*CONTENIDO*/}
                 <div className='modal_content'>
                     <div className='tags_container'>
-                        <h3>Etiquetas activas</h3>
+                        <h4>Etiquetas activas</h4>
                         {
                             currentActiveTags.length > 0 
                             ?

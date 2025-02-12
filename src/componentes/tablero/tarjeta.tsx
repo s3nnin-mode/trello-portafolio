@@ -2,7 +2,8 @@ import React, { useEffect } from "react";
 import '../../styles/tablero/tarjeta.scss';
 import { useState } from "react";
 import { Modal } from "./modal";
-import { BoardProps, ListProps, TargetProps } from "../../types/boardProps";
+import { BoardProps, ListProps, TagsProps, TargetProps } from "../../types/boardProps";
+import { useTagsStore } from "../../store/tagsStore";
 
 interface TargetComponentProps {
     target: TargetProps
@@ -11,26 +12,67 @@ interface TargetComponentProps {
 }
 
 export const Target: React.FC<TargetComponentProps> = ({target, board, list}) => {
+    const { tags } = useTagsStore();
     const [modal, setModal] = useState<boolean>(false);
+
+    useEffect(() => {
+        console.log('img en target: ', target.coverCard)
+        console.log('files', target.coverCardImgs)
+    }, [])
 
     if (!target) {
         return null
     }
 
+    const isActive = ({tag}: {tag: TagsProps}) => {
+        return tag.targetsThatUseIt.some((t) =>
+                t.idBoard === board.idBoard && t.idList === list.idList && t.idTarget === target.idTarget ?
+                true :
+                false
+            )
+    }
+
     return(
         <>
-        <div className='target' onClick={() => setModal(true)} onPointerDown={(e) => e.stopPropagation()}>
-            <div className='color_top'></div>
+        <article className='target' onClick={() => setModal(true)} onPointerDown={(e) => e.stopPropagation()}>
+            {
+                target.currentCoverType === 'color' ?
+                <div 
+                    style={{backgroundColor: target.currentCoverType === 'color' ? target.coverCard : ''}}
+                    className='color_top' /> 
+                :
+                <img src={target.coverCard} />
+            }
+
             <div className='content_target'>
-                <div className='targets_actives'></div>
-                <p>{target.nameTarget}</p>   {/*NOMBRE DE LA TARJETA*/}
+                <ul className='tags_active'>
+                    {
+                        tags.map((tag) => 
+                            isActive({tag}) 
+                            ? 
+                                <li 
+                                key={tag.idTag}
+                                    style={{backgroundColor: tag.color}}
+                                    className='active_tag_view_on_card'
+                                    >
+                                        {
+    
+                                            tag.nameTag
+                                        }
+                                </li> 
+                            :
+                                null
+                        )
+                    }
+                </ul>
+                <p className='name_target'>{target.nameTarget}</p>   {/*NOMBRE DE LA TARJETA*/}
                 <div className='btns_target'>
-                    <button className='btn-target'>Ver</button>
+                    {/* <button className='btn-target'>Ver</button>
                     <button className='btn-target'>Editar</button>
-                    <button className='btn-target'>Eliminar</button>
+                    <button className='btn-target'>Eliminar</button> */}
                 </div>
             </div>
-        </div>
+        </article>
 
         {/* <!-- Modal --> */}
 

@@ -2,16 +2,44 @@
     border: 1px solid #ccc;
     border-radius: 8px;
     width: 100%;
+    overflow: hidden;
 
     .color_top {
         height: 30px;
         border-radius: 8px 8px 0 0;
         width: 100%;
-        background-color: aqua;
     }
 
     .content_target {
-        padding: 10px;
+        padding: 8px;
+
+        .tags_active {
+            overflow: hidden;
+            list-style: none;
+            padding: 0;
+
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+
+           
+            li {
+                border-radius: 4px;
+                padding: 3px;
+                font-size: 13px;
+                
+                display: inline-block;  /* Asegura que respete el ancho */
+                max-width: 100%;       /* Ajusta según el diseño */
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+            }
+        }
+
+        .name_target {
+            margin: 0;
+            border: 1px solid;
+        }
 
         .btns_target {
             display: flex;

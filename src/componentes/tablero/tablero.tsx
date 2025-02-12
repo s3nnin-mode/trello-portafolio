@@ -94,7 +94,7 @@ export const Tablero = () => {
 
     return (
         <div className='board' >
-            <header>
+            <header className='header_board'>
                 <h2>{currentBoard?.nameBoard}</h2>                                      {/* NAME BOARD */}
             </header>
             <DndContext collisionDetection={closestCenter} onDragEnd={onDragEnd}>

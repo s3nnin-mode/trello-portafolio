@@ -31,7 +31,10 @@ export const useList = () => {
         
         const newTarget: TargetProps = {
             idTarget: (nameTarget + Date.now()).toString(), 
-            nameTarget: nameTarget
+            nameTarget: nameTarget,
+            coverCard: 'grey',
+            coverCardImgs: [],
+            currentCoverType: 'color'
         };
         setTarget({idBoard, idList, newTarget})     
     }

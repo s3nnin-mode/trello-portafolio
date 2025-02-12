@@ -10,8 +10,6 @@ const colors = [
     "#E67E22", "#1ABC9C", "#9B59B6", "#34495E", "#E74C3C"
 ];
 
-  
-
 interface EditTagsProps {
     idBoard?: string
     idList?: string

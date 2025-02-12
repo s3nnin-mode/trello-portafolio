@@ -15,18 +15,16 @@
     cursor: auto;
 
     display: flex;
+    gap: 10px;
     flex-direction: column;
 
-    .header_modal_target {
+    .name_card_container {
         display: flex;
-        align-items: center;
-        justify-content: space-between;
-        border: 2px solid blue;
-        
-        div {
-            p, h4 {
-                margin: 0;
-            }
+        flex-direction: column;
+        align-items: flex-start;
+
+        p, h3 {
+            margin: 0;
         }
     }
 
@@ -55,6 +53,13 @@
                         padding: 4px;
                         border-radius: 6px;
                         border: none;
+                        font-size: 14px;
+
+                        display: inline-block;
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
+                        overflow: hidden;
+                        max-width: 100%;
                     }
 
                     .btn_add_tag {
@@ -76,7 +81,6 @@
         .sidebar_modal {
             width: 30%;
             padding: 5px;
-            border: 1px solid red;
 
             button {
                 display: block;

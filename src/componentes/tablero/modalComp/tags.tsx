@@ -86,7 +86,7 @@ export const Tags: React.FC<TagsSettings> = ({ board, list, target, closeTagsSet
                             </ul>
                             <footer>
                                 {
-                                    limitTags <= tagsFilter.length && (
+                                    limitTags < tagsFilter.length && (
                                         <button className='btn_see_more_tags' onClick={() => setLimitTags(prevState => prevState + 5)}>
                                             Ver más etiquetas...
                                         </button>
