@@ -9,7 +9,7 @@ interface UseFormCopyList {
 
 export const useFormCopyList = ({ setIsModalOptionsActive }: UseFormCopyList) => {
     const { listsGroup, setLists } = useListsStore();
-    const { setTargetsGroup, targetsGroup } = useTargetsStore()
+    const { setCardsGroup, cardsGroup } = useTargetsStore()
 
     const [showFormCopyList, setShowFormCopyList] = useState(false);
 
@@ -26,10 +26,10 @@ export const useFormCopyList = ({ setIsModalOptionsActive }: UseFormCopyList) =>
             nameList: inputText
         }
 
-        const indexTargetGroup = targetsGroup.findIndex(targetGroup => targetGroup.idBoard === idBoard && targetGroup.idList === idListToCopy);
+        const indexTargetGroup = cardsGroup.findIndex(cardGroup => cardGroup.idBoard === idBoard && cardGroup.idList === idListToCopy);
         if (indexTargetGroup > -1) {
-            const targets = targetsGroup[indexTargetGroup].targets;       //se copia las targets de la lista copiada con un nuevo idList 
-            setTargetsGroup({idBoard, idList, targets});                   //y se agrega un nuevo targetGroup con las tarjetas de la lista que se copio
+            const cards = cardsGroup[indexTargetGroup].cards;       //se copia las targets de la lista copiada con un nuevo idList 
+            setCardsGroup({idBoard, idList, cards});                   //y se agrega un nuevo targetGroup con las tarjetas de la lista que se copio
         }
 
         //{   ESTA PARTE POSICIONA LA LISTA COPIADA JUSTO EN LA SIGUIENTE COLUMNA DE LA LISTA QUE SE COPIÓ

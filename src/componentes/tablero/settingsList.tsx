@@ -21,6 +21,8 @@ import { useFormMoveList } from "../../customHooks/list/formMoveList";
 import { BtnAdd } from "./btnAgregar";
 import { useList } from "./lista";
 import { useAccesDirectToAddTarget } from "../../customHooks/list/accesDirectAddTarget";
+import { useTargetsStore } from "../../store/targetsStore";
+import { CardProps } from "../../types/boardProps";
 
 interface SettingsListProps {
     idBoard: string
@@ -33,12 +35,24 @@ export const useSettingsModalList = () => {
 }
 
 export const SettingsList: React.FC<SettingsListProps> = ({ idBoard, list }) => {
+    const { setCardToTop } = useTargetsStore();
     const { isModalOptionsActive, setIsModalOptionsActive} = useSettingsModalList();
     const { showFormCopyList, openFormCopyList, closeFormCopyList, closeAllFormCopy, callbackHandleCopyList } = useFormCopyList({ setIsModalOptionsActive });
     const { showFormMoveList, openFormMoveList, closeFormMoveList, closeAllMoveList, callbackHandleMoveList } = useFormMoveList({setIsModalOptionsActive});
     const [ show, setShow ] = useState(false);
     const openModal = () => setShow(true);
     const handleClose = () => setShow(false);
+
+    const addNewCard = (nameCard: string) => {
+        const cardToAdd: CardProps = {
+            idCard: (nameCard + Date.now()).toString(), 
+            nameCard: nameCard,
+            coverCard: 'grey',
+            coverCardImgs: [],
+            currentCoverType: 'color'
+        };
+        setCardToTop({idBoard, idList: list.idList, cardToAdd}); 
+    }
 
     return (
         <div className='options' onPointerDown={(e) => e.stopPropagation()}>       
@@ -54,7 +68,7 @@ export const SettingsList: React.FC<SettingsListProps> = ({ idBoard, list }) => 
                 <BtnAdd 
                 className='form_add_target_to_top'
                 nameComponentToAdd='target'
-                createListOrTargetName={() => {}} />
+                createListOrTargetName={(nameCard: string) => addNewCard(nameCard)} />
 
                 <button className='btn_setting_list' onClick={openFormCopyList}>             {/*BTN OPEN FORM COPY LIST*/}
                     Copiar lista
