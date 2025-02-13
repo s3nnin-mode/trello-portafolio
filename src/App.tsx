@@ -2,7 +2,7 @@ import './App.css'
 
 import { Sidebar } from './componentes/sidebar';
 import { Tablero } from './componentes/tablero/tablero';
-import { Routes, Route, useParams } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { Tableros } from './componentes/rutas/tableros';
 
 function App() {

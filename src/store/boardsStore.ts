@@ -12,7 +12,7 @@ export const useBoardsStoree = create<State>()(
     persist(
         (set) => ({
             boards: [],
-            setBoards: (boards) => set((state) => ({
+            setBoards: (boards) => set(() => ({
                 boards: boards
             })),
             setBoard: (board) => set((state) => ({
