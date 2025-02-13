@@ -1,31 +1,30 @@
 import { useEffect, useMemo, useState } from 'react';
 import '../../../styles/tablero/tagsSettings.scss';
-import { BoardProps, ListProps, TargetProps, TagsProps } from '../../../types/boardProps';
+import { BoardProps, ListProps, CardProps, TagsProps } from '../../../types/boardProps';
 import { EditTags } from './editTags';
 import { useTagsStore } from '../../../store/tagsStore';
 
 interface TagsSettings {
     board: BoardProps
     list: ListProps
-    target: TargetProps
+    card: CardProps
     closeTagsSettings: () => void
 }
 
-export const Tags: React.FC<TagsSettings> = ({ board, list, target, closeTagsSettings }) => {
+export const Tags: React.FC<TagsSettings> = ({ board, list, card, closeTagsSettings }) => {
     const { tags, setTagUsage, setUpdateTag } = useTagsStore();
     const [isEditTag, setIsEditTag] = useState(false);
     const [isCreateTag, setIsCreateTag] = useState(false);
     const [tagToEdit, setTagToEdit] = useState<TagsProps>();
     const [inputValue, setInputValuet] = useState('');
-    const [limitTags, setLimitTags] = useState(5);
+    const [limitTagsToShow, setLimitTagsToShow] = useState(5);
 
-    const onChangeCheckbox = (prop: string) => {
-        const idBoard = board.idBoard;
-        const idList = list.idList;
-        const idTarget = target.idTarget;
-        const idTag = prop;
-        setTagUsage({idBoard, idList, idTarget, idTag});
-    }
+    const onChangeCheckbox = (prop: string) => setTagUsage({
+        idBoard: board.idBoard, 
+        idList: list.idList, 
+        idCard: card.idCard, 
+        idTag: prop
+    });
 
     const openInterfaceToEditTag = ({tag}:{tag: TagsProps}) => {
         setIsEditTag(true);
@@ -33,8 +32,8 @@ export const Tags: React.FC<TagsSettings> = ({ board, list, target, closeTagsSet
     }
 
     const isActive = ({tag}: {tag: TagsProps}) => {
-        return tag.targetsThatUseIt.some((t) =>
-                t.idBoard === board.idBoard && t.idList === list.idList && t.idTarget === target.idTarget ?
+        return tag.cardsThatUseIt.some((t) =>
+                t.idBoard === board.idBoard && t.idList === list.idList && t.idCard === card.idCard ?
                 true :
                 false
             )
@@ -43,7 +42,7 @@ export const Tags: React.FC<TagsSettings> = ({ board, list, target, closeTagsSet
     const tagsFilter = useMemo(() => {
         if (inputValue === '') return tags;
         return tags.filter(tag => tag.nameTag.toLowerCase().includes(inputValue.toLowerCase()));
-    }, [inputValue, tags, limitTags]);
+    }, [inputValue, tags, limitTagsToShow]);
 
     const closeAll  = () => {
         closeTagsSettings();
@@ -73,7 +72,7 @@ export const Tags: React.FC<TagsSettings> = ({ board, list, target, closeTagsSet
                             <span>Etiquetas</span>
                             <ul>
                                 {
-                                    tagsFilter.slice(0, limitTags).map((tag) => {
+                                    tagsFilter.slice(0, limitTagsToShow).map((tag) => {
                                         return (
                                         <li key={tag.idTag}>
                                             <input type='checkbox' checked={isActive({tag})} onChange={() => onChangeCheckbox(tag.idTag)} />
@@ -86,8 +85,8 @@ export const Tags: React.FC<TagsSettings> = ({ board, list, target, closeTagsSet
                             </ul>
                             <footer>
                                 {
-                                    limitTags < tagsFilter.length && (
-                                        <button className='btn_see_more_tags' onClick={() => setLimitTags(prevState => prevState + 5)}>
+                                    limitTagsToShow < tagsFilter.length && (
+                                        <button className='btn_see_more_tags' onClick={() => setLimitTagsToShow(prevState => prevState + 5)}>
                                             Ver más etiquetas...
                                         </button>
                                     )
@@ -120,7 +119,7 @@ export const Tags: React.FC<TagsSettings> = ({ board, list, target, closeTagsSet
                         closeAll={closeAll}
                         idBoard={board.idBoard}
                         idList={list.idList}
-                        idTarget={target.idTarget}
+                        idCard={card.idCard}
                         />
                 )
             }

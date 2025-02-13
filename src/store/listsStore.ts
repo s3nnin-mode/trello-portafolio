@@ -5,7 +5,7 @@ import { ListProps, ListsGroup } from "../types/boardProps";
 interface State {
     listsGroup: ListsGroup[];
     setListGroup: (props: {idBoard: string}) => void
-    setList: (props: {idBoard: string, newList: ListProps}) => void
+    setList: ({idBoard, newList}: {idBoard: string, newList: ListProps}) => void
     setColorList: (props: {idBoard: string, idList: string, color: string}) => void
     setNewNameList: (props: {idBoard: string, idList: string, newNameList: string}) => void
     deleteList: (props: {idBoard: string, idList: string}) => void

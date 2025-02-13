@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import '../../styles/tablero/modal.scss';
 import { Tags } from "./modalComp/tags";
-import { BoardProps, ListProps, TagsProps, TargetProps } from "../../types/boardProps";
+import { BoardProps, ListProps, TagsProps, CardProps } from "../../types/boardProps";
 import { useTagsStore } from "../../store/tagsStore";
 import { CardModalCover } from "./modalComp/cardModalCover";
 
 interface ModalTargetComponentProps {
-    target: TargetProps
+    card: CardProps
     list: ListProps
     board: BoardProps
     closeModal: () => void
@@ -18,7 +18,7 @@ interface Tags {           //puedes
     color: string 
 }
 
-export const Modal: React.FC<ModalTargetComponentProps> = ({ target, list, board, closeModal }) => {
+export const Modal: React.FC<ModalTargetComponentProps> = ({ card, list, board, closeModal }) => {
     const { tags } = useTagsStore();
     const [currentActiveTags, setCurrentActiveTags] = useState<Tags[]>([]);
     const [showTags, setShowTags] = useState(false);
@@ -28,11 +28,10 @@ export const Modal: React.FC<ModalTargetComponentProps> = ({ target, list, board
         const activeTags: TagsProps[] = [];
 
         tags.map((tag) => 
-            tag.targetsThatUseIt.some((t) =>t.idBoard === board.idBoard && t.idList === list.idList && t.idTarget === target.idTarget
+            tag.cardsThatUseIt.some((c) => 
+            (c.idBoard === board.idBoard && c.idList === list.idList && c.idCard === card.idCard) 
             ?
-            activeTags.push(tag)
-            :
-            null
+            activeTags.push(tag) : null
             )
         )
 
@@ -43,14 +42,14 @@ export const Modal: React.FC<ModalTargetComponentProps> = ({ target, list, board
     return (
         <div className='modal_show' onPointerDown={(e) => e.stopPropagation()}>
             <CardModalCover 
-                card={target}
+                card={card}
                 idBoard={board.idBoard}
                 idList={list.idList} 
                 closeModal={closeModal} 
             />
 
             <article className='name_card_container'>
-                <h3>Target: {target.nameTarget}</h3>
+                <h3>Target: {card.nameCard}</h3>
                 <p>en la lista {list.nameList}</p>
             </article>
             
@@ -93,7 +92,7 @@ export const Modal: React.FC<ModalTargetComponentProps> = ({ target, list, board
                     <Tags 
                     board={board} 
                     list={list} 
-                    target={target} 
+                    card={card} 
                     closeTagsSettings={() => setShowTags(false)} />
                 )
             }

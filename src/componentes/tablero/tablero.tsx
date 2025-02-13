@@ -11,28 +11,29 @@ import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-ki
 
 //STORES
 import { useListsStore } from '../../store/listsStore';
-import { useBoardsStoree } from '../../store/boardsStoredos';
+import { useBoardsStoree } from '../../store/boardsStore';
 import { useTargetsStore } from '../../store/targetsStore';
 //TYPES
-import { BoardProps, ListProps, TargetProps } from '../../types/boardProps';
+import { BoardProps, ListProps, CardProps } from '../../types/boardProps';
 
 const useCustomBoard = () => {
     const { setList, setLists, listsGroup } = useListsStore();
-    const { setTargetsGroup } = useTargetsStore();
+    const { setCardsGroup } = useTargetsStore();
     const { boards } = useBoardsStoree();
 
     const addNewList = ({value, idBoard}: {value: string, idBoard: string}) => {
         const nameList = value;
         const idList = (nameList + Date.now()).toString();
-        const newList = { 
+
+        const newList: ListProps = { 
             idList: idList, 
             nameList: nameList, 
             colorList: 'brown', 
-            targets: []
         }
+
         setList({idBoard, newList});
-        const targets: TargetProps[] = [];
-        setTargetsGroup({idBoard, idList, targets});  //crear obejeto con propieda idBoard y idList para saber que pertenece a este ->tablero->lista. Se incializa con un array vacío
+        const cards: CardProps[] = [];
+        setCardsGroup({idBoard, idList, cards});  //crear obejeto con propieda idBoard y idList para saber que pertenece a este ->tablero->lista. Se incializa con un array vacío
     }
 
     return { addNewList, setLists, boards, listsGroup }

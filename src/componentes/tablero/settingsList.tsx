@@ -12,7 +12,7 @@ import { ColorsToList } from "./list/colorsList";
 import { ModalToRemoveList } from "./list/options/interfaces/modal";
 //STORES
 import { useListsStore } from "../../store/listsStore";
-import { useBoardsStoree } from "../../store/boardsStoredos";
+import { useBoardsStoree } from "../../store/boardsStore";
 //TYPES
 import { ListProps } from "../../types/boardProps";
 //HOOKS

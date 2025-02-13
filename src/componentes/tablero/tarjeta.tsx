@@ -2,31 +2,36 @@ import React, { useEffect } from "react";
 import '../../styles/tablero/tarjeta.scss';
 import { useState } from "react";
 import { Modal } from "./modal";
-import { BoardProps, ListProps, TagsProps, TargetProps } from "../../types/boardProps";
+import { BoardProps, ListProps, TagsProps, CardProps } from "../../types/boardProps";
 import { useTagsStore } from "../../store/tagsStore";
 
 interface TargetComponentProps {
-    target: TargetProps
+    card: CardProps
     board: BoardProps
     list: ListProps
 }
 
-export const Target: React.FC<TargetComponentProps> = ({target, board, list}) => {
+export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
     const { tags } = useTagsStore();
     const [modal, setModal] = useState<boolean>(false);
 
     useEffect(() => {
-        console.log('img en target: ', target.coverCard)
-        console.log('files', target.coverCardImgs)
-    }, [])
+        console.log('img en target: ', card.coverCard)
+        console.log('files', card.coverCardImgs)
+    }, []);
 
-    if (!target) {
+    if (!card) {
         return null
     }
 
     const isActive = ({tag}: {tag: TagsProps}) => {
-        return tag.targetsThatUseIt.some((t) =>
-                t.idBoard === board.idBoard && t.idList === list.idList && t.idTarget === target.idTarget ?
+        // console.log('taggggg: ', tag)
+        // if (tag.cardsThatUseIt.length <= 0) {
+        //     return false
+        // } 
+
+        return tag.cardsThatUseIt.some((t) =>
+                t.idBoard === board.idBoard && t.idList === list.idList && t.idCard === card.idCard ?
                 true :
                 false
             )
@@ -36,17 +41,18 @@ export const Target: React.FC<TargetComponentProps> = ({target, board, list}) =>
         <>
         <article className='target' onClick={() => setModal(true)} onPointerDown={(e) => e.stopPropagation()}>
             {
-                target.currentCoverType === 'color' ?
+                card.currentCoverType === 'color' ?
                 <div 
-                    style={{backgroundColor: target.currentCoverType === 'color' ? target.coverCard : ''}}
+                    style={{backgroundColor: card.currentCoverType === 'color' ? card.coverCard : ''}}
                     className='color_top' /> 
                 :
-                <img src={target.coverCard} />
+                <img src={card.coverCard} />
             }
 
             <div className='content_target'>
                 <ul className='tags_active'>
                     {
+                       
                         tags.map((tag) => 
                             isActive({tag}) 
                             ? 
@@ -63,25 +69,25 @@ export const Target: React.FC<TargetComponentProps> = ({target, board, list}) =>
                             :
                                 null
                         )
+                        
                     }
                 </ul>
-                <p className='name_target'>{target.nameTarget}</p>   {/*NOMBRE DE LA TARJETA*/}
+                <p className='name_target'>{card.nameCard}</p>   {/*NOMBRE DE LA TARJETA*/}
                 <div className='btns_target'>
-                    {/* <button className='btn-target'>Ver</button>
-                    <button className='btn-target'>Editar</button>
-                    <button className='btn-target'>Eliminar</button> */}
+                    
                 </div>
             </div>
         </article>
 
         {/* <!-- Modal --> */}
 
-        {modal && (
-            <Modal 
-                target={target}
-                list={list}
-                board={board}
-                closeModal={() => setModal(false)}
+        {
+            modal && (
+                <Modal 
+                    card={card}
+                    list={list}
+                    board={board}
+                    closeModal={() => setModal(false)}
             />
         )
         }
@@ -89,46 +95,3 @@ export const Target: React.FC<TargetComponentProps> = ({target, board, list}) =>
         </>
     )
 }
-
-{/* <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-  Launch demo modal
-</button> */}
-
-{/* <div className="modal fade" id="exampleModal" tabIndex={-1} aria-labelledby="exampleModalLabel" aria-hidden="true">
-<div className="modal-dialog">
-    <div className="modal-content">
-    <div className="modal-header">
-        <h1 className="modal-title fs-5" id="exampleModalLabel">Targeta: {name}</h1>
-        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-    </div>
-    <div className="modal-body">
-        <p>Modal body text goes here.</p>
-    </div>
-    <div className="modal-footer">
-        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" className="btn btn-primary">Save changes</button>
-    </div>
-    </div>
-</div>
-</div> */}
-
-{/* <div className={`modal_${modal ? 'show' : 'hidden'}`}>
-            <header>
-                <div>
-                    <h2>Target: {nameTarget}</h2>
-                    <p>en la lista {nameList}</p>
-                </div>
-                <button onClick={() => setModal(false)}>X</button>
-            </header>
-            <div className='modal_content_container'>
-                <div className='modal_content'>
-                    COntent                     
-                </div>
-                <div className='sidebar_modal'>
-                        <button onClick={() => setTags(true)}>Tags</button>
-                        <button>Editar</button>
-                        <button>Eliminar</button>
-                </div> 
-            </div>
-            
-        </div> */}

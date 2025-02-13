@@ -6,15 +6,15 @@ import { RiCollapseHorizontalLine } from "react-icons/ri";
 import { SettingsList, useSettingsModalList } from "./settingsList";
 import { NameList } from "./list/changeNameList";
 import { BtnAdd } from "./btnAgregar";
-import { Target } from "./tarjeta";
+import { Card } from "./tarjeta";
 //DRAG AND DROP
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 //STORES
-import { useBoardsStoree } from "../../store/boardsStoredos";
+import { useBoardsStoree } from "../../store/boardsStore";
 import { useTargetsStore } from "../../store/targetsStore";
 //TYPES
-import { BoardProps, ListProps, TargetProps } from "../../types/boardProps";
+import { BoardProps, ListProps, CardProps } from "../../types/boardProps";
 
 interface ListPropsComponent {
     list: ListProps
@@ -23,45 +23,41 @@ interface ListPropsComponent {
 
 export const useList = () => {
     const { boards } = useBoardsStoree();
-    const { setTarget, targetsGroup } = useTargetsStore();
+    const { setCard, cardsGroup } = useTargetsStore();
 
-    const addNewTarget = ({board, list, nameTarget}: { board: BoardProps, list: ListProps, nameTarget: string }) => {
+    const addNewCard = ({board, list, nameCard}: { board: BoardProps, list: ListProps, nameCard: string }) => {
         const idList = list.idList;
         const idBoard = board.idBoard;
         
-        const newTarget: TargetProps = {
-            idTarget: (nameTarget + Date.now()).toString(), 
-            nameTarget: nameTarget,
+        const newCard: CardProps = {
+            idCard: (nameCard + Date.now()).toString(), 
+            nameCard: nameCard,
             coverCard: 'grey',
             coverCardImgs: [],
             currentCoverType: 'color'
         };
-        setTarget({idBoard, idList, newTarget})     
+        setCard({idBoard, idList, newCard}); 
     }
 
-    return { addNewTarget, boards, targetsGroup };
+    return { addNewCard, boards, cardsGroup };
 }
 
 export const List: React.FC<ListPropsComponent> = ({ board, list }) => {               
-    const { addNewTarget, targetsGroup } = useList();
+    const { addNewCard, cardsGroup } = useList();
     const [isListCollapse, setIsListCollapse] = useState(false);
-    const [currentTargets, setCurrentTargets] = useState<TargetProps[]>([]);
+    const [currentCards, setCurrentCards] = useState<CardProps[]>([]);
 
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({id: list.idList});
-    const style = { 
-        transform: CSS.Transform.toString(transform),
-        transition,
-        backgroundColor: list.colorList
-    }
-
+    const style = { transform: CSS.Transform.toString(transform), transition, backgroundColor: list.colorList }
+    
     useEffect(() => {
-        const indexTargets = targetsGroup.findIndex((targetGroup) => targetGroup.idBoard === board.idBoard && targetGroup.idList === list.idList);
-        if (indexTargets > -1) {
-            setCurrentTargets(targetsGroup[indexTargets].targets);
+        const indexCardGroup = cardsGroup.findIndex((targetGroup) => targetGroup.idBoard === board.idBoard && targetGroup.idList === list.idList);
+        if (indexCardGroup > -1) {
+            setCurrentCards(cardsGroup[indexCardGroup].cards);
         }
-    }, [targetsGroup]);
+    }, [cardsGroup]);
 
-    if (!list || !currentTargets) {
+    if (!list || !currentCards) {
         return null
     }
 
@@ -85,12 +81,12 @@ export const List: React.FC<ListPropsComponent> = ({ board, list }) => {
             <div className='content_list'>
                 
                 {
-                    currentTargets.map((target, index) => (
-                        <Target 
-                            target={target}
+                    currentCards.map((card, index) => (
+                        <Card 
+                            card={card}
                             board={board}
                             list={list}
-                            key={target.idTarget}
+                            key={card.idCard}
                         />
                     ))
                 }
@@ -100,7 +96,7 @@ export const List: React.FC<ListPropsComponent> = ({ board, list }) => {
                     list && (
                         <BtnAdd 
                         className='form_add_target'
-                        createListOrTargetName={(nameTarget: string) => addNewTarget({board, list, nameTarget})} 
+                        createListOrTargetName={(nameCard: string) => addNewCard({board, list, nameCard})} 
                         nameComponentToAdd='target' 
                         />
                     )

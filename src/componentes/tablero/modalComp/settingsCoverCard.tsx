@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import '../../../styles/tablero/list/modalCard/components/settingsCoverCard.scss';
-import { TargetProps } from '../../../types/boardProps';
+import { CardProps } from '../../../types/boardProps';
 import { useTargetsStore } from '../../../store/targetsStore';
 
 const colors = [
@@ -13,7 +13,7 @@ const colors = [
 interface SettingsCoverProps {
     idBoard: string
     idList: string
-    card: TargetProps
+    card: CardProps
     closeComponent: () => void
 }
 
@@ -42,7 +42,7 @@ export const SettingsCover: React.FC<SettingsCoverProps> = ({ card, idList, idBo
     }
 
     const handleUpdateImg = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const idCard = card.idTarget;
+        const idCard = card.idCard;
         const file = e.target.files?.[0];  //file
         if (!file) return;
         const img = URL.createObjectURL(file);
@@ -50,7 +50,7 @@ export const SettingsCover: React.FC<SettingsCoverProps> = ({ card, idList, idBo
     }
 
     const handleSaveChanges = () => {
-        const idCard = card.idTarget;
+        const idCard = card.idCard;
         const cover = coverPreview;
         setCoverCard({idBoard, idList, idCard, cover, coverType});
         closeComponent();

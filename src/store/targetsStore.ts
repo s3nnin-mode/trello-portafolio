@@ -1,12 +1,12 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { TargetProps, TargetsGroup } from "../types/boardProps";
+import { CardProps, CardGroupProps } from "../types/boardProps";
 
 interface State {
-    targetsGroup: TargetsGroup[]
-    setTargetsGroup: (props: {idBoard: string, idList: string, targets: TargetProps[]}) => void      //setTargetGroup es para inicializar un objeto con un idBoard, idList para saber a que board y list pertenece, se incializa con un array vacio
-    setTarget: ({idBoard, idList, newTarget} : {idBoard: string, idList: string, newTarget: TargetProps}) => void
-    setTargetToTop: ({idBoard, idList, targetToAdd}: {idBoard: string, idList: string, targetToAdd: TargetProps}) => void
+    cardsGroup: CardGroupProps[]
+    setCardsGroup: (props: {idBoard: string, idList: string, cards: CardProps[]}) => void      //setTargetGroup es para inicializar un objeto con un idBoard, idList para saber a que board y list pertenece, se incializa con un array vacio
+    setCard: ({idBoard, idList, newCard} : {idBoard: string, idList: string, newCard: CardProps}) => void
+    setCardToTop: ({idBoard, idList, cardToAdd}: {idBoard: string, idList: string, cardToAdd: CardProps}) => void
     setCoverCard: ({idBoard, idList, idCard, cover, coverType} : {idBoard: string, idList: string, idCard: string, cover: string, coverType: 'color' | 'img'}) => void
     setCoverCardImg: ({idBoard, idList, idCard, img} : {idBoard: string, idList: string, idCard: string, img: string}) => void
 }
@@ -14,28 +14,28 @@ interface State {
 export const useTargetsStore = create<State>()(
     persist(
         (set) => ({
-            targetsGroup: [],
-            setTargetsGroup: ({idBoard, idList, targets}) => set((state) => ({
-                targetsGroup: [...state.targetsGroup, { idBoard: idBoard, idList: idList, targets: targets }]
+            cardsGroup: [],
+            setCardsGroup: ({idBoard, idList, cards}) => set((state) => ({
+                cardsGroup: [...state.cardsGroup, { idBoard: idBoard, idList: idList, cards: cards }]
             })),
-            setTarget: ({idBoard, idList, newTarget}) => set((state) => ({
-                targetsGroup: state.targetsGroup.map((targetGroup) => 
-                    targetGroup.idBoard === idBoard && targetGroup.idList === idList
+            setCard: ({idBoard, idList, newCard}) => set((state) => ({
+                cardsGroup: state.cardsGroup.map((cardGroup) => 
+                    cardGroup.idBoard === idBoard && cardGroup.idList === idList
                 ?
                 {
-                    ...targetGroup,
-                    targets: [...targetGroup.targets, newTarget]
+                    ...cardGroup,
+                    cards: [...cardGroup.cards, newCard]
                 }
                 :
-                targetGroup
+                cardGroup
                 )
             })),
             setCoverCard: ({idBoard, idList, idCard, cover, coverType}) => set((state) => ({
-                targetsGroup: state.targetsGroup.map((targetGroup) => 
-                    targetGroup.idBoard === idBoard && targetGroup.idList === idList ?
-                        {   ...targetGroup,
-                            targets: targetGroup.targets.map((card) => 
-                                card.idTarget === idCard ?
+                cardsGroup: state.cardsGroup.map((cardGroup) => 
+                    cardGroup.idBoard === idBoard && cardGroup.idList === idList ?
+                        {   ...cardGroup,
+                            cards: cardGroup.cards.map((card) => 
+                                card.idCard === idCard ?
                                 { 
                                     ...card, 
                                     currentCoverType: coverType,
@@ -45,15 +45,15 @@ export const useTargetsStore = create<State>()(
                             )
                         }
                     :
-                    targetGroup
+                    cardGroup
                 )
             })),
             setCoverCardImg: ({ idBoard, idList, idCard, img }) => set((state) => ({
-                targetsGroup: state.targetsGroup.map((targetGroup) =>
-                    targetGroup.idBoard === idBoard && targetGroup.idList === idList ?
+                cardsGroup: state.cardsGroup.map((cardGroup) =>
+                    cardGroup.idBoard === idBoard && cardGroup.idList === idList ?
                     { 
-                        ...targetGroup, targets: targetGroup.targets.map((card) => 
-                        card.idTarget === idCard ?
+                        ...cardGroup, cards: cardGroup.cards.map((card) => 
+                        card.idCard === idCard ?
                             { 
                                 ...card, 
                                 coverCardImgs: [...card.coverCardImgs, img]
@@ -62,52 +62,23 @@ export const useTargetsStore = create<State>()(
                         card
                     )}
                     :
-                    targetGroup
+                    cardGroup
                 )
             })),
-            setTargetToTop: ({idBoard, idList, targetToAdd}) => set((state) => ({
-                targetsGroup: state.targetsGroup.map((targetGroup) => 
-                    targetGroup.idBoard === idBoard && targetGroup.idList === idList ?
+            setCardToTop: ({idBoard, idList, cardToAdd}) => set((state) => ({
+                cardsGroup: state.cardsGroup.map((cardGroup) => 
+                    cardGroup.idBoard === idBoard && cardGroup.idList === idList ?
                         {
-                            ...targetGroup,
-                            targets: [targetToAdd, ...targetGroup.targets]
+                            ...cardGroup,
+                            cards: [cardToAdd, ...cardGroup.cards]
                         }
                     :
-                        targetGroup
+                        cardGroup
                 )
             })),
-            
         }),
         {
             name: 'targets-storage'
         }
     )
 )
-
-// setActiveTag: ({idBoard, idList, idTarget, nameTag}) => set((state) => ({
-//     targetsGroup: state.targetsGroup.map((targetGroup) => 
-//         targetGroup.idBoard === idBoard && targetGroup.idList === idList
-//         ?
-//         {
-//             ...targetGroup,
-//             targets: targetGroup.targets.map((target) => 
-//                 target.idTarget === idTarget
-//                 ?
-//                 {
-//                     ...target, 
-//                     tags: target.tags.map((tag) =>
-//                         tag.nameTag === nameTag 
-//                         ?
-//                         { ...tag, active: !tag.active }
-//                         :
-//                         tag
-//                     )
-//                 }
-//                 :
-//                 target
-//             )
-//         }
-//         :
-//         targetGroup
-//     )
-// })),

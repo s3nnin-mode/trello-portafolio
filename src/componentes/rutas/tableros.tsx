@@ -1,7 +1,7 @@
 import '../../styles/tablero/tableros.scss';
 import { BtnAdd } from '../tablero/btnAgregar';
 import { Link } from 'react-router-dom';
-import { useBoardsStoree } from '../../store/boardsStoredos';
+import { useBoardsStoree } from '../../store/boardsStore';
 import { useListsStore } from '../../store/listsStore';
 
 export const Tableros = () => {

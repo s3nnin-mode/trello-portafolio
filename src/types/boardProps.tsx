@@ -1,17 +1,3 @@
-
-// export interface ListProps {
-//     idList: string
-//     nameList: string
-//     colorList: string
-//     targets: TargetProps[]
-// }
-
-// export interface BoardProps {
-//     idBoard: string
-//     nameBoard: string
-//     lists: ListProps[]
-// }
-
 //BOARDS TYPES
 export interface BoardProps {
     idBoard: string
@@ -37,19 +23,19 @@ export interface TagsProps {
     idTag: string
     color: string
     nameTag: string
-    targetsThatUseIt: {idBoard: string, idList: string, idTarget: string}[]
+    cardsThatUseIt: {idBoard: string, idList: string, idCard: string}[]
 }
 
-export interface TargetProps {
-    idTarget: string
-    nameTarget: string
+export interface CardProps {
+    idCard: string
+    nameCard: string
     coverCard: string
     coverCardImgs: string[]
     currentCoverType: 'color' | 'img'
 }
 
-export interface TargetsGroup {
+export interface CardGroupProps {
     idBoard: string
     idList: string
-    targets: TargetProps[]
+    cards: CardProps[]
 }

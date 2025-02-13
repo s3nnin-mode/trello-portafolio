@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import '../../../styles/formMoverLista.scss';
-import { BoardProps, ListProps } from '../../../types/boardProps';
+import { ListProps } from '../../../types/boardProps';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import { useListsStore } from '../../../store/listsStore';
 
@@ -25,8 +25,6 @@ export const FormMoveList: React.FC<FormMoveListProps> = ({idBoard, list, closeF
 
             const indexList = listsGroup[indexListGroup].lists.findIndex(l => l.idList === list.idList); //index/posicion actual
             if (indexList > -1) {
-                console.log('index', indexList)
-                console.log('current position: ', indexList + 1);
                 const currentPosition = indexList + 1;
                 setCurrentPosition(currentPosition);
             }

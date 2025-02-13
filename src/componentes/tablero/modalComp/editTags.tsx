@@ -13,14 +13,14 @@ const colors = [
 interface EditTagsProps {
     idBoard?: string
     idList?: string
-    idTarget?: string
+    idCard?: string
     tag?: TagsProps
     titleAction: 'Editar' | 'Crear'
     closeComponent: () => void
     closeAll: () => void
 } 
 
-export const EditTags: React.FC<EditTagsProps> = ({idBoard, idList, idTarget, tag, titleAction, closeAll, closeComponent}) => {
+export const EditTags: React.FC<EditTagsProps> = ({idBoard, idList, idCard, tag, titleAction, closeAll, closeComponent}) => {
     const { setUpdateTag, setCreateTag, setRemoveTag } = useTagsStore();
     const [nameTag, setNameTag] = useState('');
     const [color, setColor] = useState('');
@@ -39,16 +39,17 @@ export const EditTags: React.FC<EditTagsProps> = ({idBoard, idList, idTarget, ta
     }
 
     const createTag = () => {
-        if (!idBoard || !idList || !idTarget) return
+        if (!idBoard || !idList || !idCard) return
         const newTag: TagsProps = {
-            idTag: (idTarget + idList + idBoard + Date.now()).toString(), 
+            idTag: (idCard + idList + idBoard + Date.now()).toString(), 
             color, 
             nameTag,
-            targetsThatUseIt: [
-                {idBoard, idList, idTarget}
+            cardsThatUseIt: [
+                {idBoard, idList, idCard}
             ]
         }
         setCreateTag(newTag);
+        closeComponent();
     }
 
     const removeTag = () => {

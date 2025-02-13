@@ -1,6 +1,6 @@
 import { FaImage } from 'react-icons/fa';
 import '../../../styles/tablero/list/modalCard/components/coverModalCard.scss';
-import { TargetProps } from '../../../types/boardProps';
+import { CardProps } from '../../../types/boardProps';
 import { useEffect, useState } from 'react';
 import { SettingsCover } from './settingsCoverCard';
 import { IoMdClose } from 'react-icons/io';
@@ -8,7 +8,7 @@ import { IoMdClose } from 'react-icons/io';
 interface CardModalCoverProps {
     idBoard: string
     idList: string
-    card: TargetProps
+    card: CardProps
     closeModal: () => void
 }
 
