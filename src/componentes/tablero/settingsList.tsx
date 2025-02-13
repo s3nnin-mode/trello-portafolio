@@ -1,26 +1,25 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import '../../styles/tablero/settingsList.scss';
 
 //REACT-ICONS
 import { IoMdClose } from "react-icons/io";
 import { PiDotsThreeOutlineFill } from "react-icons/pi";
-import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 //COMPONENTS
 import { FormCopyElement } from "./copiarElemento";
 import { FormMoveList } from "./list/formMoverLista";
 import { ColorsToList } from "./list/colorsList";
 import { ModalToRemoveList } from "./list/options/interfaces/modal";
 //STORES
-import { useListsStore } from "../../store/listsStore";
-import { useBoardsStoree } from "../../store/boardsStore";
+// import { useListsStore } from "../../store/listsStore";
+// import { useBoardsStoree } from "../../store/boardsStore";
 //TYPES
 import { ListProps } from "../../types/boardProps";
 //HOOKS
 import { useFormCopyList } from "../../customHooks/list/formCopyList";
 import { useFormMoveList } from "../../customHooks/list/formMoveList";
 import { BtnAdd } from "./btnAgregar";
-import { useList } from "./lista";
-import { useAccesDirectToAddTarget } from "../../customHooks/list/accesDirectAddTarget";
+// import { useList } from "./lista";
+// import { useAccesDirectToAddTarget } from "../../customHooks/list/accesDirectAddTarget";
 import { useTargetsStore } from "../../store/targetsStore";
 import { CardProps } from "../../types/boardProps";
 

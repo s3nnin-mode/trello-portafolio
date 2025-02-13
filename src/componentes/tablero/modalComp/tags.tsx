@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import '../../../styles/tablero/tagsSettings.scss';
 import { BoardProps, ListProps, CardProps, TagsProps } from '../../../types/boardProps';
 import { EditTags } from './editTags';
@@ -12,7 +12,7 @@ interface TagsSettings {
 }
 
 export const Tags: React.FC<TagsSettings> = ({ board, list, card, closeTagsSettings }) => {
-    const { tags, setTagUsage, setUpdateTag } = useTagsStore();
+    const { tags, setTagUsage } = useTagsStore();
     const [isEditTag, setIsEditTag] = useState(false);
     const [isCreateTag, setIsCreateTag] = useState(false);
     const [tagToEdit, setTagToEdit] = useState<TagsProps>();

@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useSettingsModalList } from "../../componentes/tablero/settingsList";
 
 interface AccesDirectToAddTargetProps {
     setIsModalOptionsActive: React.Dispatch<React.SetStateAction<boolean>>

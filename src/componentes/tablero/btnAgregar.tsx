@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useRef } from 'react';
+import React from 'react';
 import '../../styles/tablero/agregarLista.scss';
 import { AiOutlinePlus } from "react-icons/ai";
 import { useState } from 'react';

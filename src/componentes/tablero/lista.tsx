@@ -3,7 +3,7 @@ import '../../styles/tablero/lista.scss';
 //REACT-ICONS
 import { RiCollapseHorizontalLine } from "react-icons/ri";
 //COMPONENTS
-import { SettingsList, useSettingsModalList } from "./settingsList";
+import { SettingsList } from "./settingsList";
 import { NameList } from "./list/changeNameList";
 import { BtnAdd } from "./btnAgregar";
 import { Card } from "./tarjeta";
@@ -81,7 +81,7 @@ export const List: React.FC<ListPropsComponent> = ({ board, list }) => {
             <div className='content_list'>
                 
                 {
-                    currentCards.map((card, index) => (
+                    currentCards.map((card) => (
                         <Card 
                             card={card}
                             board={board}

@@ -7,8 +7,6 @@ import { Tableros } from './componentes/rutas/tableros';
 
 function App() {
 
-  const { board } = useParams();
-
   return (
     <div className='App'>
       <Sidebar />
