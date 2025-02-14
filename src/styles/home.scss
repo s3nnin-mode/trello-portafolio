@@ -1,0 +1,22 @@
+.container_home {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .modal_home {
+        margin: 0 auto;
+        border: 2px solid;
+        padding: 10px;
+        border-radius: 6px;
+        p {
+            margin: 0;
+            display: block;
+        }
+
+        div {
+            display: flex;
+            justify-content: space-between;
+        }
+    }
+}

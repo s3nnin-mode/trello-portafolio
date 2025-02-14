@@ -1,21 +1,17 @@
+import { Route, Router, Routes } from 'react-router-dom';
 import './App.css'
-
-import { Sidebar } from './componentes/sidebar';
-import { Tablero } from './componentes/tablero/tablero';
-import { Routes, Route } from 'react-router-dom';
-import { Tableros } from './componentes/rutas/tableros';
+import { Start } from './componentes/rutas/start'
+import { FormLogin } from './componentes/rutas/formLogin';
+import { KanbaX } from './componentes/rutas/kanbaX';
 
 function App() {
 
   return (
-    <div className='App'>
-      <Sidebar />
-      <Routes>
-        {/* <Route path='/tablero' element={<Tablero />} /> */}
-        <Route path='/' element={<Tableros />} />
-        <Route path='/:currentIdBoard' element={<Tablero />}/>
-      </Routes>
-    </div>
+    <Routes>
+      <Route path="/" element={<Start />} />
+      <Route path="/login" element={<FormLogin />} />
+      <Route path="/kanbaX/*" element={<KanbaX />} />
+    </Routes>
   )
 }
 
