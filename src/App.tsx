@@ -1,8 +1,8 @@
-import { Route, Router, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import './App.css'
-import { Start } from './componentes/rutas/start'
-import { FormLogin } from './componentes/rutas/formLogin';
-import { KanbaX } from './componentes/rutas/kanbaX';
+import { Start } from './components/rutas/start';
+import { FormLogin } from './components/rutas/formLogin';
+import { KanbaX } from './components/rutas/kanbaX';
 
 function App() {
 
