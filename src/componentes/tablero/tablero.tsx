@@ -63,7 +63,7 @@ export const Tablero = () => {
         }
         console.log('No se hallo el board', currentBoard?.idBoard, boards);
 
-    }, [boards]);
+    }, [boards, currentIdBoard]);
 
     useEffect(() => {
         const indexListGroup = listsGroup.findIndex((listGroup) => listGroup.idBoard === currentIdBoard);

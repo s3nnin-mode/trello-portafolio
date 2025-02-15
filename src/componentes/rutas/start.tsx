@@ -1,9 +1,21 @@
 import { useEffect, useState } from "react";
-import { Home } from './home';
+import '../../styles/home.scss';
+
+import { useAuthContext } from "./tableros";
+import { Link, useNavigate } from "react-router-dom";
 
 export const Start = () => {
-    const [userAuth, setUserAuth] = useState(true);
+    const { userAuth } = useAuthContext();
     const [isLocalStorage, setIsLocalStorage] = useState(false); //solo es de ejemplo este estado
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const testAuth = true;
+        if (!testAuth) {      //aqui poner mas condicioes: userAuth || LS
+            navigate('/kanbaX')
+        }
+    }, []);
 
     useEffect(() => {
         if (userAuth) {
@@ -14,5 +26,21 @@ export const Start = () => {
         //si ninguna de las dos es true se queda en Home(modal para eleigir si usar la app como reclutador o para usarla realmente)
     }, []);
 
-    return <Home />
+    return(
+        <div className='container_home'>
+            <div className='modal_home'>
+                <p>Usaras la app formalmente o eres reclutador</p>
+                <div>
+                    <button>
+                        <Link to='/kanbaX'>
+                            Solo estoy viendo, gracias
+                        </Link>
+                    </button>
+                    <button>
+                        Uso profesional
+                    </button>
+                </div>
+            </div>
+        </div>
+    )
 }
