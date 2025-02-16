@@ -32,8 +32,11 @@ const useCustomBoard = () => {
         }
 
         setList({idBoard, newList});
-        const cards: CardProps[] = [];
-        setCardsGroup({idBoard, idList, cards});  //crear obejeto con propieda idBoard y idList para saber que pertenece a este ->tablero->lista. Se incializa con un array vacío
+        // const cards: CardProps[] = [];
+        setCardsGroup({idBoard, idList, cards: []});  //crear obejeto con propieda idBoard y idList para saber que pertenece a este ->tablero->lista. Se incializa con un array vacío
+        
+        // localStorage.setItem('lists-storage', JSON.stringify([...boards, newList]));
+        // localStorage.setItem('cards-storage', JSON.stringify())
     }
 
     return { addNewList, setLists, boards, listsGroup }
@@ -90,8 +93,6 @@ export const Tablero = () => {
 
         setLists({idBoard, lists});
     };
-
-    
 
     return (
         <div className='board' >

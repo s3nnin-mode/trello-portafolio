@@ -16,23 +16,23 @@ export const AuthProvider = ({children}: ChildrenProps) => {
     const [userAuth, setUserAuth] = useState(false);
     const { setBoards } = useBoardsStoree();
 
-    useEffect(() => {
-        if (!userAuth) {
-            let Ls = localStorage.getItem('boards-storage');
-            if (Ls) {
-                setBoards(JSON.parse(Ls));
-                console.log('LS', JSON.parse(Ls))
-            } else {
-                setBoards([]);
-                localStorage.setItem('boards-storage', JSON.stringify([]));
-            }
-        } else {
-            console.log('userAuth sejecutado')
-            /*AQUI IRÁ LA LOGICA PARA CARGAR EL ESTADO DESDE FIREBASE */
-            //const estadoDeFirebase = firebase.get()
-            //state.SetBoards(estadoDeFirebase)
-        }
-    }, [userAuth]);
+    // useEffect(() => {
+    //     if (!userAuth) {
+    //         let Ls = localStorage.getItem('boards-storage');
+    //         if (Ls) {
+    //             setBoards(JSON.parse(Ls));
+    //             console.log('LS', JSON.parse(Ls))
+    //         } else {
+    //             setBoards([]);
+    //             localStorage.setItem('boards-storage', JSON.stringify([]));
+    //         }
+    //     } else {
+    //         console.log('userAuth sejecutado')
+    //         /*AQUI IRÁ LA LOGICA PARA CARGAR EL ESTADO DESDE FIREBASE */
+    //         //const estadoDeFirebase = firebase.get()
+    //         //state.SetBoards(estadoDeFirebase)
+    //     }
+    // }, [userAuth]);
 
     return (
         <AuthContext.Provider value={{userAuth, setUserAuth}}>

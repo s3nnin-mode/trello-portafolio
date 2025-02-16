@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
 import { BoardProps } from "../types/boardProps";
 
 interface State {
@@ -7,8 +6,6 @@ interface State {
     setBoards: (boards: BoardProps[]) => void;
     setBoard: (board: BoardProps) => void;
 }
-
-// import {userAuth } from 'ejemplo';  userAuth estara en un contexto o en un estado de zustand
 
 export const useBoardsStoree = create<State>((set) => ({
     boards: [],
