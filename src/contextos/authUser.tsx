@@ -1,5 +1,4 @@
-import React, { createContext, ReactNode, useContext, useEffect, useState } from "react";
-import { useBoardsStoree } from "../store/boardsStore";
+import React, { createContext, ReactNode, useState } from "react";
 
 interface AuthContextProps {
     userAuth: boolean;
@@ -14,7 +13,6 @@ interface ChildrenProps {
 
 export const AuthProvider = ({children}: ChildrenProps) => {
     const [userAuth, setUserAuth] = useState(false);
-    const { setBoards } = useBoardsStoree();
 
     // useEffect(() => {
     //     if (!userAuth) {

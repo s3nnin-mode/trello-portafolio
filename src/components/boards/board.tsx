@@ -11,16 +11,15 @@ import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-ki
 
 //STORES
 import { useListsStore } from '../../store/listsStore';
-import { useBoardsStoree } from '../../store/boardsStore';
-import { useTargetsStore } from '../../store/targetsStore';
+import { useBoardsStore } from '../../store/boardsStore';
 //TYPES
 import { BoardProps, ListProps } from '../../types/boardProps';
 import { useListsServices } from '../../services/listsServices';
 import { useCardsServices } from '../../services/cardsServices';
 
 const useCustomBoard = () => {
-    const { setLists, listsGroup } = useListsStore();
-    const { boards } = useBoardsStoree();
+    const { listsGroup } = useListsStore();
+    const { boards } = useBoardsStore();
     const { listsService } = useListsServices();
     const { createCardGroup } = useCardsServices();
 
@@ -46,12 +45,12 @@ const useCustomBoard = () => {
         //para saber que estas cartas pertenece a este tablero y a esta lista
     }
 
-    return { addNewList, setLists, boards, listsGroup }
+    return { addNewList, boards, listsGroup }
 }
 
 export const Tablero = () => {
-    const { boards, listsGroup, addNewList, setLists } = useCustomBoard();
-
+    const { listsService } = useListsServices();
+    const { boards, listsGroup, addNewList } = useCustomBoard();
     const [currentBoard, setCurrentBoard] = useState<BoardProps>();
     const [idBoard, setIdBoard] = useState('');
 
@@ -63,16 +62,12 @@ export const Tablero = () => {
     }
 
     useEffect(()=> {
-        console.log('boards en tablero actual: ', boards)
         const indexBoard = boards.findIndex(b => b.idBoard === currentIdBoard);
         if (indexBoard > -1) {
-            console.log('si se halló el board', boards[indexBoard])
-           
             setCurrentBoard(boards[indexBoard]);
             setIdBoard(boards[indexBoard].idBoard);
             return
         }
-        console.log('No se hallo el board', currentBoard?.idBoard, currentIdBoard, boards);
     }, [boards, currentIdBoard]);
 
     useEffect(() => {
@@ -97,8 +92,15 @@ export const Tablero = () => {
         }
 
         const lists = arrayMove(currentLists, oldIndex, newIndex);
-
-        setLists({idBoard, lists});
+        listsService({
+            updateFn: (listsGroup) => listsGroup.map((listGroup) => 
+            listGroup.idBoard === idBoard
+            ?
+            { ...listGroup, lists: lists }
+            :
+            listGroup
+            )
+        })
     };
 
     // if (!currentIdBoard || currentBoard?.idBoard) {

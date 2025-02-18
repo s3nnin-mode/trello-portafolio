@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useListsStore } from "../../store/listsStore";
 import { ListProps } from "../../types/boardProps";
-import { useTargetsStore } from "../../store/targetsStore";
+import { useCardsStore } from "../../store/cardsStore";
 import { useListsServices } from "../../services/listsServices";
 
 interface UseFormCopyList {
@@ -10,7 +10,7 @@ interface UseFormCopyList {
 
 export const useFormCopyList = ({ setIsModalOptionsActive }: UseFormCopyList) => {
     const { listsGroup } = useListsStore();
-    const { setCardsGroup, cardsGroup } = useTargetsStore();
+    const { setCardsGroup, cardsGroup } = useCardsStore();
     const { listsService } = useListsServices();
     const [showFormCopyList, setShowFormCopyList] = useState(false);
 

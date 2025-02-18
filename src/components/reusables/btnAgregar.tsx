@@ -48,8 +48,10 @@ export const BtnAdd: React.FC<BtnAddProps> = ({ createListOrTargetName, nameComp
             }
             {
                 showForm && (
-                    <form className='form_add_some'>
+                    <form className='form_add_some' onPointerDown={(e) => e.stopPropagation()}>
                         <input
+                            onPointerDown={(e) => e.stopPropagation()}
+                            onKeyDown={(e) => e.stopPropagation()}
                             type='text'
                             className='input_add'
                             placeholder={`Nombre de ${components[nameComponentToAdd]}`}

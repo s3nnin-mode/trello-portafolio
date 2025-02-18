@@ -1,13 +1,13 @@
 import '../../styles/components/boards/boards.scss';
 import { BtnAdd } from '../reusables/btnAgregar';
 import { Link } from 'react-router-dom';
-import { useBoardsStoree } from '../../store/boardsStore';
+import { useBoardsStore } from '../../store/boardsStore';
 import { useBoardsServices } from '../../services/boardsServices';
 import { useListsServices } from '../../services/listsServices';
 import { BoardProps } from '../../types/boardProps';
 
 const useBoards = () => {
-  const { boards } = useBoardsStoree();
+  const { boards } = useBoardsStore();
   const { boardsService } = useBoardsServices();
   const { createGroupList } = useListsServices();
 

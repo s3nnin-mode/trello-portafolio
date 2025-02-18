@@ -11,8 +11,8 @@ import { Card } from "../card/card";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 //STORES
-import { useBoardsStoree } from "../../store/boardsStore";
-import { useTargetsStore } from "../../store/targetsStore";
+import { useBoardsStore } from "../../store/boardsStore";
+import { useCardsStore } from "../../store/cardsStore";
 //TYPES
 import { BoardProps, ListProps, CardProps } from '../../types/boardProps';
 import { useCardsServices } from "../../services/cardsServices";
@@ -23,8 +23,8 @@ interface ListPropsComponent {
 }
 
 export const useList = () => {
-    const { boards } = useBoardsStoree();
-    const { cardsGroup } = useTargetsStore();
+    const { boards } = useBoardsStore();
+    const { cardsGroup } = useCardsStore();
     const { cardsServices } = useCardsServices();
 
     const addNewCard = ({board, list, nameCard}: { board: BoardProps, list: ListProps, nameCard: string }) => {
@@ -92,8 +92,7 @@ export const List: React.FC<ListPropsComponent> = ({ board, list }) => {
                     <SettingsList idBoard={board.idBoard} list={list} />
                 </div>
             </header>
-            <div className='content_list'>
-                
+            <div className='content_list'>   
                 {
                     currentCards.map((card) => (
                         <Card 
@@ -105,7 +104,7 @@ export const List: React.FC<ListPropsComponent> = ({ board, list }) => {
                     ))
                 }
             </div>
-            <footer>
+            <footer onPointerDown={(e) => e.stopPropagation()}>
                 {
                     list && (
                         <BtnAdd 

@@ -4,17 +4,17 @@ import { Sidebar } from "../boards/sidebar";
 import { Tableros } from "../boards/boards";
 import { Tablero } from "../boards/board";
 import { useEffect } from 'react';
-import { useBoardsStoree } from '../../store/boardsStore';
+import { useBoardsStore } from '../../store/boardsStore';
 import { useAuthContext } from '../../customHooks/useAuthContext';
 import { useListsStore } from '../../store/listsStore';
-import { useTargetsStore } from '../../store/targetsStore';
+import { useCardsStore } from '../../store/cardsStore';
 import { useTagsStore } from '../../store/tagsStore';
 
 export const KanbaX = () => {
     const { userAuth } = useAuthContext();
-    const { loadBoards } = useBoardsStoree();
+    const { loadBoards } = useBoardsStore();
     const { loadLists } = useListsStore();
-    const { loadCards } = useTargetsStore();
+    const { loadCards } = useCardsStore();
     const { loadTags } = useTagsStore();
 
     const navigate = useNavigate();

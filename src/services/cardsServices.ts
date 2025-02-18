@@ -1,5 +1,5 @@
 import { useAuthContext } from "../customHooks/useAuthContext"
-import { useTargetsStore } from "../store/targetsStore"
+import { useCardsStore } from "../store/cardsStore"
 import { CardGroupProps, CardProps } from "../types/boardProps"
 
 export const useCardsServices = () => {
@@ -9,7 +9,7 @@ export const useCardsServices = () => {
     {
         updateFn: (cardsGroups: CardGroupProps[]) => CardGroupProps[]
     }) => {
-        useTargetsStore.setState((state) => ({
+        useCardsStore.setState((state) => ({
             cardsGroup: updateFn(state.cardsGroup)
         }));
 

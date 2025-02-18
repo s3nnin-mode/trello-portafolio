@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import '../../../../../styles/components/card/modalCard/modalComponents/cover/settingsCoverCard.scss';
 import { CardProps } from '../../../../../types/boardProps';
-import { useTargetsStore } from '../../../../../store/targetsStore';
+import { useCardsStore } from '../../../../../store/cardsStore';
 import { useCardsServices } from '../../../../../services/cardsServices';
 
 const colors = [
@@ -19,7 +19,7 @@ interface SettingsCoverProps {
 }
 
 export const SettingsCover: React.FC<SettingsCoverProps> = ({ card, idList, idBoard, closeComponent }) => {
-    const { setCoverCardImg } = useTargetsStore();
+    const { setCoverCardImg } = useCardsStore();
     const [coverType, setCoverType] = useState<'color' | 'img'>('color');
     const [coverPreview, setCoverPreview] = useState('');             //coverPreview será el color o la url de la imagen
     const { cardsServices } = useCardsServices();

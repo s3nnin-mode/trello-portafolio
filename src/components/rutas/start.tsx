@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import '../../styles/components/routes/start.scss';
 
 import { Link, useNavigate } from "react-router-dom";
-import { useBoardsStoree } from "../../store/boardsStore";
+import { useBoardsStore } from "../../store/boardsStore";
 import { useAuthContext } from "../../customHooks/useAuthContext";
 import { TagsProps } from "../../types/boardProps";
 
@@ -31,10 +31,8 @@ const initialTags: TagsProps[] = [
 
 export const Start = () => {
     const { userAuth } = useAuthContext();
-    const { loadBoards } = useBoardsStoree();
+    const { loadBoards } = useBoardsStore();
     const navigate = useNavigate();
-
-    //aqui poner mas condicioes: userAuth || LS
 
     useEffect(() => {
         const LS = localStorage.getItem('boards-storage');
@@ -43,7 +41,7 @@ export const Start = () => {
         //METER ESTO EN UN TRYCATCH Y AGREGARLE UN LOADER
         if (userAuth) {
             //se redirige a /app y se cargarn los datos de firebase
-            //setBoards([...firebase])
+            //loadBoards([...firebase])
         } else if (LS) {  //aqui podrias agregar si existe listas pero creo que con verificar boards es suficiente
             loadBoards(JSON.parse(LS));
             navigate('/kanbaX');

@@ -1,5 +1,5 @@
 import { useAuthContext } from "../customHooks/useAuthContext";
-import { useBoardsStoree } from "../store/boardsStore";
+import { useBoardsStore } from "../store/boardsStore";
 import { BoardProps } from "../types/boardProps";
 
 export const useBoardsServices = () => {
@@ -10,7 +10,7 @@ export const useBoardsServices = () => {
       updateFn: (BoardsGroup: BoardProps[]) => BoardProps[]
     }) => {
     
-      useBoardsStoree.setState((state) => ({
+      useBoardsStore.setState((state) => ({
         boards: updateFn(state.boards)
       }));
 

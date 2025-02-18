@@ -7,7 +7,7 @@ interface State {
     setBoard: (board: BoardProps) => void;
 }
 
-export const useBoardsStoree = create<State>((set) => ({
+export const useBoardsStore = create<State>((set) => ({
     boards: [],
     loadBoards: (boards) => set(() => {                                          //Cargamos los boards desde firebase o del localstorage
         return { boards: boards }

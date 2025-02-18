@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import '../../../../styles/components/list/optionsList/formsOptions/colorsToList.scss';
-import { useListsStore } from '../../../../store/listsStore';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import { ListProps } from '../../../../types/boardProps';
 import { useListsServices } from '../../../../services/listsServices';
