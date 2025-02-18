@@ -14,12 +14,15 @@ import { useListsStore } from '../../store/listsStore';
 import { useBoardsStoree } from '../../store/boardsStore';
 import { useTargetsStore } from '../../store/targetsStore';
 //TYPES
-import { BoardProps, ListProps, CardProps } from '../../types/boardProps';
+import { BoardProps, ListProps } from '../../types/boardProps';
+import { useListsServices } from '../../services/listsServices';
+import { useCardsServices } from '../../services/cardsServices';
 
 const useCustomBoard = () => {
-    const { setList, setLists, listsGroup } = useListsStore();
-    const { setCardsGroup } = useTargetsStore();
+    const { setLists, listsGroup } = useListsStore();
     const { boards } = useBoardsStoree();
+    const { listsService } = useListsServices();
+    const { createCardGroup } = useCardsServices();
 
     const addNewList = ({value, idBoard}: {value: string, idBoard: string}) => {
         const nameList = value;
@@ -30,13 +33,17 @@ const useCustomBoard = () => {
             nameList: nameList, 
             colorList: 'brown', 
         }
-
-        setList({idBoard, newList});
-        // const cards: CardProps[] = [];
-        setCardsGroup({idBoard, idList, cards: []});  //crear obejeto con propieda idBoard y idList para saber que pertenece a este ->tablero->lista. Se incializa con un array vacío
         
-        // localStorage.setItem('lists-storage', JSON.stringify([...boards, newList]));
-        // localStorage.setItem('cards-storage', JSON.stringify())
+        listsService({
+            updateFn: (listsGroup) => listsGroup.map((listGroup) => 
+                listGroup.idBoard === idBoard ?
+                {...listGroup, lists: [...listGroup.lists, newList]} :
+                listGroup
+            )
+        });
+        createCardGroup({idBoard, idList, cards: []});
+        //se inializa las cards con [] y un idBoard e idList
+        //para saber que estas cartas pertenece a este tablero y a esta lista
     }
 
     return { addNewList, setLists, boards, listsGroup }
@@ -56,6 +63,7 @@ export const Tablero = () => {
     }
 
     useEffect(()=> {
+        console.log('boards en tablero actual: ', boards)
         const indexBoard = boards.findIndex(b => b.idBoard === currentIdBoard);
         if (indexBoard > -1) {
             console.log('si se halló el board', boards[indexBoard])
@@ -64,8 +72,7 @@ export const Tablero = () => {
             setIdBoard(boards[indexBoard].idBoard);
             return
         }
-        console.log('No se hallo el board', currentBoard?.idBoard, boards);
-
+        console.log('No se hallo el board', currentBoard?.idBoard, currentIdBoard, boards);
     }, [boards, currentIdBoard]);
 
     useEffect(() => {
@@ -93,6 +100,10 @@ export const Tablero = () => {
 
         setLists({idBoard, lists});
     };
+
+    // if (!currentIdBoard || currentBoard?.idBoard) {
+    //     return <p>Tablero no encontrado</p>
+    // }
 
     return (
         <div className='board' >

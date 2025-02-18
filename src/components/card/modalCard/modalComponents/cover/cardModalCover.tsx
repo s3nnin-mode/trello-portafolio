@@ -1,7 +1,7 @@
 import { FaImage } from 'react-icons/fa';
 import '../../../../../styles/components/card/modalCard/modalComponents/cover/coverModalCard.scss';
 import { CardProps } from '../../../../../types/boardProps';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { SettingsCover } from './settingsCoverCard';
 import { IoMdClose } from 'react-icons/io';
 
@@ -14,10 +14,6 @@ interface CardModalCoverProps {
 
 export const CardModalCover: React.FC<CardModalCoverProps> = ({card, idList, idBoard, closeModal}) => {
     const [isEditCover, setIsEditCover] = useState(false);
-
-    useEffect(() => {
-        console.log('imgsss: ', card.coverCardImgs); // Verifica el contenido antes de mapear
-    }, [])
 
     return (
         <header 

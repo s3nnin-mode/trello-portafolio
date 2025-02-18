@@ -1,7 +1,7 @@
 import '../../../../styles/components/list/optionsList/formsOptions/removeList.scss';
 import { Modal, Button } from "react-bootstrap";
-import { useListsStore } from "../../../../store/listsStore";
 import { ListProps } from "../../../../types/boardProps";
+import { useListsServices } from '../../../../services/listsServices';
 
 interface ModalRemoveListProps {
     show: boolean
@@ -11,10 +11,17 @@ interface ModalRemoveListProps {
 }
 
 export const ModalToRemoveList: React.FC<ModalRemoveListProps> = ({show, onHide, list, idBoard}) => {
-    const { deleteList } = useListsStore();
+    const { listsService } = useListsServices();
+
     const handleRemoveList = () => {
         const idList = list.idList;
-        deleteList({ idBoard, idList });
+        listsService({
+            updateFn: (state) => state.map((listGroup) => 
+            listGroup.idBoard === idBoard ?
+            {...listGroup, lists: listGroup.lists.filter(list => list.idList !== idList)} :
+            listGroup
+            )
+        });
         onHide();
     }
 
@@ -32,14 +39,4 @@ export const ModalToRemoveList: React.FC<ModalRemoveListProps> = ({show, onHide,
             </Modal.Footer>
         </Modal>
     )
-}
-
-<div>
-    <header>header</header>
-    <body>
-        body
-    </body>
-    <footer>
-
-    </footer>
-</div>
+};

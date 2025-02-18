@@ -3,6 +3,7 @@ import '../../../../styles/components/list/optionsList/formsOptions/colorsToList
 import { useListsStore } from '../../../../store/listsStore';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import { ListProps } from '../../../../types/boardProps';
+import { useListsServices } from '../../../../services/listsServices';
 
 interface ColorsToListComponentProps {
     idBoard: string
@@ -10,14 +11,25 @@ interface ColorsToListComponentProps {
 }
 
 export const ColorsToList: React.FC<ColorsToListComponentProps> = ({idBoard, list}) => {
-    const { setColorList } = useListsStore();
+    const { listsService } = useListsServices();
     const [colorsWrapper, setColorsWrappers] = useState(true);              //COLORS WRAPPER
     const colors = ["brown", "blue", "green", "yellow", "black", "white", "orange", "purple", "gray", "pink"];
     const idList = list.idList;
 
-    const changeColorList = ({idBoard, idList, color}: {idBoard: string, idList: string, color: string}) => {
-        setColorList({idBoard, idList, color});
-    }
+    const changeColorList = ({idBoard, idList, color}: {idBoard: string, idList: string, color: string}) => 
+        listsService({
+            updateFn: (state) => state.map((listGroup) => 
+            listGroup.idBoard === idBoard ?
+            { ...listGroup, lists: listGroup.lists.map((list) => 
+                list.idList === idList ? 
+                { ...list, colorList: color } 
+                : 
+                list
+            )} 
+            :
+            listGroup
+        )
+    })
 
      return (
         <div className='container_change_bg_list'>                                                      {/* CHANGE COLOR CONTAINER*/}

@@ -1,7 +1,7 @@
 import '../../../../../styles/components/card/modalCard/modalComponents/tags/editTag.scss';
 import React, { useEffect, useState } from "react";
 import { TagsProps } from '../../../../../types/boardProps';
-import { useTagsStore } from '../../../../../store/tagsStore';
+import { useTagsService } from '../../../../../services/tagsServices';
 
 const colors = [
     "#E63946", "#F4A261", "#2A9D8F", "#264653", "blue",
@@ -21,9 +21,10 @@ interface EditTagsProps {
 } 
 
 export const EditTags: React.FC<EditTagsProps> = ({idBoard, idList, idCard, tag, titleAction, closeAll, closeComponent}) => {
-    const { setUpdateTag, setCreateTag, setRemoveTag } = useTagsStore();
+    // const { setUpdateTag, setCreateTag, setRemoveTag } = useTagsStore();
     const [nameTag, setNameTag] = useState('');
     const [color, setColor] = useState('');
+    const { tagsServices } = useTagsService();
 
     useEffect(() => {        //si es para editar una tag existente se cargan sus respectivas caracteristicas(color, nameTag)
         if (!tag) return;
@@ -34,7 +35,16 @@ export const EditTags: React.FC<EditTagsProps> = ({idBoard, idList, idCard, tag,
     const handleSaveChanges = () => {
         if (!tag) return
         const idTag = tag.idTag;
-        setUpdateTag({idTag, nameTag, color});
+        tagsServices((tags) => tags.map((tag) => 
+            tag.idTag === idTag ?
+            { 
+                ...tag,
+                nameTag: nameTag,
+                color: color
+            }
+            :
+            tag
+        ));
         closeComponent();
     }
 
@@ -48,14 +58,16 @@ export const EditTags: React.FC<EditTagsProps> = ({idBoard, idList, idCard, tag,
                 {idBoard, idList, idCard}
             ]
         }
-        setCreateTag(newTag);
+        // setCreateTag(newTag);
+        tagsServices((tags) => [newTag, ...tags]);
         closeComponent();
     }
 
     const removeTag = () => {
         if (!tag) return
         const idTag = tag.idTag;
-        setRemoveTag(idTag);        //falta agregar modal para confirmar eliminacion de una etiqueta
+        // setRemoveTag(idTag);        //falta agregar modal para confirmar eliminacion de una etiqueta
+        tagsServices((tags) => tags.filter(tag => tag.idTag !== idTag));
         closeComponent();
     }
 

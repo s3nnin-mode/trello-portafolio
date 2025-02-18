@@ -2,15 +2,16 @@ import { useState } from "react";
 import { useListsStore } from "../../store/listsStore";
 import { ListProps } from "../../types/boardProps";
 import { useTargetsStore } from "../../store/targetsStore";
+import { useListsServices } from "../../services/listsServices";
 
 interface UseFormCopyList {
     setIsModalOptionsActive: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export const useFormCopyList = ({ setIsModalOptionsActive }: UseFormCopyList) => {
-    const { listsGroup, setLists } = useListsStore();
-    const { setCardsGroup, cardsGroup } = useTargetsStore()
-
+    const { listsGroup } = useListsStore();
+    const { setCardsGroup, cardsGroup } = useTargetsStore();
+    const { listsService } = useListsServices();
     const [showFormCopyList, setShowFormCopyList] = useState(false);
 
     const copyList = ({idBoard, list, inputText}: {idBoard: string, list: ListProps, inputText: string}) => {
@@ -34,26 +35,22 @@ export const useFormCopyList = ({ setIsModalOptionsActive }: UseFormCopyList) =>
 
         //{   ESTA PARTE POSICIONA LA LISTA COPIADA JUSTO EN LA SIGUIENTE COLUMNA DE LA LISTA QUE SE COPIÓ
         const LISTS = [...listsGroup[indexListGroup].lists];          
-        let lists: ListProps[] = [];
+        let listsUpdate: ListProps[] = [];
 
         for (let i = 0; i < LISTS.length; i++) {
-            lists.push(LISTS[i]);
+            listsUpdate.push(LISTS[i]);
             if (i === indexListToCopy) {
-                lists.push(listCopy);
+                listsUpdate.push(listCopy);
             }
         }
-        //}
-        setLists({idBoard, lists})
 
-        {/*
-            por si acaso, un targetGroup se ve asi: 
-            {
-            idBoard: string
-            idList: string
-            targets: [aqui van sus propiedades]
-            }
-            
-        */}
+        listsService({ 
+            updateFn: (listsGroup) => listsGroup.map((listGroup) =>
+                listGroup.idBoard === idBoard ?
+                {...listGroup, lists: listsUpdate} :
+                listGroup
+            ),
+        });
     }
 
     const callbackHandleCopyList = ({idBoard, list, inputText}: {idBoard: string, list: ListProps, inputText: string}) => {    //al apretar el boton de copiar se cierra el formulario de copiar lista y se cierra el modal de opciones de la lista

@@ -25,19 +25,17 @@ export const Modal: React.FC<ModalTargetComponentProps> = ({ card, list, board, 
     const [showTags, setShowTags] = useState(false);
 
     useEffect(() => {
-        console.log('TAGS: ', tags)
         const activeTags: TagsProps[] = [];
 
         tags.map((tag) => 
             tag.cardsThatUseIt.some((c) => 
-            (c.idBoard === board.idBoard && c.idList === list.idList && c.idCard === card.idCard) 
-            ?
-            activeTags.push(tag) : null
+            (c.idBoard === board.idBoard && c.idList === list.idList && c.idCard === card.idCard) ?
+            activeTags.push(tag) : 
+            null
             )
         )
 
         setCurrentActiveTags(activeTags);
-        console.log('current tags: ', activeTags)
     }, [tags]);
 
     return (

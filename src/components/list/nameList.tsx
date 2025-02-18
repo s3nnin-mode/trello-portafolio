@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import '../../styles/components/list/nameList.scss';
 import {  useListsStore } from '../../store/listsStore';
 import { ListProps } from "../../types/boardProps";
+import { useListsServices } from "../../services/listsServices";
 
 interface NameListPropsComponent {
     idBoard: string
@@ -9,20 +10,35 @@ interface NameListPropsComponent {
 }
 
 export const NameList: React.FC<NameListPropsComponent> = ({idBoard, list}) => {
-    const { setNewNameList } = useListsStore();
-
+    const { listsService } = useListsServices();
     const [isOpenInput, setIsOpenInput] = useState(false);
     const [nameList, setNameList] = useState('');
 
     useEffect(() => {
         setNameList(list.nameList);
+        
     }, []);
 
     const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const idList = list.idList;
-        const newNameList = e.target.value;
-        setNameList(e.target.value);
-        setNewNameList({idBoard, idList, newNameList})
+        setNameList(e.target.value); 
+
+        listsService({
+            updateFn: (listsGroup) => listsGroup.map((listGroup) => 
+                listGroup.idBoard === idBoard
+                ?
+                {   ...listGroup,
+                    lists: listGroup.lists.map((list) => 
+                        list.idList === idList ? 
+                        { ...list, nameList: e.target.value } 
+                        : 
+                        list
+                    )
+                }
+                :
+                listGroup
+            )
+        });
     }
 
     const onInput = (e: React.FormEvent<HTMLTextAreaElement>) => {

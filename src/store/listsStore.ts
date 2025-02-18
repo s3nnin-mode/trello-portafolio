@@ -1,9 +1,9 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
 import { ListProps, ListsGroup } from "../types/boardProps";
 
 interface State {
     listsGroup: ListsGroup[];
+    loadLists: (lists: ListsGroup[]) => void      //para cargar datos de firebase o ls
     setListGroup: (props: {idBoard: string}) => void
     setList: ({idBoard, newList}: {idBoard: string, newList: ListProps}) => void
     setColorList: (props: {idBoard: string, idList: string, color: string}) => void
@@ -12,21 +12,23 @@ interface State {
     setLists: (props: {idBoard: string, lists: ListProps[]}) => void
 }
 
-export const useListsStore = create<State>()(
-    persist(
-        (set) => ({
-            listsGroup: [],
-        setListGroup: ({idBoard}) => set((state) => ({
+//ya no ocupas las actions, solo necesitas replicar esta logica en cada componente que lo use
+export const useListsStore = create<State>((set) => ({
+        listsGroup: [],
+        loadLists: (lists) => set(() => ({
+            listsGroup: lists
+        })),
+        setListGroup: ({idBoard}) => set((state) => ({            //por cada tablero creado se inicializa un grupo de listas que pertenecen a ese tablero. Se inicializa con un []
             listsGroup: [...state.listsGroup, {idBoard: idBoard, lists: []}]
         })),
-        setList: ({idBoard, newList}) => set((state) => ({
+        setList: ({idBoard, newList}) => set((state) => ({             //cuando se agrega una lista se busca el grupo de lista al que pertenece
             listsGroup: state.listsGroup.map((listGroup) => listGroup.idBoard === idBoard
             ?
             { ...listGroup, lists: [...listGroup.lists, newList]}
             :
             listGroup
         )})),
-        setLists: ({idBoard, lists}) => set((state) => ({
+        setLists: ({idBoard, lists}) => set((state) => ({           //creo que era para dar actualizar el orden de las listas de un grupo
             listsGroup: state.listsGroup.map((listGroup) => 
                 listGroup.idBoard === idBoard
             ?
@@ -72,9 +74,9 @@ export const useListsStore = create<State>()(
             listGroup
             )
         }))
-    }),
-    {
-        name: 'lists-storage'
-    }
-    )
-)
+}));
+
+
+        // {
+        //     name: 'lists-storage'
+        // }

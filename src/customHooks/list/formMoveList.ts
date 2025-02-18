@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useListsStore } from "../../store/listsStore";
 import { ListProps } from "../../types/boardProps";
+import { useListsServices } from "../../services/listsServices";
 
 interface UseFormMoveList {
     setIsModalOptionsActive: React.Dispatch<React.SetStateAction<boolean>>
@@ -8,7 +9,8 @@ interface UseFormMoveList {
 }
 
 export const useFormMoveList = ({ setIsModalOptionsActive}: UseFormMoveList) => {
-    const { listsGroup, setLists } = useListsStore();
+    const { listsGroup } = useListsStore();
+    const { listsService } = useListsServices();
     const [showFormMoveList, setShowFormMoveList] = useState(false)
 
     const moveList = ({idBoard, list, position}: {idBoard: string, list: ListProps, position: number}) => {
@@ -38,7 +40,16 @@ export const useFormMoveList = ({ setIsModalOptionsActive}: UseFormMoveList) => 
             return l
         })
 
-        setLists({idBoard, lists});
+        // setLists({idBoard, lists});
+        listsService({
+            updateFn: (listsGroup) => listsGroup.map((listGroup) =>
+                listGroup.idBoard === idBoard
+                ?
+                { ...listGroup, lists: lists }
+                :
+                listGroup
+            )
+        })
     }
     
     const openFormMoveList = () => {

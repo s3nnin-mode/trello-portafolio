@@ -3,6 +3,7 @@ import '../../../../../styles/components/card/modalCard/modalComponents/tags/tag
 import { BoardProps, ListProps, CardProps, TagsProps } from '../../../../../types/boardProps';
 import { EditTags } from './editTags';
 import { useTagsStore } from '../../../../../store/tagsStore';
+import { useTagsService } from '../../../../../services/tagsServices';
 
 interface TagsSettings {
     board: BoardProps
@@ -12,19 +13,34 @@ interface TagsSettings {
 }
 
 export const Tags: React.FC<TagsSettings> = ({ board, list, card, closeTagsSettings }) => {
-    const { tags, setTagUsage } = useTagsStore();
+    const { tags } = useTagsStore();
     const [isEditTag, setIsEditTag] = useState(false);
     const [isCreateTag, setIsCreateTag] = useState(false);
     const [tagToEdit, setTagToEdit] = useState<TagsProps>();
     const [inputValue, setInputValuet] = useState('');
     const [limitTagsToShow, setLimitTagsToShow] = useState(5);
+    const { tagsServices } = useTagsService();
 
-    const onChangeCheckbox = (prop: string) => setTagUsage({
-        idBoard: board.idBoard, 
-        idList: list.idList, 
-        idCard: card.idCard, 
-        idTag: prop
-    });
+    const onChangeCheckbox = (prop: string) => {
+        const idCard = card.idCard;
+        const idTag = prop;
+
+        tagsServices((tags) => tags.map((tag) => 
+            tag.idTag === idTag 
+            ?
+            {
+                ...tag,
+                cardsThatUseIt: tag.cardsThatUseIt.some(card => 
+                card.idBoard === board.idBoard && card.idList === list.idList && card.idCard === idCard) 
+                ? 
+                tag.cardsThatUseIt.filter(card => card.idBoard !== board.idBoard && card.idList !== list.idList && card.idCard !== idCard) 
+                : 
+                [...tag.cardsThatUseIt, {idBoard: board.idBoard, idList: list.idList, idCard}]
+            }
+            :
+            tag
+        ))
+    };
 
     const openInterfaceToEditTag = ({tag}:{tag: TagsProps}) => {
         setIsEditTag(true);

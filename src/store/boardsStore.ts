@@ -3,13 +3,13 @@ import { BoardProps } from "../types/boardProps";
 
 interface State {
     boards: BoardProps[]
-    setBoards: (boards: BoardProps[]) => void;
+    loadBoards: (boards: BoardProps[]) => void;
     setBoard: (board: BoardProps) => void;
 }
 
 export const useBoardsStoree = create<State>((set) => ({
     boards: [],
-    setBoards: (boards) => set(() => {                                          //Cargamos los boards desde firebase o del localstorage
+    loadBoards: (boards) => set(() => {                                          //Cargamos los boards desde firebase o del localstorage
         return { boards: boards }
     }),
     setBoard: (board) => set((state) => ({  //al actualizar un tablero verificamos isDemo, de ser asi guardamos manualmente en localstorage para que esten coordinados. Sino no guardamos nada, ya que significa que es de firebase, la logica para actualizar en firebase sera directamente en el componente, solo actualizamos el estado para estar sincronizado

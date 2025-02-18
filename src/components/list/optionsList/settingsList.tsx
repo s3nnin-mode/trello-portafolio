@@ -20,8 +20,8 @@ import { useFormMoveList } from "../../../customHooks/list/formMoveList";
 import { BtnAdd } from "../../reusables/btnAgregar";
 // import { useList } from "./lista";
 // import { useAccesDirectToAddTarget } from "../../customHooks/list/accesDirectAddTarget";
-import { useTargetsStore } from "../../../store/targetsStore";
 import { CardProps } from "../../../types/boardProps";
+import { useCardsServices } from "../../../services/cardsServices";
 
 interface SettingsListProps {
     idBoard: string
@@ -34,13 +34,11 @@ export const useSettingsModalList = () => {
 }
 
 export const SettingsList: React.FC<SettingsListProps> = ({ idBoard, list }) => {
-    const { setCardToTop } = useTargetsStore();
     const { isModalOptionsActive, setIsModalOptionsActive} = useSettingsModalList();
-    const { showFormCopyList, openFormCopyList, closeFormCopyList, closeAllFormCopy, callbackHandleCopyList } = useFormCopyList({ setIsModalOptionsActive });
+    const { showFormCopyList, openFormCopyList, closeFormCopyList, closeAllFormCopy, callbackHandleCopyList } = useFormCopyList({setIsModalOptionsActive});
     const { showFormMoveList, openFormMoveList, closeFormMoveList, closeAllMoveList, callbackHandleMoveList } = useFormMoveList({setIsModalOptionsActive});
-    const [ show, setShow ] = useState(false);
-    const openModal = () => setShow(true);
-    const handleClose = () => setShow(false);
+    const [ showModalToRemoveList, setShowModalToRemoveList ] = useState(false);
+    const { cardsServices } = useCardsServices();
 
     const addNewCard = (nameCard: string) => {
         const cardToAdd: CardProps = {
@@ -50,7 +48,18 @@ export const SettingsList: React.FC<SettingsListProps> = ({ idBoard, list }) => 
             coverCardImgs: [],
             currentCoverType: 'color'
         };
-        setCardToTop({idBoard, idList: list.idList, cardToAdd}); 
+
+        cardsServices({
+            updateFn: (cardsGroup) => cardsGroup.map((cardGroup) => 
+                cardGroup.idBoard === idBoard && cardGroup.idList === list.idList ?
+                    {
+                        ...cardGroup,
+                        cards: [cardToAdd, ...cardGroup.cards]
+                    }
+                :
+                    cardGroup
+            )
+        });
     }
 
     return (
@@ -78,7 +87,7 @@ export const SettingsList: React.FC<SettingsListProps> = ({ idBoard, list }) => 
 
                 <ColorsToList idBoard={idBoard} list={list} />                              {/*CHANGE COLOR LIST*/}
 
-                <button className='btn_setting_list' onClick={openModal}>             {/* REMOVE LIST */}
+                <button className='btn_setting_list' onClick={() => setShowModalToRemoveList(true)}>             {/* REMOVE LIST */}
                     Eliminar lista
                 </button>   
             </div>
@@ -107,7 +116,11 @@ export const SettingsList: React.FC<SettingsListProps> = ({ idBoard, list }) => 
                 )
             }
 
-            <ModalToRemoveList show={show} onHide={handleClose} idBoard={idBoard} list={list} />
+            <ModalToRemoveList 
+                show={showModalToRemoveList} 
+                onHide={() => setShowModalToRemoveList(false)} 
+                idBoard={idBoard} 
+                list={list} />
         </div>
     )
 }

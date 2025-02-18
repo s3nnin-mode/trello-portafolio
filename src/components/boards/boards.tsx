@@ -2,33 +2,26 @@ import '../../styles/components/boards/boards.scss';
 import { BtnAdd } from '../reusables/btnAgregar';
 import { Link } from 'react-router-dom';
 import { useBoardsStoree } from '../../store/boardsStore';
-import { useListsStore } from '../../store/listsStore';
-import { useAuthContext } from '../../customHooks/useAuthContext';
+import { useBoardsServices } from '../../services/boardsServices';
+import { useListsServices } from '../../services/listsServices';
+import { BoardProps } from '../../types/boardProps';
 
 const useBoards = () => {
-  const { boards, setBoard } = useBoardsStoree();
-  const { setListGroup } = useListsStore();
-  const { userAuth } = useAuthContext();
+  const { boards } = useBoardsStoree();
+  const { boardsService } = useBoardsServices();
+  const { createGroupList } = useListsServices();
 
   const addNewBoard = (nameBoard: string) => {
     const idBoard = (nameBoard + Date.now()).toString();
-
-    const newBoard = { 
-      idBoard: idBoard,
-      nameBoard: nameBoard,
-      lists: []
-    }
-    setBoard(newBoard);
-    setListGroup({idBoard});     //crear objeto con idBoard para saber que pertenece a este board e inicializar un array lists vacio
+    const newBoard: BoardProps = { idBoard, nameBoard };
     
-    if (userAuth) {
-      console.log('No esta auth: procede a guardar board en LS');   //logica de firebase 
-    } else {
-      localStorage.setItem('boards-storage', JSON.stringify([...boards, newBoard]));
-    }
+    boardsService({
+      updateFn: (boards) => [...boards, newBoard]
+    });
+    createGroupList({idBoard}); //crear grupo de lista con idBoard para saber que pertenece a este board e inicializar un array lists vacio
   }
 
-  return { boards, setBoard, setListGroup, addNewBoard }
+  return { boards, addNewBoard }
 }
 
 export const Tableros = () => {

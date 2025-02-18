@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import '../../../../../styles/components/card/modalCard/modalComponents/cover/settingsCoverCard.scss';
 import { CardProps } from '../../../../../types/boardProps';
 import { useTargetsStore } from '../../../../../store/targetsStore';
+import { useCardsServices } from '../../../../../services/cardsServices';
 
 const colors = [
     "#E63946", "#F4A261", "#2A9D8F", "#264653", "blue",
@@ -18,27 +19,27 @@ interface SettingsCoverProps {
 }
 
 export const SettingsCover: React.FC<SettingsCoverProps> = ({ card, idList, idBoard, closeComponent }) => {
-    const { setCoverCard, setCoverCardImg } = useTargetsStore();
+    const { setCoverCardImg } = useTargetsStore();
     const [coverType, setCoverType] = useState<'color' | 'img'>('color');
     const [coverPreview, setCoverPreview] = useState('');             //coverPreview será el color o la url de la imagen
+    const { cardsServices } = useCardsServices();
 
     useEffect(() => {
         setCoverType(card.currentCoverType);
         setCoverPreview(card.coverCard);
-
     }, []);
 
     if (!card) return;
 
-    const handleColorPreview = (availableColor: string) => {
+    const handleColorPreview = (availableColor: string) => { //Para dar una vista previa al usuario de como se veria la portada con el respectivo color
         setCoverType('color');
-        setCoverPreview(availableColor)
+        setCoverPreview(availableColor);
     }
 
-    const handleImgPreview = (img: string) => {
+    const handleImgPreview = (img: string) => {   //Para dar una vista previa al usuario de como se veria la portada con la respectiva img
         setCoverType('img');
         // setCoverPreview(URL.createObjectURL(file));
-        setCoverPreview(img)
+        setCoverPreview(img);
     }
 
     const handleUpdateImg = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,8 +52,25 @@ export const SettingsCover: React.FC<SettingsCoverProps> = ({ card, idList, idBo
 
     const handleSaveChanges = () => {
         const idCard = card.idCard;
-        const cover = coverPreview;
-        setCoverCard({idBoard, idList, idCard, cover, coverType});
+        // setCoverCard({idBoard, idList, idCard, cover, coverType});
+        cardsServices({
+            updateFn: (cardsGroup) => cardsGroup.map((cardGroup) => 
+                (cardGroup.idBoard === idBoard && cardGroup.idList === idList) ?
+                    {   ...cardGroup,
+                        cards: cardGroup.cards.map((card) => 
+                            card.idCard === idCard ?
+                            { 
+                                ...card, 
+                                currentCoverType: coverType,
+                                coverCard: coverPreview
+                            } :
+                            card
+                        )
+                    }
+                :
+                cardGroup
+            )
+        });
         closeComponent();
     }
 

@@ -15,6 +15,7 @@ import { useBoardsStoree } from "../../store/boardsStore";
 import { useTargetsStore } from "../../store/targetsStore";
 //TYPES
 import { BoardProps, ListProps, CardProps } from '../../types/boardProps';
+import { useCardsServices } from "../../services/cardsServices";
 
 interface ListPropsComponent {
     list: ListProps
@@ -23,7 +24,8 @@ interface ListPropsComponent {
 
 export const useList = () => {
     const { boards } = useBoardsStoree();
-    const { setCard, cardsGroup } = useTargetsStore();
+    const { cardsGroup } = useTargetsStore();
+    const { cardsServices } = useCardsServices();
 
     const addNewCard = ({board, list, nameCard}: { board: BoardProps, list: ListProps, nameCard: string }) => {
         const idList = list.idList;
@@ -36,7 +38,19 @@ export const useList = () => {
             coverCardImgs: [],
             currentCoverType: 'color'
         };
-        setCard({idBoard, idList, newCard}); 
+        
+        cardsServices({
+            updateFn: (cardsGroup) => cardsGroup.map((cardGroup) =>
+                (cardGroup.idBoard === idBoard && cardGroup.idList === idList) 
+                ?
+                {
+                    ...cardGroup,
+                    cards: [...cardGroup.cards, newCard]
+                }
+                :
+                cardGroup
+                )
+        })
     }
 
     return { addNewCard, boards, cardsGroup };
@@ -57,12 +71,12 @@ export const List: React.FC<ListPropsComponent> = ({ board, list }) => {
         }
     }, [cardsGroup]);
 
-    if (!list || !currentCards) {
-        return null
-    }
+    // if (!list || !currentCards) {
+    //     return null
+    // }
 
     return (
-        <div 
+        <li 
             ref={setNodeRef}
             {...attributes}
             {...listeners}
@@ -102,6 +116,6 @@ export const List: React.FC<ListPropsComponent> = ({ board, list }) => {
                     )
                 }
             </footer>
-        </div>
+        </li>
     )
 }

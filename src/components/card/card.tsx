@@ -15,23 +15,13 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
     const { tags } = useTagsStore();
     const [modal, setModal] = useState<boolean>(false);
 
-    useEffect(() => {
-        console.log('img en target: ', card.coverCard)
-        console.log('files', card.coverCardImgs)
-    }, []);
-
     if (!card) {
         return null
     }
 
     const isActive = ({tag}: {tag: TagsProps}) => {
-        // console.log('taggggg: ', tag)
-        // if (tag.cardsThatUseIt.length <= 0) {
-        //     return false
-        // } 
-
         return tag.cardsThatUseIt.some((t) =>
-                t.idBoard === board.idBoard && t.idList === list.idList && t.idCard === card.idCard ?
+                (t.idBoard === board.idBoard && t.idList === list.idList && t.idCard === card.idCard) ?
                 true :
                 false
             )
