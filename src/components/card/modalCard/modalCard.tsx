@@ -5,6 +5,9 @@ import { useTagsStore } from "../../../store/tagsStore";
 //COMPONENTS
 import { Tags } from "./modalComponents/tags/tags";
 import { CardModalCover } from "./modalComponents/cover/cardModalCover";
+import { BtnOpenTags } from "./modalComponents/btnOpenTags/btnOpenTags";
+import { TitleModalCard } from "./modalComponents/titleModalCard";
+import { BtnRemoveCard } from "./modalComponents/btnOpenTags/btnRemoveCard";
 
 interface ModalTargetComponentProps {
     card: CardProps
@@ -47,10 +50,13 @@ export const Modal: React.FC<ModalTargetComponentProps> = ({ card, list, board, 
                 closeModal={closeModal} 
             />
 
-            <article className='name_card_container'>
-                <h3>Target: {card.nameCard}</h3>
-                <p>en la lista {list.nameList}</p>
-            </article>
+            <div className='sidebar_modal'>             {/*SIDEBAR*/}
+                <BtnOpenTags board={board} list={list} card={card} />
+                <button className='btn_modal_sidebar'>Editar</button>
+                <BtnRemoveCard idBoard={board.idBoard} list={list} card={card} />
+            </div>
+
+            <TitleModalCard board={board} list={list} card={card} />
             
             <div className='modal_content_container'>         {/*CONTENIDO*/}
                 <div className='modal_content'>
@@ -71,7 +77,7 @@ export const Modal: React.FC<ModalTargetComponentProps> = ({ card, list, board, 
                             :
                             <>
                                 <span style={{fontStyle: 'italic'}}>No hay etiquetas para esta tarjeta..</span>
-                                <button className='btn_add_tag' onClick={() => setShowTags(true)}>+</button>  {/*PARA ACTIVAR EL MODAL*/}
+                                <button className='btn_add_tag' onClick={() => setShowTags(true)}>+</button>             {/*PARA ACTIVAR EL MODAL*/}
                             </>
 
                         }
@@ -79,11 +85,7 @@ export const Modal: React.FC<ModalTargetComponentProps> = ({ card, list, board, 
                     </div>                   
                 </div>
 
-                <div className='sidebar_modal'>             {/*SIDEBAR*/}
-                    <button>Tags</button>
-                    <button>Editar</button>
-                    <button>Eliminar</button>
-                </div> 
+                 
             </div>
 
             {

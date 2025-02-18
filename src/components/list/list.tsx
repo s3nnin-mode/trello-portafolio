@@ -4,7 +4,7 @@ import '../../styles/components/list/list.scss';
 import { RiCollapseHorizontalLine } from "react-icons/ri";
 //COMPONENTS
 import { SettingsList } from "./optionsList/settingsList";
-import { NameList } from "./nameList";
+import { NameComponent } from "../reusables/nameComponent";
 import { BtnAdd } from "../reusables/btnAgregar";
 import { Card } from "../card/card";
 //DRAG AND DROP
@@ -84,7 +84,7 @@ export const List: React.FC<ListPropsComponent> = ({ board, list }) => {
             style={style} 
         >    
             <header className='header_list'>
-                <NameList idBoard={board.idBoard} list={list} />                     {/* NAMELIST */}
+                <NameComponent idBoard={board.idBoard} list={list} componentType='list' />                     {/* NAMELIST */}
                 <div className='btns_header_list'>
                     <button className='btn_collapse_list' onClick={() => setIsListCollapse(!isListCollapse)}>
                         <RiCollapseHorizontalLine className='icon_collapse_list' />

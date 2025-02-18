@@ -1,5 +1,5 @@
 .modal_show {
-    position: fixed; /* Fijo en la ventana del navegador */
+    position: absolute; /* Fijo en la ventana del navegador */
     top: 50%;        /* Posiciona en el 50% desde la parte superior */
     left: 50%;       /* Posiciona en el 50% desde la izquierda */
     transform: translate(-50%, -50%); /* Centra el elemento usando transformación */
@@ -8,25 +8,15 @@
     padding: 20px;   /* Espaciado interno */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra */
     border-radius: 8px; /* Opcional: esquinas redondeadas */
-    width: 90%;      /* Ancho responsivo */
-    max-width: 500px;
-    min-height: 90vh;
+    width: 50%;      /* Ancho responsivo */
+    // max-width: 500px;
+    // min-height: 90vh;
     // overflow-y: auto;
     cursor: auto;
 
     display: flex;
     gap: 10px;
     flex-direction: column;
-
-    .name_card_container {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-
-        p, h3 {
-            margin: 0;
-        }
-    }
 
     .modal_content_container {
         display: flex;
@@ -77,24 +67,28 @@
                 }
             }
         }
+    }
 
-        .sidebar_modal {
-            width: 30%;
+    .sidebar_modal {
+        // width: 30%;
+        display: flex;
+        gap: 9px;
+        
+        .btn_modal_sidebar {
             padding: 5px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            background-color: #ccc;
+        }
 
-            button {
-                display: block;
-                width: 100%;
-                margin: 5px 0;
-                padding: 5px;
-                border-radius: 6px;
-                border: none;
-                cursor: pointer;
-            }
+        .remove_card:hover {
+            color: white;
+            background-color: red;
+        }
 
-            button:hover {
-                background-color: #ccc;
-            }
+        button:hover {
+            background-color: grey;
         }
     }
 }

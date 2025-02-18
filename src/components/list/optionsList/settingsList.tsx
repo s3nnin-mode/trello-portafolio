@@ -8,7 +8,7 @@ import { PiDotsThreeOutlineFill } from "react-icons/pi";
 import { FormCopyElement } from "./formsOptions/copiarElemento";
 import { FormMoveList } from "./formsOptions/formMoverLista";
 import { ColorsToList } from "./formsOptions/colorsList";
-import { ModalToRemoveList } from "./formsOptions/removeList";
+import { ModalToRemoveItem } from "../../reusables/modalToRemoveItem";
 //STORES
 // import { useListsStore } from "../../store/listsStore";
 // import { useBoardsStoree } from "../../store/boardsStore";
@@ -116,11 +116,13 @@ export const SettingsList: React.FC<SettingsListProps> = ({ idBoard, list }) => 
                 )
             }
 
-            <ModalToRemoveList 
+            <ModalToRemoveItem 
                 show={showModalToRemoveList} 
                 onHide={() => setShowModalToRemoveList(false)} 
                 idBoard={idBoard} 
-                list={list} />
+                list={list} 
+                itemToRemove='list'
+                />
         </div>
     )
 }
