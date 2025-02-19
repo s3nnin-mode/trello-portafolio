@@ -48,6 +48,12 @@
         }
     }
 
+    .content_list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
     footer {
         
         .form_add_target {

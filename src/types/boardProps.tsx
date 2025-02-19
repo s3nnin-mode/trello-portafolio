@@ -32,6 +32,7 @@ export interface CardProps {
     coverCard: string
     coverCardImgs: string[]
     currentCoverType: 'color' | 'img'
+    complete?: boolean
 }
 
 export interface CardGroupProps {

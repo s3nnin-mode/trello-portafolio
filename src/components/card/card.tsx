@@ -1,9 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useRef } from "react";
 import '../../styles/components/card/card.scss';
 import { useState } from "react";
 import { Modal } from "./modalCard/modalCard";
 import { BoardProps, ListProps, TagsProps, CardProps } from '../../types/boardProps';
 import { useTagsStore } from "../../store/tagsStore";
+import { CardCover } from "./cardCover";
+import { SettingsList } from "../list/optionsList/settingsList";
 
 interface TargetComponentProps {
     card: CardProps
@@ -21,23 +23,27 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
 
     const isActive = ({tag}: {tag: TagsProps}) => {
         return tag.cardsThatUseIt.some((t) =>
-                (t.idBoard === board.idBoard && t.idList === list.idList && t.idCard === card.idCard) ?
+                t.idBoard === board.idBoard && 
+                t.idList === list.idList && 
+                t.idCard === card.idCard 
+                ?
                 true :
                 false
             )
     }
 
+    const [isPlaying, setIsPlaying] = useState(false);
+
     return(
         <>
-        <article className='target' onClick={() => setModal(true)} onPointerDown={(e) => e.stopPropagation()}>
-            {
-                card.currentCoverType === 'color' ?
-                <div 
-                    style={{backgroundColor: card.currentCoverType === 'color' ? card.coverCard : ''}}
-                    className='color_top' /> 
-                :
-                <img src={card.coverCard} />
-            }
+        <article 
+            onMouseEnter={(e) => {e.stopPropagation(); setIsPlaying(true)}}
+            onMouseLeave={(e) => {e.stopPropagation(); setIsPlaying(false)}}
+            className='target' 
+            onClick={() => setModal(true)} 
+            onPointerDown={(e) => e.stopPropagation()}
+            >
+            <CardCover idBoard={board.idBoard} list={list} card={card} isPlaying={isPlaying} />
 
             <div className='content_target'>
                 <ul className='tags_active'>
