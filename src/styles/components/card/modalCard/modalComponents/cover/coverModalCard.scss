@@ -10,6 +10,25 @@
     height: 100px;
     max-height: 100px;
 
+    .cover_text_card_completed {
+        position: absolute;
+        top: 6px;
+        left: 8px;
+        font-style: italic;
+        display: flex;
+        align-items: center;
+
+        .icon_completed {
+            font-size: 25px;
+            color: green;
+        }
+
+        span {
+            padding-left: 2px;
+            font-weight: 600;
+        }
+    }
+
     .btns_header_modal_card {
         position: absolute;
         max-height: 100px;

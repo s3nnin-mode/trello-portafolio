@@ -46,7 +46,9 @@ export const SettingsList: React.FC<SettingsListProps> = ({ idBoard, list }) => 
             nameCard: nameCard,
             coverCard: 'grey',
             coverCardImgs: [],
-            currentCoverType: 'color'
+            currentCoverType: 'color',
+            complete: false,
+            description: null
         };
 
         cardsServices({

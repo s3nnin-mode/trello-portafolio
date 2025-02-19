@@ -1,0 +1,41 @@
+.tags_container {
+    display: flex;
+    flex-direction: column;
+
+    h3 {
+        display: block;
+    }
+
+    .tags {
+        display: flex;
+        flex-wrap: wrap;
+        
+        .tag_active {
+            min-height: 35px;
+            margin: 3px;
+            padding: 4px;
+            border-radius: 6px;
+            border: none;
+            font-size: 14px;
+            display: inline-block;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            overflow-wrap: break-word;
+            max-width: 100%;
+        }
+
+        .btn_add_tag {
+            width: 40px;
+            margin: 3px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            background-color: rgb(114, 109, 109);
+        }
+
+        .btn_add_tag:hover {
+            background-color: #ccc;
+        }
+    }
+}

@@ -3,7 +3,9 @@ import '../../../../../styles/components/card/modalCard/modalComponents/cover/co
 import { CardProps } from '../../../../../types/boardProps';
 import { useState } from 'react';
 import { SettingsCover } from './settingsCoverCard';
+//ICONS
 import { IoMdClose } from 'react-icons/io';
+import { FaRegCircleCheck } from "react-icons/fa6";
 
 interface CardModalCoverProps {
     idBoard: string
@@ -41,6 +43,14 @@ export const CardModalCover: React.FC<CardModalCoverProps> = ({card, idList, idB
 
             {
                 isEditCover && <SettingsCover idBoard={idBoard} idList={idList} card={card} closeComponent={() => setIsEditCover(false)} />
+            }
+
+            {
+                card.complete && (
+                    <div className='cover_text_card_completed'>
+                        <FaRegCircleCheck className='icon_completed' /> <span>Tarjeta completada</span>
+                    </div>
+                )
             }
         </header>
     )

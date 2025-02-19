@@ -36,7 +36,9 @@ export const useList = () => {
             nameCard: nameCard,
             coverCard: 'grey',
             coverCardImgs: [],
-            currentCoverType: 'color'
+            currentCoverType: 'color',
+            complete: false,
+            description: null
         };
         
         cardsServices({

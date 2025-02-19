@@ -15,10 +15,10 @@ export const CheckAnimation: React.FC<CheckAnimationProps> = ({className, isPlay
     useEffect(() => {
         if (lottieRef.current) {
             if (isPlaying) {
-                lottieRef.current.goToAndStop(0, true);
                 lottieRef.current.play();
             } else {
                 lottieRef.current.pause();
+                lottieRef.current.goToAndStop(0, true);
             }
         }
     }, [isPlaying]);

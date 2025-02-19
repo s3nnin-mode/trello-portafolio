@@ -1,0 +1,32 @@
+.container_card_description_modal {
+    padding: 10px 0;
+    border: 1px solid;
+    display: flex;
+    align-items: flex-start;
+
+    .btn_open_textarea {
+        padding: 0px;
+        border: none;
+
+        .icon_description_card_modal {
+            font-size: 20px;
+            color: blue;
+        }
+    } 
+
+    .btn_open_textarea:hover {
+        background-color: #ccc;
+        color: white;
+    }
+
+    form {
+        width: 100%;
+        height: 100%;
+
+        textarea {
+            width: 100%;
+            resize: none;
+            overflow: hidden;
+        }
+    }
+}
