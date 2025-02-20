@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom';
 import { List } from '../list/list';
 import { BtnAdd } from '../reusables/btnAgregar';
 //DND-KIT
-import { closestCenter, DndContext, DragEndEvent } from '@dnd-kit/core';
+import { closestCenter, DndContext, DragEndEvent, DragStartEvent, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 
 //STORES
@@ -78,7 +78,9 @@ export const Tablero = () => {
         console.log('se re-renderizó lists')
     }, [listsGroup]);
 
-    const onDragEnd = (event: DragEndEvent) => {
+    const [activeList, setActiveList] = useState<ListProps | null>(null); //esto es para saber que lista esta siendo arrastrada y crear un efecto visual
+
+    const onDragEnd = (event: DragEndEvent) => {        
         const { active, over } = event;
 
         if (!currentLists || !over) return
@@ -103,19 +105,34 @@ export const Tablero = () => {
         })
     };
 
-    // if (!currentIdBoard || currentBoard?.idBoard) {
-    //     return <p>Tablero no encontrado</p>
-    // }
+    const sensors = useSensors(
+        useSensor(PointerSensor, {  //esto es para que el drag empiece cuando el mouse este a 15px de distancia, en otras palabras
+            activationConstraint: {
+                distance: 400
+            }
+        })
+    )
+
+    const onDragStart = (event: DragStartEvent) => {
+        if (event.active.data.current?.type === 'list') {
+            setActiveList(event.active.data.current.list);
+            return;
+        }
+    }
 
     return (
         <div className='board' >
             <header className='header_board'>
                 <h2>{currentBoard?.nameBoard}</h2>                                      {/* NAME BOARD */}
             </header>
-            <DndContext collisionDetection={closestCenter} onDragEnd={onDragEnd}>
+            <DndContext 
+                sensors={sensors}
+                collisionDetection={closestCenter} 
+                onDragStart={onDragStart} 
+                onDragEnd={onDragEnd} >
                 {
                     currentLists !== undefined && (
-                        <SortableContext items={currentLists.map((list) => list.idList)} strategy={verticalListSortingStrategy}>
+                        <SortableContext items={currentLists.map((list) => list.idList)}> {/*strategy={verticalListSortingStrategy}*/}
                             <div className='board_content'>
                                 {
                                     currentBoard && (               //antes de pasar board verifico que exista

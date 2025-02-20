@@ -7,6 +7,9 @@ import { useTagsStore } from "../../store/tagsStore";
 import { CardCover } from "./cardCover";
 import { MdDescription } from "react-icons/md";
 
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+
 interface TargetComponentProps {
     card: CardProps
     board: BoardProps
@@ -30,14 +33,34 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
         )
     }
 
+    const { attributes, 
+        listeners, 
+        setNodeRef, 
+        transform, 
+        transition 
+    } = useSortable({
+        id: card.idCard,
+        data: {
+            type: 'card',
+            card
+        }
+    });
+    const style = { transform: CSS.Transform.toString(transform), transition };
+
     return(
         <>
-        <article 
-            onMouseEnter={(e) => {e.stopPropagation(); setIsPlaying(true)}}
-            onMouseLeave={(e) => {e.stopPropagation(); setIsPlaying(false)}}
+        <article
+            ref={setNodeRef}
+            style={style}
+            {...attributes}
+            {...listeners}
+            onClick={(e) => { setShowCardModal(true)}}
+            onMouseEnter={(e) => { setIsPlaying(true)}}
+            onMouseLeave={(e) => { setIsPlaying(false)}}
             className='target' 
-            onClick={() => setShowCardModal(true)} 
-            onPointerDown={(e) => e.stopPropagation()}
+                                //he intentado usar onMoouseDown y el modal se abre bien, pero eso evita que el drag and drop funcione
+                                //porque el evento onMouseDown se ejecuta antes que el evento onDragStart
+            
             >
             <CardCover idBoard={board.idBoard} list={list} card={card} isPlaying={isPlaying} />
 
