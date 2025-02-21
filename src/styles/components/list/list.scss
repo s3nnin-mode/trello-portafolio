@@ -19,6 +19,7 @@
         padding: 0;
         gap: 3px;
         height: 100%;
+        border: 2px solid;
 
         .btns_header_list {
             display: flex;
@@ -134,4 +135,10 @@
     footer {
         display: none;
     }
+}
+
+.list_dragging {
+    opacity: 0.5;
+    background-color: #f4f5f7;
+    border: 2px solid black;
 }

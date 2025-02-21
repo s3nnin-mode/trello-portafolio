@@ -33,11 +33,13 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
         )
     }
 
-    const { attributes, 
+    const { 
+        attributes, 
         listeners, 
         setNodeRef, 
         transform, 
-        transition 
+        transition,
+        isDragging
     } = useSortable({
         id: card.idCard,
         data: {
@@ -45,7 +47,38 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
             card
         }
     });
+
     const style = { transform: CSS.Transform.toString(transform), transition };
+
+    if (isDragging) {
+        return (
+            <article
+            ref={setNodeRef}
+            style={{...style, opacity: 0.5}}
+            className='target' >
+
+            <CardCover idBoard={board.idBoard} list={list} card={card} isPlaying={isPlaying} />
+
+            <div className='content_target'>
+                <ul className='tags_active'>
+                {   
+                    tags.map((tag) => 
+                        isActive({tag}) ? 
+                        <li key={tag.idTag} style={{backgroundColor: tag.color}} className='active_tag_view_on_card'>
+                            { tag.nameTag }
+                        </li> :
+                        null
+                    )
+                }
+                </ul>
+                <p className='name_target'>{card.nameCard}</p>   {/*NOMBRE DE LA TARJETA*/}
+            </div>
+            <footer className='footer_card_info'>
+                { card.description !== null && <MdDescription /> } {/*ICON DESCRIPTION*/}
+            </footer>
+        </article>
+        )
+    }
 
     return(
         <>
@@ -54,14 +87,11 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
             style={style}
             {...attributes}
             {...listeners}
-            onClick={(e) => { setShowCardModal(true)}}
-            onMouseEnter={(e) => { setIsPlaying(true)}}
-            onMouseLeave={(e) => { setIsPlaying(false)}}
-            className='target' 
-                                //he intentado usar onMoouseDown y el modal se abre bien, pero eso evita que el drag and drop funcione
-                                //porque el evento onMouseDown se ejecuta antes que el evento onDragStart
-            
-            >
+            onClick={() => { setShowCardModal(true)}}
+            onMouseEnter={() => setIsPlaying(true)}
+            onMouseLeave={() => setIsPlaying(false)}
+            className='target' >
+
             <CardCover idBoard={board.idBoard} list={list} card={card} isPlaying={isPlaying} />
 
             <div className='content_target'>

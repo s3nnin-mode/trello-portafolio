@@ -82,11 +82,10 @@ export const NameComponent: React.FC<NameListPropsComponent> = ({idBoard, list, 
     }
 
     return (
-        <div className={`title_component ${className}`} onPointerDown={(e) => e.stopPropagation()}>
+        <div className={`title_component ${className}`}>
             <h3 className='name_component'                                         //abrir input
              style={{display: isOpenInput ? 'none' : 'block'}}
              onClick={() => setIsOpenInput(true)}
-             onPointerDown={(e) => e.stopPropagation()}
              >        
                 {nameComponent}
             </h3>
@@ -94,7 +93,6 @@ export const NameComponent: React.FC<NameListPropsComponent> = ({idBoard, list, 
             {isOpenInput && (
                 <textarea
                     onKeyDown={(e) => e.stopPropagation()}
-                    onPointerDown={(e) => e.stopPropagation()}
                     style={{overflow: "hidden", resize: "none"}}
                     onInput={onInput}
                     value={nameComponent}
