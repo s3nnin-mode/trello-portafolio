@@ -11,15 +11,12 @@ import { Card } from "../card/card";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 //STORES
-import { useBoardsStore } from "../../store/boardsStore";
 import { useCardsStore } from "../../store/cardsStore";
 //TYPES
 import { BoardProps, ListProps, CardProps } from '../../types/boardProps';
 import { useCardsServices } from "../../services/cardsServices";
 //DRaG AND DROP CARDS
-import { closestCenter, DndContext, DragEndEvent, DragOverEvent, DragStartEvent, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
-import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
-import { useListsStore } from "../../store/listsStore";
+import { SortableContext } from '@dnd-kit/sortable';
 
 
 interface ListPropsComponent {
@@ -62,7 +59,7 @@ export const useList = () => {
 }
 
 export const List: React.FC<ListPropsComponent> = ({ board, list }) => {               
-    const { addNewCard, cardsServices } = useList();
+    const { addNewCard } = useList();
     const { cardsGroup } = useCardsStore();
     const [isListCollapse, setIsListCollapse] = useState(false);
     const [currentCards, setCurrentCards] = useState<CardProps[]>([]);

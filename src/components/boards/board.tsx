@@ -7,7 +7,7 @@ import { List } from '../list/list';
 import { Card } from '../card/card';
 import { BtnAdd } from '../reusables/btnAgregar';
 //DND-KIT
-import {  DragOverlay,closestCenter, DndContext, DragEndEvent, DragOverEvent, DragStartEvent, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
+import {  DragOverlay, DndContext, DragEndEvent, DragOverEvent, DragStartEvent, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { arrayMove, SortableContext } from '@dnd-kit/sortable';
 
 //STORES
@@ -17,9 +17,7 @@ import { useBoardsStore } from '../../store/boardsStore';
 import { BoardProps, CardProps, ListProps } from '../../types/boardProps';
 import { useListsServices } from '../../services/listsServices';
 import { useCardsServices } from '../../services/cardsServices';
-import { Droppable } from '../../hooks/droppable';
 import { useCardsStore } from '../../store/cardsStore';
-import { ListGroup } from 'react-bootstrap';
 
 const useCustomBoard = () => {
     const { listsGroup } = useListsStore();
@@ -61,6 +59,9 @@ export const Tablero = () => {
     const [currentLists, setCurrentLists] = useState<ListProps[]>()
     const { currentIdBoard } = useParams();
 
+    const [activeList, setActiveList] = useState<ListProps | null>(null); //esto es para saber que lista esta siendo arrastrada y crear un efecto visual
+    const [activeCard, setActiveCard] = useState<CardProps | null>(null);
+
     if (!currentIdBoard) {
         return <p>Tablero no encontrado</p>
     }
@@ -81,32 +82,31 @@ export const Tablero = () => {
         }
     }, [listsGroup]);
 
-  const [activeList, setActiveList] = useState<ListProps | null>(null); //esto es para saber que lista esta siendo arrastrada y crear un efecto visual
-  const [activeCard, setActiveCard] = useState<CardProps | null>(null);
-
     const onDragEnd = (event: DragEndEvent) => {
-        const { active, over } = event;
+      setActiveCard(null);
+      setActiveList(null);
+      const { active, over } = event;
 
-        if (!currentLists || !over) return
+      if (!currentLists || !over) return
 
-        const oldIndex = currentLists.findIndex(list => list.idList === active.id);
-        const newIndex = currentLists.findIndex(list => list.idList === over?.id);
+      const oldIndex = currentLists.findIndex(list => list.idList === active.id);
+      const newIndex = currentLists.findIndex(list => list.idList === over?.id);
 
-        if (oldIndex === -1 || newIndex === -1 || oldIndex === newIndex) {
-            console.log('Se canceló el drag (no hay cambios en la posición)');
-            return;
-        }
-        const lists = arrayMove(currentLists, oldIndex, newIndex);
+      if (oldIndex === -1 || newIndex === -1 || oldIndex === newIndex) {
+          console.log('Se canceló el drag (no hay cambios en la posición)');
+          return;
+      }
+      const lists = arrayMove(currentLists, oldIndex, newIndex);
 
-        listsService({
-            updateFn: (listsGroup) => listsGroup.map((listGroup) =>
-            listGroup.idBoard === idBoard
-            ?
-            { ...listGroup, lists: lists }
-            :
-            listGroup
-            )
-        })
+      listsService({
+        updateFn: (listsGroup) => listsGroup.map((listGroup) =>
+        listGroup.idBoard === idBoard
+        ?
+        { ...listGroup, lists: lists }
+        :
+        listGroup
+        )
+      })
     };
 
   const sensors = useSensors(
@@ -178,29 +178,32 @@ export const Tablero = () => {
     const isOverList = over.data.current?.type === 'list';
 
     if (isActiveCard && isOverList) {
-      console.log('item inicial: ', activeId);
-      console.log('item sobre: ', overId);
       const idList = overId;
-      
-      const cardGroupIndex = cardsGroup.findIndex((cardGroup) => cardGroup.idBoard === idBoard && cardGroup.idList === idList);
-      if (cardGroupIndex === -1) return;
+        
+      const grupoDondeSeEncuentraLaCard = cardsGroup.findIndex((cardGroup) => cardGroup.cards.some((card) => card.idCard === activeId));
+      if (grupoDondeSeEncuentraLaCard === -1) return;
 
-      const oldIndex = cardsGroup[cardGroupIndex].cards.findIndex((card) => card.idCard === activeId);
-      const newIndex = cardsGroup[cardGroupIndex].cards.length;
+      const cardToMove = cardsGroup[grupoDondeSeEncuentraLaCard].cards.find((card) => card.idCard === activeId);
+      if (!cardToMove) return;
 
-      if (oldIndex === -1 || newIndex === -1 || oldIndex === newIndex) return;
-
-      const newCards = arrayMove(cardsGroup[cardGroupIndex].cards, oldIndex, newIndex);
       cardsServices({
         updateFn: (cardsGroup) => cardsGroup.map((cardGroup) => {
-          if (cardGroup.idBoard === idBoard && cardGroup.idList === idList) {
-            return { ...cardGroup, cards: newCards };
+          if (cardGroup.idBoard === idBoard && cardGroup.idList === cardsGroup[grupoDondeSeEncuentraLaCard].idList) {
+            return { ...cardGroup, cards:  cardGroup.cards.filter((card) => card.idCard !== activeId) };
           }
           return cardGroup;
         })
-      })
-    }
+      });
 
+      cardsServices({
+        updateFn: (cardsGroup) => cardsGroup.map((cardGroup) => {
+          if (cardGroup.idBoard === idBoard && cardGroup.idList === idList) {
+            return { ...cardGroup, cards: [...cardGroup.cards, cardToMove] };
+          }
+          return cardGroup;
+        })
+      });
+    }
   }
 
   return (
