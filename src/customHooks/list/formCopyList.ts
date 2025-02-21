@@ -3,6 +3,7 @@ import { useListsStore } from "../../store/listsStore";
 import { ListProps } from "../../types/boardProps";
 import { useCardsStore } from "../../store/cardsStore";
 import { useListsServices } from "../../services/listsServices";
+import { useCardsServices } from "../../services/cardsServices";
 
 interface UseFormCopyList {
     setIsModalOptionsActive: React.Dispatch<React.SetStateAction<boolean>>
@@ -10,7 +11,8 @@ interface UseFormCopyList {
 
 export const useFormCopyList = ({ setIsModalOptionsActive }: UseFormCopyList) => {
     const { listsGroup } = useListsStore();
-    const { setCardsGroup, cardsGroup } = useCardsStore();
+    const { cardsGroup } = useCardsStore();
+    const { createCardGroup } = useCardsServices();
     const { listsService } = useListsServices();
     const [showFormCopyList, setShowFormCopyList] = useState(false);
 
@@ -30,7 +32,8 @@ export const useFormCopyList = ({ setIsModalOptionsActive }: UseFormCopyList) =>
         const indexTargetGroup = cardsGroup.findIndex(cardGroup => cardGroup.idBoard === idBoard && cardGroup.idList === idListToCopy);
         if (indexTargetGroup > -1) {
             const cards = cardsGroup[indexTargetGroup].cards;       //se copia las targets de la lista copiada con un nuevo idList 
-            setCardsGroup({idBoard, idList, cards});                   //y se agrega un nuevo targetGroup con las tarjetas de la lista que se copio
+            // setCardsGroup({idBoard, idList, cards});                   //y se agrega un nuevo targetGroup con las tarjetas de la lista que se copio
+            createCardGroup({idBoard, idList, cards});
         }
 
         //{   ESTA PARTE POSICIONA LA LISTA COPIADA JUSTO EN LA SIGUIENTE COLUMNA DE LA LISTA QUE SE COPIÓ
