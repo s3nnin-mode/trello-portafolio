@@ -44,36 +44,36 @@ export const Start = () => {
             //loadBoards([...firebase])
         } else if (LS) {  //aqui podrias agregar si existe listas pero creo que con verificar boards es suficiente
             loadBoards(JSON.parse(LS));
-            navigate('/kanbaX');
+            // navigate('/kanbaX'); RECUERDA DESCOMENTAR ESTO DESPUES DE TERMINAR EL FORMULARIO///////////////////
             console.log('hay LS', LS);
             //si se detecta localstorage con localstorage.getItem se redirecciona a la app con los datos del localstorage
         }
         //si ninguna de las dos es true se queda en Home(modal para eleigir si usar la app como reclutador o para usarla realmente)
     }, []);
 
-    const demo = () => {
-        localStorage.setItem('boards-storage', JSON.stringify([]));
-        localStorage.setItem('lists-storage', JSON.stringify([]));
-        localStorage.setItem('cards-storage', JSON.stringify([]));
-        localStorage.setItem('tags-storage', JSON.stringify(initialTags));
-        navigate('/kanbaX');
-    }
+  const demo = () => {
+    localStorage.setItem('boards-storage', JSON.stringify([]));
+    localStorage.setItem('lists-storage', JSON.stringify([]));
+    localStorage.setItem('cards-storage', JSON.stringify([]));
+    localStorage.setItem('tags-storage', JSON.stringify(initialTags));
+    navigate('/kanbaX');
+  }
 
-    return(
-        <div className='container_home'>
-            <div className='modal_home'>
-                <p>Usaras la app formalmente o eres reclutador</p>
-                <div>
-                    <button onClick={demo}>
-                        Solo estoy viendo, gracias
-                    </button>
-                    <button>
-                        <Link to='/form'>
-                            Uso profesional
-                        </Link>
-                    </button>
-                </div>
-            </div>
+  return(
+    <div className='container_home'>
+      <div className='modal_home'>
+        <p>Usaras la app formalmente o eres reclutador</p>
+        <div>
+          <button onClick={demo}>
+            Solo estoy viendo, gracias
+          </button>
+          <button>
+            <Link to='/login'>
+              Uso profesional
+            </Link>
+          </button>
         </div>
-    )
+      </div>
+    </div>
+  )
 }
