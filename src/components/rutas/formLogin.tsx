@@ -1,54 +1,55 @@
 import '../../styles/components/routes/formLogin.scss';
-import { FormControl, FormHelperText, Input, InputLabel, TextField } from '@mui/material';
-import { useEffect } from 'react';
-//importamos lo necesario de RHF
-import { useForm } from 'react-hook-form';
+import { TextField } from "@mui/material";
+import { useForm } from "react-hook-form";
+import { userLogin } from '../../services/firebase/firebaseFunctions';
+import { Link } from 'react-router-dom';
 
 export const FormLogin = () => {
-  const { register, handleSubmit, watch, formState: { errors } } = useForm();
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm({ mode: 'onChange' });
 
-  const onSubmit = (data: any) => console.log(data, errors);
+  const onSubmit = handleSubmit((data) => {
+    console.log('data login', data);
+    const loginState = userLogin({
+      email: data.email,
+      password: data.password
+    });
 
-  useEffect(() => {
-    console.log('errors', errors)
-  }, [errors]);
+    console.log('estado de login', loginState)
+  });
 
   return (
     <div className='container_form_login'>
-      <form className='form_login' onSubmit={handleSubmit(onSubmit)}>
-        <h1>Inicio de sesión</h1>
-          <TextField
-            label="Correo"
-            type="email"
-            variant="outlined"
-            error={!!errors.email} // Muestra el error si existe
-            helperText={errors.email ? String(errors.email.message) : ''} // Muestra el mensaje de error
-            {...register('email', {
-              required: {
-                value: true,
-                message: 'Campo requerido.'
-              },
-              pattern: {
-                value: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
-                message: 'Correo no válido.'
-              }
-            })}
-          />
-          
 
-        <FormControl fullWidth>
-          <TextField
-            label="Contraseña"
-            type="password"
-            variant="outlined"
-            error={!!errors.password}
-            helperText={errors.password ? String(errors.password.message) : ''}
-            {...register('password', { required: 'La contraseña es requerida' })}
-          />
-        </FormControl>
-        
-        <input type='password' placeholder='Contraseña' />
+      <form className='form_login' onSubmit={onSubmit}>
+        <h1>Iniciar sesión</h1>
+        <TextField 
+          id='login_input'
+          label="Correo"
+          type="email"
+          variant="outlined"
+          defaultValue=''
+          {...register('email', { required: 'Coloca tu correo, porfavor.'})}
+          error={!!errors.email} // Muestra el error si existe
+          helperText={errors.email ? String(errors.email.message) : '' } // Muestra el mensaje de error
+        />
+
+        <TextField
+          id='password'
+          label='Contraseña'
+          type='password'
+          variant='outlined'
+          {...register('password', { required: { value: true, message: 'La contraseña es obligatoria'} })}
+          error={!!errors.password}
+          helperText={errors.password ? String(errors.password?.message) : ''}
+        />
         <button type='submit'>Iniciar sesión</button>
+        <footer>
+          <p>¿No tienes una cuenta? <Link to='/register'>Registrate</Link></p>
+        </footer>
       </form>
     </div>
   )

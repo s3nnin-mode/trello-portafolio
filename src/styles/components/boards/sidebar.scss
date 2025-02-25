@@ -10,24 +10,7 @@
     transition: width 0.3s ease;
     padding: 0 10px;
 
-    header {
-      display: flex;
-      justify-content: space-between;      
-      .logo-and-text {
-        display: flex;
-        align-items: center;        
-        gap: 10px;
-        img {
-
-          width: 40px;
-          height: 40px;
-          border-radius: 10px;
-        }
-  
-        p{
-          font-size: 20px;
-        }
-      }
+    .sidebar_header {
 
       .btn-open-close-sidebar {
         background-color: transparent;

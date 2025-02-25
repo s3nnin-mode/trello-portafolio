@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useBoardsStore } from "../../store/boardsStore";
 import { useAuthContext } from "../../customHooks/useAuthContext";
 import { TagsProps } from "../../types/boardProps";
+import { auth } from "../../services/firebase/firebaseConfig";
 
 const initialTags: TagsProps[] = [
     { idTag: "1", color: "#FF5733", nameTag: "Urgente", cardsThatUseIt: [] },
@@ -39,9 +40,10 @@ export const Start = () => {
         console.log('Lo que hay en LS', LS)
 
         //METER ESTO EN UN TRYCATCH Y AGREGARLE UN LOADER
-        if (userAuth) {
-            //se redirige a /app y se cargarn los datos de firebase
-            //loadBoards([...firebase])
+        if (auth) {
+          navigate('/kanbaX');
+          //se redirige a /app y se cargarn los datos de firebase
+          //loadBoards([...firebase])
         } else if (LS) {  //aqui podrias agregar si existe listas pero creo que con verificar boards es suficiente
             loadBoards(JSON.parse(LS));
             // navigate('/kanbaX'); RECUERDA DESCOMENTAR ESTO DESPUES DE TERMINAR EL FORMULARIO///////////////////
