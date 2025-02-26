@@ -2,9 +2,11 @@ import '../../styles/components/routes/formRegister.scss';
 import { TextField } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { userRegister } from '../../services/firebase/firebaseFunctions';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export const FormRegister = () => {
+  const navigate = useNavigate();
+
   const { 
     register, 
     handleSubmit, 
@@ -19,7 +21,8 @@ export const FormRegister = () => {
       email: data.email,
       password: data.password
     });
-    console.log('se envío los datos para crear user')
+    console.log('se envío los datos para crear user');
+    navigate('/');
   };
 
   return (

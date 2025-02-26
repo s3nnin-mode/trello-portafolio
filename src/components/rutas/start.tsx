@@ -4,8 +4,8 @@ import '../../styles/components/routes/start.scss';
 import { Link, useNavigate } from "react-router-dom";
 import { useBoardsStore } from "../../store/boardsStore";
 import { useAuthContext } from "../../customHooks/useAuthContext";
-import { TagsProps } from "../../types/boardProps";
-import { auth } from "../../services/firebase/firebaseConfig";
+import { BoardProps, TagsProps } from "../../types/boardProps";
+import { getDataFirebase } from "../../services/firebase/firebaseFunctions";
 
 const initialTags: TagsProps[] = [
     { idTag: "1", color: "#FF5733", nameTag: "Urgente", cardsThatUseIt: [] },
@@ -30,28 +30,35 @@ const initialTags: TagsProps[] = [
     { idTag: "20", color: "#33F5A8", nameTag: "Mejora", cardsThatUseIt: [] }
 ];
 
+
 export const Start = () => {
     const { userAuth } = useAuthContext();
     const { loadBoards } = useBoardsStore();
     const navigate = useNavigate();
 
     useEffect(() => {
-        const LS = localStorage.getItem('boards-storage');
-        console.log('Lo que hay en LS', LS)
+      console.log('test para ver cuantas veces se renderiza');
 
-        //METER ESTO EN UN TRYCATCH Y AGREGARLE UN LOADER
-        if (auth) {
+      const LS = localStorage.getItem('boards-storage');
+
+      const fetchData = async () => {
+        const boards = await getDataFirebase();
+
+        if (userAuth) {
+          console.log('usuario auth en start');
+          // loadBoards({boards: boards})
           navigate('/kanbaX');
-          //se redirige a /app y se cargarn los datos de firebase
-          //loadBoards([...firebase])
-        } else if (LS) {  //aqui podrias agregar si existe listas pero creo que con verificar boards es suficiente
+          loadBoards(boards);
+        } else if (LS) {  
             loadBoards(JSON.parse(LS));
-            // navigate('/kanbaX'); RECUERDA DESCOMENTAR ESTO DESPUES DE TERMINAR EL FORMULARIO///////////////////
+            navigate('/kanbaX'); 
             console.log('hay LS', LS);
-            //si se detecta localstorage con localstorage.getItem se redirecciona a la app con los datos del localstorage
         }
-        //si ninguna de las dos es true se queda en Home(modal para eleigir si usar la app como reclutador o para usarla realmente)
-    }, []);
+      }
+      fetchData()
+      console.log('no hay LS ni UserAuth');
+      //si ninguna de las dos es true se queda en Home(modal para eleigir si usar la app como reclutador o para usarla realmente)
+    }, [userAuth]);
 
   const demo = () => {
     localStorage.setItem('boards-storage', JSON.stringify([]));

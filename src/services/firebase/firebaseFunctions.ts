@@ -1,40 +1,84 @@
-import { getFirestore, doc, setDoc, getDoc, updateDoc } from 'firebase/firestore';
+import { getFirestore, doc, setDoc, getDoc, updateDoc, collection, getDocs } from 'firebase/firestore';
 
 import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { auth, db } from "./firebaseConfig";
+import { BoardProps } from '../../types/boardProps';
+
+const initialData = async (userId: string) => {
+  try {
+    
+    const boardRef = doc(db, `users/${userId}/boards`, 'primerboardid');
+    const initialBoard = {
+      idBoard: 'primerboardid',  
+      nameBoard: 'Tablero de ejemplo',
+    }
+
+    await setDoc(boardRef, initialBoard);
+
+    const specificBoardRef = doc(db, `users/${userId}/boards/primerboardid`);
+    const listsRef = doc(collection(specificBoardRef, 'lists'), 'primerlistid');
+    const initialList = {
+      idList: 'primerlistid',
+      nameList: 'lista de ejemplo',
+      colorList: 'white',
+    };
+
+    await setDoc(listsRef, initialList);
+
+    const cardsRef = doc(collection(listsRef, 'cards'), 'primercardid');
+
+    const initialCards = {
+      idCard: 'primercardid',
+      nameCard: 'card de ejemplo',
+      coverCard: '',
+      coverCardImgs: [],
+      currentCoverType: '',
+      complete: false,
+      description: ''
+    }
+
+    await setDoc(cardsRef, initialCards);
+    console.log("Tablero, lista y tarjeta creados exitosamente.");
+
+  } catch {
+    //pendiente
+  }
+}
 
 export const userRegister = async ({email, password}: {email: string, password: string}) => {
-    try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const uid = userCredential.user.uid;
-      console.log('Usurio registrado correctamente', userCredential.user);
-  
-    //   await setDoc(doc(db, 'users', uid), {
-    //     name: nombre,
-    //     email: correo,
-    //     photoUrl: '',
-    //     coord: {lat: 16.868, lon: -99.894},
-    //     history: []
-    //   });
-  
-       await signOut(auth);
-      
-      return 'Registro exitoso';
-    } catch(error: any) {
-      if (error.code === 'auth/email-already-in-use') {
-        console.error('The email is already registered.');
-        return 'The email is already registered.'
-      } else if (error.code === 'auth/invalid-email') {
-        console.error('Invalid email format.');
-        return 'Invalid email format.';
-      } else if (error.code === 'auth/weak-password') {
-        console.error('Password is too weak.');
-        return 'Password is too weak.';  //esta validacion sirve
-      } else {
-        console.error('Error during registration:', error.message);
-        return 'Error during registration';
-      }
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const userId = userCredential.user.uid;
+    console.log('Usurio registrado correctamente', userCredential.user);
+
+    await setDoc(doc(db, 'users', userId), {
+      userName: '',
+      email,
+      photo: ''
+    });
+
+    ////////////////////////
+
+    await initialData(userId);
+
+    // await signOut(auth);
+    
+    return 'Registro exitoso';
+  } catch(error: any) {
+    if (error.code === 'auth/email-already-in-use') {
+      console.error('The email is already registered.');
+      return 'The email is already registered.'
+    } else if (error.code === 'auth/invalid-email') {
+      console.error('Invalid email format.');
+      return 'Invalid email format.';
+    } else if (error.code === 'auth/weak-password') {
+      console.error('Password is too weak.');
+      return 'Password is too weak.';  //esta validacion sirve
+    } else {
+      console.error('Error during registration:', error.message);
+      return 'Error during registration';
     }
+  }
 }
 
 export const userLogin = ({email, password}: {email: string, password: string}) => {
@@ -73,4 +117,13 @@ export const updateNombreUser = async(newName: string) => {
   } catch(error) {
     return false
   }
+}
+
+export const getDataFirebase = async () => {
+  const userId = auth.currentUser?.uid;
+  const boardsCollection = collection(db, `users/${userId}/boards`);
+  const boardsSnapshot = await getDocs(boardsCollection);
+  const boards = boardsSnapshot.docs.map((doc) => doc.data() as BoardProps);
+  console.log('data boards', boards);
+  return boards;
 }
