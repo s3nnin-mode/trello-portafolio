@@ -1,10 +1,14 @@
 import '../../styles/components/boards/boards.scss';
 import { BtnAdd } from '../reusables/btnAgregar';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useBoardsStore } from '../../store/boardsStore';
 import { useBoardsServices } from '../../services/boardsServices';
 import { useListsServices } from '../../services/listsServices';
-import { BoardProps } from '../../types/boardProps';
+import { BoardProps, CardGroupProps } from '../../types/boardProps';
+import { useListsStore } from '../../store/listsStore';
+import { getCardsFirebase, getListsFirebase } from '../../services/firebase/firebaseFunctions';
+import { ListProps } from '../../types/boardProps';
+import { useCardsStore } from '../../store/cardsStore';
 
 const useBoards = () => {
   const { boards } = useBoardsStore();
@@ -26,6 +30,36 @@ const useBoards = () => {
 
 export const Tableros = () => {
   const { boards, addNewBoard } = useBoards();
+  const { loadLists } = useListsStore();
+  const { loadCards } = useCardsStore();
+
+  const navigate = useNavigate();
+
+  const handleClick = async (idBoard: string) => {
+    const listsData = await getListsFirebase(idBoard);
+
+    const lists = [{
+      idBoard,
+      lists: listsData
+    }];
+    loadLists(lists);
+
+    const fetchCards = async () => {
+      return Promise.all(listsData.map(async list => {
+        const cards = await getCardsFirebase(idBoard, list.idList);
+        const cardGroup: CardGroupProps = {
+          idBoard,
+          idList: list.idList,
+          cards
+        }
+        return cardGroup
+      }))
+    }
+    const cardsGroup = await fetchCards();
+
+    loadCards(cardsGroup);
+    navigate(`${idBoard}`);
+  }
 
   return (
     <div className='boards_container'>
@@ -45,10 +79,10 @@ export const Tableros = () => {
             boards.map(board => {
               console.log(board)
               return (
-                <Link className='board' to={`${board.idBoard}`} key={board.idBoard}>
+                <div className='board' onClick={() => handleClick(board.idBoard)} key={board.idBoard}>
                   <span className='name_board'>{board.nameBoard}</span>
                   <span className='icon_fav'>Star fav</span>
-                </Link>
+                </div>
               )
             })
           )

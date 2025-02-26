@@ -2,7 +2,8 @@ import { getFirestore, doc, setDoc, getDoc, updateDoc, collection, getDocs } fro
 
 import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { auth, db } from "./firebaseConfig";
-import { BoardProps } from '../../types/boardProps';
+import { BoardProps, CardProps } from '../../types/boardProps';
+import { ListProps } from '../../types/boardProps';
 
 const initialData = async (userId: string) => {
   try {
@@ -119,11 +120,28 @@ export const updateNombreUser = async(newName: string) => {
   }
 }
 
-export const getDataFirebase = async () => {
+export const getBoardsFirebase = async () => {
   const userId = auth.currentUser?.uid;
   const boardsCollection = collection(db, `users/${userId}/boards`);
   const boardsSnapshot = await getDocs(boardsCollection);
   const boards = boardsSnapshot.docs.map((doc) => doc.data() as BoardProps);
-  console.log('data boards', boards);
   return boards;
+}
+
+export const getListsFirebase = async (idBoard: string) => {
+  const userid = auth.currentUser?.uid;
+  const listsCollection = collection(db, `users/${userid}/boards/${idBoard}/lists`);
+
+  const listsSnapshot = await getDocs(listsCollection);
+  const lists = listsSnapshot.docs.map((doc) => doc.data() as ListProps);
+
+  return lists;
+}
+
+export const getCardsFirebase = async (idBoard: string, idList: string) => {
+  const userId = auth.currentUser?.uid;
+  const cardsCollection = collection(db, `users/${userId}/boards/${idBoard}/lists/${idList}/cards`);
+  const cardsSnapshot = await getDocs(cardsCollection);
+  const cards = cardsSnapshot.docs.map(doc => doc.data() as CardProps);
+  return cards;
 }

@@ -4,8 +4,9 @@ import '../../styles/components/routes/start.scss';
 import { Link, useNavigate } from "react-router-dom";
 import { useBoardsStore } from "../../store/boardsStore";
 import { useAuthContext } from "../../customHooks/useAuthContext";
-import { BoardProps, TagsProps } from "../../types/boardProps";
-import { getDataFirebase } from "../../services/firebase/firebaseFunctions";
+import { TagsProps } from "../../types/boardProps";
+import { getBoardsFirebase, getListsFirebase } from "../../services/firebase/firebaseFunctions";
+import { useListsStore } from "../../store/listsStore";
 
 const initialTags: TagsProps[] = [
     { idTag: "1", color: "#FF5733", nameTag: "Urgente", cardsThatUseIt: [] },
@@ -34,6 +35,7 @@ const initialTags: TagsProps[] = [
 export const Start = () => {
     const { userAuth } = useAuthContext();
     const { loadBoards } = useBoardsStore();
+    const { loadLists } = useListsStore();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -42,20 +44,18 @@ export const Start = () => {
       const LS = localStorage.getItem('boards-storage');
 
       const fetchData = async () => {
-        const boards = await getDataFirebase();
-
         if (userAuth) {
+          const boards = await getBoardsFirebase();
           console.log('usuario auth en start');
-          // loadBoards({boards: boards})
-          navigate('/kanbaX');
           loadBoards(boards);
+          navigate('/kanbaX');
         } else if (LS) {  
             loadBoards(JSON.parse(LS));
             navigate('/kanbaX'); 
             console.log('hay LS', LS);
         }
       }
-      fetchData()
+      fetchData();
       console.log('no hay LS ni UserAuth');
       //si ninguna de las dos es true se queda en Home(modal para eleigir si usar la app como reclutador o para usarla realmente)
     }, [userAuth]);
