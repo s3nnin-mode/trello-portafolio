@@ -6,9 +6,10 @@ import { useBoardsServices } from '../../services/boardsServices';
 import { useListsServices } from '../../services/listsServices';
 import { BoardProps, CardGroupProps } from '../../types/boardProps';
 import { useListsStore } from '../../store/listsStore';
-import { getCardsFirebase, getListsFirebase } from '../../services/firebase/firebaseFunctions';
+import { getCardsFirebase, getListsFirebase, getTagsFirebase } from '../../services/firebase/firebaseFunctions';
 import { ListProps } from '../../types/boardProps';
 import { useCardsStore } from '../../store/cardsStore';
+import { useTagsStore } from '../../store/tagsStore';
 
 const useBoards = () => {
   const { boards } = useBoardsStore();
@@ -32,6 +33,7 @@ export const Tableros = () => {
   const { boards, addNewBoard } = useBoards();
   const { loadLists } = useListsStore();
   const { loadCards } = useCardsStore();
+  const { loadTags } = useTagsStore();
 
   const navigate = useNavigate();
 
@@ -56,8 +58,11 @@ export const Tableros = () => {
       }))
     }
     const cardsGroup = await fetchCards();
-
     loadCards(cardsGroup);
+
+    const tags = await getTagsFirebase();
+    loadTags(tags);
+    console.log('tags cargado exitosamente', tags)
     navigate(`${idBoard}`);
   }
 

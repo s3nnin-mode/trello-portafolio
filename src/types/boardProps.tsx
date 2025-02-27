@@ -4,6 +4,8 @@ export interface BoardProps {
     nameBoard: string
 }
 
+//boards: boardsProps[]
+
 //LISTS TYPES
 
 export interface ListProps {
@@ -12,6 +14,8 @@ export interface ListProps {
     colorList: string
 }
 
+//Lists: ListsGroup[] donde cada lista en ralidad es un grupo de lista enlazado al idBoard para saber que pertenece a el
+//esto esta hecho asi porque boards, lists, cards son tres estados diferentes
 export interface ListsGroup {
     idBoard: string
     lists: ListProps[]

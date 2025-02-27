@@ -1,9 +1,10 @@
-import { getFirestore, doc, setDoc, getDoc, updateDoc, collection, getDocs } from 'firebase/firestore';
+import { doc, setDoc, updateDoc, collection, getDocs } from 'firebase/firestore';
 
-import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "./firebaseConfig";
-import { BoardProps, CardProps } from '../../types/boardProps';
+import { BoardProps, CardProps, TagsProps } from '../../types/boardProps';
 import { ListProps } from '../../types/boardProps';
+import { initialTags } from '../../utils/tagsColors';
 
 const initialData = async (userId: string) => {
   try {
@@ -36,12 +37,18 @@ const initialData = async (userId: string) => {
       currentCoverType: '',
       complete: false,
       description: ''
-    }
+    };
 
     await setDoc(cardsRef, initialCards);
-    console.log("Tablero, lista y tarjeta creados exitosamente.");
 
-  } catch {
+    await Promise.all(initialTags.map(async tag => {
+      const tagRef = doc(collection(db, `users/${userId}/tags`), tag.idTag);
+      await setDoc(tagRef, tag);
+    }));
+    console.log("Tablero, lista, tarjeta y etiquetas creados exitosamente.");
+
+  } catch(error) {
+    console.log(error);
     //pendiente
   }
 }
@@ -82,7 +89,7 @@ export const userRegister = async ({email, password}: {email: string, password: 
   }
 }
 
-export const userLogin = ({email, password}: {email: string, password: string}) => {
+export const userLogin = async ({email, password}: {email: string, password: string}) => {
   return signInWithEmailAndPassword(auth, email, password)
   .then((userCredential) => {
     const user = userCredential.user;
@@ -144,4 +151,11 @@ export const getCardsFirebase = async (idBoard: string, idList: string) => {
   const cardsSnapshot = await getDocs(cardsCollection);
   const cards = cardsSnapshot.docs.map(doc => doc.data() as CardProps);
   return cards;
+}
+
+export const getTagsFirebase = async () => {
+  const userId = auth.currentUser?.uid;
+  const tagsCollection = collection(db, `users/${userId}/tags`);
+  const tagsSnapshot = await getDocs(tagsCollection);
+  return tagsSnapshot.docs.map(doc => doc.data() as TagsProps);
 }
