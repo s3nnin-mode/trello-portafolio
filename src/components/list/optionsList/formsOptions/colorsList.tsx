@@ -3,6 +3,8 @@ import '../../../../styles/components/list/optionsList/formsOptions/colorsToList
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import { ListProps } from '../../../../types/boardProps';
 import { useListsServices } from '../../../../services/listsServices';
+import { useAuthContext } from '../../../../customHooks/useAuthContext';
+import { updateColorListFirebase } from '../../../../services/firebase/updateData/updateLists';
 
 interface ColorsToListComponentProps {
     idBoard: string
@@ -14,8 +16,9 @@ export const ColorsToList: React.FC<ColorsToListComponentProps> = ({idBoard, lis
     const [colorsWrapper, setColorsWrappers] = useState(true);              //COLORS WRAPPER
     const colors = ["brown", "blue", "green", "yellow", "black", "white", "orange", "purple", "gray", "pink"];
     const idList = list.idList;
+    const { userAuth } = useAuthContext();
 
-    const changeColorList = ({idBoard, idList, color}: {idBoard: string, idList: string, color: string}) => 
+    const changeColorList = ({idBoard, idList, color}: {idBoard: string, idList: string, color: string}) => {
         listsService({
             updateFn: (state) => state.map((listGroup) => 
             listGroup.idBoard === idBoard ?
@@ -27,8 +30,12 @@ export const ColorsToList: React.FC<ColorsToListComponentProps> = ({idBoard, lis
             )} 
             :
             listGroup
-        )
-    })
+            )
+        });
+        if (userAuth) {
+            updateColorListFirebase({idBoard, idList, color});
+        }
+    }
 
      return (
         <div className='container_change_bg_list'>                                                      {/* CHANGE COLOR CONTAINER*/}

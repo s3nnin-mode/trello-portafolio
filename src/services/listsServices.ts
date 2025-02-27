@@ -10,21 +10,31 @@ export const useListsServices = () => {
       updateFn: (state: ListsGroup[]) => ListsGroup[], 
     }) => {
 
-    useListsStore.setState((state) => ({
+    useListsStore.setState((state) => ({         //el estado de zustan siempre se actualiza
       listsGroup: updateFn(state.listsGroup)
     }));
-  
-    if (userAuth) {
-      
-    } else {
+
+    if (!userAuth) {                //cualquier update en las listas se guardarán en localstorage siempre y cuando el usuario no esté autenticado
       const listsLS = localStorage.getItem('lists-storage');
   
       if (listsLS) {
         const listsGroup = JSON.parse(listsLS) as ListsGroup[];
         const lists = updateFn(listsGroup);
-        localStorage.setItem('lists-storage', JSON.stringify(lists))
+        localStorage.setItem('lists-storage', JSON.stringify(lists));
       }
-    }
+    };
+  
+    // if (userAuth) {
+      
+    // } else {
+    //   const listsLS = localStorage.getItem('lists-storage');
+  
+    //   if (listsLS) {
+    //     const listsGroup = JSON.parse(listsLS) as ListsGroup[];
+    //     const lists = updateFn(listsGroup);
+    //     localStorage.setItem('lists-storage', JSON.stringify(lists))
+    //   }
+    // }
   }
 
   const createGroupList = ({idBoard}:{idBoard: string}) => {

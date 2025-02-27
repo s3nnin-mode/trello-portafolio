@@ -7,23 +7,29 @@ import { useListsServices } from '../../services/listsServices';
 import { BoardProps, CardGroupProps } from '../../types/boardProps';
 import { useListsStore } from '../../store/listsStore';
 import { getCardsFirebase, getListsFirebase, getTagsFirebase } from '../../services/firebase/firebaseFunctions';
-import { ListProps } from '../../types/boardProps';
 import { useCardsStore } from '../../store/cardsStore';
 import { useTagsStore } from '../../store/tagsStore';
+import { useAuthContext } from '../../customHooks/useAuthContext';
+import { addBoardFirebase } from '../../services/firebase/updateData';
 
 const useBoards = () => {
   const { boards } = useBoardsStore();
   const { boardsService } = useBoardsServices();
   const { createGroupList } = useListsServices();
+  const { userAuth } = useAuthContext();
 
   const addNewBoard = (nameBoard: string) => {
     const idBoard = (nameBoard + Date.now()).toString();
     const newBoard: BoardProps = { idBoard, nameBoard };
-    
+      
     boardsService({
       updateFn: (boards) => [...boards, newBoard]
     });
     createGroupList({idBoard}); //crear grupo de lista con idBoard para saber que pertenece a este board e inicializar un array lists vacio
+
+    if (userAuth) {
+      addBoardFirebase(newBoard);
+    }
   }
 
   return { boards, addNewBoard }

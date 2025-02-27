@@ -18,36 +18,47 @@ import { BoardProps, CardProps, ListProps } from '../../types/boardProps';
 import { useListsServices } from '../../services/listsServices';
 import { useCardsServices } from '../../services/cardsServices';
 import { useCardsStore } from '../../store/cardsStore';
+import { useAuthContext } from '../../customHooks/useAuthContext';
+import { addListFirebase } from '../../services/firebase/updateData/updateLists';
 
 const useCustomBoard = () => {
-    const { listsGroup } = useListsStore();
-    const { boards } = useBoardsStore();
-    const { listsService } = useListsServices();
-    const { createCardGroup } = useCardsServices();
+  const { listsGroup } = useListsStore();
+  const { boards } = useBoardsStore();
+  const { listsService } = useListsServices();
+  const { createCardGroup } = useCardsServices();
+  const { userAuth } = useAuthContext();
 
-    const addNewList = ({value, idBoard}: {value: string, idBoard: string}) => {
-        const nameList = value;
-        const idList = (nameList + Date.now()).toString();
+  const addNewList = ({value, idBoard}: {value: string, idBoard: string}) => {
+    const nameList = value;
+    const idList = (nameList + Date.now()).toString();
 
-        const newList: ListProps = {
-            idList: idList,
-            nameList: nameList,
-            colorList: 'brown',
-        }
-
-        listsService({
-            updateFn: (listsGroup) => listsGroup.map((listGroup) =>
-                listGroup.idBoard === idBoard ?
-                {...listGroup, lists: [...listGroup.lists, newList]} :
-                listGroup
-            )
-        });
-        createCardGroup({idBoard, idList, cards: []});
-        //se inializa las cards con [] y un idBoard e idList
-        //para saber que estas cartas pertenece a este tablero y a esta lista
+    const newList: ListProps = {
+      idList: idList,
+      nameList: nameList,
+      colorList: 'brown',
     }
 
-    return { addNewList, boards, listsGroup }
+    listsService({
+      updateFn: (listsGroup) => listsGroup.map((listGroup) =>
+        listGroup.idBoard === idBoard ?
+        {...listGroup, lists: [...listGroup.lists, newList]} :
+        listGroup
+      )
+    });
+    createCardGroup({idBoard, idList, cards: []});
+    
+    if (userAuth) {
+      const listGroup = listsGroup.find(listGroup => listGroup.idBoard === idBoard);
+      console.log('se halló el listGroup')
+      if (!listGroup) return
+      addListFirebase({idBoard, list: newList, order: listGroup.lists.length});
+    }
+    
+    //se inializa las cards con [] y un idBoard e idList
+    //para saber que estas cartas pertenece a este tablero y a esta lista
+  }
+
+  return { addNewList, boards, listsGroup }
 }
 
 export const Tablero = () => {

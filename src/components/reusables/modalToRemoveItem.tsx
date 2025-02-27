@@ -3,6 +3,8 @@ import { Modal, Button } from "react-bootstrap";
 import { CardProps, ListProps } from "../../types/boardProps";
 import { useListsServices } from '../../services/listsServices';
 import { useCardsServices } from "../../services/cardsServices";
+import { useAuthContext } from '../../customHooks/useAuthContext';
+import { deleteListFirebase } from '../../services/firebase/updateData/updateLists';
 
 interface ModalRemoveListProps {
     show: boolean
@@ -18,9 +20,13 @@ interface ModalRemoveListProps {
 export const ModalToRemoveItem: React.FC<ModalRemoveListProps> = ({show, onHide, card, list, idBoard, itemToRemove}) => {
     const { listsService } = useListsServices();
     const { cardsServices } = useCardsServices();
+    const { userAuth } = useAuthContext();
 
     const handleRemoveList = () => {
         const idList = list.idList;
+        if (userAuth) {
+            deleteListFirebase({idBoard, idList});
+        }
         listsService({
             updateFn: (state) => state.map((listGroup) => 
             listGroup.idBoard === idBoard ?

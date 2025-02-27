@@ -19,6 +19,7 @@ const initialData = async (userId: string) => {
 
     const specificBoardRef = doc(db, `users/${userId}/boards/primerboardid`);
     const listsRef = doc(collection(specificBoardRef, 'lists'), 'primerlistid');
+    
     const initialList = {
       idList: 'primerlistid',
       nameList: 'lista de ejemplo',

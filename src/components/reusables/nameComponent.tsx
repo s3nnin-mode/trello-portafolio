@@ -3,6 +3,8 @@ import '../../styles/components/reusables/nameComponent.scss';
 import { CardProps, ListProps } from "../../types/boardProps";
 import { useListsServices } from "../../services/listsServices";
 import { useCardsServices } from "../../services/cardsServices";
+import { updateNameListFirebase } from "../../services/firebase/updateData/updateLists";
+import { useAuthContext } from "../../customHooks/useAuthContext";
 
 interface NameListPropsComponent {
     idBoard: string
@@ -17,7 +19,8 @@ export const NameComponent: React.FC<NameListPropsComponent> = ({idBoard, list, 
     const { cardsServices } = useCardsServices();
     const [isOpenInput, setIsOpenInput] = useState(false);
     const [nameComponent, setNameComponent] = useState('');
-
+    const { userAuth } = useAuthContext();
+ 
     useEffect(() => {
         if (componentType === 'list') {
             setNameComponent(list.nameList);
@@ -29,7 +32,11 @@ export const NameComponent: React.FC<NameListPropsComponent> = ({idBoard, list, 
 
     const handleChangeList = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const idList = list.idList;
-        setNameComponent(e.target.value); 
+        setNameComponent(e.target.value);
+        
+        if (userAuth) {
+            updateNameListFirebase({idBoard, idList, nameList: e.target.value});
+        }
 
         listsService({
             updateFn: (listsGroup) => listsGroup.map((listGroup) => 
