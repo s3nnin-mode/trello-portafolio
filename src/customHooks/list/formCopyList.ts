@@ -5,7 +5,7 @@ import { useCardsStore } from "../../store/cardsStore";
 import { useListsServices } from "../../services/listsServices";
 import { useCardsServices } from "../../services/cardsServices";
 import { useAuthContext } from "../useAuthContext";
-import { addListTest, copyListAndUpdateOrderListsFirebase } from "../../services/firebase/updateData/updateLists";
+import { addListTest } from "../../services/firebase/updateData/updateLists";
 
 interface UseFormCopyList {
     setIsModalOptionsActive: React.Dispatch<React.SetStateAction<boolean>>

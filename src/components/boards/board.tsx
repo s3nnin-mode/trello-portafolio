@@ -19,7 +19,7 @@ import { useListsServices } from '../../services/listsServices';
 import { useCardsServices } from '../../services/cardsServices';
 import { useCardsStore } from '../../store/cardsStore';
 import { useAuthContext } from '../../customHooks/useAuthContext';
-import { addListFirebase, addListTest } from '../../services/firebase/updateData/updateLists';
+import { addListFirebase, addListTest, updateOrderListsFirebase } from '../../services/firebase/updateData/updateLists';
 
 const useCustomBoard = () => {
   const { listsGroup } = useListsStore();
@@ -69,6 +69,7 @@ export const Tablero = () => {
     const { boards, listsGroup, addNewList } = useCustomBoard();
     const [currentBoard, setCurrentBoard] = useState<BoardProps>();
     const [idBoard, setIdBoard] = useState('');
+    const { userAuth } = useAuthContext();
 
     const [currentLists, setCurrentLists] = useState<ListProps[]>()
     const { currentIdBoard } = useParams();
@@ -110,12 +111,34 @@ export const Tablero = () => {
       console.log('Se canceló el drag (no hay cambios en la posición)');
       return;
     }
-    const lists = arrayMove(currentLists, oldIndex, newIndex);
+
+    let lists = arrayMove(currentLists, oldIndex, newIndex);
+    const prevList = lists[newIndex - 1];
+    const postList = lists[newIndex + 1];
+    let newOrder: number | undefined;
+
+    if (prevList && postList) {
+      newOrder = (prevList.order + postList.order) / 2;
+      console.log('cayó en medio')
+    } else if (prevList) {
+      newOrder = prevList.order + 10;
+      console.log('cayó al final')
+    } else if (postList) {
+      newOrder = postList.order - 10;
+      console.log('cayó al principió')
+    }
+
+    if (userAuth && newOrder) {
+      lists = lists.map((list, index) => 
+        index === newIndex ?
+        {...list, order: newOrder} :
+        list
+      )
+      updateOrderListsFirebase({idBoard, updateLists: lists});
+    }
 
     listsService({
-      updateFn: (listsGroup) => listsGroup.map((listGroup) =>
-      listGroup.idBoard === idBoard ? { ...listGroup, lists: lists } : listGroup
-      )
+      updateFn: (listsGroup) => listsGroup.map((listGroup) => listGroup.idBoard === idBoard ? { ...listGroup, lists: lists } : listGroup)
     });
   };
 

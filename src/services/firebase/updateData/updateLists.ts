@@ -34,7 +34,7 @@ export const deleteListFirebase = async ({idBoard, idList}:{idBoard: string, idL
     console.log('lista eliminada')
 }
 
-export const copyListAndUpdateOrderListsFirebase = async ({idBoard, updateLists}: {idBoard: string, updateLists: ListProps[]}) => {  //esto se usa cuando copias o mueves una lista
+export const updateOrderListsFirebase = async ({idBoard, updateLists}: {idBoard: string, updateLists: ListProps[]}) => {  //esto se usa cuando copias o mueves una lista
     const userId = auth.currentUser?.uid;
 
     const updates = updateLists.map(async list => {
