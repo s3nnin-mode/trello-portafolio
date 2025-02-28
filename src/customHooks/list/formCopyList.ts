@@ -5,7 +5,7 @@ import { useCardsStore } from "../../store/cardsStore";
 import { useListsServices } from "../../services/listsServices";
 import { useCardsServices } from "../../services/cardsServices";
 import { useAuthContext } from "../useAuthContext";
-import { copyListAndUpdateOrderListsFirebase } from "../../services/firebase/updateData/updateLists";
+import { addListTest, copyListAndUpdateOrderListsFirebase } from "../../services/firebase/updateData/updateLists";
 
 interface UseFormCopyList {
     setIsModalOptionsActive: React.Dispatch<React.SetStateAction<boolean>>
@@ -26,7 +26,7 @@ export const useFormCopyList = ({ setIsModalOptionsActive }: UseFormCopyList) =>
 
         const idList = (Date.now() + list.nameList).toString();  //nuevo id para la lista copiada
 
-        const listCopy = {
+        let listCopy = {
             ...list, 
             idList: idList,
             nameList: inputText
@@ -35,7 +35,6 @@ export const useFormCopyList = ({ setIsModalOptionsActive }: UseFormCopyList) =>
         const indexTargetGroup = cardsGroup.findIndex(cardGroup => cardGroup.idBoard === idBoard && cardGroup.idList === idListToCopy);
         if (indexTargetGroup > -1) {
             const cards = cardsGroup[indexTargetGroup].cards;       //se copia las targets de la lista copiada con un nuevo idList 
-            // setCardsGroup({idBoard, idList, cards});                   //y se agrega un nuevo targetGroup con las tarjetas de la lista que se copio
             createCardGroup({idBoard, idList, cards});
         }
 
@@ -50,8 +49,22 @@ export const useFormCopyList = ({ setIsModalOptionsActive }: UseFormCopyList) =>
             }
         }
 
-        if (userAuth) {
-            copyListAndUpdateOrderListsFirebase({idBoard, updateLists});
+        const indexListCopy = updateLists.findIndex(list => list.idList === listCopy.idList);
+        if (indexListCopy > -1) {
+            const prevList = updateLists[indexListCopy - 1];
+            const postList = updateLists[indexListCopy + 1];
+            let newOrder: number | undefined = undefined;
+
+            if (prevList && postList) {
+                newOrder = (prevList.order + postList.order) / 2;
+            } else if (prevList) {
+                newOrder = prevList.order + 10;
+            }
+
+            if (newOrder !== undefined) {
+                updateLists = updateLists.map(list => list.idList === idList ? {...list, order: newOrder} : list);
+                if (userAuth) addListTest({idBoard, list: {...listCopy, order: newOrder}});
+            }
         }
 
         listsService({ 
@@ -61,8 +74,6 @@ export const useFormCopyList = ({ setIsModalOptionsActive }: UseFormCopyList) =>
                 listGroup
             ),
         });
-
-        
     }
 
     const callbackHandleCopyList = ({idBoard, list, inputText}: {idBoard: string, list: ListProps, inputText: string}) => {    //al apretar el boton de copiar se cierra el formulario de copiar lista y se cierra el modal de opciones de la lista

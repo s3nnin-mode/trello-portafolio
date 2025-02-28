@@ -19,7 +19,7 @@ import { useListsServices } from '../../services/listsServices';
 import { useCardsServices } from '../../services/cardsServices';
 import { useCardsStore } from '../../store/cardsStore';
 import { useAuthContext } from '../../customHooks/useAuthContext';
-import { addListFirebase } from '../../services/firebase/updateData/updateLists';
+import { addListFirebase, addListTest } from '../../services/firebase/updateData/updateLists';
 
 const useCustomBoard = () => {
   const { listsGroup } = useListsStore();
@@ -32,10 +32,20 @@ const useCustomBoard = () => {
     const nameList = value;
     const idList = (nameList + Date.now()).toString();
 
+
+    const listGroup = listsGroup.find(listGroup => listGroup.idBoard === idBoard)?.lists;
+    if (!listGroup) return
+    const lastList = listGroup[listGroup.length - 1];
+
     const newList: ListProps = {
       idList: idList,
       nameList: nameList,
       colorList: 'brown',
+      order: lastList ? lastList.order + 10 : 0
+    }
+    
+    if (userAuth) {
+      addListTest({idBoard, list: newList});
     }
 
     listsService({
@@ -46,14 +56,6 @@ const useCustomBoard = () => {
       )
     });
     createCardGroup({idBoard, idList, cards: []});
-    
-    if (userAuth) {
-      const listGroup = listsGroup.find(listGroup => listGroup.idBoard === idBoard);
-      if (!listGroup) return
-      console.log('se halló el listGroup', listGroup);
-      console.log('order', listGroup.lists.length)
-      addListFirebase({idBoard, list: newList, order: listGroup.lists.length});
-    }
     
     //se inializa las cards con [] y un idBoard e idList
     //para saber que estas cartas pertenece a este tablero y a esta lista
@@ -87,44 +89,40 @@ export const Tablero = () => {
         }
     }, [boards, currentIdBoard]);
 
-    useEffect(() => {
-        const indexListGroup = listsGroup.findIndex((listGroup) => listGroup.idBoard === currentIdBoard);
-        if (indexListGroup > -1) {
-            setCurrentLists(listsGroup[indexListGroup].lists);
-        }
-    }, [listsGroup]);
+  useEffect(() => {
+    const indexListGroup = listsGroup.findIndex((listGroup) => listGroup.idBoard === currentIdBoard);
+    if (indexListGroup > -1) {
+      setCurrentLists(listsGroup[indexListGroup].lists);
+    }
+  }, [listsGroup]);
 
-    const onDragEnd = (event: DragEndEvent) => {
-      setActiveCard(null);
-      setActiveList(null);
-      const { active, over } = event;
+  const onDragEnd = (event: DragEndEvent) => {
+    setActiveCard(null);
+    setActiveList(null);
+    const { active, over } = event;
 
-      if (!currentLists || !over) return
+    if (!currentLists || !over) return
 
-      const oldIndex = currentLists.findIndex(list => list.idList === active.id);
-      const newIndex = currentLists.findIndex(list => list.idList === over?.id);
+    const oldIndex = currentLists.findIndex(list => list.idList === active.id);
+    const newIndex = currentLists.findIndex(list => list.idList === over?.id);
 
-      if (oldIndex === -1 || newIndex === -1 || oldIndex === newIndex) {
-          console.log('Se canceló el drag (no hay cambios en la posición)');
-          return;
-      }
-      const lists = arrayMove(currentLists, oldIndex, newIndex);
+    if (oldIndex === -1 || newIndex === -1 || oldIndex === newIndex) {
+      console.log('Se canceló el drag (no hay cambios en la posición)');
+      return;
+    }
+    const lists = arrayMove(currentLists, oldIndex, newIndex);
 
-      listsService({
-        updateFn: (listsGroup) => listsGroup.map((listGroup) =>
-        listGroup.idBoard === idBoard
-        ?
-        { ...listGroup, lists: lists }
-        :
-        listGroup
-        )
-      })
-    };
+    listsService({
+      updateFn: (listsGroup) => listsGroup.map((listGroup) =>
+      listGroup.idBoard === idBoard ? { ...listGroup, lists: lists } : listGroup
+      )
+    });
+  };
 
   const sensors = useSensors(
     useSensor(PointerSensor, {  //esto es para que el drag empiece cuando el mouse este a 15px de distancia, en otras palabras
       activationConstraint: {
-          distance: 5
+        distance: 5
       }
     })
   );

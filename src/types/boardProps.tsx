@@ -12,6 +12,7 @@ export interface ListProps {
     idList: string
     nameList: string
     colorList: string
+    order: number
 }
 
 //Lists: ListsGroup[] donde cada lista en ralidad es un grupo de lista enlazado al idBoard para saber que pertenece a el
