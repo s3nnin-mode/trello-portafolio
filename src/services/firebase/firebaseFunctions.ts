@@ -1,4 +1,4 @@
-import { doc, setDoc, updateDoc, collection, getDocs } from 'firebase/firestore';
+import { doc, setDoc, updateDoc, collection, getDocs, query, orderBy } from 'firebase/firestore';
 
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "./firebaseConfig";
@@ -24,6 +24,7 @@ const initialData = async (userId: string) => {
       idList: 'primerlistid',
       nameList: 'lista de ejemplo',
       colorList: 'white',
+      order: 0
     };
 
     await setDoc(listsRef, initialList);
@@ -140,7 +141,9 @@ export const getListsFirebase = async (idBoard: string) => {
   const userid = auth.currentUser?.uid;
   const listsCollection = collection(db, `users/${userid}/boards/${idBoard}/lists`);
 
-  const listsSnapshot = await getDocs(listsCollection);
+  const q = query(listsCollection, orderBy('order'))
+
+  const listsSnapshot = await getDocs(q);
   const lists = listsSnapshot.docs.map((doc) => doc.data() as ListProps);
 
   return lists;

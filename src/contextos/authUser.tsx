@@ -30,8 +30,7 @@ export const AuthProvider = ({children}: ChildrenProps) => {
 
         if (userAuth) {
             setUserAuth(true);
-
-            console.log('usuario auth en contexto', userAuth)
+            console.log('usuario auth en contexto', userAuth);
             // navigate('/kanbaX');
             //se redirige a /app y se cargarn los datos de firebase
             //loadBoards([...firebase])

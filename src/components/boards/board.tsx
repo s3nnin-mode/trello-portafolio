@@ -49,8 +49,9 @@ const useCustomBoard = () => {
     
     if (userAuth) {
       const listGroup = listsGroup.find(listGroup => listGroup.idBoard === idBoard);
-      console.log('se halló el listGroup')
       if (!listGroup) return
+      console.log('se halló el listGroup', listGroup);
+      console.log('order', listGroup.lists.length)
       addListFirebase({idBoard, list: newList, order: listGroup.lists.length});
     }
     

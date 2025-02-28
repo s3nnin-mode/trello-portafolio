@@ -8,28 +8,29 @@ import { getBoardsFirebase } from "../../services/firebase/firebaseFunctions";
 import { initialTags } from "../../utils/tagsColors";
 
 export const Start = () => {
-    const { userAuth } = useAuthContext();
-    const { loadBoards } = useBoardsStore();
-    const navigate = useNavigate();
+  const { userAuth } = useAuthContext();
+  const { loadBoards } = useBoardsStore();
+  const navigate = useNavigate();
 
-    useEffect(() => {
-      console.log('test para ver cuantas veces se renderiza');
-      const LS = localStorage.getItem('boards-storage');
+  useEffect(() => {
+    console.log('test para ver cuantas veces se renderiza');
+    const LS = localStorage.getItem('boards-storage');
 
-      const fetchData = async () => {
-        if (userAuth) {
-          const boards = await getBoardsFirebase();
-          loadBoards(boards);
-          navigate('/kanbaX');
-        } else if (LS) {  
-            loadBoards(JSON.parse(LS));
-            navigate('/kanbaX'); 
-        }
+    const fetchData = async () => {
+      if (userAuth) {
+        const boards = await getBoardsFirebase();
+        loadBoards(boards);
+        navigate('/kanbaX');
+        console.log('user auth en start')
+      } else if (LS) {  
+          loadBoards(JSON.parse(LS));
+          navigate('/kanbaX'); 
+      } else {
+        console.log('no hay LS ni UserAuth');
       }
-      fetchData();
-      console.log('no hay LS ni UserAuth');
-      //si ninguna de las dos es true se queda en Home(modal para eleigir si usar la app como reclutador o para usarla realmente)
-    }, [userAuth]);
+    }
+    fetchData();
+  }, [userAuth]);
 
   const demo = () => {
     localStorage.setItem('boards-storage', JSON.stringify([]));

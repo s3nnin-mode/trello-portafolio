@@ -1,4 +1,4 @@
-import { collection, deleteDoc, doc, setDoc, updateDoc } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDocs, setDoc, updateDoc } from "firebase/firestore";
 import { ListProps } from "../../../types/boardProps";
 import { auth, db } from "../firebaseConfig";
 
@@ -24,13 +24,16 @@ export const deleteListFirebase = async ({idBoard, idList}:{idBoard: string, idL
     const userId = auth.currentUser?.uid;
     const listRef = doc(db, `users/${userId}/boards/${idBoard}/lists/${idList}`);
     await deleteDoc(listRef);
+    console.log('lista eliminada')
 }
 
 export const copyListAndUpdateOrderListsFirebase = async ({idBoard, updateLists}: {idBoard: string, updateLists: ListProps[]}) => {  //esto se usa cuando copias o mueves una lista
     const userId = auth.currentUser?.uid;
 
+    const listsCollection = collection(db, `users/${userId}/boards/${idBoard}/lists`);
+
     await Promise.all(updateLists.map(async (list, index) => {
-        const listRef = doc(collection(db, `users/${userId}/boards/${idBoard}/lists`), list.idList);
+        const listRef = doc(collection(db, `users/${userId}/boards/${idBoard}/lists/`, list.idList));
         await updateDoc(listRef, {...list, order: index});
     }));
     console.log('se copió lista y actulizó el orden')
