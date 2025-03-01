@@ -138,6 +138,21 @@ export const Tablero = () => {
       // updateOrderListsFirebase({idBoard, updateLists: lists});
     }
 
+    const hasDuplicates = lists.some((list, index, arr) => 
+      arr.some((otherList, otherIndex) => otherIndex !== index && otherList.order === list.order)
+    );
+  
+    const hasNegativeOrders = lists.some(list => list.order < 0);
+    
+    if (hasDuplicates || hasNegativeOrders) {
+      lists = lists
+        .sort((a, b) => a.order - b.order) // Asegurar orden ascendente
+        .map((list, index) => ({ ...list, order: index * 10 })); // Reasignar desde 0
+
+      updateOrderListsFirebase({ idBoard, updateLists: lists });
+      console.log('Se reorganizaron los orders en drag and drop: ', lists);
+    }
+
     listsService({
       updateFn: (listsGroup) => listsGroup.map((listGroup) => listGroup.idBoard === idBoard ? { ...listGroup, lists: lists } : listGroup)
     });
