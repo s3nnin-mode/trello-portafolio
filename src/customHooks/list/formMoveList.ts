@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useListsStore } from "../../store/listsStore";
 import { ListProps } from "../../types/boardProps";
 import { useListsServices } from "../../services/listsServices";
+import { updateOrderListsFirebase, updtateOrderList } from "../../services/firebase/updateData/updateLists";
 
 interface UseFormMoveList {
     setIsModalOptionsActive: React.Dispatch<React.SetStateAction<boolean>>
@@ -23,12 +24,13 @@ export const useFormMoveList = ({ setIsModalOptionsActive}: UseFormMoveList) => 
             if (listsGroup[indexListGroup].lists[i].idList === list.idList) {
                 INDEX = i
             }
+
             if (i === position) {
                 LIST = listsGroup[indexListGroup].lists[i];
             }
         }
 
-        const lists = listsGroup[indexListGroup].lists.map((l, index) => {
+        let lists = listsGroup[indexListGroup].lists.map((l, index) => {
             if (index === position) {
                 return list
             }
@@ -38,9 +40,43 @@ export const useFormMoveList = ({ setIsModalOptionsActive}: UseFormMoveList) => 
             }
 
             return l
-        })
+        });
 
-        // setLists({idBoard, lists});
+        lists = lists.map((l, index) => {
+            if (l === list) {
+                const prevList = lists[index - 1];
+                const postList = lists[index + 1];
+                if (prevList && postList) {
+                    const listUpdate = {...l, order: (prevList.order + postList.order) / 2}
+                    updtateOrderList({idBoard, list: listUpdate});
+                    return listUpdate
+                } else if (prevList) {
+                    const listUpdate = {...l, order: prevList.order + 10};
+                    updtateOrderList({idBoard, list: listUpdate});
+                    return listUpdate
+                } else if (postList) { //ocupas un for para resetear todo aqui
+                    console.log('solo hay postList')
+                    const listUpdate = {...l, order: postList.order - 10}; 
+                    updtateOrderList({idBoard, list: listUpdate});
+                    return listUpdate
+                }
+            }
+            return l
+        });
+        console.log('lists', lists)
+
+        if (lists.some(list => list.order < 0)) {
+            let newOrder = 0;
+
+            lists = lists.map((list) => {
+                const listUpdate = {...list, order: newOrder};
+                newOrder = newOrder + 10;
+                return listUpdate;
+            });
+            updateOrderListsFirebase({idBoard, updateLists: lists});
+            console.log('se actualizo order de listas: ', lists);
+        }
+
         listsService({
             updateFn: (listsGroup) => listsGroup.map((listGroup) =>
                 listGroup.idBoard === idBoard

@@ -56,3 +56,11 @@ export const updateOrderListsFirebase = async ({idBoard, updateLists}: {idBoard:
     //     await updateDoc(listRef, {...list, order: index});
     // }));
 };
+
+export const updtateOrderList = async ({idBoard, list}: {idBoard: string, list: ListProps}) => {
+    const userId = auth.currentUser?.uid;
+
+    const listRef = doc(db, `users/${userId}/boards/${idBoard}/lists/${list.idList}`);
+
+    await updateDoc(listRef, {...list});
+};

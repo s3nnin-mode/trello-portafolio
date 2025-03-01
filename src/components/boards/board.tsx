@@ -19,7 +19,7 @@ import { useListsServices } from '../../services/listsServices';
 import { useCardsServices } from '../../services/cardsServices';
 import { useCardsStore } from '../../store/cardsStore';
 import { useAuthContext } from '../../customHooks/useAuthContext';
-import { addListFirebase, addListTest, updateOrderListsFirebase } from '../../services/firebase/updateData/updateLists';
+import { addListFirebase, addListTest, updateOrderListsFirebase, updtateOrderList } from '../../services/firebase/updateData/updateLists';
 
 const useCustomBoard = () => {
   const { listsGroup } = useListsStore();
@@ -123,9 +123,9 @@ export const Tablero = () => {
     } else if (prevList) {
       newOrder = prevList.order + 10;
       console.log('cayó al final')
-    } else if (postList) {
+    } else if (postList) { //aqui falta optimizar para no tener valores negativos en el order de alguna lista
       newOrder = postList.order - 10;
-      console.log('cayó al principió')
+      console.log('cayó al principió');
     }
 
     if (userAuth && newOrder) {
@@ -134,7 +134,8 @@ export const Tablero = () => {
         {...list, order: newOrder} :
         list
       )
-      updateOrderListsFirebase({idBoard, updateLists: lists});
+      updtateOrderList({idBoard, list: lists[newIndex]});
+      // updateOrderListsFirebase({idBoard, updateLists: lists});
     }
 
     listsService({
@@ -169,11 +170,11 @@ export const Tablero = () => {
       if (list) {
         setListToActiveCard(list);
       }
-    }
+    };
   }
 
   const { cardsServices } = useCardsServices();
-  const { cardsGroup } = useCardsStore()
+  const { cardsGroup } = useCardsStore();
 
   const onDragOver = (event: DragOverEvent) => {
     const { active, over } = event;
