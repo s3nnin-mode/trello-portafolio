@@ -63,19 +63,55 @@ export const useFormMoveList = ({ setIsModalOptionsActive}: UseFormMoveList) => 
             }
             return l
         });
-        console.log('lists', lists)
+        console.log('lists', lists);
+        // let respaldo: ListProps[] = [];
 
-        if (lists.some(list => list.order < 0)) {
-            let newOrder = 0;
+        for (let i = 0; i < lists.length; i++) {
+            if (lists[i] === list) {
+                const prevList = lists[i - 1];
+                const postList = lists[i + 1];
 
-            lists = lists.map((list) => {
-                const listUpdate = {...list, order: newOrder};
-                newOrder = newOrder + 10;
-                return listUpdate;
-            });
-            updateOrderListsFirebase({idBoard, updateLists: lists});
-            console.log('se actualizo order de listas: ', lists);
+                if (prevList && postList) {
+                    const listUpdate = {...lists[i], order: (prevList.order + postList.order) / 2}
+                    lists = lists.map(l => l.idList === list.idList ? {...l, order: (prevList.order + postList.order) / 2} : l);
+                    updtateOrderList({idBoard, list: listUpdate});
+                } else if (prevList) {
+                    const listUpdate = {...list, order: prevList.order + 10};
+                    lists = lists.map(l => l.idList === list.idList ? {...l, order: prevList.order + 10} : l);
+                    updtateOrderList({idBoard, list: listUpdate});
+                } else if (postList) { //ocupas un for para resetear todo aqui
+                    console.log('solo hay postList')
+                    lists = lists.map(l => l.idList === list.idList ? {...l, order: postList.order - 10} : l);
+                    if (lists.some(list => list.order < 0)) {
+                        let newOrder = 0;
+                        lists = lists.map((list) => {
+                            const listUpdate = {...list, order: newOrder};
+                            newOrder = newOrder + 10;
+                            return listUpdate;      //se estan duplicando order
+                        });
+                        updateOrderListsFirebase({idBoard, updateLists: lists});
+                        console.log('se reordenó lists', lists)
+                        return
+                    }
+                    const listUpdate = {...lists[i], order: postList.order - 10}; 
+                    updtateOrderList({idBoard, list: listUpdate});
+                }
+            }
+
+            // resetHelp.push(lists[i]);
         }
+
+        // if (lists.some(list => list.order < 0)) {
+        //     let newOrder = 0;
+
+        //     lists = lists.map((list) => {
+        //         const listUpdate = {...list, order: newOrder};
+        //         newOrder = newOrder + 10;
+        //         return listUpdate;
+        //     });
+        //     updateOrderListsFirebase({idBoard, updateLists: lists});
+        //     console.log('se actualizo order de listas: ', lists);
+        // }
 
         listsService({
             updateFn: (listsGroup) => listsGroup.map((listGroup) =>
