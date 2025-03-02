@@ -17,6 +17,8 @@ import { BoardProps, ListProps, CardProps } from '../../types/boardProps';
 import { useCardsServices } from "../../services/cardsServices";
 //DRaG AND DROP CARDS
 import { SortableContext } from '@dnd-kit/sortable';
+import { addCardFirebase } from "../../services/firebase/updateData/updateCards";
+import { useAuthContext } from "../../customHooks/useAuthContext";
 
 
 interface ListPropsComponent {
@@ -26,10 +28,16 @@ interface ListPropsComponent {
 
 export const useList = () => {
     const { cardsServices } = useCardsServices();
+    const { userAuth } = useAuthContext();
+    const { cardsGroup } = useCardsStore();
 
     const addNewCard = ({board, list, nameCard}: { board: BoardProps, list: ListProps, nameCard: string }) => {
         const idList = list.idList;
         const idBoard = board.idBoard;
+        const cards = cardsGroup.find(card => card.idBoard === board.idBoard && card.idList === list.idList)?.cards;
+        if (!cards) return;
+
+        let order = cards?.length === 0 ? 0 : cards[cards?.length - 1].order + 10
         
         const newCard: CardProps = {
             idCard: (nameCard + Date.now()).toString(), 
@@ -38,20 +46,20 @@ export const useList = () => {
             coverCardImgs: [],
             currentCoverType: 'color',
             complete: false,
-            description: null
+            description: null,
+            order
         };
+
+        if (userAuth) {
+            addCardFirebase({idBoard, idList, card: newCard});
+        }
         
         cardsServices({
             updateFn: (cardsGroup) => cardsGroup.map((cardGroup) =>
-                (cardGroup.idBoard === idBoard && cardGroup.idList === idList) 
-                ?
-                {
-                    ...cardGroup,
-                    cards: [...cardGroup.cards, newCard]
-                }
-                :
-                cardGroup
-                )
+            (cardGroup.idBoard === idBoard && cardGroup.idList === idList) ?
+            {...cardGroup, cards: [...cardGroup.cards, newCard]} :
+            cardGroup
+            )
         });
     }
 

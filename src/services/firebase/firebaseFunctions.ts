@@ -152,7 +152,10 @@ export const getListsFirebase = async (idBoard: string) => {
 export const getCardsFirebase = async (idBoard: string, idList: string) => {
   const userId = auth.currentUser?.uid;
   const cardsCollection = collection(db, `users/${userId}/boards/${idBoard}/lists/${idList}/cards`);
-  const cardsSnapshot = await getDocs(cardsCollection);
+
+  const q = query(cardsCollection, orderBy('order'));
+
+  const cardsSnapshot = await getDocs(q);
   const cards = cardsSnapshot.docs.map(doc => doc.data() as CardProps);
   return cards;
 }

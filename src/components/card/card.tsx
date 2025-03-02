@@ -87,7 +87,7 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
             style={style}
             {...attributes}
             {...listeners}
-            onClick={() => { setShowCardModal(true)}}
+            // onClick={() => { setShowCardModal(true)}}       descomentar estoo
             onMouseEnter={() => setIsPlaying(true)}
             onMouseLeave={() => setIsPlaying(false)}
             className='target' >

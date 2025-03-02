@@ -12,7 +12,6 @@ export const addListTest = async ({idBoard, list}:{idBoard: string, list: ListPr
     const userId = auth.currentUser?.uid;
     const listsCollection = doc(collection(db, `users/${userId}/boards/${idBoard}/lists`), list.idList);
     await setDoc(listsCollection, list);
-    console.log('se agrego lista en copy')
 }
 
 export const updateNameListFirebase = async ({idBoard, idList, nameList}:{idBoard: string, idList: string, nameList: string}) => {

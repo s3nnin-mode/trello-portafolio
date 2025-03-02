@@ -13,9 +13,7 @@ export const useCardsServices = () => {
             cardsGroup: updateFn(state.cardsGroup)  //actualiza el estado de cardsGroup independientemente de si el usuario esta autenticado o no
         }));
 
-        if (userAuth) {
-            //aqui se haria la peticion a la base de datos para actualizar las cards
-        } else {
+        if (!userAuth) {
             const cardsLS = localStorage.getItem('cards-storage');
 
             if (cardsLS) { 

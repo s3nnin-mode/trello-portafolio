@@ -20,6 +20,7 @@ import { useCardsServices } from '../../services/cardsServices';
 import { useCardsStore } from '../../store/cardsStore';
 import { useAuthContext } from '../../customHooks/useAuthContext';
 import { addListFirebase, addListTest, updateOrderListsFirebase, updtateOrderList } from '../../services/firebase/updateData/updateLists';
+import { moveCardThoAnotherList, updateOrderCard } from '../../services/firebase/updateData/updateCards';
 
 const useCustomBoard = () => {
   const { listsGroup } = useListsStore();
@@ -206,6 +207,7 @@ export const Tablero = () => {
     if (isActiveCard && isOverCard) {
       //primero hay que encontrar la lista a la que pertenece la card
       const idList = cardsGroup.find((cardGroup) => cardGroup.cards.some((card) => card.idCard === activeId))?.idList;
+      if(!idList) return;
       const cardGroupIndex = cardsGroup.findIndex((cardGroup) => cardGroup.idBoard === idBoard && cardGroup.idList === idList);
       if (cardGroupIndex === -1) return;
 
@@ -213,7 +215,30 @@ export const Tablero = () => {
       const newIndex = cardsGroup[cardGroupIndex].cards.findIndex((card) => card.idCard === overId);
       if (oldIndex === -1 || newIndex === -1 || oldIndex === newIndex) return;
 
-      const newCards = arrayMove(cardsGroup[cardGroupIndex].cards, oldIndex, newIndex);  
+      let newCards = arrayMove(cardsGroup[cardGroupIndex].cards, oldIndex, newIndex);
+      
+      newCards = newCards.map((card, index) => {
+        if (index === newIndex) {
+          const prevCard = newCards[index - 1]
+          const postCard = newCards[index + 1]
+
+          if (prevCard && postCard) {
+            card = {...card, order: (prevCard.order + postCard.order) / 2}
+          } else if (prevCard) {
+            card = {...card, order: prevCard.order + 10}
+          } else if (postCard) {
+            card = {...card, order: postCard.order - 10}
+          }
+
+          if (userAuth) {
+            updateOrderCard({idBoard, idList, card});
+          }
+        }
+        return card
+      });
+
+      //falta logica para reordenar si empieza haber numeros negativos u orders duplicados
+
       cardsServices({
         updateFn: (cardsGroup) => cardsGroup.map((cardGroup) => {
           if (cardGroup.idBoard === idBoard && cardGroup.idList === idList) {
@@ -221,23 +246,33 @@ export const Tablero = () => {
           }
           return cardGroup;
         })
-      })
+      });
     }
-
+////////////////////////////////////////////////////////////////////////////////////////
     const isOverList = over.data.current?.type === 'list';
 
     if (isActiveCard && isOverList) {
       const idList = overId;
         
-      const grupoDondeSeEncuentraLaCard = cardsGroup.findIndex((cardGroup) => cardGroup.cards.some((card) => card.idCard === activeId));
-      if (grupoDondeSeEncuentraLaCard === -1) return;
+      const groupOrigenCard = cardsGroup.findIndex((cardGroup) => cardGroup.cards.some((card) => card.idCard === activeId));
+      if (groupOrigenCard === -1) return;
 
-      const cardToMove = cardsGroup[grupoDondeSeEncuentraLaCard].cards.find((card) => card.idCard === activeId);
+      const cardToMove = cardsGroup[groupOrigenCard].cards.find((card) => card.idCard === activeId);
       if (!cardToMove) return;
+
+      if (userAuth) {
+        //falta order
+        moveCardThoAnotherList({
+          idBoard, 
+          idListOrigen: cardsGroup[groupOrigenCard].idList, 
+          idListDestiny: idList as string, 
+          card: cardToMove
+        });
+      }
 
       cardsServices({
         updateFn: (cardsGroup) => cardsGroup.map((cardGroup) => {
-          if (cardGroup.idBoard === idBoard && cardGroup.idList === cardsGroup[grupoDondeSeEncuentraLaCard].idList) {
+          if (cardGroup.idBoard === idBoard && cardGroup.idList === cardsGroup[groupOrigenCard].idList) {
             return { ...cardGroup, cards:  cardGroup.cards.filter((card) => card.idCard !== activeId) };
           }
           return cardGroup;
@@ -247,11 +282,19 @@ export const Tablero = () => {
       cardsServices({
         updateFn: (cardsGroup) => cardsGroup.map((cardGroup) => {
           if (cardGroup.idBoard === idBoard && cardGroup.idList === idList) {
-            return { ...cardGroup, cards: [...cardGroup.cards, cardToMove] };
+            return { ...cardGroup, cards: [...cardGroup.cards, cardToMove].map((card, index) => {
+              card = {...card, order: index === 0 ? 0 : cardGroup.cards[index - 1].order + 10}
+              console.log('card arrastrada order', card)
+              return card;
+            })};
           }
           return cardGroup;
         })
       });
+
+      //falta logica para asignar un nuevo order a la card que se mueve a otra lista
+
+
     }
   }
 
