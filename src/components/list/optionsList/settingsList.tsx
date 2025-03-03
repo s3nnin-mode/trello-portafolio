@@ -22,6 +22,9 @@ import { BtnAdd } from "../../reusables/btnAgregar";
 // import { useAccesDirectToAddTarget } from "../../customHooks/list/accesDirectAddTarget";
 import { CardProps } from "../../../types/boardProps";
 import { useCardsServices } from "../../../services/cardsServices";
+import { useCardsStore } from "../../../store/cardsStore";
+import { useAuthContext } from "../../../customHooks/useAuthContext";
+import { addCardToTopFirebase } from "../../../services/firebase/updateData/updateCards";
 
 interface SettingsListProps {
     idBoard: string
@@ -39,6 +42,7 @@ export const SettingsList: React.FC<SettingsListProps> = ({ idBoard, list }) => 
     const { showFormMoveList, openFormMoveList, closeFormMoveList, closeAllMoveList, callbackHandleMoveList } = useFormMoveList({setIsModalOptionsActive});
     const [ showModalToRemoveList, setShowModalToRemoveList ] = useState(false);
     const { cardsServices } = useCardsServices();
+    const { userAuth } = useAuthContext();
 
     const addNewCard = (nameCard: string) => {
         const cardToAdd: CardProps = {
@@ -48,7 +52,8 @@ export const SettingsList: React.FC<SettingsListProps> = ({ idBoard, list }) => 
             coverCardImgs: [],
             currentCoverType: 'color',
             complete: false,
-            description: null
+            description: null,
+            order: 0
         };
 
         cardsServices({
@@ -56,12 +61,21 @@ export const SettingsList: React.FC<SettingsListProps> = ({ idBoard, list }) => 
                 cardGroup.idBoard === idBoard && cardGroup.idList === list.idList ?
                     {
                         ...cardGroup,
-                        cards: [cardToAdd, ...cardGroup.cards]
+                        cards: [cardToAdd, ...cardGroup.cards].map((card, index) => {
+                            return { ...card, order: index * 10};
+                        })
                     }
                 :
                     cardGroup
             )
         });
+
+        const cardsUpdate = useCardsStore.getState().cardsGroup.find(cardGroup => cardGroup.idList === list.idList)?.cards;
+        if (!cardsUpdate) return;
+        if (userAuth) {
+            addCardToTopFirebase({idBoard, idList: list.idList, card: cardToAdd, cardsUpdate});
+        }
+
     }
 
     return (

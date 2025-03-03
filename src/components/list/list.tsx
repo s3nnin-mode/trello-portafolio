@@ -17,7 +17,7 @@ import { BoardProps, ListProps, CardProps } from '../../types/boardProps';
 import { useCardsServices } from "../../services/cardsServices";
 //DRaG AND DROP CARDS
 import { SortableContext } from '@dnd-kit/sortable';
-import { addCardFirebase } from "../../services/firebase/updateData/updateCards";
+import { addCardFirebase, addCardToTopFirebase } from "../../services/firebase/updateData/updateCards";
 import { useAuthContext } from "../../customHooks/useAuthContext";
 
 
@@ -49,10 +49,6 @@ export const useList = () => {
             description: null,
             order
         };
-
-        if (userAuth) {
-            addCardFirebase({idBoard, idList, card: newCard});
-        }
         
         cardsServices({
             updateFn: (cardsGroup) => cardsGroup.map((cardGroup) =>
@@ -61,6 +57,10 @@ export const useList = () => {
             cardGroup
             )
         });
+
+        if (userAuth) {
+            addCardFirebase({idBoard, idList, card: newCard});
+        }
     }
 
     return { addNewCard, cardsServices };
