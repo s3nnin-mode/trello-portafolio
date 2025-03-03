@@ -19,7 +19,7 @@ import { useListsServices } from '../../services/listsServices';
 import { useCardsServices } from '../../services/cardsServices';
 import { useCardsStore } from '../../store/cardsStore';
 import { useAuthContext } from '../../customHooks/useAuthContext';
-import { addListFirebase, addListTest, updateOrderListsFirebase, updtateOrderList } from '../../services/firebase/updateData/updateLists';
+import { addListTest, updateOrderListsFirebase, updtateOrderList } from '../../services/firebase/updateData/updateLists';
 import { moveCardThoAnotherList, updateOrderCard } from '../../services/firebase/updateData/updateCards';
 
 const useCustomBoard = () => {
@@ -248,7 +248,9 @@ export const Tablero = () => {
         })
       });
     }
-////////////////////////////////////////////////////////////////////////////////////////
+
+    //LOGICA PARA MOVER LA CARD A OTRA LISTA
+
     const isOverList = over.data.current?.type === 'list';
 
     if (isActiveCard && isOverList) {
@@ -260,16 +262,7 @@ export const Tablero = () => {
       const cardToMove = cardsGroup[groupOrigenCard].cards.find((card) => card.idCard === activeId);
       if (!cardToMove) return;
 
-      if (userAuth) {
-        //falta order
-        moveCardThoAnotherList({
-          idBoard, 
-          idListOrigen: cardsGroup[groupOrigenCard].idList, 
-          idListDestiny: idList as string, 
-          card: cardToMove
-        });
-      }
-
+      //Se elimina la card del cardGroup al que estaba
       cardsServices({
         updateFn: (cardsGroup) => cardsGroup.map((cardGroup) => {
           if (cardGroup.idBoard === idBoard && cardGroup.idList === cardsGroup[groupOrigenCard].idList) {
@@ -279,12 +272,12 @@ export const Tablero = () => {
         })
       });
 
+      //Se agrega a la lista en donde se dejó caer
       cardsServices({
         updateFn: (cardsGroup) => cardsGroup.map((cardGroup) => {
           if (cardGroup.idBoard === idBoard && cardGroup.idList === idList) {
             return { ...cardGroup, cards: [...cardGroup.cards, cardToMove].map((card, index) => {
               card = {...card, order: index === 0 ? 0 : cardGroup.cards[index - 1].order + 10}
-              console.log('card arrastrada order', card)
               return card;
             })};
           }
@@ -292,9 +285,18 @@ export const Tablero = () => {
         })
       });
 
-      //falta logica para asignar un nuevo order a la card que se mueve a otra lista
+      const cardsUpdate = useCardsStore.getState().cardsGroup.find(cardGroup => cardGroup.idList === idList)?.cards;
+      if (!cardsUpdate) return;
 
-
+      if (userAuth) {
+        moveCardThoAnotherList({
+          idBoard, 
+          idListOrigen: cardsGroup[groupOrigenCard].idList, 
+          idListDestiny: idList as string, 
+          card: cardToMove,
+          cardsUpdate
+        });
+      }
     }
   }
 

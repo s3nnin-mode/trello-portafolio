@@ -63,7 +63,7 @@ export const useFormCopyList = ({ setIsModalOptionsActive }: UseFormCopyList) =>
 
             if (newOrder !== undefined) {
                 updateLists = updateLists.map(list => list.idList === idList ? {...list, order: newOrder} : list);
-                if (userAuth) addListTest({idBoard, list: {...listCopy, order: newOrder}});
+                if (userAuth) addListTest({idBoard, list: {...listCopy, order: newOrder}}); //Se agrega la lista copiada
             }
         }
 

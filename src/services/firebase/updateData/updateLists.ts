@@ -38,22 +38,18 @@ export const updateOrderListsFirebase = async ({idBoard, updateLists}: {idBoard:
 
     const updates = updateLists.map(async list => {
         const listRef = doc(db, `users/${userId}/boards/${idBoard}/lists/${list.idList}`);
-        const lista = getDoc(listRef);
+        // const lista = getDoc(listRef);
+        await updateDoc(listRef, { order: list.order });
 
-        if ((await lista).exists()) {
-            await updateDoc(listRef, { order: list.order });
-        } else {
-            console.log('listas inexistente')
-        }
-        // await updateDoc(listRef, { order: list.order});
+
+        // if ((await lista).exists()) {
+        //     await updateDoc(listRef, { order: list.order });
+        // } else {
+        //     console.log('listas inexistente')
+        // }
     });
 
     await Promise.all(updates);
-
-    // await Promise.all(updateLists.map(async (list, index) => {
-    //     const listRef = doc(collection(db, `users/${userId}/boards/${idBoard}/lists/`, list.idList));
-    //     await updateDoc(listRef, {...list, order: index});
-    // }));
 };
 
 export const updtateOrderList = async ({idBoard, list}: {idBoard: string, list: ListProps}) => {

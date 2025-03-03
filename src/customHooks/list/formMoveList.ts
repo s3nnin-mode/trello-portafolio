@@ -42,6 +42,7 @@ export const useFormMoveList = ({ setIsModalOptionsActive}: UseFormMoveList) => 
             return l
         });
 
+        //este mapeo es para calcular el valor de la card movida
         lists = lists.map((l, index) => {
             if (l === list) {
                 const prevList = lists[index - 1];
@@ -64,8 +65,8 @@ export const useFormMoveList = ({ setIsModalOptionsActive}: UseFormMoveList) => 
             return l
         });
         
-        console.log('lists', lists);
-
+        //Una vez calculado el nuevo order se verifica si no hay duplicados en las cards y valores negativos,
+        //de lo contrario se revalua el order de cada card
         const hasDuplicates = lists.some((list, index, arr) => 
             arr.some((otherList, otherIndex) => otherIndex !== index && otherList.order === list.order)
         );
@@ -78,7 +79,6 @@ export const useFormMoveList = ({ setIsModalOptionsActive}: UseFormMoveList) => 
                 .map((list, index) => ({ ...list, order: index * 10 })); // Reasignar desde 0
         
             updateOrderListsFirebase({ idBoard, updateLists: lists });
-            console.log('Se reorganizaron los orders: ', lists);
         }
         
         listsService({
