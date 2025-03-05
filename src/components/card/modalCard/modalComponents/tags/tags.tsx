@@ -4,6 +4,8 @@ import { BoardProps, ListProps, CardProps, TagsProps } from '../../../../../type
 import { EditTags } from './editTags';
 import { useTagsStore } from '../../../../../store/tagsStore';
 import { useTagsService } from '../../../../../services/tagsServices';
+import { useAuthContext } from '../../../../../customHooks/useAuthContext';
+import { updateStateTag } from '../../../../../services/firebase/updateData/updateTags';
 
 interface TagsSettings {
     board: BoardProps
@@ -20,10 +22,20 @@ export const Tags: React.FC<TagsSettings> = ({ board, list, card, closeTagsSetti
     const [inputValue, setInputValuet] = useState('');
     const [limitTagsToShow, setLimitTagsToShow] = useState(5);
     const { tagsServices } = useTagsService();
-
+    const { userAuth } = useAuthContext();
+ 
     const onChangeCheckbox = (prop: string) => {
         const idCard = card.idCard;
         const idTag = prop;
+
+        if (userAuth) {
+            updateStateTag({
+                idTag,
+                idBoard: board.idBoard,
+                idList: list.idList,
+                idCard: card.idCard
+            })
+        }
 
         tagsServices((tags) => tags.map((tag) => 
             tag.idTag === idTag 
@@ -39,7 +51,7 @@ export const Tags: React.FC<TagsSettings> = ({ board, list, card, closeTagsSetti
             }
             :
             tag
-        ))
+        ));
     };
 
     const openInterfaceToEditTag = ({tag}:{tag: TagsProps}) => {

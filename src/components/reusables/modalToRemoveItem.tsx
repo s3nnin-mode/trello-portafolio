@@ -5,6 +5,7 @@ import { useListsServices } from '../../services/listsServices';
 import { useCardsServices } from "../../services/cardsServices";
 import { useAuthContext } from '../../customHooks/useAuthContext';
 import { deleteListFirebase } from '../../services/firebase/updateData/updateLists';
+import { deleteCard } from '../../services/firebase/updateData/updateCards';
 
 interface ModalRemoveListProps {
     show: boolean
@@ -39,15 +40,17 @@ export const ModalToRemoveItem: React.FC<ModalRemoveListProps> = ({show, onHide,
 
     const handleRemoveCard = () => {
         const idCardToRemove = card?.idCard;
+        if (userAuth && card) {
+            deleteCard({
+                idBoard,
+                idList: list.idList,
+                idCard: card?.idCard
+            });
+        }
         cardsServices({
             updateFn: (cardsGroup) => cardsGroup.map((cardGroup) =>
-            (cardGroup.idBoard === idBoard && cardGroup.idList === list.idList)
-            ?
-            {
-                ...cardGroup,
-                cards: cardGroup.cards.filter((card) => card.idCard !== idCardToRemove)
-            }
-            :
+            (cardGroup.idBoard === idBoard && cardGroup.idList === list.idList) ? 
+            {...cardGroup, cards: cardGroup.cards.filter((card) => card.idCard !== idCardToRemove)} :
             cardGroup
             )
         })

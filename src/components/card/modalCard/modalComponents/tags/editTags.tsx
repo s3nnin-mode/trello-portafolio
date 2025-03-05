@@ -2,6 +2,8 @@ import '../../../../../styles/components/card/modalCard/modalComponents/tags/edi
 import React, { useEffect, useState } from "react";
 import { TagsProps } from '../../../../../types/boardProps';
 import { useTagsService } from '../../../../../services/tagsServices';
+import { createTagFirebase, deleteTagFirebase, updateTag } from '../../../../../services/firebase/updateData/updateTags';
+import { useAuthContext } from '../../../../../customHooks/useAuthContext';
 
 const colors = [
     "#E63946", "#F4A261", "#2A9D8F", "#264653", "blue",
@@ -25,6 +27,7 @@ export const EditTags: React.FC<EditTagsProps> = ({idBoard, idList, idCard, tag,
     const [nameTag, setNameTag] = useState('');
     const [color, setColor] = useState('');
     const { tagsServices } = useTagsService();
+    const { userAuth } = useAuthContext();
 
     useEffect(() => {        //si es para editar una tag existente se cargan sus respectivas caracteristicas(color, nameTag)
         if (!tag) return;
@@ -35,6 +38,13 @@ export const EditTags: React.FC<EditTagsProps> = ({idBoard, idList, idCard, tag,
     const handleSaveChanges = () => {
         if (!tag) return
         const idTag = tag.idTag;
+        if (userAuth) {
+            updateTag({
+                idTag,
+                name: !(nameTag === tag.nameTag) ? nameTag : undefined,
+                color: !(color === tag.color) ? color : undefined
+            });
+        }
         tagsServices((tags) => tags.map((tag) => 
             tag.idTag === idTag ?
             { 
@@ -57,8 +67,11 @@ export const EditTags: React.FC<EditTagsProps> = ({idBoard, idList, idCard, tag,
             cardsThatUseIt: [
                 {idBoard, idList, idCard}
             ]
+        };
+
+        if (userAuth) {
+            createTagFirebase({tag: newTag});
         }
-        // setCreateTag(newTag);
         tagsServices((tags) => [newTag, ...tags]);
         closeComponent();
     }
@@ -66,6 +79,9 @@ export const EditTags: React.FC<EditTagsProps> = ({idBoard, idList, idCard, tag,
     const removeTag = () => {
         if (!tag) return
         const idTag = tag.idTag;
+        if (userAuth) {
+            deleteTagFirebase(idTag);
+        }
         // setRemoveTag(idTag);        //falta agregar modal para confirmar eliminacion de una etiqueta
         tagsServices((tags) => tags.filter(tag => tag.idTag !== idTag));
         closeComponent();

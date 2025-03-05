@@ -1,4 +1,4 @@
-import { collection, deleteDoc, doc, getDoc, getDocs, setDoc, updateDoc, writeBatch } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDoc, setDoc, updateDoc, writeBatch } from "firebase/firestore";
 import { auth, db, storage } from "../firebaseConfig"
 import { CardProps } from "../../../types/boardProps";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
@@ -113,4 +113,10 @@ export const updateCompleteCard = async ({idBoard, idList, idCard, complete}:{id
     const cardRef = doc(db, `users/${userId}/boards/${idBoard}/lists/${idList}/cards/${idCard}`);
     
     await updateDoc(cardRef, { complete });
+}
+
+export const deleteCard = async ({idBoard, idList, idCard}:{idBoard: string, idList: string, idCard: string}) => {
+    const userId = auth.currentUser?.uid;
+    const cardRef = doc(db, `users/${userId}/boards/${idBoard}/lists/${idList}/cards/${idCard}`);
+    await deleteDoc(cardRef);
 }

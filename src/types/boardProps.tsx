@@ -47,3 +47,9 @@ export interface CardGroupProps {
     idList: string
     cards: CardProps[]
 }
+
+export interface CardRef {
+    idBoard: string
+    idList: string
+    idCard: string
+}
