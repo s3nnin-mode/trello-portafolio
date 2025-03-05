@@ -3,6 +3,8 @@ import { MdDescription } from "react-icons/md";
 import { CardProps } from "../../../../types/boardProps";
 import React, { useEffect, useState } from "react";
 import { useCardsServices } from "../../../../services/cardsServices";
+import { useAuthContext } from '../../../../customHooks/useAuthContext';
+import { updateDescriptionCard } from '../../../../services/firebase/updateData/updateCards';
 
 interface CardDescriptionProps {
     card: CardProps
@@ -14,6 +16,7 @@ export const CardDescription: React.FC<CardDescriptionProps> = ({card, idList, i
     const { cardsServices } = useCardsServices();
     const [showTextarea, setShowTextarea] = useState(false);
     const [inputValue, setInputValue] = useState('');
+    const { userAuth } = useAuthContext();
 
     useEffect(() => {
         if (card.description) {
@@ -30,6 +33,14 @@ export const CardDescription: React.FC<CardDescriptionProps> = ({card, idList, i
 
     const saveDescription = () => {
         const idCard = card.idCard;
+        if (userAuth) {
+            updateDescriptionCard({
+                idBoard, 
+                idList, 
+                idCard, 
+                description: inputValue
+            })
+        }
         cardsServices({
             updateFn: (cardsGroup) => cardsGroup.map((cardGroup) =>
             cardGroup.idBoard === idBoard && cardGroup.idList === idList ?

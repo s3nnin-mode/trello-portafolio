@@ -2,13 +2,13 @@ import { collection, deleteDoc, doc, getDoc, getDocs, setDoc, updateDoc } from "
 import { ListProps } from "../../../types/boardProps";
 import { auth, db } from "../firebaseConfig";
 
-export const addListFirebase = async ({idBoard, list, order}:{idBoard: string, list: ListProps, order: number}) => {
-    const userId = auth.currentUser?.uid;
-    const listsCollection = doc(collection(db, `users/${userId}/boards/${idBoard}/lists`), list.idList);
-    await setDoc(listsCollection, {...list, order: order});
-}
+// export const addListFirebase = async ({idBoard, list, order}:{idBoard: string, list: ListProps, order: number}) => {
+//     const userId = auth.currentUser?.uid;
+//     const listsCollection = doc(collection(db, `users/${userId}/boards/${idBoard}/lists`), list.idList);
+//     await setDoc(listsCollection, {...list, order: order});
+// }
 
-export const addListTest = async ({idBoard, list}:{idBoard: string, list: ListProps}) => {
+export const addListFirebase = async ({idBoard, list}:{idBoard: string, list: ListProps}) => {
     const userId = auth.currentUser?.uid;
     const listsCollection = doc(collection(db, `users/${userId}/boards/${idBoard}/lists`), list.idList);
     await setDoc(listsCollection, list);
@@ -30,7 +30,7 @@ export const deleteListFirebase = async ({idBoard, idList}:{idBoard: string, idL
     const userId = auth.currentUser?.uid;
     const listRef = doc(db, `users/${userId}/boards/${idBoard}/lists/${idList}`);
     await deleteDoc(listRef);
-    console.log('lista eliminada')
+    console.log('lista eliminada');
 }
 
 export const updateOrderListsFirebase = async ({idBoard, updateLists}: {idBoard: string, updateLists: ListProps[]}) => {  //esto se usa cuando copias o mueves una lista

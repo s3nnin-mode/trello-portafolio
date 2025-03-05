@@ -5,7 +5,7 @@ import { useCardsStore } from "../../store/cardsStore";
 import { useListsServices } from "../../services/listsServices";
 import { useCardsServices } from "../../services/cardsServices";
 import { useAuthContext } from "../useAuthContext";
-import { addListTest } from "../../services/firebase/updateData/updateLists";
+import { addListFirebase } from "../../services/firebase/updateData/updateLists";
 
 interface UseFormCopyList {
     setIsModalOptionsActive: React.Dispatch<React.SetStateAction<boolean>>
@@ -63,7 +63,7 @@ export const useFormCopyList = ({ setIsModalOptionsActive }: UseFormCopyList) =>
 
             if (newOrder !== undefined) {
                 updateLists = updateLists.map(list => list.idList === idList ? {...list, order: newOrder} : list);
-                if (userAuth) addListTest({idBoard, list: {...listCopy, order: newOrder}}); //Se agrega la lista copiada
+                if (userAuth) addListFirebase({idBoard, list: {...listCopy, order: newOrder}}); //Se agrega la lista copiada
             }
         }
 

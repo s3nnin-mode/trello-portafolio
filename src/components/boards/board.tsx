@@ -19,7 +19,7 @@ import { useListsServices } from '../../services/listsServices';
 import { useCardsServices } from '../../services/cardsServices';
 import { useCardsStore } from '../../store/cardsStore';
 import { useAuthContext } from '../../customHooks/useAuthContext';
-import { addListTest, updateOrderListsFirebase, updtateOrderList } from '../../services/firebase/updateData/updateLists';
+import { addListFirebase, updateOrderListsFirebase, updtateOrderList } from '../../services/firebase/updateData/updateLists';
 import { moveCardThoAnotherList, updateOrderCard } from '../../services/firebase/updateData/updateCards';
 
 const useCustomBoard = () => {
@@ -46,7 +46,7 @@ const useCustomBoard = () => {
     }
     
     if (userAuth) {
-      addListTest({idBoard, list: newList});
+      addListFirebase({idBoard, list: newList});
     }
 
     listsService({
@@ -79,16 +79,16 @@ export const Tablero = () => {
     const [activeCard, setActiveCard] = useState<CardProps | null>(null);
 
     if (!currentIdBoard) {
-        return <p>Tablero no encontrado</p>
+      return <p>Tablero no encontrado</p>
     }
 
     useEffect(()=> {
-        const indexBoard = boards.findIndex(b => b.idBoard === currentIdBoard);
-        if (indexBoard > -1) {
-            setCurrentBoard(boards[indexBoard]);
-            setIdBoard(boards[indexBoard].idBoard);
-            return
-        }
+      const indexBoard = boards.findIndex(b => b.idBoard === currentIdBoard);
+      if (indexBoard > -1) {
+          setCurrentBoard(boards[indexBoard]);
+          setIdBoard(boards[indexBoard].idBoard);
+          return
+      }
     }, [boards, currentIdBoard]);
 
   useEffect(() => {

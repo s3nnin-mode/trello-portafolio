@@ -70,8 +70,6 @@ export const userRegister = async ({email, password}: {email: string, password: 
     ////////////////////////
 
     await initialData(userId);
-
-    // await signOut(auth);
     
     return 'Registro exitoso';
   } catch(error: any) {

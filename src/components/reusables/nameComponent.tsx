@@ -5,6 +5,7 @@ import { useListsServices } from "../../services/listsServices";
 import { useCardsServices } from "../../services/cardsServices";
 import { updateNameListFirebase } from "../../services/firebase/updateData/updateLists";
 import { useAuthContext } from "../../customHooks/useAuthContext";
+import { updateNameCardFirebase } from "../../services/firebase/updateData/updateCards";
 
 interface NameListPropsComponent {
     idBoard: string
@@ -58,7 +59,18 @@ export const NameComponent: React.FC<NameListPropsComponent> = ({idBoard, list, 
 
     const handleChangeCard = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const idCard = card?.idCard;
+        if (!idCard) return;
         setNameComponent(e.target.value);
+        
+        if (userAuth) {
+            updateNameCardFirebase({
+                idBoard, 
+                idList: list.idList, 
+                idCard, 
+                name: e.target.value
+            });
+        }
+
         cardsServices({
             updateFn: (cardsGroup) => cardsGroup.map((cardGroup) =>
             cardGroup.idBoard === idBoard && cardGroup.idList === list.idList ?

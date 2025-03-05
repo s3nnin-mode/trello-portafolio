@@ -3,6 +3,8 @@ import '../../../../../styles/components/card/modalCard/modalComponents/cover/se
 import { CardProps } from '../../../../../types/boardProps';
 import { useCardsStore } from '../../../../../store/cardsStore';
 import { useCardsServices } from '../../../../../services/cardsServices';
+import { useAuthContext } from '../../../../../customHooks/useAuthContext';
+import { updateCoverCard } from '../../../../../services/firebase/updateData/updateCards';
 
 const colors = [
     "#E63946", "#F4A261", "#2A9D8F", "#264653", "blue",
@@ -19,10 +21,11 @@ interface SettingsCoverProps {
 }
 
 export const SettingsCover: React.FC<SettingsCoverProps> = ({ card, idList, idBoard, closeComponent }) => {
-    const { setCoverCardImg } = useCardsStore();
     const [coverType, setCoverType] = useState<'color' | 'img'>('color');
     const [coverPreview, setCoverPreview] = useState('');             //coverPreview será el color o la url de la imagen
     const { cardsServices } = useCardsServices();
+    const { userAuth } = useAuthContext();
+    const [file, setFile] = useState<File | undefined>();
 
     useEffect(() => {
         setCoverType(card.currentCoverType);
@@ -36,23 +39,25 @@ export const SettingsCover: React.FC<SettingsCoverProps> = ({ card, idList, idBo
         setCoverPreview(availableColor);
     }
 
-    const handleImgPreview = (img: string) => {   //Para dar una vista previa al usuario de como se veria la portada con la respectiva img
-        setCoverType('img');
-        // setCoverPreview(URL.createObjectURL(file));
-        setCoverPreview(img);
-    }
-
     const handleUpdateImg = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const idCard = card.idCard;
         const file = e.target.files?.[0];  //file
         if (!file) return;
-        const img = URL.createObjectURL(file);
-        setCoverCardImg({idBoard, idList, idCard, img});  //reemplaze img con 'file' y al momento de iterar creare una url nueva temporal. img es del tipo File
+        setFile(file);
+        setCoverType('img');
+        setCoverPreview(URL.createObjectURL(file));
     }
 
     const handleSaveChanges = () => {
         const idCard = card.idCard;
-        // setCoverCard({idBoard, idList, idCard, cover, coverType});
+        if (userAuth) {
+            updateCoverCard({
+                idBoard, 
+                idList, 
+                idCard, 
+                type: coverType, 
+                cover: coverType === 'img' && file ? file : coverPreview
+            });
+        }
         cardsServices({
             updateFn: (cardsGroup) => cardsGroup.map((cardGroup) => 
                 (cardGroup.idBoard === idBoard && cardGroup.idList === idList) ?
@@ -117,7 +122,10 @@ export const SettingsCover: React.FC<SettingsCoverProps> = ({ card, idList, idBo
                         {
                             card.coverCardImgs !== undefined && (
                                 card.coverCardImgs.map((img) => {
-                                    return (<button onClick={() => handleImgPreview(img)} key={img}>
+                                    return (
+                                    <button 
+                                    // onClick={() => handleImgPreview(img)} 
+                                    key={img}>
                                         <img src={img} alt='cover card' />
                                     </button>)
                                 })
