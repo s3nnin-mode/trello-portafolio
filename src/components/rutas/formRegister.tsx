@@ -26,7 +26,7 @@ export const FormRegister = () => {
   };
 
   return (
-    <div className='container_form_register'>
+    // <div className='container_form_register'>
 
       <form className='form_register' onSubmit={handleSubmit(onSubmit)}>
         <h1>Registro</h1>
@@ -62,6 +62,6 @@ export const FormRegister = () => {
           <p>¿Ya tienes una cuenta? <Link to='/login'>Inicia sesión</Link></p>
         </div>
       </form>
-    </div>
+    // </div>
   )
 }

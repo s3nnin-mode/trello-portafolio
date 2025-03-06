@@ -1,6 +1,6 @@
 import { collection, doc, setDoc } from "firebase/firestore"
-import { BoardProps } from "../../types/boardProps"
-import { auth, db } from "./firebaseConfig"
+import { BoardProps } from "../../../types/boardProps"
+import { auth, db } from "../firebaseConfig"
 
 export const addBoardFirebase = async (board: BoardProps) => {
     const userId = auth.currentUser?.uid;

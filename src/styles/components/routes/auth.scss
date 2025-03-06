@@ -1,0 +1,19 @@
+.section_auth {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+    width: 100%;
+
+    .btns_navigation {
+        border: 1px solid;
+        display: flex;
+        gap: 10px;
+    }
+
+    .container_forms {
+        border: 1px solid;
+        width: 300px;
+        position: relative;
+    }
+}

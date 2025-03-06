@@ -10,7 +10,7 @@ import { getCardsFirebase, getListsFirebase, getTagsFirebase } from '../../servi
 import { useCardsStore } from '../../store/cardsStore';
 import { useTagsStore } from '../../store/tagsStore';
 import { useAuthContext } from '../../customHooks/useAuthContext';
-import { addBoardFirebase } from '../../services/firebase/updateData';
+import { addBoardFirebase } from '../../services/firebase/updateData/updateBoards';
 
 const useBoards = () => {
   const { boards } = useBoardsStore();

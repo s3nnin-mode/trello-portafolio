@@ -8,9 +8,17 @@
 
     .form_login {
         padding: 5px;
-        border: 2px solid blue;
         display: flex;
         gap: 5px;
         flex-direction: column;
+        background-color: gray;
     }
+}
+
+.form_login {
+    padding: 5px;
+    display: flex;
+    gap: 5px;
+    flex-direction: column;
+    background-color: gray;
 }

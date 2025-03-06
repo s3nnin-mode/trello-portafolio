@@ -49,7 +49,7 @@ export const Start = () => {
             Solo estoy viendo, gracias
           </button>
           <button>
-            <Link to='/login'>
+            <Link to='/auth'>
               Uso profesional
             </Link>
           </button>
