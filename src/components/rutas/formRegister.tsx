@@ -3,8 +3,13 @@ import { TextField } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { userRegister } from '../../services/firebase/firebaseFunctions';
 import { Link, useNavigate } from 'react-router-dom';
+import React from 'react';
 
-export const FormRegister = () => {
+interface Props {
+  fade: boolean
+}
+
+export const FormRegister: React.FC<Props> = ({fade}) => {
   const navigate = useNavigate();
 
   const { 
@@ -28,7 +33,7 @@ export const FormRegister = () => {
   return (
     // <div className='container_form_register'>
 
-      <form className='form_register' onSubmit={handleSubmit(onSubmit)}>
+      <form className={`form_register ${!fade ? 'exit_fade' : ''}`} onSubmit={handleSubmit(onSubmit)}>
         <h1>Registro</h1>
         <TextField
           id='email'

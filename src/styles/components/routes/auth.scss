@@ -13,7 +13,28 @@
 
     .container_forms {
         border: 1px solid;
-        width: 300px;
+        width: 350px;
         position: relative;
+        height: 100%;
     }
 }
+
+.fade-enter {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  .fade-enter-active {
+    opacity: 1;
+    transform: translateX(0);
+    transition: opacity 300ms, transform 300ms;
+  }
+  .fade-exit {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  .fade-exit-active {
+    opacity: 0;
+    transform: translateX(20px);
+    transition: opacity 300ms, transform 300ms;
+  }
+  

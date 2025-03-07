@@ -11,9 +11,9 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Start />} />
-      <Route path='/auth' element={<Auth />}>
-        <Route path='login' element={<FormLogin />} />
-        <Route path='register' element={<FormRegister />} />
+      <Route path='/auth/*' element={<Auth />}>
+        {/* <Route path='login' element={<FormLogin />} />
+        <Route path='register' element={<FormRegister />} /> */}
       </Route>
       <Route path="/kanbaX/*" element={<KanbaX />} />
     </Routes>
