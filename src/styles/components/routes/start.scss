@@ -13,7 +13,6 @@
 
     .box {
         .card_left {
-            border: 1px solid red;
             padding: 10px;
             border-radius: 6px;
             // background-color: #F8F8F8;
@@ -28,6 +27,21 @@
             }
     
             .card_presentation {
+            }
+
+            .intro {
+                h4 {
+                    margin: 0;
+                }
+
+                p {
+                    margin: 5px 0;
+                }
+
+                button {
+                    margin: 5px 0;
+                    display: block;
+                }
             }
         }
     }

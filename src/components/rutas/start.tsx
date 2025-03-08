@@ -62,7 +62,7 @@ export const Start = () => {
                 <h2 className='inter_title'>
                   Organiza tus tareas y proyectos de manera fácil y rápida.
                 </h2>
-                <p className='inter'>
+                <p className='montserrat'>
                   Simplifica tu día a día con una interfaz intuitiva y funcionalidades clave.
                 </p>
                 <Button
@@ -79,20 +79,20 @@ export const Start = () => {
             :
             <Fade in={animation} timeout={500}>
               <div className='intro'>
-                <p>
-                  Bienvenido a nuestra plataforma. Puedes elegir entre registrarte para una experiencia personalizada o probar la funcionalidad de la aplicación mediante una cuenta demo. 
+                <h4 className='inter_title'>
+                  Elige entre registrarte para una experiencia personalizada o probar la funcionalidad de la aplicación mediante una cuenta demo.                  
+                </h4>
+                <p className='montserrat'>
                   Si decides usar la demo, los datos se guardarán temporalmente en tu navegador mediante localStorage, 
                   lo que te permitirá explorar las características de la aplicación sin necesidad de crear una cuenta. 
                   ¡Elige tu opción y empieza a explorar!
                 </p>
-                <button onClick={demo}>
-                  Solo estoy viendo, gracias
-                </button>
-                <button>
-                  <Link to='/auth'>
-                    Uso profesional
-                  </Link>
-                </button>
+                <Button onClick={demo} variant="contained">
+                  Demo
+                </Button>
+                <Button variant="contained" onClick={() => navigate('/auth')}>
+                  Registrarme
+                </Button>
               </div>
             </Fade>
             }

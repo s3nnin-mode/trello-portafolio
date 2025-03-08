@@ -19,11 +19,9 @@
 .montserrat {
   font-family: "Montserrat", serif;
   font-optical-sizing: auto;
-  font-weight: normal;
+  font-weight: 400;
   font-style: normal;
-  border: 2px solid red;
 }
-
 
 .inter_title {
   font-family: "Inter", sans-serif;
@@ -35,6 +33,23 @@
 .inter {
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+
+.work_sans {
+  font-family: "Work Sans", sans-serif;
+  font-optical-sizing: auto;
   font-weight: normal;
   font-style: normal;
 }
+
+
+.source_code_pro {
+  font-family: "Source Code Pro", monospace;
+  font-optical-sizing: auto;
+  font-weight: normal;
+  font-style: normal;
+}
+
