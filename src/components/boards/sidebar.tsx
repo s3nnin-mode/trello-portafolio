@@ -1,36 +1,80 @@
 import { useState } from "react";
 import '../../styles/components/boards/sidebar.scss';
-import { MdLeaderboard } from "react-icons/md";
+import { MdChevronRight } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
-import { auth } from '../../services/firebase/firebaseConfig';
-import { UserModal } from "./sidebarComponents/userModal";
+
+import { styled } from "@mui/material/styles";
+import Box from "@mui/material/Box";
+import MuiDrawer from "@mui/material/Drawer";
+import IconButton from "@mui/material/IconButton";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import Divider from "@mui/material/Divider";
+import { MdChevronLeft } from "react-icons/md";
+import { IoClipboardSharp } from "react-icons/io5";
+
+const drawerWidth = 240;
+
+const Drawer = styled(MuiDrawer, {
+  shouldForwardProp: (prop) => prop !== "open",
+})(({ theme, open }: { theme?: any; open?: boolean }) => ({
+  width: 15,
+  flexShrink: 0,
+  whiteSpace: "nowrap",
+  boxSizing: "border-box",
+  ...(open
+    ? {
+        "& .MuiDrawer-paper": { 
+          width: drawerWidth, 
+          backgroundColor: '#1E1E1E', 
+          transition: '.3s linear',
+          color: 'white' 
+        },
+      }
+    : {
+        "& .MuiDrawer-paper": { 
+          width: 60,
+          backgroundColor: '#1E1E1E',
+          transition: '.3s linear' 
+        },
+      }),
+}));
+
+const DrawerHeader = styled("div")(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: 'flex-end',
+  padding: theme.spacing(0, 1),
+  ...theme.mixins.toolbar,
+}));
 
 export const Sidebar = () => {
-  const [sidebar, setSidebar] = useState(true);
-  const toggleSidebar = () => setSidebar(!sidebar);
+  const [open, setOpen] = useState(true);
   const navigate = useNavigate();
 
   return (
-    <div className={sidebar ? 'sidebar' : 'sidebar-desactive'}>
-      <header className='sidebar_header'>
-        <UserModal />
-        
-        <button className='btn-open-close-sidebar' onClick={toggleSidebar}>
-          <i className={`bi bi-arrow-${sidebar ? 'left' : 'right'}`}></i>
-        </button>
-        <p>
-          {
-            auth ? 'usuario autenticado' : 'sin usuario'
-          }
-        </p>
-      </header>
-
-      <div>
-        <button className='btn-boards' onClick={() => navigate('/')}>
-          <MdLeaderboard className='icon-board' />
-          Boards
-        </button>
-      </div>
-    </div>
-  )
-}
+    <Box sx={{display: 'flex', ml: open ? '240px' : '60px', transition: '.3s linear'}}>
+      <Drawer variant="permanent" open={open}>
+        <DrawerHeader>
+          <IconButton onClick={() => setOpen(!open)}>
+            { open ? <MdChevronLeft style={{color: 'white'}}/> : <MdChevronRight style={{color: 'white'}} /> }
+          </IconButton>
+        </DrawerHeader>
+        <Divider />
+        <List>
+          <ListItem disablePadding>
+            <ListItemButton onClick={() => navigate('/kanbaX')}>
+              <ListItemIcon>
+                <IoClipboardSharp style={{color: 'blue'}} />
+              </ListItemIcon>
+              {open && <ListItemText primary={'Tableros'} />}
+            </ListItemButton>
+          </ListItem>
+        </List>
+      </Drawer>
+    </Box>
+  );
+};

@@ -40,35 +40,38 @@ export const Tableros = () => {
   const { loadLists } = useListsStore();
   const { loadCards } = useCardsStore();
   const { loadTags } = useTagsStore();
+  const { userAuth } = useAuthContext();
 
   const navigate = useNavigate();
 
   const handleClick = async (idBoard: string) => {
-    const listsData = await getListsFirebase(idBoard);
+    if (userAuth) {
+      const listsData = await getListsFirebase(idBoard);
 
-    const lists = [{
-      idBoard,
-      lists: listsData
-    }];
-    loadLists(lists);
+      const lists = [{
+        idBoard,
+        lists: listsData
+      }];
+      loadLists(lists);
 
-    const fetchCards = async () => {
-      return Promise.all(listsData.map(async list => {
-        const cards = await getCardsFirebase(idBoard, list.idList);
-        const cardGroup: CardGroupProps = {
-          idBoard,
-          idList: list.idList,
-          cards
-        }
-        return cardGroup
-      }))
-    }
-    const cardsGroup = await fetchCards();
-    loadCards(cardsGroup);
+      const fetchCards = async () => {
+        return Promise.all(listsData.map(async list => {
+          const cards = await getCardsFirebase(idBoard, list.idList);
+          const cardGroup: CardGroupProps = {
+            idBoard,
+            idList: list.idList,
+            cards
+          }
+          return cardGroup
+        }))
+      }
+      const cardsGroup = await fetchCards();
+      loadCards(cardsGroup);
 
-    const tags = await getTagsFirebase();
-    loadTags(tags);
-    console.log('tags cargado exitosamente', tags)
+      const tags = await getTagsFirebase();
+      loadTags(tags);
+      console.log('tags cargado exitosamente', tags)
+    } 
     navigate(`${idBoard}`);
   }
 
