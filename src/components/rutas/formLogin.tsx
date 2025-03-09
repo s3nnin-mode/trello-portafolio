@@ -1,5 +1,5 @@
 import '../../styles/components/routes/formLogin.scss';
-import { Box, Button, TextField, Typography } from "@mui/material";
+import { Box, Button, Paper, TextField, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { userLogin } from '../../services/firebase/firebaseFunctions';
 import { Link } from 'react-router-dom';
@@ -22,11 +22,7 @@ export const FormLogin = () => {
   });
 
   return (
-    // <Box
-    //   component="div" 
-    //   className='container_form_login'
-    // >
-
+    <Paper elevation={3} sx={{padding: 3, margin: 'auto'}}>
       <form className='form_login' onSubmit={onSubmit}>
         <Typography variant="h5" component="h1" align="center">
           Iniciar sesión
@@ -51,19 +47,18 @@ export const FormLogin = () => {
           error={!!errors.password}
           helperText={errors.password ? String(errors.password?.message) : ''}
         />
+
         <Button variant='contained' type='submit'>
           Iniciar sesión
         </Button>
 
-        {/* <footer>
-          <p>¿No tienes una cuenta? <Link to='/register'>Registrate</Link></p>
-        </footer> */}
         <Typography variant="body2" align="center">
           ¿No tienes una cuenta?{" "}
-          <Link to="/register">
+          <Link to="/auth/register">
             Regístrate
           </Link>
         </Typography>
       </form>
+    </Paper>
   )
 }

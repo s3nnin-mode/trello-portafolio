@@ -1,0 +1,33 @@
+.container_home {
+    height: 100vh;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    // background: url(/src/assets/imgs/DALL·E\ 2025-03-06\ 17.05.58\ -\ A\ modern\,\ professional\,\ and\ clean\ abstract\ background.\ The\ design\ should\ feature\ soft\ gradient\ colors\,\ subtle\ abstract\ shapes\,\ and\ a\ minimalistic\ aest.webp);
+    background-size: cover;
+    background-color: #fafafa;
+    background-color: #e3f2fd;
+    // background-color: #41dab8;
+    // background-color: #7FDBFF;
+    padding: 50px;
+
+    .box {
+        .card_left {
+            padding: 10px;
+            border-radius: 6px;
+            // background-color: #F8F8F8;
+            background-color: #e3f2fd;
+            // background-color: #fafafa;
+            max-width: 500px;
+            min-height: 300px;
+            color: #000000;
+            p {
+                margin: 0;
+                display: block;
+            }
+    
+            .card_presentation {
+            }
+        }
+    }
+}

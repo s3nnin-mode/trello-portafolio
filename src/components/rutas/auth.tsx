@@ -47,7 +47,7 @@ export const Auth = () => {
       <Box className="container_forms">
         {
           // location.pathname === '/auth/register' ?
-          <FormRegister fade={isRegister} /> 
+          <FormRegister /> 
           // null
         }
         
