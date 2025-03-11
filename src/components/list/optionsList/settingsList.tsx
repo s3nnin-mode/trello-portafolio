@@ -25,6 +25,7 @@ import { useCardsServices } from "../../../services/cardsServices";
 import { useCardsStore } from "../../../store/cardsStore";
 import { useAuthContext } from "../../../customHooks/useAuthContext";
 import { addCardToTopFirebase } from "../../../services/firebase/updateData/updateCards";
+import { IconButton } from "@mui/material";
 
 interface SettingsListProps {
     idBoard: string
@@ -80,9 +81,9 @@ export const SettingsList: React.FC<SettingsListProps> = ({ idBoard, list }) => 
 
     return (
         <div className='options' onPointerDown={(e) => e.stopPropagation()}>       
-            <button onClick={() => setIsModalOptionsActive(true)} className='btn_active_options'>
+            <IconButton onClick={() => setIsModalOptionsActive(true)} className='btn_active_options'>
                 <PiDotsThreeOutlineFill className='icon_options_list' />
-            </button>
+            </IconButton>
 
             <div className={`settings_list_${isModalOptionsActive ? 'show' : 'hidden'}`}>
                 <div className='header_settings_list'>

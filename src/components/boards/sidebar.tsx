@@ -68,7 +68,7 @@ export const Sidebar = () => {
           <ListItem disablePadding>
             <ListItemButton onClick={() => navigate('/kanbaX')}>
               <ListItemIcon>
-                <IoClipboardSharp style={{color: 'blue'}} />
+                <IoClipboardSharp style={{color: '#03DAC5'}} />
               </ListItemIcon>
               {open && <ListItemText primary={'Tableros'} />}
             </ListItemButton>

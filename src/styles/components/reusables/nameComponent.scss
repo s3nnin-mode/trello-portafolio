@@ -6,9 +6,11 @@
     cursor: pointer;
     
     .name_component {
-        font-size: 18px;
+        font-size: 15px;
         width: 100%;
         overflow-wrap: break-word;
+        color: #ccc;
+        letter-spacing: 0.3px;
     }
 
     textarea {

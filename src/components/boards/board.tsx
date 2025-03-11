@@ -41,7 +41,7 @@ const useCustomBoard = () => {
     const newList: ListProps = {
       idList: idList,
       nameList: nameList,
-      colorList: 'brown',
+      colorList: '#1E1E1E',
       order: lastList ? lastList.order + 10 : 0
     }
     
@@ -303,7 +303,7 @@ export const Tablero = () => {
   return (
     <div className='board' >
       <header className='header_board'>
-        <h2>{currentBoard?.nameBoard}</h2>                                      {/* NAME BOARD */}
+        <h2 className='inter_title¿'>{currentBoard?.nameBoard}</h2>                                      {/* NAME BOARD */}
       </header>
       <DndContext
         sensors={sensors}

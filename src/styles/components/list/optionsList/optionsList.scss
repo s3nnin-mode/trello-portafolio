@@ -3,21 +3,23 @@
     position: relative;
 
     .btn_active_options {
-
-        background-color: #f4f5f7;
         background-color: transparent;
-        padding: 5px;
         border-radius: 9px;
         cursor: pointer;
         border: none;
+        color: #ccc;
 
         .icon_options_list {
             font-size: 16px;
+            padding: 0;
+            margin: 0;
         }
     }
 
     .btn_active_options:hover {
-        background-color: #e3e4e8;
+        background-color: rgba(255, 255, 255, 0.1);
+        // background-color: rgb(30, 30, 30);
+        // color: #1E1E1E;
     }
 
     .settings_list_show {

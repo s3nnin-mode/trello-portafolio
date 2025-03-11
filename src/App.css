@@ -12,7 +12,10 @@
   min-height: 100vh;
   background-color: rebeccapurple;
   background-color: #121212;
+  background-color: #0A192F;
+  background-color: #121212;
   display: flex;
+  color: #E0E0E0;
 }
 
 .montserrat {
@@ -32,7 +35,7 @@
 .inter {
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-weight: 400;
+  font-weight: 350;
   font-style: normal;
 }
 
@@ -44,6 +47,13 @@
   font-style: normal;
 }
 
+.work_sans_btn {
+  font-family: "Work Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+}
+
 
 .source_code_pro {
   font-family: "Source Code Pro", monospace;
@@ -52,3 +62,12 @@
   font-style: normal;
 }
 
+
+.roboto {
+  font-family: "Roboto", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: normal;
+  font-style: normal;
+  font-variation-settings: "wdth" 100;
+  letter-spacing: .3px;
+}

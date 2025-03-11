@@ -11,6 +11,7 @@ import { useCardsStore } from '../../store/cardsStore';
 import { useTagsStore } from '../../store/tagsStore';
 import { useAuthContext } from '../../customHooks/useAuthContext';
 import { addBoardFirebase } from '../../services/firebase/updateData/updateBoards';
+import { Box } from '@mui/material';
 
 const useBoards = () => {
   const { boards } = useBoardsStore();
@@ -77,12 +78,11 @@ export const Tableros = () => {
 
   return (
     <div className='boards_container'>
-      <h3>Tableros</h3>
-
+      <h2 className='inter_title'>Mis tableros</h2>
       <BtnAdd 
         createListOrTargetName={addNewBoard} 
         nameComponentToAdd='board' 
-        className='form_add_board'
+        className='btn_add_board'
       />
 
       <div className='divider'></div>
@@ -93,10 +93,12 @@ export const Tableros = () => {
             boards.map(board => {
               console.log(board)
               return (
-                <div className='board' onClick={() => handleClick(board.idBoard)} key={board.idBoard}>
-                  <span className='name_board'>{board.nameBoard}</span>
+                <Box
+                
+                 className='board' onClick={() => handleClick(board.idBoard)} key={board.idBoard}>
+                  <span className='name_board work_sans'>{board.nameBoard}</span>
                   <span className='icon_fav'>Star fav</span>
-                </div>
+                </Box>
               )
             })
           )

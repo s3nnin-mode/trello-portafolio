@@ -19,6 +19,7 @@ import { useCardsServices } from "../../services/cardsServices";
 import { SortableContext } from '@dnd-kit/sortable';
 import { addCardFirebase, addCardToTopFirebase } from "../../services/firebase/updateData/updateCards";
 import { useAuthContext } from "../../customHooks/useAuthContext";
+import { Button, IconButton } from "@mui/material";
 
 
 interface ListPropsComponent {
@@ -133,7 +134,7 @@ export const List: React.FC<ListPropsComponent> = ({ board, list }) => {
                     {
                         list && (
                             <BtnAdd 
-                            className='form_add_target'
+                            className='btn_add_card'
                             createListOrTargetName={(nameCard: string) => addNewCard({board, list, nameCard})} 
                             nameComponentToAdd='target' 
                             />
@@ -144,52 +145,50 @@ export const List: React.FC<ListPropsComponent> = ({ board, list }) => {
         )
     }
 
-    return (
-        <div 
-            ref={setNodeRef}
-            style={style}
-            
-            className={isListCollapse ? 'board_list_collapse' : 'board_list'} 
-        >    
-            <header 
-                {...attributes} //el drag and drop de la lista funcionará solo si se arrastra desde el header
-                {...listeners} 
-                className='header_list'
-            >  
-
-                <NameComponent idBoard={board.idBoard} list={list} componentType='list' />                     {/* NAMELIST */}
-                <div className='btns_header_list'>
-                    <button className='btn_collapse_list' onClick={() => setIsListCollapse(!isListCollapse)}>
-                        <RiCollapseHorizontalLine className='icon_collapse_list' />
-                    </button>
-                    <SettingsList idBoard={board.idBoard} list={list} />
-                </div>
-            </header>
-            <div className='content_list'>
-                <SortableContext items={currentCards.map(card => card.idCard)}> 
-                {
-                    currentCards.map((card) => (
-                        <Card 
-                            card={card}
-                            board={board}
-                            list={list}
-                            key={card.idCard}
-                        />
-                    ))
-                }
-                </SortableContext>
-            </div>
-            <footer>
-                {
-                    list && (
-                        <BtnAdd 
-                        className='form_add_target'
-                        createListOrTargetName={(nameCard: string) => addNewCard({board, list, nameCard})} 
-                        nameComponentToAdd='target' 
-                        />
-                    )
-                }
-            </footer>
+  return (
+    <div 
+      ref={setNodeRef}
+      style={style}
+      className={isListCollapse ? 'board_list_collapse' : 'board_list'} 
+    >    
+      <header 
+        {...attributes} //el drag and drop de la lista funcionará solo si se arrastra desde el header
+        {...listeners} 
+        className='header_list'
+      >  
+        <NameComponent idBoard={board.idBoard} list={list} componentType='list' />                     {/* NAMELIST */}
+        <div className='btns_header_list'>
+          <IconButton className='btn_collapse_list' onClick={() => setIsListCollapse(!isListCollapse)}>
+            <RiCollapseHorizontalLine className='icon_collapse_list' />
+          </IconButton>
+          <SettingsList idBoard={board.idBoard} list={list} />
         </div>
-    )
+      </header>
+        <div className='content_list'>
+          <SortableContext items={currentCards.map(card => card.idCard)}> 
+          {
+            currentCards.map((card) => (
+              <Card 
+                card={card}
+                board={board}
+                list={list}
+                key={card.idCard}
+              />
+            ))
+          }
+          </SortableContext>
+        </div>
+      <footer>
+        {
+          list && (
+            <BtnAdd 
+              className='btn_add_card'
+              createListOrTargetName={(nameCard: string) => addNewCard({board, list, nameCard})} 
+              nameComponentToAdd='target' 
+            />
+          )
+        }
+      </footer>
+    </div>
+  )
 }

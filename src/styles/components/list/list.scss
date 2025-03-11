@@ -1,11 +1,7 @@
 .board_list {
-    border: 2px solid black;
     width: 260px;
     min-width: 260px;
-       
     border-radius: 11px;
-    // background-color: #f4f5f7;
-    // background-color: brown;
     padding: 10px;
 
     display: flex;
@@ -19,31 +15,34 @@
         padding: 0;
         gap: 3px;
         height: 100%;
-        border: 2px solid;
 
         .btns_header_list {
             display: flex;
             gap: 3px;
 
             .btn_collapse_list {
-                background-color: #f4f5f7;
+                // background-color: #f4f5f7;
                 background-color: transparent;
                 border: none;
                 border-radius: 9px;
-                padding: 5px;
-                padding: none;
+                // padding: 5px;
+                // padding: 0;
                 cursor: pointer;
                 transition: background-color 0.3s;
+                color: #ccc;
 
                 &:hover {
                     background-color: #e3e4e8;
+                    background-color: rgba(255, 255, 255, 0.3);
+                    background-color: rgba(255, 255, 255, 0.1);
+                    // color: #1E1E1E;
                 }
                 
                 .icon_collapse_list {
                     font-size: 16px;
                     margin: 0;
                     padding: 0;
-                }
+                }  
             }
 
         }
@@ -55,10 +54,10 @@
         gap: 10px;
     }
 
-    footer {
-        
-        .form_add_target {
-
+    footer {      
+        .btn_add_card {
+          
+            margin: 0;
             .btn_add_some {                      //btn_add_target
                 cursor: pointer;
                 border-radius: 7px;
@@ -69,27 +68,34 @@
                 align-items: center;
                 gap: 9px;
                 background-color: transparent;
+                color: #ccc;
                 
                 .icon_add {
-                    font-size: 20px;
-                    color: black;
+                    font-size: 16px;                    
                 }    
         
                 span {
+                    font-size: 14px;
                     padding: 0;
                     margin: 0;
-                    color: black;
+                    color: inherit;
+                    // color: black;
                 }
             }
         
             .btn_add_some:hover {
-                background-color: rgba(255, 255, 255, 0.3);
-            } 
+                background-color: rgba(255, 255, 255, 0.1);
+            }
+            
+            .form_add_some {
+                // background-color: #1E1E1E;
+                // background-color: #121212;
+                // border: none;
+                
+            }
         }
-
-        
     }
-}
+} 
 
 .board_list_collapse {
     cursor: pointer;
