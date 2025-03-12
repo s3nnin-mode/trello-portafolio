@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import '../../styles/components/reusables/btnToAdd.scss';
 import { AiOutlinePlus } from "react-icons/ai";
 import { useState } from 'react';
@@ -31,6 +31,14 @@ export const BtnAdd: React.FC<BtnAddProps> = ({ createListOrTargetName, nameComp
         target: 'la tarjeta'
     }
 
+    const inputRef = useRef<HTMLInputElement | null>(null);
+
+    useEffect(() => {
+        if (showForm && inputRef.current) {
+            inputRef.current.focus();
+        }
+    }, [showForm])
+
     return (
         <div 
             className={`container_btn_add ${className}`} 
@@ -54,7 +62,8 @@ export const BtnAdd: React.FC<BtnAddProps> = ({ createListOrTargetName, nameComp
                 showForm && (
                     <form className='form_add_some'>
                         <input
-                            onPointerDown={(e) => e.stopPropagation()}
+                            ref={inputRef}
+                            // onPointerDown={(e) => e.stopPropagation()}
                             onKeyDown={(e) => e.stopPropagation()}
                             type='text'
                             className='input_add work_sans'

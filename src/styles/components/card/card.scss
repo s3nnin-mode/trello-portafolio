@@ -1,18 +1,45 @@
-.target {
-    border: 1px solid black;
+.cardItem {
     border-radius: 8px;
     width: 100%;
+    background-color: peru;
+    background-color: #2E2E2E;
+    
     overflow: hidden;
+    // transition: transform .1s ease-in-out;
 
     .card_cover {
+        position: relative;
+
+        .liston_diagonal {
+            position: absolute;
+            transform: rotate(-45deg);
+            height: 10px;
+            width: 100px;
+            left: -10%;
+            top: 0;
+        }
 
         .color_top {
-            height: 40px;
-            border-radius: 8px 8px 0 0;
+            height: 40px; //!!!!!!!!!!!
+            height: 20px;
+            // border-radius: 8px 8px 0 0;
+
+            margin-top: 8px;
             width: 100%;
-            padding: 5px;
             display: flex;
             justify-content: flex-start;
+            // border: 2px solid transparent;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            // border-top: 1px solid rgb(255, 255, 255, .2);
+            // border-bottom: 1px solid rgb(255, 255, 255, .2);
+            box-shadow: inset 0 0 3px #2E2E2E;
+            // background-color: rgba(255, 255, 255, .2);
+            // background: rgba(98, 0, 238, 0.6); /* Color púrpura con opacidad */
+            // box-shadow: 0 4px 12px rgba(98, 0, 238, 0.2); /* Sombra suave para simular la luz reflejada */
+            // background: linear-gradient(135deg, rgb(255, 255, 255, .3), rgba(98, 0, 238, 0.6)); /* Gradiente sutil */
+            // box-shadow: 0 0 3px rgba(255, 255, 255, .5);
+            // box-shadow: 0 0 1px rgba(0, 255, 255, 0.7), 0 0 30px rgba(0, 0, 255, 0.7);
     
             .check_animation_card {
                 height: 100%;
@@ -27,9 +54,13 @@
                 filter: drop-shadow(0px 0px 3px rgba(0, 0, 0, 0.5)); // Agrega grosor simulando un borde
             }
         }
+
+        .color_top:hover {
+            // box-shadow: 0 0 20px rgba(0, 255, 255, 0.9), 0 0 40px rgba(0, 255, 255, 0.8) !important;
+        }
     }
 
-    .content_target {
+    .content_card {
         padding: 8px;
 
         .tags_active {
@@ -41,7 +72,6 @@
             flex-wrap: wrap;
             gap: 4px;
 
-           
             li {
                 border-radius: 4px;
                 padding: 3px;
@@ -57,7 +87,6 @@
 
         .name_target {
             margin: 0;
-            border: 1px solid;
         }
 
         .btns_target {
@@ -65,6 +94,10 @@
             gap: 10px;        
         }
     }
+}
+
+.cardItem:hover {
+    // transform: scale(1.02);
 }
 
 .modal_hidden {

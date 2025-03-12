@@ -55,11 +55,11 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
             <article
             ref={setNodeRef}
             style={{...style, opacity: 0.5}}
-            className='target' >
+            className='cardItem' >
 
             <CardCover idBoard={board.idBoard} list={list} card={card} isPlaying={isPlaying} />
 
-            <div className='content_target'>
+            <div className='content_card'>
                 <ul className='tags_active'>
                 {   
                     tags.map((tag) => 
@@ -80,52 +80,51 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
         )
     }
 
-    return(
-        <>
-        <article
-            ref={setNodeRef}
-            style={style}
-            {...attributes}
-            {...listeners}
-            onClick={() => { setShowCardModal(true)}}
-            onMouseEnter={() => setIsPlaying(true)}
-            onMouseLeave={() => setIsPlaying(false)}
-            className='target' >
+  return(
+    <>
+      <article
+        ref={setNodeRef}
+        className='cardItem'
+        style={style}
+        {...attributes}
+        {...listeners}
+        onClick={() => { setShowCardModal(true)}}
+        onMouseEnter={() => setIsPlaying(true)}
+        onMouseLeave={() => setIsPlaying(false)}
+      >
+        <CardCover idBoard={board.idBoard} list={list} card={card} isPlaying={isPlaying} />
 
-            <CardCover idBoard={board.idBoard} list={list} card={card} isPlaying={isPlaying} />
+        <div className='content_card'>
+          <ul className='tags_active'>
+          {   
+            tags.map((tag) => 
+              isActive({tag}) ? 
+              <li key={tag.idTag} style={{backgroundColor: tag.color}} className='active_tag_view_on_card'>
+                { tag.nameTag }
+              </li> :
+              null
+            )
+          }
+          </ul>
+          <p className='name_target'>{card.nameCard}</p>   {/*NOMBRE DE LA TARJETA*/}
+        </div>
+        <footer className='footer_card_info'>
+          { card.description !== null && <MdDescription /> } {/*ICON DESCRIPTION*/}
+        </footer>
+      </article>
 
-            <div className='content_target'>
-                <ul className='tags_active'>
-                {   
-                    tags.map((tag) => 
-                        isActive({tag}) ? 
-                        <li key={tag.idTag} style={{backgroundColor: tag.color}} className='active_tag_view_on_card'>
-                            { tag.nameTag }
-                        </li> :
-                        null
-                    )
-                }
-                </ul>
-                <p className='name_target'>{card.nameCard}</p>   {/*NOMBRE DE LA TARJETA*/}
-            </div>
-            <footer className='footer_card_info'>
-                { card.description !== null && <MdDescription /> } {/*ICON DESCRIPTION*/}
-            </footer>
-        </article>
+      {/* <!-- Modal --> */}
 
-        {/* <!-- Modal --> */}
-
-        {
-            showCardModal && (
-                <CardModal 
-                    card={card}
-                    list={list}
-                    board={board}
-                    closeModal={() => setShowCardModal(false)}
-            />
+      {
+        showCardModal && (
+          <CardModal 
+            card={card}
+            list={list}
+            board={board}
+            closeModal={() => setShowCardModal(false)}
+          />
         )
-        }
-
-        </>
-    )
+      }
+    </>
+  )
 }

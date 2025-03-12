@@ -149,7 +149,7 @@ export const List: React.FC<ListPropsComponent> = ({ board, list }) => {
     <div 
       ref={setNodeRef}
       style={style}
-      className={isListCollapse ? 'board_list_collapse' : 'board_list'} 
+      className='list' 
     >    
       <header 
         {...attributes} //el drag and drop de la lista funcionará solo si se arrastra desde el header

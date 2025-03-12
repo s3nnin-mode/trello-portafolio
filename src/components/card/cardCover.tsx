@@ -50,25 +50,37 @@ export const CardCover: React.FC<CardCoverProps> = ({idBoard, list, card, isPlay
         })
     }
 
-    return (
-        <div className='card_cover'>
+  return (
+    <div className='card_cover'>
+      {
+        card.currentCoverType === 'color' ?
+          <div 
+          style={{
+            backgroundColor: card.coverCard,
+            opacity: 0.5
+            
+            // background: `linear-gradient(135deg, rgba(255, 255, 255, .1), rgb(98, 0, 238, .5))`,
+            // boxShadow: `0 0 3px #6200EE`,
+          }}
+          className='color_top'>
             {
-                card.currentCoverType === 'color' ?
-                <div 
-                    style={{backgroundColor: card.currentCoverType === 'color' ? card.coverCard : ''}}
-                    className='color_top'>
-                        {
-                            card.complete ?
-                            <span onClick={cardComplete}>Completado</span> :
-                            <CheckAnimation
-                                handleClick={cardComplete}
-                                isPlaying={isPlaying}
-                                className='check_animation_card' />
-                        }
-                    </div> 
-                :
-                <img src={card.coverCard} />
+              card.complete ?
+              <span onClick={cardComplete}>Completado</span> :
+              <CheckAnimation
+                handleClick={cardComplete}
+                isPlaying={isPlaying}
+                className='check_animation_card' 
+              />
             }
-        </div>
-    )
+          </div> 
+        :
+        <img src={card.coverCard} />
+      }
+      {/* {
+        card.currentCoverType === 'color' && (
+          <div style={{backgroundColor: card.coverCard}} className='liston_diagonal'></div>
+        )
+      } */}
+    </div>
+  )
 }

@@ -4,7 +4,6 @@
     h2 {
         color: #E0E0E0;
         color: #ccc;
-        
     }
 
     .btn_add_board {
@@ -13,14 +12,13 @@
 
     .divider {
         margin: 1rem 0;
-        border-bottom: 1px solid blue;
+        border-bottom: 1px solid #1E1E1E;
     }
 
     .boards {
         display: flex;
         gap: 10px;
         margin-top: 1rem;
-        border: 2px solid red;
 
         .board {
             max-width: 250px;
