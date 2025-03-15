@@ -8,7 +8,7 @@
     padding: 20px;   /* Espaciado interno */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra */
     border-radius: 8px; /* Opcional: esquinas redondeadas */
-    width: 50%;      /* Ancho responsivo */
+    // width: 50%;      /* Ancho responsivo */
     // max-width: 500px;
     // min-height: 90vh;
     // overflow-y: auto;
@@ -55,5 +55,18 @@
         button:hover {
             background-color: grey;
         }
+    }
+}
+
+.div_modal {
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    color: #ccc; 
+
+    .card_modal {
+        border: 2px solid red !important;
+        // background: rgba(255, 255, 255, .1) !important;
+        backdrop-filter: blur(50px);
     }
 }

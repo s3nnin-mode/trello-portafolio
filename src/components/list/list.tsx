@@ -47,7 +47,7 @@ export const useList = () => {
             coverCardImgs: [],
             currentCoverType: 'color',
             complete: false,
-            description: null,
+            description: 'Abre las herramientas de desarrollo (DevTools) en tu navegador y busca en el document.body si realmente se está agregando el .description_modal. Puedes hacerlo ejecutando esto en la consola',
             order
         };
         

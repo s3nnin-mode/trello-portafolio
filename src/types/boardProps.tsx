@@ -36,7 +36,7 @@ export interface CardProps {
     nameCard: string
     coverCard: string
     coverCardImgs: string[]
-    currentCoverType: 'color' | 'img'
+    currentCoverType: 'color' | 'img' | null
     complete: boolean
     description: string | null
     order: number

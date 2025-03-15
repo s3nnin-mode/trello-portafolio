@@ -47,6 +47,13 @@
   font-style: normal;
 }
 
+.work_sans_light {
+  font-family: "Work Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 200;
+  font-style: normal;
+}
+
 .work_sans_btn {
   font-family: "Work Sans", sans-serif;
   font-optical-sizing: auto;

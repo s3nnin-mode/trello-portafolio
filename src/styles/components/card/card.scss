@@ -1,72 +1,56 @@
 .cardItem {
     border-radius: 8px;
-    width: 100%;
-    background-color: peru;
-    background-color: #2E2E2E;
-    
-    overflow: hidden;
-    // transition: transform .1s ease-in-out;
+    backdrop-filter: blur(50px);
+    -webkit-backdrop-filter: blur(50px); 
+    border: 1px solid rgba(255, 255, 255, .1); 
+    box-shadow: inset 0 0 2px rgba(255, 255, 255, .1); /* Azul claro tenue */
+
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    transition: transform 0.2s ease-in-out;
+
+    padding: 4px 5px;
+    position: relative;
+    // overflow: hidden;
 
     .card_cover {
-        position: relative;
-
-        .liston_diagonal {
-            position: absolute;
-            transform: rotate(-45deg);
-            height: 10px;
-            width: 100px;
-            left: -10%;
-            top: 0;
-        }
-
-        .color_top {
-            height: 40px; //!!!!!!!!!!!
-            height: 20px;
-            // border-radius: 8px 8px 0 0;
-
-            margin-top: 8px;
-            width: 100%;
-            display: flex;
-            justify-content: flex-start;
-            // border: 2px solid transparent;
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            // border-top: 1px solid rgb(255, 255, 255, .2);
-            // border-bottom: 1px solid rgb(255, 255, 255, .2);
-            box-shadow: inset 0 0 3px #2E2E2E;
-            // background-color: rgba(255, 255, 255, .2);
-            // background: rgba(98, 0, 238, 0.6); /* Color púrpura con opacidad */
-            // box-shadow: 0 4px 12px rgba(98, 0, 238, 0.2); /* Sombra suave para simular la luz reflejada */
-            // background: linear-gradient(135deg, rgb(255, 255, 255, .3), rgba(98, 0, 238, 0.6)); /* Gradiente sutil */
-            // box-shadow: 0 0 3px rgba(255, 255, 255, .5);
-            // box-shadow: 0 0 1px rgba(0, 255, 255, 0.7), 0 0 30px rgba(0, 0, 255, 0.7);
-    
-            .check_animation_card {
-                height: 100%;
-                opacity: 0;
-                transition: opacity 1s ease-in-out;
-                transition: scale .5s ease-in-out;
-                // filter: drop-shadow(0px 0px 3px rgba(0, 0, 0, 0.5)); // Agrega grosor simulando un borde
-            }
-
-            .check_animation_card:hover {
-                scale: 1.3;
-                filter: drop-shadow(0px 0px 3px rgba(0, 0, 0, 0.5)); // Agrega grosor simulando un borde
+        display: flex;
+        flex-direction: column;
+        
+        .container_color_card {
+            .circle {
+                width: 15px;
+                min-width: 15px;
+                height: 15px;
+                // margin-right: 2px;
+                margin-right: 4px;
+                border-radius: 50%;
+                display: inline-block;
             }
         }
 
-        .color_top:hover {
-            // box-shadow: 0 0 20px rgba(0, 255, 255, 0.9), 0 0 40px rgba(0, 255, 255, 0.8) !important;
+        .cardName {
+            // display: inline-block;
+            // display: flex;
+            margin: 0;
+            overflow-wrap: break-word;
+            letter-spacing: .6px;
+        }
+
+
+        .check_animation_card:hover {
+            scale: 1.3;
+            filter: drop-shadow(0px 0px 3px rgba(0, 0, 0, 0.5)); // Agrega grosor simulando un borde
         }
     }
 
     .content_card {
-        padding: 8px;
-
         .tags_active {
             overflow: hidden;
             list-style: none;
             padding: 0;
+            margin: 0;
 
             display: flex;
             flex-wrap: wrap;
@@ -85,25 +69,93 @@
             }
         }
 
-        .name_target {
-            margin: 0;
+        .btn_open_description {
+            background-color: transparent;
+            border: none;
+            border-radius: 6px;
+            color: #ccc;
+            padding: 2px 3.5px;
+            display: flex;
+            justify-content: space-evenly;
+            align-items: end;
+            
+            .description_icon {
+                color: #ccc;
+                margin: 0;
+                padding: 0;
+                font-size: 18px;
+                transition: all .3s ease-in-out;
+            }
+    
+            .description_icon:hover {
+                transform: scale(1.2);
+                background: rgba(255, 255, 255, .1);
+                border-radius: 4px;
+                padding: 2px;
+            }
+
+            span {
+                margin: 0;
+                font-size: 14px;
+            }
         }
 
-        .btns_target {
-            display: flex;
-            gap: 10px;        
+        .btn_open_description:hover {
+            color: white;
+            background-color: rgba(255, 255, 255, .1);
         }
     }
-}
 
-.cardItem:hover {
-    // transform: scale(1.02);
+    .description_modal {
+        position: absolute;
+        max-width: 100%;
+        width: 100%;
+        top: 0;
+        left: 0;
+        min-height: 100%;
+        max-height: 200%;
+        overflow-y: auto;
+        background-color: #ccc;
+        // background: transparent;
+        backdrop-filter: blur(8px);
+        box-shadow: inset 0 0 10px #2e2e2e;
+        // background: linear-gradient(135deg, rgb(205, 133, 63), rgb(36, 35, 35));
+        // background-color: rgba(255, 255, 255, .5);
+        
+        border-radius: 8px;
+        color: black;
+        z-index: 9999;
+    }
+
+    // .description_modal::before {
+    //     position: absolute;
+    //     left: 0;
+    //     top: 0;
+    //     // background-color: rgba(255, 255, 255, 1);
+    //     // background-color: #ccc;
+    //     // filter: blur(2px);
+    //     // backdrop-filter: blur(10px);
+    //     filter: blur(10px);
+    //     content: '';
+    //     height: 100%;
+    //     min-height: 100%;
+    //     width: 100%;
+    //     border-radius: inherit;
+    // }
 }
 
 .modal_hidden {
     display: none;
 }
 
-.target:hover .color_top .check_animation_card {
-    opacity: 1;
+.cardItem:hover {
+    // transform: scale(1.02);
+    box-shadow: none;
+    // box-shadow: inset 0 0 5px rgba(173, 216, 230, 0.1); /* Azul claro tenue */
+    color: white;
+
+    .circle {
+        opacity: 1;
+    }
 }
+
