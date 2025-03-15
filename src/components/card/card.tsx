@@ -7,6 +7,8 @@ import { useTagsStore } from "../../store/tagsStore";
 import { CardCover } from "./cardCover";
 import { MdDescription } from "react-icons/md";
 import { TbFileDescription } from "react-icons/tb";
+import { GoEyeClosed } from "react-icons/go";
+
 import ReactDOM from "react-dom";
 
 import Backdrop from '@mui/material/Backdrop';
@@ -18,6 +20,7 @@ import Typography from '@mui/material/Typography';
 
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { IconButton } from "@mui/material";
 
 interface TargetComponentProps {
     card: CardProps
@@ -116,48 +119,74 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
         onMouseEnter={() => setIsPlaying(true)}
         onMouseLeave={() => setIsPlaying(false)}
       >
-        <CardCover idBoard={board.idBoard} list={list} card={card} isPlaying={isPlaying} />
+        {
+          !showDescription && (
+            <>
+              <CardCover idBoard={board.idBoard} list={list} card={card} isPlaying={isPlaying} />
           
-        <div className='content_card'>
-          <ul className='tags_active'>
-          {   
-            tags.map((tag) => 
-              isActive({tag}) ? 
-              <li key={tag.idTag} style={{backgroundColor: tag.color}} className='active_tag_view_on_card'>
-                { tag.nameTag }
-              </li> :
-              null
-            )
-          }
-          </ul>
-
-          {
-            card.description !== null && (
-              <button 
-                className='btn_open_description'
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setShowDescription(true);
-                }}
-              >
-                <TbFileDescription 
-                  className='description_icon'
-                />
-                <span>Hay una descripción</span>
-              </button>
-            )
-          }
-          
-        </div>
+          <div className='content_card'>
+            <ul className='tags_active'>
+            {   
+              tags.map((tag) => 
+                isActive({tag}) ? 
+                <li key={tag.idTag} style={{backgroundColor: tag.color}} className='active_tag_view_on_card'>
+                  { tag.nameTag }
+                </li> :
+                null
+              )
+            }
+            </ul>
+  
+            {
+              card.description !== null && (
+                <button 
+                  className='btn_open_description'
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShowDescription(true);
+                  }}
+                >
+                  <TbFileDescription 
+                    className='description_icon'
+                  />
+                  <span>Hay una descripción</span>
+                </button>
+              )
+            }
+          </div>
+            </>
+          )
+        }
 
         { 
           showDescription && (
           // <div className='description_modal'>
             <Fade in={showDescription}>
-              <Box className='description_modal'>
+              <Box 
+                onClick={(e) => e.stopPropagation()}
+                className='description_modal'
+              >
+                <div className='description_header'>
+                  <p className='description_title'>
+                    <span>Descripción de </span>{card.nameCard}
+                  </p>
+                  <button>
+                    <GoEyeClosed 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setShowDescription(false);
+                      }
+                      }
+                      className='icon_close_description' 
+                    />
+                  </button>
+                </div>
+                
+                <p className='description_text'>
                 {
                   card.description
                 }
+                </p>
               </Box>
             </Fade>
           // </div>
