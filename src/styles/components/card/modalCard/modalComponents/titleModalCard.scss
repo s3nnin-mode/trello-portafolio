@@ -3,14 +3,21 @@
     flex-direction: column;
     align-items: flex-start;
     width: 100%;
+    color: #ccc;
 
     p, h3 {
         margin: 0;
     }
 
+    .label_card_title {
+        font-weight: bold;
+        letter-spacing: 1px;
+        // font-style: italic;
+    }
+
     .nameList_modal_card {
         font-size: 18px;
-        font-weight: bold;
+        // font-weight: bold;
 
         span {
             font-weight: normal;
@@ -20,7 +27,7 @@
     .title_component {
         max-width: 100%;
         .name_component {
-            font-size: 25px;
+            font-size: 20px;
         }
 
         textarea {

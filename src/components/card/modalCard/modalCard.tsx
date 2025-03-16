@@ -26,22 +26,22 @@ interface ModalTargetComponentProps {
 }
 
 export const CardModal: React.FC<ModalTargetComponentProps> = ({ card, list, board, closeModal, open }) => {
-    // const handleOpen = () => setOpen(true);
-    // const handleClose = () => setOpen(false);
-		const style = {
-			position: 'absolute',
-			top: '50%',
-			left: '50%',
-			transform: 'translate(-50%, -50%)',
-			width: 500,
-			border: '2px solid #000',
-			backdropFilter: 'blur(10px)',
-			// background: 'rgba(255, 255, 255, .02)',
-			boxShadow: 24,
-			p: 2,
-		};
+
+  const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 500,
+    // border: '2px solid #000',
+    backdropFilter: 'blur(20px)',
+    background: 'rgba(255, 255, 255, .02)', 
+    boxShadow: 24,
+    p: 2,
+  };
+
 	return (
-		<div className='div_modal'>
+		// <div className='div_modal'>
 			<Modal
 				aria-labelledby="transition-modal-title"
 				aria-describedby="transition-modal-description"
@@ -57,20 +57,32 @@ export const CardModal: React.FC<ModalTargetComponentProps> = ({ card, list, boa
 			>
 			<Fade in={open}>
 				<Box sx={{...style}} className='card_modal'>
-					{/* <Typography id="transition-modal-title" variant="h6" component="h2">
-						Text in a modal
-					</Typography> */}
 					<CardModalCover card={card} idBoard={board.idBoard} idList={list.idList} closeModal={closeModal} />
-					<Typography id="transition-modal-description" sx={{ mt: 2, color: '#ccc' }}>
-						Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-					</Typography>
-					<Button onClick={closeModal}>Close</Button>
+          <TitleModalCard board={board} list={list} card={card} />
+
+          {/*CONTENIDO*/}
+          
+          <div className='modal_content_container'>         
+            <div className='modal_content'>
+              <ActiveTags board={board} list={list} card={card} />   
+              {/* <div> */}
+                <CardDescription card={card} idList={list.idList} idBoard={board.idBoard} />
+              {/* </div> */}
+            </div>
+            <div className='sidebar_tags'>
+              
+            </div>
+          </div>
 				</Box>
 			</Fade>
 		</Modal>
-	</div>
+	// </div>
 	)
 }
+
+{/* <Typography id="transition-modal-description" sx={{ mt: 2, color: '#ccc' }}>
+						Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+					</Typography> */}
 
  // <div className='modal_show' onPointerDown={(e) => e.stopPropagation()}>
         //     <CardModalCover card={card} idBoard={board.idBoard} idList={list.idList} closeModal={closeModal} />

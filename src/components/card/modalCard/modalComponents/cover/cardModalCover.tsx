@@ -19,10 +19,10 @@ export const CardModalCover: React.FC<CardModalCoverProps> = ({card, idList, idB
 
     return (
         <header 
-            style={{backgroundColor: card.currentCoverType === 'color' ? card.coverCard : '' }} 
+            // style={{backgroundColor: card.currentCoverType === 'color' ? card.coverCard : '' }} 
             className='header_modal_card'>
 
-            <div className='btns_header_modal_card'>
+            {/* <div className='btns_header_modal_card'>
                 <button 
                     className='btn_close_modal_card'
                     onClick={closeModal}>
@@ -33,11 +33,22 @@ export const CardModalCover: React.FC<CardModalCoverProps> = ({card, idList, idB
                     <FaImage />
                     <p>Portada</p>
                 </button>
-            </div>
+            </div> */}
+            <button 
+                className='btn_close_modal_card'
+                onClick={closeModal}>
+                <IoMdClose />
+            </button>
 
+            {/* className='color_preview' */}
             {
-                card.currentCoverType === 'color' ?
-                <div style={{backgroundColor: card.coverCard}} className='color_preview' /> :
+                card.currentCoverType === 'color' 
+                ?
+                <div className='container_color_Card'> 
+                    <div style={{backgroundColor: card.coverCard}} />
+                    <div style={{backgroundColor: card.coverCard}} /> 
+                </div>
+                 :
                 <img src={card.coverCard} alt='cover card' />
             }
 

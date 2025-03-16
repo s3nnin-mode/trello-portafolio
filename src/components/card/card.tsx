@@ -67,16 +67,6 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
     // card.currentCoverType === 'color' ? card.coverCard : '',
   };
 
-  const descriptionStyles = {
-    position: 'absolute',
-    width: 300,
-    border: '2px solid red',
-    backdropFilter: 'blur(10px)',
-    // background: 'rgba(255, 255, 255, .02)',
-    boxShadow: 24,
-    p: 2,
-  };
-
     if (isDragging) {
         return (
             <article
@@ -124,36 +114,36 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
             <>
               <CardCover idBoard={board.idBoard} list={list} card={card} isPlaying={isPlaying} />
           
-          <div className='content_card'>
-            <ul className='tags_active'>
-            {   
-              tags.map((tag) => 
-                isActive({tag}) ? 
-                <li key={tag.idTag} style={{backgroundColor: tag.color}} className='active_tag_view_on_card'>
-                  { tag.nameTag }
-                </li> :
-                null
-              )
-            }
-            </ul>
-  
-            {
-              card.description !== null && (
-                <button 
-                  className='btn_open_description'
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setShowDescription(true);
-                  }}
-                >
-                  <TbFileDescription 
-                    className='description_icon'
-                  />
-                  <span>Hay una descripción</span>
-                </button>
-              )
-            }
-          </div>
+              <div className='content_card'>
+                <ul className='tags_active'>
+                {   
+                  tags.map((tag) => 
+                    isActive({tag}) ? 
+                    <li key={tag.idTag} style={{backgroundColor: tag.color}} className='active_tag_view_on_card'>
+                      { tag.nameTag }
+                    </li> :
+                    null
+                  )
+                }
+                </ul>
+      
+                {
+                  card.description !== null && (
+                    <button 
+                      className='btn_open_description'
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setShowDescription(true);
+                      }}
+                    >
+                      <TbFileDescription 
+                        className='description_icon'
+                      />
+                      <span>Ver descripción</span>
+                    </button>
+                  )
+                }
+              </div>
             </>
           )
         }
