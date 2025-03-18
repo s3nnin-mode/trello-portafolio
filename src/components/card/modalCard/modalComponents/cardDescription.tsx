@@ -67,52 +67,46 @@ export const CardDescription: React.FC<CardDescriptionProps> = ({card, idList, i
     <div className='container_card_description_modal'>
       <h5 className='inter_title'>
         Descripción
-        {card.description && <TbFileDescription className='description_notification' />}
+        {
+        // card.description ?
+        //   <>
+        //   <TbFileDescription className='description_notification' />
+        //   {/* <span className='notification'></span> */}
+        //   {/* <TbFileDescription className='description_notification' /> */}
+        //   </>
+        //   :
+        //   <MdEditDocument />
+        }
       </h5>
       {
         !showTextarea && (
           card.description !== null ?
-          <div
-            // style={{
-            // color: showAllDescription ? '#2e2e2e' : '#ccc',
-            // boxShadow: showAllDescription ? 'inset 0 0 15px #2e2e2e' : 'none',
-            // backgroundColor: showAllDescription ? '#ccc' : 'transparent'
-            // }} 
-            className='container_description_text'>
+          <div className='container_description_text'>
             
             <p className='description_text'>
-              {card.description.length > 30 ?
+              {card.description.length > 40 ?
               <>
-                {!showAllDescription ? card.description.slice(0, 29) : card.description}
+                {!showAllDescription ? card.description.slice(0, 39) : card.description}
                 {!showAllDescription && <span className='span_expand_text' onClick={() => setShowAllDescription(true)}> ...ver mas</span>}
               </>
               :
-                card.description
+                `${card.description}.`
               }
             </p>
-            <header>
-              <button 
-              // style={{
-              //   boxShadow: showAllDescription ? 'inset 0 0 3px #1e1e1e' : 'none',
-              //   background: 'transparent',
-              //   // backgroundColor: showAllDescription ? 'transparent' : 'transparent',
-              //   color: showAllDescription ? '#2e2e2e' : '#ccc'
-              // }}
-                className='btn_open_textarea' onClick={() => setShowTextarea(!showTextarea)}>
-                <MdEditDocument className='icon_description_card_modal'/>
+            <footer>
+              <button className='btn_open_textarea' onClick={() => setShowTextarea(!showTextarea)}>
+                {/* <MdEditDocument className='icon_description_card_modal'/> */}
+                <TbFileDescription className='icon_description_card_modal' />
                 <span>Editar descripción</span>
               </button>
               {
-                showAllDescription && (
-                <button 
-                  className='btn_collapse_text'
-                  onClick={() => setShowAllDescription(false)}
-                >
+                showAllDescription && (                
+                <button className='btn_collapse_text' onClick={() => setShowAllDescription(false)}>
                   ver menos
                 </button>
-                )
+              )
               }
-            </header>
+            </footer>
           </div>
             :
             <div className='container_no_description'>
@@ -122,38 +116,18 @@ export const CardDescription: React.FC<CardDescriptionProps> = ({card, idList, i
                 onClick={() => setShowTextarea(!showTextarea)}
               >
                 <MdDescription className='icon_description_card_modal'/>
-                <span className='work_sans_btn'>Agregar descripción</span>
+                <span>Agregar descripción</span>
               </button>
             </div>
           //
         )
       }
-
-      {/* {
-        !showTextarea && showAllDescription &&  (
-          card.description && (
-          <div className='container_description_text'>
-            <button className='btn_open_textarea' onClick={() => setShowTextarea(!showTextarea)}>
-              <MdEditDocument className='icon_description_card_modal'/>
-              <span>Editar descripción</span>
-            </button>
-            <p className='description_text'>
-              {
-                card.description.length > 30 ?
-                `${card.description.slice(0, 29)}...` :
-                card.description
-              }
-            </p>
-          </div>
-          )
-        )
-      } */}
       
       {
         showTextarea && (
           <form>
             <textarea
-            className='inter'
+              className='inter'
               placeholder='Agrega una descripción para tu tarjeta, por ejemplo'
               onKeyDown={(e) => e.stopPropagation()} 
               onInput={onInput}

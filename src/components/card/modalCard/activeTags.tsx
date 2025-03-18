@@ -56,13 +56,13 @@ export const ActiveTags: React.FC<Props> = ({board, list, card}) => {
 						</div>
 					)
 					:
-					<>
+					<div className='container_no_tags'>
 						<span className='no_tags_text inter'>No hay etiquetas para esta tarjeta..</span>
 						<button className='btn_add_tag' onClick={() => setShowTags(true)}>
 							<FaSquarePlus className='icon_add_tag' />
 							<span>Agregar etiqueta</span>
 						</button>             {/*PARA ACTIVAR EL MODAL*/}
-					</>
+					</div>
 				}
 			</div>
 			
