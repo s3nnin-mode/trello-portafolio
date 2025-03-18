@@ -156,7 +156,11 @@ export const List: React.FC<ListPropsComponent> = ({ board, list }) => {
         {...listeners} 
         className='header_list'
       >  
-        <NameComponent idBoard={board.idBoard} list={list} componentType='list' />                     {/* NAMELIST */}
+        <NameComponent 
+          idBoard={board.idBoard} 
+          list={list} componentType='list' 
+          className='listName_container' 
+        />                     
         <div className='btns_header_list'>
           <IconButton className='btn_collapse_list' onClick={() => setIsListCollapse(!isListCollapse)}>
             <RiCollapseHorizontalLine className='icon_collapse_list' />
