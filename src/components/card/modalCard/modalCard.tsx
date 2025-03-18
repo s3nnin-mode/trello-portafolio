@@ -34,7 +34,7 @@ export const CardModal: React.FC<ModalTargetComponentProps> = ({ card, list, boa
     transform: 'translate(-50%, -50%)',
     width: 500,
     // border: '2px solid #000',
-    backdropFilter: 'blur(20px)',
+    backdropFilter: 'blur(25px)',
     background: 'rgba(255, 255, 255, .02)', 
     boxShadow: 24,
     p: 2,
