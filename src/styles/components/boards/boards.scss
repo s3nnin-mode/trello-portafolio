@@ -1,9 +1,10 @@
 .boards_container {
     width: 100%;
     padding-top: 1rem;
+    
     h2 {
         color: #E0E0E0;
-        color: #ccc;
+        // color: #ccc;
     }
 
     .btn_add_board {
@@ -28,14 +29,11 @@
             // width: 250px;
             border-radius: 4px;
             display: flex;
-            // background-color: peru;
             background-color: rgb(167, 105, 44);
-            // background-color: #1B2A49;
-            // background-color: #252525;
+            
             color: peru;
             color: #1E1E1E;
             color: #E0E0E0;
-            font-weight: 500;
             padding: 5px;
             cursor: pointer;
             transition: 0.3s;
@@ -51,9 +49,9 @@
         }
 
         .board:hover {
-            transition: .3s;
-            transform: scale(1.05);
-            opacity: 0.9;
+            transition: .2s;
+            transform: scale(1.02);
+            // opacity: 0.9;
         }
     }
 }

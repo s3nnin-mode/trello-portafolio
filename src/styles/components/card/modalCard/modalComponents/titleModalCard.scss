@@ -17,8 +17,10 @@
     .nameList_modal_card {
         font-size: 18px;
         // font-weight: bold;
+        // color: #0099FF !important;
 
         span {
+            // color: #0099FF !important;
             font-weight: normal;
         }
     }
@@ -27,7 +29,13 @@
         max-width: 100%;
         .name_component {
             font-size: 20px;
+            font-size: 1.4rem;
+            color: #0099FF;
+            color: #ff9800;
+            // color: #F5E6CC;
         }
+
+        
 
         textarea {
             min-width: 100%;

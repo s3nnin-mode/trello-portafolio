@@ -72,7 +72,7 @@ export const CardCover: React.FC<CardCoverProps> = ({idBoard, list, card, isPlay
 
       {/* Nombre de la tarjeta */}
       {/* <div className='container_cardName'> */}
-      <p className='cardName work_sans_light'>
+      <p className='cardName roboto_light'>
         {card.nameCard}
       </p>
     {/* </div> */}

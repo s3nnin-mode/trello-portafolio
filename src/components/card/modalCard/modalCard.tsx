@@ -34,49 +34,51 @@ export const CardModal: React.FC<ModalTargetComponentProps> = ({ card, list, boa
     transform: 'translate(-50%, -50%)',
     width: 500,
     // border: '2px solid #000',
-    backdropFilter: 'blur(25px)',
-    background: 'rgba(255, 255, 255, .02)', 
+    // backdropFilter: 'blur(5px)',
+    // background: 'rgba(255, 255, 255, .01)',
+    background: 'rgba(30, 30, 30, .5)', 
     boxShadow: 24,
     p: 2,
   };
 
 	return (
-		// <div className='div_modal'>
-			<Modal
-				aria-labelledby="transition-modal-title"
-				aria-describedby="transition-modal-description"
-				open={open}
-				onClose={closeModal}
-				closeAfterTransition
-				slots={{ backdrop: Backdrop }}
-				slotProps={{
-					backdrop: {
-						timeout: 350,
-					},
-				}}
-			>
-			<Fade in={open}>
-				<Box sx={{...style}} className='card_modal'>
-					<CardModalCover card={card} idBoard={board.idBoard} idList={list.idList} closeModal={closeModal} />
-          <TitleModalCard board={board} list={list} card={card} />
+    <Modal
+      aria-labelledby="transition-modal-title"
+      aria-describedby="transition-modal-description"
+      open={open}
+      onClose={closeModal}
+      closeAfterTransition
+      slots={{ backdrop: Backdrop }}
+      slotProps={{
+        backdrop: {
+          timeout: 350,
+        },
+      }}
+    >
+    <Fade in={open}>
+      <Box 
+        sx={{
+          ...style,
+          // willChange: 'transform'
+        }}
+        className='card_modal'>
+        <CardModalCover card={card} idBoard={board.idBoard} idList={list.idList} closeModal={closeModal} />
+        <TitleModalCard board={board} list={list} card={card} />
 
-          {/*CONTENIDO*/}
-          
-          <div className='modal_content_container'>         
-            <div className='modal_content'>
-              <ActiveTags board={board} list={list} card={card} />   
-              {/* <div> */}
-                <CardDescription card={card} idList={list.idList} idBoard={board.idBoard} />
-              {/* </div> */}
-            </div>
-            <div className='sidebar_tags'>
-              
-            </div>
+        {/*CONTENIDO*/}
+        
+        <div className='modal_content_container'>         
+          <div className='modal_content'>
+            <ActiveTags board={board} list={list} card={card} />   
+            <CardDescription card={card} idList={list.idList} idBoard={board.idBoard} />
           </div>
-				</Box>
-			</Fade>
-		</Modal>
-	// </div>
+          <div className='sidebar_tags'>
+            
+          </div>
+        </div>
+      </Box>
+    </Fade>
+  </Modal>
 	)
 }
 

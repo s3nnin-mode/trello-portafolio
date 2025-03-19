@@ -97,11 +97,11 @@ export const CardDescription: React.FC<CardDescriptionProps> = ({card, idList, i
               <button className='btn_open_textarea' onClick={() => setShowTextarea(!showTextarea)}>
                 {/* <MdEditDocument className='icon_description_card_modal'/> */}
                 <TbFileDescription className='icon_description_card_modal' />
-                <span>Editar descripción</span>
+                <span className='roboto_medium'>Editar descripción</span>
               </button>
               {
                 showAllDescription && (                
-                <button className='btn_collapse_text' onClick={() => setShowAllDescription(false)}>
+                <button className='btn_collapse_text roboto_medium' onClick={() => setShowAllDescription(false)}>
                   ver menos
                 </button>
               )
@@ -110,13 +110,13 @@ export const CardDescription: React.FC<CardDescriptionProps> = ({card, idList, i
           </div>
             :
             <div className='container_no_description'>
-              <span className='no_description_text inter'>Sin descripcion...</span>
+              <span className='no_description_text roboto_light'>Sin descripcion...</span>
               <button 
                 className='btn_open_textarea' 
                 onClick={() => setShowTextarea(!showTextarea)}
               >
-                <MdDescription className='icon_description_card_modal'/>
-                <span>Agregar descripción</span>
+                <MdDescription className='icon_description_card_modal' />
+                <span className='roboto_medium'>Agregar descripción</span>
               </button>
             </div>
           //
@@ -127,7 +127,7 @@ export const CardDescription: React.FC<CardDescriptionProps> = ({card, idList, i
         showTextarea && (
           <form>
             <textarea
-              className='inter'
+              className='roboto'
               placeholder='Agrega una descripción para tu tarjeta, por ejemplo'
               onKeyDown={(e) => e.stopPropagation()} 
               onInput={onInput}

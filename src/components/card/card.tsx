@@ -139,7 +139,7 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
                       <TbFileDescription 
                         className='description_icon'
                       />
-                      <span>Ver descripción</span>
+                      <span className='roboto'>Ver descripción</span>
                     </button>
                   )
                 }
@@ -157,7 +157,7 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
                 className='description_modal'
               >
                 <div className='description_header'>
-                  <p className='description_title'>
+                  <p className='description_title roboto_light'>
                     <span>Descripción de </span>{card.nameCard}
                   </p>
                   <button>
@@ -172,7 +172,7 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
                   </button>
                 </div>
                 
-                <p className='description_text'>
+                <p className='description_text roboto'>
                 {
                   card.description
                 }

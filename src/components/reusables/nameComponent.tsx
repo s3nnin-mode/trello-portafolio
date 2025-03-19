@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import '../../styles/components/reusables/nameComponent.scss';
 import { CardProps, ListProps } from "../../types/boardProps";
 import { useListsServices } from "../../services/listsServices";
@@ -16,77 +16,84 @@ interface NameListPropsComponent {
 }
 
 export const NameComponent: React.FC<NameListPropsComponent> = ({idBoard, list, card, componentType, className}) => {
-    const { listsService } = useListsServices();
-    const { cardsServices } = useCardsServices();
-    const [isOpenInput, setIsOpenInput] = useState(false);
-    const [nameComponent, setNameComponent] = useState('');
-    const { userAuth } = useAuthContext();
+  const { listsService } = useListsServices();
+  const { cardsServices } = useCardsServices();
+  const [isOpenInput, setIsOpenInput] = useState(false);
+  const [nameComponent, setNameComponent] = useState('');
+  const { userAuth } = useAuthContext();
+
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null)
  
-    useEffect(() => {
-        if (componentType === 'list') {
-            setNameComponent(list.nameList);
-        } else if (componentType === 'card') {
-            if (!card) return
-            setNameComponent(card.nameCard);
-        }
-    }, []);
+  useEffect(() => {
+    if (componentType === 'list') {
+      setNameComponent(list.nameList);
+    } else if (componentType === 'card') {
+      if (!card) return
+      setNameComponent(card.nameCard);
+    }
+  }, []);
 
-    const handleChangeList = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        const idList = list.idList;
-        setNameComponent(e.target.value);
-        
-        if (userAuth) {
-            updateNameListFirebase({idBoard, idList, nameList: e.target.value});
-        }
+  useEffect(() => {
+    if (isOpenInput && textareaRef.current) {
+      textareaRef.current.focus();
+    }
+  }, [isOpenInput])
 
-        listsService({
-            updateFn: (listsGroup) => listsGroup.map((listGroup) => 
-                listGroup.idBoard === idBoard
-                ?
-                {   ...listGroup,
-                    lists: listGroup.lists.map((list) => 
-                        list.idList === idList ? 
-                        { ...list, nameList: e.target.value } 
-                        : 
-                        list
-                    )
-                }
-                :
-                listGroup
-            )
-        });
+  const handleChangeList = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const idList = list.idList;
+    setNameComponent(e.target.value);
+    
+    if (userAuth) {
+      updateNameListFirebase({idBoard, idList, nameList: e.target.value});
     }
 
-    const handleChangeCard = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        const idCard = card?.idCard;
-        if (!idCard) return;
-        setNameComponent(e.target.value);
-        
-        if (userAuth) {
-            updateNameCardFirebase({
-                idBoard, 
-                idList: list.idList, 
-                idCard, 
-                name: e.target.value
-            });
+    listsService({
+      updateFn: (listsGroup) => listsGroup.map((listGroup) => 
+        listGroup.idBoard === idBoard
+        ?
+        { ...listGroup,
+          lists: listGroup.lists.map((list) => 
+            list.idList === idList ? 
+            { ...list, nameList: e.target.value } 
+            : 
+            list
+          )
         }
+        :
+        listGroup
+      )
+    });
+  }
 
-        cardsServices({
-            updateFn: (cardsGroup) => cardsGroup.map((cardGroup) =>
-            cardGroup.idBoard === idBoard && cardGroup.idList === list.idList ?
-            { 
-                ...cardGroup, cards: cardGroup.cards.map((card) => 
-                card.idCard === idCard ? 
-                {...card, nameCard: e.target.value}
-                :
-                card
-                )
-            }
-            :
-            cardGroup
-            )
-        })
+  const handleChangeCard = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const idCard = card?.idCard;
+    if (!idCard) return;
+    setNameComponent(e.target.value);
+    
+    if (userAuth) {
+      updateNameCardFirebase({
+        idBoard, 
+        idList: list.idList, 
+        idCard, 
+        name: e.target.value
+      });
     }
+
+    cardsServices({
+      updateFn: (cardsGroup) => cardsGroup.map((cardGroup) =>
+      cardGroup.idBoard === idBoard && cardGroup.idList === list.idList ?
+      { ...cardGroup, cards: cardGroup.cards.map((card) => 
+        card.idCard === idCard ? 
+        {...card, nameCard: e.target.value}
+        :
+        card
+        )
+      }
+      :
+        cardGroup
+      )
+    })
+  }
 
     const onInput = (e: React.FormEvent<HTMLTextAreaElement>) => {
         e.stopPropagation();
@@ -95,31 +102,32 @@ export const NameComponent: React.FC<NameListPropsComponent> = ({idBoard, list, 
         target.style.height = `${target.scrollHeight}px`;
     }
 
-    const actions = {
-        list: handleChangeList,
-        card: handleChangeCard
-    }
+  const actions = {
+    list: handleChangeList,
+    card: handleChangeCard
+  }
 
-    return (
-        <div className={`title_component ${className}`}>
-            <h3 
-                className='name_component inter'                                         //abrir input
-                style={{display: isOpenInput ? 'none' : 'block'}}
-                onClick={() => setIsOpenInput(true)}
-             >        
-                {nameComponent}
-            </h3>
+  return (
+    <div className={`title_component ${className}`}>
+      <h3 
+        className='name_component inter'                                         //abrir input
+        style={{display: isOpenInput ? 'none' : 'block'}}
+        onClick={() => setIsOpenInput(true)}
+      >        
+        {nameComponent}
+      </h3>
 
-            {isOpenInput && (
-                <textarea
-                    onKeyDown={(e) => e.stopPropagation()}
-                    style={{overflow: "hidden", resize: "none"}}
-                    onInput={onInput}
-                    value={nameComponent}
-                    onChange={actions[componentType]} 
-                    onBlur={() => setIsOpenInput(false)} // Ocultar textarea al perder el foco 
-                />
-            )}
-        </div> 
-    )
+      {isOpenInput && (
+        <textarea
+          ref={textareaRef}
+          onKeyDown={(e) => e.stopPropagation()}
+          style={{overflow: "hidden", resize: "none"}}
+          onInput={onInput}
+          value={nameComponent}
+          onChange={actions[componentType]} 
+          onBlur={() => setIsOpenInput(false)} // Ocultar textarea al perder el foco 
+        />
+      )}
+    </div> 
+  )
 }

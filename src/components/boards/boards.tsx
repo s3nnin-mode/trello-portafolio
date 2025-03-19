@@ -96,7 +96,7 @@ export const Tableros = () => {
                 <Box
                 
                  className='board' onClick={() => handleClick(board.idBoard)} key={board.idBoard}>
-                  <span className='name_board work_sans'>{board.nameBoard}</span>
+                  <span className='name_board inter_title'>{board.nameBoard}</span>
                   <span className='icon_fav'>Star fav</span>
                 </Box>
               )
