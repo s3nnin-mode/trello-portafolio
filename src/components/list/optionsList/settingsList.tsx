@@ -33,8 +33,8 @@ interface SettingsListProps {
 }
 
 export const useSettingsModalList = () => {
-    const [isModalOptionsActive, setIsModalOptionsActive] = useState(false);          //El estado de las opciones esta en un customHook para poder acceder a esta instancia y manipular el estado
-    return { isModalOptionsActive, setIsModalOptionsActive }                           //desde otros customsHooks(pasandoles este 'set' como parametro)
+  const [isModalOptionsActive, setIsModalOptionsActive] = useState(false);          //El estado de las opciones esta en un customHook para poder acceder a esta instancia y manipular el estado
+  return { isModalOptionsActive, setIsModalOptionsActive }                           //desde otros customsHooks(pasandoles este 'set' como parametro)
 }
 
 export const SettingsList: React.FC<SettingsListProps> = ({ idBoard, list }) => {
@@ -79,67 +79,72 @@ export const SettingsList: React.FC<SettingsListProps> = ({ idBoard, list }) => 
 
     }
 
-    return (
-        <div className='options' onPointerDown={(e) => e.stopPropagation()}>       
-            <IconButton onClick={() => setIsModalOptionsActive(true)} className='btn_active_options'>
-                <PiDotsThreeOutlineFill className='icon_options_list' />
-            </IconButton>
+  return (
+    <div className='options' onPointerDown={(e) => e.stopPropagation()}>       
+      <IconButton onClick={() => setIsModalOptionsActive(true)} className='btn_active_options'>
+        <PiDotsThreeOutlineFill className='icon_options_list' />
+      </IconButton>
 
-            <div className={`settings_list_${isModalOptionsActive ? 'show' : 'hidden'}`}>
-                <div className='header_settings_list'>
-                    <IoMdClose className='icon-close' onClick={() => setIsModalOptionsActive(false)} />  {/*CLOSE OPTIONS*/}
-                </div>
-
-                <BtnAdd 
-                className='form_add_target_to_top'
-                nameComponentToAdd='target'
-                createListOrTargetName={(nameCard: string) => addNewCard(nameCard)} />
-
-                <button className='btn_setting_list' onClick={openFormCopyList}>             {/*BTN OPEN FORM COPY LIST*/}
-                    Copiar lista
-                </button>
-                <button className='btn_setting_list' onClick={openFormMoveList}>            {/*BTN OPEN FORM MOVE LIST*/}
-                    Mover lista
-                </button>
-
-                <ColorsToList idBoard={idBoard} list={list} />                              {/*CHANGE COLOR LIST*/}
-
-                <button className='btn_setting_list' onClick={() => setShowModalToRemoveList(true)}>             {/* REMOVE LIST */}
-                    Eliminar lista
-                </button>   
-            </div>
-
-            
-
-            {
-            showFormCopyList &&            //Form interfaz que devuelve un string para copiar lista con nuevo nombre
-                <FormCopyElement
-                nameElement='lista' 
-                value={list.nameList}
-                closeAll={closeAllFormCopy}
-                closeForm={closeFormCopyList} 
-                callbackName={(inputText) => callbackHandleCopyList({idBoard, list, inputText})}
-                />
-            }
-
-            {
-                showFormMoveList && (
-                    <FormMoveList 
-                     idBoard={idBoard} 
-                     list={list} 
-                     closeAll={closeAllMoveList}
-                     closeForm={closeFormMoveList} 
-                     callback={(position) => callbackHandleMoveList({idBoard, list, position})} />
-                )
-            }
-
-            <ModalToRemoveItem 
-                show={showModalToRemoveList} 
-                onHide={() => setShowModalToRemoveList(false)} 
-                idBoard={idBoard} 
-                list={list} 
-                itemToRemove='list'
-                />
+      <div className={`settings_list_${isModalOptionsActive ? 'show' : 'hidden'}`}>
+        <div className='header_settings_list'>
+          <IoMdClose className='icon-close' onClick={() => setIsModalOptionsActive(false)} />  {/*CLOSE OPTIONS*/}
         </div>
-    )
+
+        <BtnAdd 
+          className='btn_add_card_to_top'
+          nameComponentToAdd='target'
+          createListOrTargetName={(nameCard: string) => addNewCard(nameCard)} 
+        />
+
+        <button className='btn_setting_list' onClick={openFormCopyList}>             {/*BTN OPEN FORM COPY LIST*/}
+          Copiar lista
+        </button>
+        <button className='btn_setting_list' onClick={openFormMoveList}>            {/*BTN OPEN FORM MOVE LIST*/}
+          Mover lista
+        </button>
+
+        <ColorsToList idBoard={idBoard} list={list} />                              {/*CHANGE COLOR LIST*/}
+
+        <button className='btn_setting_list' onClick={() => setShowModalToRemoveList(true)}>             {/* REMOVE LIST */}
+          Eliminar lista
+        </button>   
+      </div>
+      {/*BACKDROP */}
+
+      {
+        isModalOptionsActive && <div onClick={() => setIsModalOptionsActive(false)} className='backdrop_list_options' />
+      }  
+
+      {
+        showFormCopyList &&            //Form interfaz que devuelve un string para copiar lista con nuevo nombre
+          <FormCopyElement
+          nameElement='lista' 
+          value={list.nameList}
+          closeAll={closeAllFormCopy}
+          closeForm={closeFormCopyList} 
+          callbackName={(inputText) => callbackHandleCopyList({idBoard, list, inputText})}
+        />
+      }
+
+      {
+        showFormMoveList && (
+          <FormMoveList 
+            idBoard={idBoard} 
+            list={list} 
+            closeAll={closeAllMoveList}
+            closeForm={closeFormMoveList} 
+            callback={(position) => callbackHandleMoveList({idBoard, list, position})} 
+          />
+        )
+      }
+
+      <ModalToRemoveItem 
+        show={showModalToRemoveList} 
+        onHide={() => setShowModalToRemoveList(false)} 
+        idBoard={idBoard} 
+        list={list} 
+        itemToRemove='list'
+      />
+    </div>
+  )
 }

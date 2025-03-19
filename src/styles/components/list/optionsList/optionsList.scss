@@ -22,6 +22,17 @@
         // color: #1E1E1E;
     }
 
+    .backdrop_list_options {
+        cursor: default;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, .6); /* Oscurece el fondo */
+        z-index: 1; /* Debe estar detrás del modal */
+    }
+
     .settings_list_show {
         position: absolute;
         top: 10px;
@@ -29,13 +40,16 @@
         height: 200px;
         height: auto;
         width: 300px;
-        border: 2px solid;
         z-index: 100;
+        border-radius: 14px;
 
         background-color: #e3e4e8;
         color: black;
         animation-delay: 1s;
         transition: display 1s ease-in-out;
+
+        background-color: #252526 !important;
+        color: #ccc;
 
         .header_settings_list {
             display: flex;
@@ -47,7 +61,6 @@
                 font-size: 22px;
                 border-radius: 5px;
                 cursor: pointer;
-                border: 1px solid;
             }
 
             .icon-close:hover {
@@ -56,23 +69,38 @@
             }
         }
 
-        .form_add_target_to_top {
+        .btn_add_card_to_top {
             width: 100%;
             text-align: left;
 
             .btn_add_some {
                 border-radius: 0;
+                box-shadow: none;
+                background: transparent;
+                display: flex;
+                justify-content: flex-start;
 
                 .icon_add {
                     display: none;
                 }
+
                 span {
                     color: black;
                     padding: 3px;  //el componente BtnAdd ya tiene un paddin de 7px y para que halla consistencia con los demas botones le agrego 3px, asi cada elemento tiene 10px
+                    font-family: "Inter", sans-serif;
+                    font-optical-sizing: auto;
+                    font-weight: 350;
+                    font-style: normal;
+                    color: #ccc;
+                    letter-spacing: normal;
+                    font-size: 1rem;
+                    text-transform: none;
                 }
             }
 
             .btn_add_some:hover {
+                box-shadow: none;
+                background-color: #2a2c2c;
                 background-color: #2a2c2c;
 
                 span {
@@ -82,12 +110,20 @@
         }
 
         .btn_setting_list {
+            font-size: 1rem;
             display: block;
             border: none;
             width: 100%;
             text-align: left;
             padding: 10px;
             cursor: pointer;
+            background: transparent;
+            color: inherit;
+
+            font-family: "Inter", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 350;
+            font-style: normal;
         }
 
         .btn_setting_list:hover {

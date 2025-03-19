@@ -2,27 +2,22 @@ import '../../../styles/components/card/modalCard/modalCard.scss';
 import { BoardProps, ListProps, CardProps } from '../../../types/boardProps';
 //COMPONENTS
 import { CardModalCover } from "./modalComponents/cover/cardModalCover";
-import { BtnOpenTags } from "./modalComponents/btnOpenTags/btnOpenTags";
 import { TitleModalCard } from "./modalComponents/titleModalCard";
-import { BtnRemoveCard } from "./modalComponents/btnOpenTags/btnRemoveCard";
 import { ActiveTags } from "./activeTags";
 import { CardDescription } from './modalComponents/cardDescription';
-import { useRef, useState } from 'react';
 
 import * as React from 'react';
 import Backdrop from '@mui/material/Backdrop';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
 
 interface ModalTargetComponentProps {
-    card: CardProps
-    list: ListProps
-    board: BoardProps
-    closeModal: () => void
-    open: boolean
+  card: CardProps
+  list: ListProps
+  board: BoardProps
+  closeModal: () => void
+  open: boolean
 }
 
 export const CardModal: React.FC<ModalTargetComponentProps> = ({ card, list, board, closeModal, open }) => {
@@ -35,8 +30,8 @@ export const CardModal: React.FC<ModalTargetComponentProps> = ({ card, list, boa
     width: 500,
     // border: '2px solid #000',
     // backdropFilter: 'blur(5px)',
-    // background: 'rgba(255, 255, 255, .01)',
-    background: 'rgba(30, 30, 30, .5)', 
+    background: 'rgba(255, 255, 255, .01)',
+    // background: 'rgba(30, 30, 30, .3)', 
     boxShadow: 24,
     p: 2,
   };

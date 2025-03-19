@@ -45,9 +45,10 @@ export const ColorsToList: React.FC<ColorsToListComponentProps> = ({idBoard, lis
             <div className={`colors_wrapper_${colorsWrapper ? 'show' : 'hidden'}`}>
                 {
                     colors.map((color) => (                           
-                        <button className={`btn_color ${color === list.colorList ? 'current_color' : ''}`} 
-                            onClick={() => changeColorList({idBoard, idList, color})}                     //<-- CAMBIAR COLOR
-                            key={color}>        {/* QUIZÁ HAYA DUPLICADO DE KEYS */}
+                        <button 
+                        className={`btn_color ${color === list.colorList ? 'current_color' : ''}`} 
+                        onClick={() => changeColorList({idBoard, idList, color})}                     //<-- CAMBIAR COLOR
+                        key={color}>        {/* QUIZÁ HAYA DUPLICADO DE KEYS */}
                             <span style={{backgroundColor: color}}></span>
                         </button>
                     ))

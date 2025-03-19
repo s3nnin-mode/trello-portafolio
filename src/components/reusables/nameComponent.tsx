@@ -95,12 +95,12 @@ export const NameComponent: React.FC<NameListPropsComponent> = ({idBoard, list, 
     })
   }
 
-    const onInput = (e: React.FormEvent<HTMLTextAreaElement>) => {
-        e.stopPropagation();
-        const target = e.target as HTMLInputElement;
-        target.style.height = "auto"; 
-        target.style.height = `${target.scrollHeight}px`;
-    }
+  const onInput = (e: React.FormEvent<HTMLTextAreaElement>) => {
+    e.stopPropagation();
+    const target = e.target as HTMLInputElement;
+    target.style.height = "auto"; 
+    target.style.height = `${target.scrollHeight}px`;
+  }
 
   const actions = {
     list: handleChangeList,
@@ -120,6 +120,7 @@ export const NameComponent: React.FC<NameListPropsComponent> = ({idBoard, list, 
       {isOpenInput && (
         <textarea
           ref={textareaRef}
+          onPointerDown={(e) => e.stopPropagation()} //Para poder seleccionar un trozo de texto sin que se active el drag
           onKeyDown={(e) => e.stopPropagation()}
           style={{overflow: "hidden", resize: "none"}}
           onInput={onInput}
