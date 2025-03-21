@@ -42,6 +42,7 @@
         width: 300px;
         z-index: 100;
         border-radius: 14px;
+        overflow: hidden;
 
         background-color: #e3e4e8;
         color: black;
@@ -129,6 +130,7 @@
         .btn_setting_list:hover {
             color: white;
             background-color: #2a2c2c;
+            
         }
 
         
