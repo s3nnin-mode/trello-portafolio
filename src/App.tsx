@@ -4,7 +4,6 @@ import { Start } from './components/rutas/start';
 import { FormRegister } from './components/rutas/formRegister';
 import { KanbaX } from './components/rutas/kanbaX';
 import { FormLogin } from './components/rutas/formLogin';
-import { Auth } from './components/rutas/auth';
 import { Home } from './components/rutas/home';
 
 function App() {
