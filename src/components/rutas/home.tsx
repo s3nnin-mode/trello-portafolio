@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import '../../styles/components/routes/home.scss';
 
 import { useNavigate } from "react-router-dom";

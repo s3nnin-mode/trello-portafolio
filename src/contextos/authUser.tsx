@@ -26,7 +26,7 @@ export const AuthProvider = ({children}: ChildrenProps) => {
 
     const startApp = async () => {
         const userAuth = await getUserAuthState();
-        const LS = localStorage.getItem('boards-storage');
+        // const LS = localStorage.getItem('boards-storage');
 
         if (userAuth) {
             setUserAuth(true);

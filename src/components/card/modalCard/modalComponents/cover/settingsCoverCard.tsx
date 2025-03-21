@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import '../../../../../styles/components/card/modalCard/modalComponents/cover/settingsCoverCard.scss';
 import { CardProps } from '../../../../../types/boardProps';
-import { useCardsStore } from '../../../../../store/cardsStore';
 import { useCardsServices } from '../../../../../services/cardsServices';
 import { useAuthContext } from '../../../../../customHooks/useAuthContext';
 import { updateCoverCard } from '../../../../../services/firebase/updateData/updateCards';
@@ -28,8 +27,9 @@ export const SettingsCover: React.FC<SettingsCoverProps> = ({ card, idList, idBo
     const [file, setFile] = useState<File | undefined>();
 
     useEffect(() => {
-        setCoverType(card.currentCoverType);
         setCoverPreview(card.coverCard);
+        if (!card.currentCoverType) return;
+        setCoverType(card.currentCoverType);
     }, []);
 
     if (!card) return;

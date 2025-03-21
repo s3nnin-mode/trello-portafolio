@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { BoardProps, CardProps, ListProps, TagsProps } from "../../../types/boardProps";
 import { useTagsStore } from "../../../store/tagsStore";
 import { Tags } from "./modalComponents/tags/tags";
-import { CiSquarePlus } from "react-icons/ci";
+// import { CiSquarePlus } from "react-icons/ci";
 import { FaSquarePlus } from "react-icons/fa6";
 
 interface Props {

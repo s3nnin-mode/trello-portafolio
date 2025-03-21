@@ -1,6 +1,6 @@
-import { collection, deleteDoc, doc, getDoc, getDocs, setDoc, updateDoc } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { auth, db } from "../firebaseConfig"
-import { CardProps, CardRef, TagsProps } from "../../../types/boardProps";
+import { CardRef, TagsProps } from "../../../types/boardProps";
 
 export const updateStateTag = async ({idTag, idBoard, idList, idCard}:{idTag: string, idBoard: string, idList: string, idCard: string}) => {
     const userId = auth.currentUser?.uid;

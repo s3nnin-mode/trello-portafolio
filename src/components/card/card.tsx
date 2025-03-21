@@ -9,23 +9,16 @@ import { MdDescription } from "react-icons/md";
 import { TbFileDescription } from "react-icons/tb";
 import { GoEyeClosed } from "react-icons/go";
 
-import ReactDOM from "react-dom";
-
-import Backdrop from '@mui/material/Backdrop';
 import Box from '@mui/material/Box';
-import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
 
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { IconButton } from "@mui/material";
 
 interface TargetComponentProps {
-    card: CardProps
-    board: BoardProps
-    list: ListProps
+  card: CardProps
+  board: BoardProps
+  list: ListProps
 }
 
 export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {

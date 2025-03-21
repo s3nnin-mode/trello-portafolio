@@ -17,9 +17,9 @@ import { BoardProps, ListProps, CardProps } from '../../types/boardProps';
 import { useCardsServices } from "../../services/cardsServices";
 //DRaG AND DROP CARDS
 import { SortableContext } from '@dnd-kit/sortable';
-import { addCardFirebase, addCardToTopFirebase } from "../../services/firebase/updateData/updateCards";
+import { addCardFirebase } from "../../services/firebase/updateData/updateCards";
 import { useAuthContext } from "../../customHooks/useAuthContext";
-import { Button, IconButton } from "@mui/material";
+import { IconButton } from "@mui/material";
 
 
 interface ListPropsComponent {

@@ -1,4 +1,4 @@
-import { FaImage } from 'react-icons/fa';
+// import { FaImage } from 'react-icons/fa';
 import '../../../../../styles/components/card/modalCard/modalComponents/cover/coverModalCard.scss';
 import { CardProps } from '../../../../../types/boardProps';
 import { useState } from 'react';

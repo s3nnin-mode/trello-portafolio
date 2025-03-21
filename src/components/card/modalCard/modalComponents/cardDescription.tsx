@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import { useCardsServices } from "../../../../services/cardsServices";
 import { useAuthContext } from '../../../../customHooks/useAuthContext';
 import { updateDescriptionCard } from '../../../../services/firebase/updateData/updateCards';
-import { MdEditDocument } from "react-icons/md";
+// import { MdEditDocument } from "react-icons/md";
 
 import { TbFileDescription } from 'react-icons/tb';
 interface CardDescriptionProps {

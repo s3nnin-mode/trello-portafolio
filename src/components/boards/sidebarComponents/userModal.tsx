@@ -1,14 +1,12 @@
 import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import { FaUserAlt } from "react-icons/fa";
 import '../../../styles/components/boards/sidebarComponents/userModal.scss';
-import { Avatar, IconButton, Input, ListItem, ListItemButton, ListItemText, TextField, Typography } from '@mui/material';
+import { Avatar, IconButton, ListItem, ListItemText, TextField } from '@mui/material';
 import { FaEdit, FaCheck } from "react-icons/fa";
 
 import { IoCloseSharp } from "react-icons/io5";
-import { useForm } from 'react-hook-form';
 
 export const UserModal = () => {
   const [show, setShow] = useState(false);

@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import '../../../src/styles/components/routes/start.scss';
-import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useBoardsStore } from "../../store/boardsStore";
 import { useAuthContext } from "../../customHooks/useAuthContext";
 import { getBoardsFirebase } from "../../services/firebase/firebaseFunctions";
 import { initialTags } from "../../utils/tagsColors";
-import { Box, Button, Fade } from "@mui/material";
+import { Button, Fade } from "@mui/material";
 
 export const Start = () => {
   const { userAuth } = useAuthContext();
