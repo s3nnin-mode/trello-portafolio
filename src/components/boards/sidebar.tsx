@@ -20,7 +20,7 @@ const drawerWidth = 240;
 
 const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== "open",
-})(({ theme, open }: { theme?: any; open?: boolean }) => ({
+})(({ open }: { theme?: any; open?: boolean }) => ({  //theme?: any; open?: boolean quitado por el momento
   width: 15,
   flexShrink: 0,
   whiteSpace: "nowrap",

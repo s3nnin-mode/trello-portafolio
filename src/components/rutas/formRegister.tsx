@@ -1,13 +1,8 @@
 import '../../styles/components/routes/formRegister.scss';
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Paper, Stack, TextField, Typography } from '@mui/material';
+import { Button, Paper, Stack, TextField, Typography } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { userRegister } from '../../services/firebase/firebaseFunctions';
 import { Link, useNavigate } from 'react-router-dom';
-import React from 'react';
-
-interface Props {
-  fade: boolean
-}
 
 export const FormRegister = () => {
   const navigate = useNavigate();
