@@ -17,6 +17,8 @@ const initialData = async (userId: string) => {
 
     await setDoc(boardRef, initialBoard);
 
+    console.log('tableros creado exitosamente');
+
     const specificBoardRef = doc(db, `users/${userId}/boards/primerboardid`);
     const listsRef = doc(collection(specificBoardRef, 'lists'), 'primerlistid');
     
@@ -28,6 +30,8 @@ const initialData = async (userId: string) => {
     };
 
     await setDoc(listsRef, initialList);
+
+    console.log('lista creada exitosamente');
 
     const cardsRef = doc(collection(listsRef, 'cards'), 'primercardid');
 
@@ -42,11 +46,13 @@ const initialData = async (userId: string) => {
     };
 
     await setDoc(cardsRef, initialCards);
+    console.log('tarjeta creada exitosamente');
 
     await Promise.all(initialTags.map(async tag => {
       const tagRef = doc(collection(db, `users/${userId}/tags`), tag.idTag);
       await setDoc(tagRef, tag);
     }));
+    
     console.log("Tablero, lista, tarjeta y etiquetas creados exitosamente.");
 
   } catch(error) {
