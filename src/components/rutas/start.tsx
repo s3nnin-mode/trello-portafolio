@@ -4,7 +4,7 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useBoardsStore } from "../../store/boardsStore";
 import { useAuthContext } from "../../customHooks/useAuthContext";
 import { getBoardsFirebase } from "../../services/firebase/firebaseFunctions";
-import { initialTags } from "../../utils/tagsColors";
+import { initialTagsDemo } from "../../utils/tagsColors";
 import { Button, Fade } from "@mui/material";
 
 export const Start = () => {
@@ -34,11 +34,65 @@ export const Start = () => {
     fetchData();
   }, [userAuth]);
 
+  //como demo al principio se debe agregar al menos un tablero, lista y tarjeta con un par de etiquetas
+  //para que se pueda visualizar algo en la aplicación y que el usuario pueda entender su funcionamiento
+  //La demostracion tiene que ser con un tema especifico y no solo 'tablero de demostracion' o 'lista de demostracion',
+  //sino con un tema que pueda ser de interes para el usuario
+  //por eso el tema será 
+
   const demo = () => {
-    localStorage.setItem('boards-storage', JSON.stringify([]));
-    localStorage.setItem('lists-storage', JSON.stringify([]));
-    localStorage.setItem('cards-storage', JSON.stringify([]));
-    localStorage.setItem('tags-storage', JSON.stringify(initialTags));
+    localStorage.setItem('boards-storage', JSON.stringify([
+      {
+        idBoard: 'TableroDemo', nameBoard: 'Tablero de ejemplo: Limpiar la casa'
+      }]
+    ));
+
+    localStorage.setItem('lists-storage', JSON.stringify([{
+      idBoard: 'TableroDemo',
+      lists: [{
+        idList: 'ListaDemo',
+        nameList: 'Limpieza de habitaciones',
+        colorList: '#252526',
+        order: 0        
+      }]
+    }]));
+
+    localStorage.setItem('cards-storage', JSON.stringify([{
+      idBoard: 'TableroDemo',
+      idList: 'ListaDemo',
+      cards: [{
+        idCard: 'cardDemoHabitacionPrincipal',
+        nameCard: 'Habitación principal',
+        coverCard: '#303030',
+        coverCardImgs: [],
+        currentCoverType: 'color',
+        complete: false,
+        description: 'La habitación principal necesita ser limpiada con urgencia',
+        order: 0
+      },
+      {
+        idCard: 'cardDemoHabitacionNiños',
+        nameCard: 'Habitación de los niños',
+        coverCard: '#303030',
+        coverCardImgs: [],
+        currentCoverType: 'color',
+        complete: false,
+        description: 'La habitación de los niños puedes dejarlo al final',
+        order: 10
+      },
+      {
+        idCard: 'cardDemoBaño',
+        nameCard: 'Baño',
+        coverCard: '#303030',
+        coverCardImgs: [],
+        currentCoverType: 'color',
+        complete: false,
+        description: 'El baño es de lo más importante, no lo olvides',
+        order: 20
+      }
+    ]
+    }]));
+    localStorage.setItem('tags-storage', JSON.stringify(initialTagsDemo));
     navigate('/kanbaX');
   }
 

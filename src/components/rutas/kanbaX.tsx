@@ -24,11 +24,9 @@ export const KanbaX = () => {
         const listsLS = localStorage.getItem('lists-storage');
         const cardsLS = localStorage.getItem('cards-storage');
         const tagsLS = localStorage.getItem('tags-storage');
+
         if (userAuth) {
             fetchData();
-            
-        // Cargar desde Firebase
-        // setBoards([...firebase]);
         } else if (boardsLS && listsLS && cardsLS && tagsLS) {
             loadBoards(JSON.parse(boardsLS));
             loadLists(JSON.parse(listsLS));

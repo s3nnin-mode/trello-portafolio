@@ -73,6 +73,7 @@ export const Tableros = () => {
       }
 
       const cardsGroup = await fetchCards();
+      console.log(cardsGroup, 'cardsGroup');
       loadCards(cardsGroup);
 
       const tags = await getTagsFirebase();
