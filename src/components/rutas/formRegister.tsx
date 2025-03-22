@@ -31,6 +31,7 @@ export const FormRegister = () => {
     if (res === 'Registro exitoso') {
       // fetchData();
       setUserAuth(true);
+      navigate('/kanbaX');
     }
 
   };
