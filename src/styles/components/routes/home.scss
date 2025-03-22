@@ -11,6 +11,15 @@
     // background-color: #7FDBFF;
     padding: 50px;
 
+    .mensaje_proyecto_en_construccion {
+        background-color: #f8d7da;
+        color: #721c24;
+        padding: 8px;
+        border-radius: 0 0 6px 6px;
+        position: absolute;
+        top: 0;
+    }
+    
     .box {
         .card_left {
             padding: 10px;

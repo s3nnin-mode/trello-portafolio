@@ -27,6 +27,14 @@ export const Home = () => {
 
   return(
     <div className='container_home'>
+      <div className='mensaje_proyecto_en_construccion'>
+        <p>
+          Este proyecto está aún en desarrollo, por lo que es posible que encuentres errores o fallos en su funcionamiento.
+          <br/>
+          Cualquier mejora o sugerencia es bienvenida.
+          Mi correo: leyderlevel1@gmail.com
+        </p>
+      </div>
       <Box className='box'>
         <div className="card_left">
             <Fade in={!animation} timeout={500} >
