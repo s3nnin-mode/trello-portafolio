@@ -85,9 +85,9 @@ export const Tablero = () => {
     useEffect(()=> {
       const indexBoard = boards.findIndex(b => b.idBoard === currentIdBoard);
       if (indexBoard > -1) {
-          setCurrentBoard(boards[indexBoard]);
-          setIdBoard(boards[indexBoard].idBoard);
-          return
+        setCurrentBoard(boards[indexBoard]);
+        setIdBoard(boards[indexBoard].idBoard);
+        return
       }
     }, [boards, currentIdBoard]);
 

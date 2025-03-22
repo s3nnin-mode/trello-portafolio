@@ -1,12 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import '../../styles/components/routes/home.scss';
 
 import { useNavigate } from "react-router-dom";
 import { Box, Button, Fade } from "@mui/material";
+import { useAuthContext } from "../../customHooks/useAuthContext";
 
 export const Home = () => {
+  const { userAuth } = useAuthContext();
   const navigate = useNavigate();
   const [animation, setAnimation] = useState(false);
+
+  useEffect(() => {
+    if (userAuth) {
+      navigate('/kanbaX');
+    }
+  });
 
   const handleClick = () => {
     setAnimation(true);

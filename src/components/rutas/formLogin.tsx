@@ -2,9 +2,14 @@ import '../../styles/components/routes/formLogin.scss';
 import { Button, Paper, TextField, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { userLogin } from '../../services/firebase/firebaseFunctions';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useAuthContext } from '../../customHooks/useAuthContext';
 
 export const FormLogin = () => {
+  const { userAuth } = useAuthContext();
+  const navigate = useNavigate();
+
   const {
     register,
     formState: { errors },
@@ -20,6 +25,12 @@ export const FormLogin = () => {
 
     console.log('estado de login', loginState)
   });
+
+  useEffect(() => {
+    if (userAuth) {
+      navigate('/kanbaX');
+    }
+  })
 
   return (
     <Paper elevation={3} sx={{padding: 3, margin: 'auto'}}>

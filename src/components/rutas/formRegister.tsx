@@ -3,9 +3,13 @@ import { Button, Paper, Stack, TextField, Typography } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { userRegister } from '../../services/firebase/firebaseFunctions';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAuthContext } from '../../customHooks/useAuthContext';
+import { useEffect } from 'react';
 
 export const FormRegister = () => {
+  const { userAuth, setUserAuth } = useAuthContext();
   const navigate = useNavigate();
+
   const { 
     register, 
     handleSubmit, 
@@ -17,15 +21,25 @@ export const FormRegister = () => {
 
   const password = watch('password');
 
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: any) => {
     console.log('btn submit clicked', data)
-    userRegister({
+    const res = await userRegister({
       email: data.email,
       password: data.password
     });
-    console.log('se envío los datos para crear user');
-    navigate('/');
+
+    if (res === 'Registro exitoso') {
+      // fetchData();
+      setUserAuth(true);
+    }
+
   };
+
+  useEffect(() => {
+    if (userAuth) {
+      navigate('/kanbaX');
+    }
+  }, [userAuth]);
 
   return (
     <Paper elevation={3} sx={{ padding: 4, margin: "auto" }}>

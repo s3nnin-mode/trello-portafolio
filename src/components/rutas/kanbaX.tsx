@@ -11,7 +11,7 @@ import { useCardsStore } from '../../store/cardsStore';
 import { useTagsStore } from '../../store/tagsStore';
 
 export const KanbaX = () => {
-    const { userAuth } = useAuthContext();
+    const { userAuth, fetchData } = useAuthContext();
     const { loadBoards } = useBoardsStore();
     const { loadLists } = useListsStore();
     const { loadCards } = useCardsStore();
@@ -25,6 +25,8 @@ export const KanbaX = () => {
         const cardsLS = localStorage.getItem('cards-storage');
         const tagsLS = localStorage.getItem('tags-storage');
         if (userAuth) {
+            fetchData();
+            
         // Cargar desde Firebase
         // setBoards([...firebase]);
         } else if (boardsLS && listsLS && cardsLS && tagsLS) {
@@ -35,7 +37,7 @@ export const KanbaX = () => {
         } else {
             navigate('/');
         }
-    }, []);
+    }, [userAuth]);
 
     return (
         <div className='App'>

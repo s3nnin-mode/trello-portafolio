@@ -12,6 +12,7 @@ import { useTagsStore } from '../../store/tagsStore';
 import { useAuthContext } from '../../customHooks/useAuthContext';
 import { addBoardFirebase } from '../../services/firebase/updateData/updateBoards';
 import { Box } from '@mui/material';
+import { useEffect } from 'react';
 
 const useBoards = () => {
   const { boards } = useBoardsStore();
@@ -41,9 +42,13 @@ export const Tableros = () => {
   const { loadLists } = useListsStore();
   const { loadCards } = useCardsStore();
   const { loadTags } = useTagsStore();
-  const { userAuth } = useAuthContext();
+  const { userAuth, fetchData } = useAuthContext();
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const handleClick = async (idBoard: string) => {
     if (userAuth) {
@@ -66,14 +71,15 @@ export const Tableros = () => {
           return cardGroup
         }))
       }
+
       const cardsGroup = await fetchCards();
       loadCards(cardsGroup);
 
       const tags = await getTagsFirebase();
       loadTags(tags);
-      console.log('tags cargado exitosamente', tags)
+      console.log('tags cargado exitosamente', tags);
+      navigate(`${idBoard}`);
     } 
-    navigate(`${idBoard}`);
   }
 
   return (
