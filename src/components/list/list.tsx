@@ -23,8 +23,8 @@ import { IconButton } from "@mui/material";
 
 
 interface ListPropsComponent {
-    list: ListProps
-    board: BoardProps
+  list: ListProps
+  board: BoardProps
 }
 
 export const useList = () => {
@@ -47,7 +47,7 @@ export const useList = () => {
       coverCardImgs: [],
       currentCoverType: 'color',
       complete: false,
-      description: 'Abre las herramientas de desarrollo (DevTools) en tu navegador y busca en el document.body si realmente se está agregando el .description_modal. Puedes hacerlo ejecutando esto en la consola',
+      description: null,
       order
     };
       

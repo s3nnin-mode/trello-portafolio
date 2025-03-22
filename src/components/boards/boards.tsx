@@ -79,7 +79,9 @@ export const Tableros = () => {
       loadTags(tags);
       console.log('tags cargado exitosamente', tags);
       navigate(`${idBoard}`);
+      return
     } 
+    navigate(`${idBoard}`);
   }
 
   return (
