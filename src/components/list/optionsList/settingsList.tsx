@@ -28,8 +28,8 @@ import { addCardToTopFirebase } from "../../../services/firebase/updateData/upda
 import { IconButton } from "@mui/material";
 
 interface SettingsListProps {
-    idBoard: string
-    list: ListProps
+  idBoard: string
+  list: ListProps
 }
 
 export const useSettingsModalList = () => {
@@ -38,45 +38,44 @@ export const useSettingsModalList = () => {
 }
 
 export const SettingsList: React.FC<SettingsListProps> = ({ idBoard, list }) => {
-    const { isModalOptionsActive, setIsModalOptionsActive} = useSettingsModalList();
-    const { showFormCopyList, openFormCopyList, closeFormCopyList, closeAllFormCopy, callbackHandleCopyList } = useFormCopyList({setIsModalOptionsActive});
-    const { showFormMoveList, openFormMoveList, closeFormMoveList, closeAllMoveList, callbackHandleMoveList } = useFormMoveList({setIsModalOptionsActive});
-    const [ showModalToRemoveList, setShowModalToRemoveList ] = useState(false);
-    const { cardsServices } = useCardsServices();
-    const { userAuth } = useAuthContext();
+  const { isModalOptionsActive, setIsModalOptionsActive} = useSettingsModalList();
+  const { showFormCopyList, openFormCopyList, closeFormCopyList, closeAllFormCopy, callbackHandleCopyList } = useFormCopyList({setIsModalOptionsActive});
+  const { showFormMoveList, openFormMoveList, closeFormMoveList, closeAllMoveList, callbackHandleMoveList } = useFormMoveList({setIsModalOptionsActive});
+  const [ showModalToRemoveList, setShowModalToRemoveList ] = useState(false);
+  const { cardsServices } = useCardsServices();
+  const { userAuth } = useAuthContext();
 
     const addNewCard = (nameCard: string) => {
-        const cardToAdd: CardProps = {
-            idCard: (nameCard + Date.now()).toString(), 
-            nameCard: nameCard,
-            coverCard: 'grey',
-            coverCardImgs: [],
-            currentCoverType: 'color',
-            complete: false,
-            description: null,
-            order: 0
-        };
+      const cardToAdd: CardProps = {
+        idCard: (nameCard + Date.now()).toString(), 
+        nameCard: nameCard,
+        coverCard: 'grey',
+        coverCardImgs: [],
+        currentCoverType: 'color',
+        complete: false,
+        description: null,
+        order: 0
+      };
 
-        cardsServices({
-            updateFn: (cardsGroup) => cardsGroup.map((cardGroup) => 
-                cardGroup.idBoard === idBoard && cardGroup.idList === list.idList ?
-                    {
-                        ...cardGroup,
-                        cards: [cardToAdd, ...cardGroup.cards].map((card, index) => {
-                            return { ...card, order: index * 10};
-                        })
-                    }
-                :
-                    cardGroup
-            )
-        });
+      cardsServices({
+        updateFn: (cardsGroup) => cardsGroup.map((cardGroup) => 
+          cardGroup.idBoard === idBoard && cardGroup.idList === list.idList ?
+          {
+            ...cardGroup,
+            cards: [cardToAdd, ...cardGroup.cards].map((card, index) => {
+              return { ...card, order: index * 10};
+            })
+          }
+          :
+          cardGroup
+        )
+      });
 
-        const cardsUpdate = useCardsStore.getState().cardsGroup.find(cardGroup => cardGroup.idList === list.idList)?.cards;
-        if (!cardsUpdate) return;
-        if (userAuth) {
-            addCardToTopFirebase({idBoard, idList: list.idList, card: cardToAdd, cardsUpdate});
-        }
-
+      const cardsUpdate = useCardsStore.getState().cardsGroup.find(cardGroup => cardGroup.idList === list.idList)?.cards;
+      if (!cardsUpdate) return;
+      if (userAuth) {
+        addCardToTopFirebase({idBoard, idList: list.idList, card: cardToAdd, cardsUpdate});
+      }
     }
 
   return (
@@ -89,6 +88,7 @@ export const SettingsList: React.FC<SettingsListProps> = ({ idBoard, list }) => 
         <div className='header_settings_list'>
           <IoMdClose className='icon-close' onClick={() => setIsModalOptionsActive(false)} />  {/*CLOSE OPTIONS*/}
         </div>
+        <button className='btn_setting_list'>Editar nombre de lista</button>
 
         <BtnAdd 
           className='btn_add_card_to_top'

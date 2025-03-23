@@ -158,7 +158,8 @@ export const List: React.FC<ListPropsComponent> = ({ board, list }) => {
       >  
         <NameComponent 
           idBoard={board.idBoard} 
-          list={list} componentType='list' 
+          list={list} 
+          componentType='list' 
           className='listName_container' 
         />                     
         <div className='btns_header_list'>

@@ -3,6 +3,7 @@ import { useListsStore } from "../../store/listsStore";
 import { ListProps } from "../../types/boardProps";
 import { useListsServices } from "../../services/listsServices";
 import { updateOrderListsFirebase, updtateOrderList } from "../../services/firebase/updateData/updateLists";
+import { useAuthContext } from "../useAuthContext";
 
 interface UseFormMoveList {
     setIsModalOptionsActive: React.Dispatch<React.SetStateAction<boolean>>
@@ -12,7 +13,8 @@ interface UseFormMoveList {
 export const useFormMoveList = ({ setIsModalOptionsActive}: UseFormMoveList) => {
     const { listsGroup } = useListsStore();
     const { listsService } = useListsServices();
-    const [showFormMoveList, setShowFormMoveList] = useState(false)
+    const [showFormMoveList, setShowFormMoveList] = useState(false);
+    const { userAuth } = useAuthContext();
 
     const moveList = ({idBoard, list, position}: {idBoard: string, list: ListProps, position: number}) => {
         const indexListGroup = listsGroup.findIndex(listGroup => listGroup.idBoard === idBoard);
@@ -57,8 +59,10 @@ export const useFormMoveList = ({ setIsModalOptionsActive}: UseFormMoveList) => 
                     return listUpdate
                 } else if (postList) { //ocupas un for para resetear todo aqui
                     console.log('solo hay postList')
-                    const listUpdate = {...l, order: postList.order - 10}; 
-                    updtateOrderList({idBoard, list: listUpdate});
+                    const listUpdate = {...l, order: postList.order - 10};
+                    // if (userAuth) {
+                    //     updtateOrderList({idBoard, list: listUpdate});
+                    // } 
                     return listUpdate
                 }
             }
@@ -77,19 +81,24 @@ export const useFormMoveList = ({ setIsModalOptionsActive}: UseFormMoveList) => 
             lists = lists
                 .sort((a, b) => a.order - b.order) // Asegurar orden ascendente
                 .map((list, index) => ({ ...list, order: index * 10 })); // Reasignar desde 0
-        
-            updateOrderListsFirebase({ idBoard, updateLists: lists });
         }
         
-        listsService({
-            updateFn: (listsGroup) => listsGroup.map((listGroup) =>
-                listGroup.idBoard === idBoard
-                ?
-                { ...listGroup, lists: lists }
-                :
-                listGroup
-            )
-        })
+        if (userAuth) {
+            console.log('se reordeno en firebase')
+            updateOrderListsFirebase({ idBoard, updateLists: lists }); //se reordena en firebase
+        } else {
+
+            listsService({
+                updateFn: (listsGroup) => listsGroup.map((listGroup) =>
+                    listGroup.idBoard === idBoard
+                    ?
+                    { ...listGroup, lists: lists }
+                    :
+                    listGroup
+                )
+            });
+            console.log('se reordeno en local', lists);
+        }
     }
     
     const openFormMoveList = () => {

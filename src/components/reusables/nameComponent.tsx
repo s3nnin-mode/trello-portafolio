@@ -8,11 +8,11 @@ import { useAuthContext } from "../../customHooks/useAuthContext";
 import { updateNameCardFirebase } from "../../services/firebase/updateData/updateCards";
 
 interface NameListPropsComponent {
-    idBoard: string
-    list: ListProps
-    card?: CardProps
-    componentType: 'list' | 'card'
-    className?: string
+  idBoard: string
+  list: ListProps
+  card?: CardProps
+  componentType: 'list' | 'card'
+  className?: string
 }
 
 export const NameComponent: React.FC<NameListPropsComponent> = ({idBoard, list, card, componentType, className}) => {
@@ -37,7 +37,8 @@ export const NameComponent: React.FC<NameListPropsComponent> = ({idBoard, list, 
     if (isOpenInput && textareaRef.current) {
       textareaRef.current.focus();
     }
-  }, [isOpenInput])
+  }, [isOpenInput]);
+
 
   const handleChangeList = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const idList = list.idList;

@@ -38,7 +38,6 @@ export const Start = () => {
   //para que se pueda visualizar algo en la aplicación y que el usuario pueda entender su funcionamiento
   //La demostracion tiene que ser con un tema especifico y no solo 'tablero de demostracion' o 'lista de demostracion',
   //sino con un tema que pueda ser de interes para el usuario
-  //por eso el tema será 
 
   const demo = () => {
     localStorage.setItem('boards-storage', JSON.stringify([
@@ -63,7 +62,7 @@ export const Start = () => {
       cards: [{
         idCard: 'cardDemoHabitacionPrincipal',
         nameCard: 'Habitación principal',
-        coverCard: '#303030',
+        coverCard: 'red',
         coverCardImgs: [],
         currentCoverType: 'color',
         complete: false,
@@ -73,7 +72,7 @@ export const Start = () => {
       {
         idCard: 'cardDemoHabitacionNiños',
         nameCard: 'Habitación de los niños',
-        coverCard: '#303030',
+        coverCard: 'green',
         coverCardImgs: [],
         currentCoverType: 'color',
         complete: false,
@@ -83,7 +82,7 @@ export const Start = () => {
       {
         idCard: 'cardDemoBaño',
         nameCard: 'Baño',
-        coverCard: '#303030',
+        coverCard: 'orange',
         coverCardImgs: [],
         currentCoverType: 'color',
         complete: false,
@@ -92,6 +91,7 @@ export const Start = () => {
       }
     ]
     }]));
+    
     localStorage.setItem('tags-storage', JSON.stringify(initialTagsDemo));
     navigate('/kanbaX');
   }

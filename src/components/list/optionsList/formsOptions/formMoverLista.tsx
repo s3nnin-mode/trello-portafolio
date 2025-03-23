@@ -1,8 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import '../../../../styles/components/list/optionsList/formsOptions/formMoveList.scss';
 import { ListProps } from '../../../../types/boardProps';
-import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
+// import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import { useListsStore } from '../../../../store/listsStore';
+import { FaArrowLeft } from "react-icons/fa";
+import { IoMdClose } from 'react-icons/io';
 
 interface FormMoveListProps {
     idBoard: string
@@ -13,63 +15,97 @@ interface FormMoveListProps {
 }
 
 export const FormMoveList: React.FC<FormMoveListProps> = ({idBoard, list, closeForm, closeAll, callback}) => {
-    const { listsGroup } = useListsStore();
-    const [currentPosition, setCurrentPosition] = useState<number>();
-    const [currentLists, setCurrentLists] = useState<ListProps[]>();
+  const { listsGroup } = useListsStore();
+  const [currentPosition, setCurrentPosition] = useState<number>();
+  const [newPosition, setNewPosition] = useState<number | null>(null);
 
-    useEffect(() => {
-        const indexListGroup = listsGroup.findIndex(listGroup => listGroup.idBoard === idBoard);
-        
-        if (indexListGroup > -1) {
-            setCurrentLists(listsGroup[indexListGroup].lists);      //listas actuales para iterar y saber su posicion
+  const [currentLists, setCurrentLists] = useState<ListProps[]>();
+  // const [showPositions, setShowPositions] = useState(false);
 
-            const indexList = listsGroup[indexListGroup].lists.findIndex(l => l.idList === list.idList); //index/posicion actual
-            if (indexList > -1) {
-                const currentPosition = indexList + 1;
-                setCurrentPosition(currentPosition);
+  useEffect(() => {
+    const indexListGroup = listsGroup.findIndex(listGroup => listGroup.idBoard === idBoard);
+    if (indexListGroup > -1) {
+      setCurrentLists(listsGroup[indexListGroup].lists);      //listas actuales para iterar y saber su posicion
+
+      const indexList = listsGroup[indexListGroup].lists.findIndex(l => l.idList === list.idList); //index/posicion actual
+      if (indexList > -1) {
+        const currentPosition = indexList + 1;
+        setCurrentPosition(currentPosition);
+      }
+    }
+  }, []);
+
+  const handleClick = (newPosition: number) => {
+    if (newPosition !== currentPosition) {
+      setNewPosition(newPosition);
+    }
+  }
+
+  const positions = useMemo(() =>
+    currentLists?.map((list, index) => (
+      <button
+        style={{border: index + 1 === newPosition ? '2px solid orange' : 'transparent'}}
+        type='button' key={list.idList} onClick={() => handleClick(index + 1)}>
+        {index + 1 === currentPosition ? `${index + 1} Actual` : index + 1}
+      </button>
+    )), [currentLists, currentPosition, newPosition]
+  )
+  
+  return (
+    <>
+      <div className='form_move_list_container' onPointerDown={(e) => e.stopPropagation()}>
+        <header>
+          <button onClick={closeForm}>
+            <FaArrowLeft />
+          </button>
+          <span className='inter_title'>Mover lista</span>
+          <button onClick={closeAll}>
+            <IoMdClose />
+          </button>
+        </header>
+
+        <form>
+          <h2>Posición actual: <span> {currentPosition}</span></h2>
+          {/* <button type='button' className='btn_handle_positions' onClick={() => setShowPositions(!showPositions)}>
+            <span>{currentPosition || 'cargando..'}</span>
+            {showPositions ? <FaChevronUp /> : <FaChevronDown />}
+          </button> */}
+          {
+            newPosition !== null && (
+              <h2>Mover a la posición: <span>{newPosition}</span></h2>
+            )
+          }
+          <h2>Seleccione la nueva posición:</h2>
+          <div className='positions'>
+            {
+              positions
             }
-        }
+          </div>
 
-    }, []);
-
-    const [showPositions, setShowPositions] = useState(false);
-
-    return (
-        <div className='form_move_list_container' onPointerDown={(e) => e.stopPropagation()}>
-            <header>
-                <span onClick={closeForm}>back</span>
-                <span>Move list {list.nameList}</span>
-                <span onClick={closeAll}>X</span>
-            </header>
-
-            <form>
-                <h2>Position</h2>
-                <button type='button' className='btn_handle_positions' onClick={() => setShowPositions(!showPositions)}>
-                    <span>{currentPosition || 'cargando..'}</span>
-                    {showPositions ? <FaChevronUp /> : <FaChevronDown />}
-                </button>
-
-                {
-                    showPositions && (
-                    <div className='positions'>
-                        {
-                            currentLists?.map((list, index) => (
-                                <button type='button' key={list.idList} onClick={() => setCurrentPosition(index + 1)}>
-                                    {index + 1 === currentPosition ? `${index + 1} current` : index + 1}
-                                </button>
-                            ))
-                        }
-                    </div>
-                    )
-                }  
-                {
-                    currentPosition !== undefined && (
-                        <button className='btn_move' type='button' onClick={() => callback(currentPosition - 1)}> {/*el callback necesita el index, asi que como current position es el index + 1, solo se le vuelve a restar ese 1*/}
-                            Move
-                        </button>
-                    )
-                } 
-            </form>
-        </div>
-    )
+          {/* {
+            showPositions && (
+            <div className='positions'>
+              <h2>Posiciones disponibles:</h2>
+              {
+                currentLists?.map((list, index) => (
+                  <button type='button' key={list.idList} onClick={() => setCurrentPosition(index + 1)}>
+                    {index + 1 === currentPosition ? `${index + 1} current` : index + 1}
+                  </button>
+                ))
+              }
+            </div>
+            )
+          }   */}
+          {
+            currentPosition !== undefined && (
+              <button className='btn_move' type='button' onClick={() => callback(currentPosition - 1)}> {/*el callback necesita el index, asi que como current position es el index + 1, solo se le vuelve a restar ese 1*/}
+                Move
+              </button>
+            )
+          } 
+        </form>
+      </div>
+      <div className='backdrop_move_list'></div>
+    </>
+  )
 }
