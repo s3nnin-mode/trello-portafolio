@@ -88,7 +88,6 @@ export const SettingsList: React.FC<SettingsListProps> = ({ idBoard, list }) => 
         <div className='header_settings_list'>
           <IoMdClose className='icon-close' onClick={() => setIsModalOptionsActive(false)} />  {/*CLOSE OPTIONS*/}
         </div>
-        <button className='btn_setting_list'>Editar nombre de lista</button>
 
         <BtnAdd 
           className='btn_add_card_to_top'

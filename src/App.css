@@ -33,6 +33,14 @@
   letter-spacing: .5px;
 }
 
+.inter_subtitle {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 550;
+  font-style: normal;
+  letter-spacing: .3px;
+}
+
 .inter {
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;

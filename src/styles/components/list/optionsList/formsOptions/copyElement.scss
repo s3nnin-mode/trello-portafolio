@@ -57,14 +57,17 @@
             color: #ccc;
             border: none;
             border-radius: 9px;
-            background-color: rgb(128, 128, 128, .2);
-            color: rgb(204, 204, 204);
-            box-shadow: 0 0 10px #1e1e1e;
+            box-shadow: 0 3px 5px #121212;
+            background-color: rgb(128, 128, 128, .1);
+            padding: 4px 6px;
+            color: #4A90E2;
+            font-weight: bold;
         }
 
         button:hover {
-            color: #0099FF;
-            color: cadetblue;
+            color: #2e2e2e;
+            background-color: #4A90E2;
+
         }
     }
 }

@@ -41,11 +41,30 @@ export const FormMoveList: React.FC<FormMoveListProps> = ({idBoard, list, closeF
     }
   }
 
+  const styleNewPosition = {
+    border: '2px solid orange',
+    borderRadius: '5px'
+  }
+
+  const styleCurrenPosition = {
+    background: 'cadetblue',
+    border: '2px solid cadetblue',
+    // color: 'cadetblue',
+    color: '#2e2e2e',
+
+    borderRadius: '5px'
+  }
+
   const positions = useMemo(() =>
     currentLists?.map((list, index) => (
       <button
-        style={{border: index + 1 === newPosition ? '2px solid orange' : 'transparent'}}
-        type='button' key={list.idList} onClick={() => handleClick(index + 1)}>
+        className='roboto'
+        // className='inter_subtitle'
+        style={index + 1 === currentPosition ? styleCurrenPosition : index + 1 === newPosition ? styleNewPosition : {}}
+        type='button' 
+        key={list.idList} 
+        onClick={() => handleClick(index + 1)}
+      >
         {index + 1 === currentPosition ? `${index + 1} Actual` : index + 1}
       </button>
     )), [currentLists, currentPosition, newPosition]
@@ -97,9 +116,9 @@ export const FormMoveList: React.FC<FormMoveListProps> = ({idBoard, list, closeF
             )
           }   */}
           {
-            currentPosition !== undefined && (
-              <button className='btn_move' type='button' onClick={() => callback(currentPosition - 1)}> {/*el callback necesita el index, asi que como current position es el index + 1, solo se le vuelve a restar ese 1*/}
-                Move
+            newPosition && (
+              <button className='btn_move inter' type='button' onClick={() => callback(newPosition - 1)}> {/*el callback necesita el index, asi que como current position es el index + 1, solo se le vuelve a restar ese 1*/}
+                Mover lista
               </button>
             )
           } 
