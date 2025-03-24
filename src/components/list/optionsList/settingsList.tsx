@@ -84,7 +84,9 @@ export const SettingsList: React.FC<SettingsListProps> = ({ idBoard, list }) => 
         <PiDotsThreeOutlineFill className='icon_options_list' />
       </IconButton>
 
-      <div className={`settings_list_${isModalOptionsActive ? 'show' : 'hidden'}`}>
+      <div
+        style={{background: list.colorList}}
+        className={`settings_list_${isModalOptionsActive ? 'show' : 'hidden'}`}>
         <div className='header_settings_list'>
           <IoMdClose className='icon-close' onClick={() => setIsModalOptionsActive(false)} />  {/*CLOSE OPTIONS*/}
         </div>

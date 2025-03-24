@@ -20,6 +20,11 @@ interface ModalTargetComponentProps {
   open: boolean
 }
 
+export const hexToRgb = (hex: string) => {
+  const bigint = parseInt(hex.slice(1), 16);
+  return `rgb(${(bigint >> 16) & 255}, ${(bigint >> 8) & 255}, ${bigint & 255}, .4)`;
+}
+
 export const CardModal: React.FC<ModalTargetComponentProps> = ({ card, list, board, closeModal, open }) => {
 
   const style = {
@@ -28,10 +33,9 @@ export const CardModal: React.FC<ModalTargetComponentProps> = ({ card, list, boa
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: 500,
-    // border: '2px solid #000',
     // backdropFilter: 'blur(5px)',
-    background: 'rgba(255, 255, 255, .01)',
-    // background: 'rgba(30, 30, 30, .3)', 
+    // background: 'rgba(255, 255, 255, .01)',
+    background: hexToRgb(list.colorList),
     boxShadow: 24,
     p: 2,
   };

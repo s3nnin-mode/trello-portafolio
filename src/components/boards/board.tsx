@@ -41,7 +41,7 @@ const useCustomBoard = () => {
     const newList: ListProps = {
       idList: idList,
       nameList: nameList,
-      colorList: '#1E1E1E',
+      colorList: '#252526',
       order: lastList ? lastList.order + 10 : 0
     }
     

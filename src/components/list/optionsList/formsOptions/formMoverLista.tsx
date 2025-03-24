@@ -101,26 +101,17 @@ export const FormMoveList: React.FC<FormMoveListProps> = ({idBoard, list, closeF
             }
           </div>
 
-          {/* {
-            showPositions && (
-            <div className='positions'>
-              <h2>Posiciones disponibles:</h2>
-              {
-                currentLists?.map((list, index) => (
-                  <button type='button' key={list.idList} onClick={() => setCurrentPosition(index + 1)}>
-                    {index + 1 === currentPosition ? `${index + 1} current` : index + 1}
-                  </button>
-                ))
-              }
-            </div>
-            )
-          }   */}
+          {/*el callback necesita el index, asi que como current position es el index + 1, solo se le vuelve a restar ese 1*/}
           {
-            newPosition && (
-              <button className='btn_move inter' type='button' onClick={() => callback(newPosition - 1)}> {/*el callback necesita el index, asi que como current position es el index + 1, solo se le vuelve a restar ese 1*/}
-                Mover lista
-              </button>
-            )
+            <button 
+              className='btn_move inter'  
+              type='button' 
+              onClick={() => {
+                if (!newPosition) return;
+                callback(newPosition - 1)
+              }}> 
+              Mover lista
+            </button>
           } 
         </form>
       </div>
