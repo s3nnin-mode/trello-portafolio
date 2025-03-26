@@ -6,6 +6,8 @@ import { useListsServices } from "../../services/listsServices";
 import { useCardsServices } from "../../services/cardsServices";
 import { useAuthContext } from "../useAuthContext";
 import { addListFirebase } from "../../services/firebase/updateData/updateLists";
+import { useTagsStore } from "../../store/tagsStore";
+import { useTagsService } from "../../services/tagsServices";
 
 interface UseFormCopyList {
     setIsModalOptionsActive: React.Dispatch<React.SetStateAction<boolean>>
@@ -18,11 +20,14 @@ export const useFormCopyList = ({ setIsModalOptionsActive }: UseFormCopyList) =>
     const { listsService } = useListsServices();
     const [showFormCopyList, setShowFormCopyList] = useState(false);
     const { userAuth } = useAuthContext();
+    // const { loadTags, tags } = useTagsStore();
+    const { tagsServices } = useTagsService();
 
     const copyList = ({idBoard, list, inputText}: {idBoard: string, list: ListProps, inputText: string}) => {
         const idListToCopy = list.idList;  //id a buscar
         const indexListGroup = listsGroup.findIndex(listGroup => listGroup.idBoard === idBoard);
         const indexListToCopy = listsGroup[indexListGroup].lists.findIndex(list => list.idList === idListToCopy);
+        // if (!indexListGroup) return;
 
         const idList = (Date.now() + list.nameList).toString();  //nuevo id para la lista copiada
 
@@ -33,10 +38,35 @@ export const useFormCopyList = ({ setIsModalOptionsActive }: UseFormCopyList) =>
         }
 
         const indexTargetGroup = cardsGroup.findIndex(cardGroup => cardGroup.idBoard === idBoard && cardGroup.idList === idListToCopy);
+
         if (indexTargetGroup > -1) {
-            const cards = cardsGroup[indexTargetGroup].cards;       //se copia las targets de la lista copiada con un nuevo idList 
+            const cards = cardsGroup[indexTargetGroup].cards.map((card) => {
+                const newIdCard = `${card.nameCard}copy${Date.now()}`;
+                
+                tagsServices((tags) => tags.map((tag) => 
+                    tag.cardsThatUseIt.some(item => item.idCard === card.idCard) ?
+                    {...tag, cardsThatUseIt: [...tag.cardsThatUseIt, { idBoard, idList: listCopy.idList, idCard: newIdCard}]} :
+                    tag
+                ))
+                return {...card, idCard: newIdCard}
+            });       //se copia las targets de la lista copiada con un nuevo idList 
             createCardGroup({idBoard, idList, cards});
+
+            // tagsServices((tags) => tags.map((tag) => 
+            //     tag.idTag === idTag 
+            //     ? { ...tag,
+            //       cardsThatUseIt: tag.cardsThatUseIt.some(card => 
+            //       card.idBoard === board.idBoard && card.idList === list.idList && card.idCard === idCard) 
+            //       ? 
+            //       tag.cardsThatUseIt.filter(card => card.idBoard !== board.idBoard && card.idList !== list.idList && card.idCard !== idCard) 
+            //       : 
+            //       [...tag.cardsThatUseIt, {idBoard: board.idBoard, idList: list.idList, idCard}]
+            //     }
+            //     :
+            //     tag
+            //   ));
         }
+        
 
         //{   ESTA PARTE POSICIONA LA LISTA COPIADA JUSTO EN LA SIGUIENTE COLUMNA DE LA LISTA QUE SE COPIÓ
         const LISTS = [...listsGroup[indexListGroup].lists];          

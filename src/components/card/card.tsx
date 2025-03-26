@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from "react";
 import '../../styles/components/card/card.scss';
 import { useState } from "react";
 import { CardModal } from "./modalCard/modalCard";
