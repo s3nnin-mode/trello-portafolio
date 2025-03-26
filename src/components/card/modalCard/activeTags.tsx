@@ -5,6 +5,7 @@ import { useTagsStore } from "../../../store/tagsStore";
 import { Tags } from "./modalComponents/tags/tags";
 // import { CiSquarePlus } from "react-icons/ci";
 import { FaSquarePlus } from "react-icons/fa6";
+import { betterColorText } from '../../../utils/tagsColors';
 
 interface Props {
     board: BoardProps
@@ -47,7 +48,7 @@ export const ActiveTags: React.FC<Props> = ({board, list, card}) => {
 									style={{backgroundColor: tag.color}} 
 									className='tag_active'
 								>
-									{tag.nameTag}
+									<span style={{color: betterColorText(tag.color)}}>{tag.nameTag}</span>
 								</button>)
 							}
 							<button className='btn_add_tag' onClick={() => setShowTags(true)}>

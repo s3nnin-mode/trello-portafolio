@@ -11,6 +11,7 @@ import { updateStateTag } from '../../../../../services/firebase/updateData/upda
 import { IoMdClose } from 'react-icons/io';
 import { FaRegEdit } from "react-icons/fa";
 import { Checkbox } from '@mui/material'; 
+import { betterColorText } from '../../../../../utils/tagsColors';
 
 interface TagsSettings {
   board: BoardProps
@@ -127,7 +128,7 @@ export const Tags: React.FC<TagsSettings> = ({ board, list, card, closeTagsSetti
                             onClick={() => openInterfaceToEditTag({tag})}
                             className='icon_edit_tag' 
                           />
-                          {tag.nameTag}
+                          <span style={{color: betterColorText(tag.color)}}>{tag.nameTag}</span>
                         </div>
                         <Checkbox
                           className='checkbox_tag' 
@@ -142,8 +143,21 @@ export const Tags: React.FC<TagsSettings> = ({ board, list, card, closeTagsSetti
                 <footer>
                   {
                     limitTagsToShow < tagsFilter.length && (
-                      <button className='btn_see_more_tags roboto_medium' onClick={() => setLimitTagsToShow(prevState => prevState + 5)}>
-                        Ver más etiquetas...
+                      <button 
+                        className='btn_see_more_tags roboto_medium' 
+                        onClick={() => setLimitTagsToShow(prevState => prevState + 5)}
+                      >
+                        ver más etiquetas...
+                      </button>
+                    )
+                  }
+                  {
+                    limitTagsToShow > 5 && (
+                      <button
+                        className='btn_see_fewer_tags roboto_medium'
+                        onClick={() => setLimitTagsToShow(prevState => prevState - 5)}
+                      >
+                        ver menos etiquetas
                       </button>
                     )
                   }
@@ -163,6 +177,7 @@ export const Tags: React.FC<TagsSettings> = ({ board, list, card, closeTagsSetti
             closeComponent={() => setIsEditTag(false)}
             closeAll={closeAll}
             tag={tagToEdit}
+            list={list}
           />
         )
       }
@@ -174,7 +189,7 @@ export const Tags: React.FC<TagsSettings> = ({ board, list, card, closeTagsSetti
             closeComponent={() => setIsCreateTag(false)}
             closeAll={closeAll}
             idBoard={board.idBoard}
-            idList={list.idList}
+            list={list}
             idCard={card.idCard}
           />
         )

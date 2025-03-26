@@ -14,6 +14,7 @@ import Fade from '@mui/material/Fade';
 
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { betterColorText } from "../../utils/tagsColors";
 
 interface TargetComponentProps {
   card: CardProps
@@ -54,10 +55,7 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
 
   const style = { 
     transform: CSS.Transform.toString(transform), 
-    transition,
-    // backgroundColor:
-    //  'rgba(27, 99, 224, 0.15)',
-    // card.currentCoverType === 'color' ? card.coverCard : '',
+    transition
   };
 
     if (isDragging) {
@@ -112,7 +110,7 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
                 {   
                   tags.map((tag) => 
                     isActive({tag}) ? 
-                    <li key={tag.idTag} style={{backgroundColor: tag.color}} className='active_tag_view_on_card'>
+                    <li key={tag.idTag} style={{color: betterColorText(tag.color), backgroundColor: tag.color}} className='active_tag_view_on_card'>
                       { tag.nameTag }
                     </li> :
                     null
