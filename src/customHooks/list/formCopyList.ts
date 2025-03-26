@@ -6,7 +6,6 @@ import { useListsServices } from "../../services/listsServices";
 import { useCardsServices } from "../../services/cardsServices";
 import { useAuthContext } from "../useAuthContext";
 import { addListFirebase } from "../../services/firebase/updateData/updateLists";
-import { useTagsStore } from "../../store/tagsStore";
 import { useTagsService } from "../../services/tagsServices";
 
 interface UseFormCopyList {
@@ -20,7 +19,6 @@ export const useFormCopyList = ({ setIsModalOptionsActive }: UseFormCopyList) =>
     const { listsService } = useListsServices();
     const [showFormCopyList, setShowFormCopyList] = useState(false);
     const { userAuth } = useAuthContext();
-    // const { loadTags, tags } = useTagsStore();
     const { tagsServices } = useTagsService();
 
     const copyList = ({idBoard, list, inputText}: {idBoard: string, list: ListProps, inputText: string}) => {
@@ -51,20 +49,6 @@ export const useFormCopyList = ({ setIsModalOptionsActive }: UseFormCopyList) =>
                 return {...card, idCard: newIdCard}
             });       //se copia las targets de la lista copiada con un nuevo idList 
             createCardGroup({idBoard, idList, cards});
-
-            // tagsServices((tags) => tags.map((tag) => 
-            //     tag.idTag === idTag 
-            //     ? { ...tag,
-            //       cardsThatUseIt: tag.cardsThatUseIt.some(card => 
-            //       card.idBoard === board.idBoard && card.idList === list.idList && card.idCard === idCard) 
-            //       ? 
-            //       tag.cardsThatUseIt.filter(card => card.idBoard !== board.idBoard && card.idList !== list.idList && card.idCard !== idCard) 
-            //       : 
-            //       [...tag.cardsThatUseIt, {idBoard: board.idBoard, idList: list.idList, idCard}]
-            //     }
-            //     :
-            //     tag
-            //   ));
         }
         
 
