@@ -21,9 +21,11 @@ export const ActiveTags: React.FC<Props> = ({board, list, card}) => {
 	useEffect(() => {
 		const activeTags: TagsProps[] = [];
 
-		tags.map((tag) => 
-			tag.cardsThatUseIt.some((c) => 
-			(c.idBoard === board.idBoard && c.idList === list.idList && c.idCard === card.idCard) ?
+		tags.map((tag) => tag.cardsThatUseIt.some((c) => 
+			// c.idBoard === board.idBoard && 
+			// c.idList === list.idList && 
+			c.idCard === card.idCard 
+			?
 			activeTags.push(tag) : 
 			null
 			)

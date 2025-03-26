@@ -29,24 +29,6 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
 
   if (!card) return null;
 
-  const isActive = ({tag}: {tag: TagsProps}) => {
-    return tag.cardsThatUseIt.some((t) =>
-      t.idBoard === board.idBoard && 
-      t.idList === list.idList && 
-      t.idCard === card.idCard 
-    )
-  }
-
-  const tagsForThisCard = useMemo(() => 
-    tags.map((tag) => 
-      isActive({tag}) ? 
-      <li key={tag.idTag} style={{backgroundColor: tag.color, color: betterColorText(tag.color)}} className='active_tag_view_on_card'>
-        { tag.nameTag }
-      </li> :
-      null
-    )
-  , [tags]);
-
   const { 
     attributes, 
     listeners, 
@@ -62,8 +44,6 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
     animateLayoutChanges: () => false
   });
 
- 
-
   const style = { 
     transform: CSS.Transform.toString(transform),
     transition: isDragging ? 'transform 0.1s ease-out' : 'none',
@@ -71,6 +51,14 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
     boxShadow: isDragging ? '0px 4px 10px rgba(0, 0, 0, 0.3)' : '0 1.2px 3px #121212',
     cursor: isDragging ? 'grabbing' : 'pointer',
   };
+
+  const isActive = ({tag}: {tag: TagsProps}) => {
+    return tag.cardsThatUseIt.some((item) =>
+      // item.idBoard === board.idBoard && 
+      // item.idList === list.idList && 
+      item.idCard === card.idCard 
+    )
+  }
 
   return(
     <>
@@ -90,7 +78,15 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
               <CardCover idBoard={board.idBoard} list={list} card={card} isPlaying={isPlaying} />
               <div className='content_card'>
                 <ul className='tags_active'>
-                {tagsForThisCard}
+                {
+                  tags.map((tag) => 
+                    isActive({tag}) ? 
+                    <li key={tag.idTag} style={{backgroundColor: tag.color, color: betterColorText(tag.color)}} className='active_tag_view_on_card'>
+                      { tag.nameTag }
+                    </li> :
+                    null
+                  )
+                }
                 </ul>
                 {
                   card.description !== null && (

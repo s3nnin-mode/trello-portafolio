@@ -20,7 +20,7 @@ import { useCardsServices } from '../../services/cardsServices';
 import { useCardsStore } from '../../store/cardsStore';
 import { useAuthContext } from '../../customHooks/useAuthContext';
 import { addListFirebase, updateOrderListsFirebase, updtateOrderList } from '../../services/firebase/updateData/updateLists';
-import { moveCardThoAnotherList, updateOrderCard } from '../../services/firebase/updateData/updateCards';
+import { moveCardThoAnotherList } from '../../services/firebase/updateData/updateCards';
 
 const useCustomBoard = () => {
   const { listsGroup } = useListsStore();
@@ -224,31 +224,35 @@ export const Tablero = () => {
         updateFn: (cardsGroup) => cardsGroup.map((cardGroup) => {
           if (cardGroup.idBoard === idBoard && cardGroup.idList === idList) {
             return { ...cardGroup, 
-              cards: newCards.map((card, index) => {
-                if (index === newIndex) {
-                  const prevCard = newCards[index - 1]
-                  const postCard = newCards[index + 1]
-        
-                  if (prevCard && postCard) {
-                    card = {...card, order: (prevCard.order + postCard.order) / 2}
-                  } else if (prevCard) {
-                    card = {...card, order: prevCard.order + 10}
-                  } else if (postCard) {
-                    card = {...card, order: postCard.order - 10}
-                  }
-        
-                  if (userAuth) {
-                    updateOrderCard({idBoard, idList, card});
-                  }
-                  return card
-                }
-                return card
-              })
+              cards: newCards
             };
           }
           return cardGroup;
         })
       });
+
+      if (userAuth) {
+        // .map((card, index) => {
+        //   if (index === newIndex) {
+        //     const prevCard = newCards[index - 1]
+        //     const postCard = newCards[index + 1]
+  
+        //     if (prevCard && postCard) {
+        //       card = {...card, order: (prevCard.order + postCard.order) / 2}
+        //     } else if (prevCard) {
+        //       card = {...card, order: prevCard.order + 10}
+        //     } else if (postCard) {
+        //       card = {...card, order: postCard.order - 10}
+        //     }
+  
+        //     if (userAuth) {
+        //       updateOrderCard({idBoard, idList, card});
+        //     }
+        //     return card
+        //   }
+        //   return card
+        // })
+      }
     }
 
     //LOGICA PARA MOVER LA CARD A OTRA LISTA
@@ -277,8 +281,9 @@ export const Tablero = () => {
       cardsServices({
         updateFn: (cardGroup) => cardGroup.map((cardGroup) => {
           if (cardGroup.idBoard === idBoard && cardGroup.idList === idList) {
-            const cardsUpdate = [...cardGroup.cards, cardToMove];
-            return { ...cardGroup, cards: cardsUpdate.map((card, index) => {
+            // const cardsUpdate = [...cardGroup.cards, cardToMove];
+
+            return { ...cardGroup, cards: [...cardGroup.cards, cardToMove].map((card, index) => {
               return {...card, order: index === 0 ? 0 : cardGroup.cards[index - 1].order + 10}
             })};
           }

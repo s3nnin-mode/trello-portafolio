@@ -65,8 +65,8 @@ export const Tags: React.FC<TagsSettings> = ({ board, list, card, closeTagsSetti
 
   const isActive = ({tag}: {tag: TagsProps}) => {
     return tag.cardsThatUseIt.some((t) =>
-      t.idBoard === board.idBoard && 
-      t.idList === list.idList && 
+      // t.idBoard === board.idBoard && 
+      // t.idList === list.idList && 
       t.idCard === card.idCard
     )
   }

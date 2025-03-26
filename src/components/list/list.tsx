@@ -126,9 +126,7 @@ export const List: React.FC<ListPropsComponent> = ({ board, list }) => {
         </div>
       </header>
       <div 
-        className='content_list' 
-        {...attributes} //el drag and drop de la lista funcionará solo si se arrastra desde el header
-        {...listeners}>
+        className='content_list' >
         <SortableContext 
           items={currentCards.map(card => card.idCard)}
           > 
