@@ -15,9 +15,7 @@ interface CardCoverProps {
 export const CardCover: React.FC<CardCoverProps> = ({idBoard, list, card, isPlaying}) => {
   const { cardsServices } = useCardsServices();
   const { userAuth } = useAuthContext();
-  useEffect(() => {
-    console.log(idBoard, list, isPlaying, userAuth, cardsServices)
-  }, [])
+  
     
   // const cardComplete = (e: React.MouseEvent) => {
   //     e.stopPropagation();

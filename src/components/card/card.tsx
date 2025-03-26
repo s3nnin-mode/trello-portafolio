@@ -1,11 +1,10 @@
-import React from "react";
+import React, { useMemo } from "react";
 import '../../styles/components/card/card.scss';
 import { useState } from "react";
 import { CardModal } from "./modalCard/modalCard";
 import { BoardProps, ListProps, TagsProps, CardProps } from '../../types/boardProps';
 import { useTagsStore } from "../../store/tagsStore";
 import { CardCover } from "./cardCover";
-import { MdDescription } from "react-icons/md";
 import { TbFileDescription } from "react-icons/tb";
 import { GoEyeClosed } from "react-icons/go";
 
@@ -38,55 +37,40 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
     )
   }
 
+  const tagsForThisCard = useMemo(() => 
+    tags.map((tag) => 
+      isActive({tag}) ? 
+      <li key={tag.idTag} style={{backgroundColor: tag.color, color: betterColorText(tag.color)}} className='active_tag_view_on_card'>
+        { tag.nameTag }
+      </li> :
+      null
+    )
+  , [tags]);
+
   const { 
     attributes, 
     listeners, 
     setNodeRef, 
     transform, 
-    transition,
     isDragging
   } = useSortable({
     id: card.idCard,
     data: {
       type: 'card',
       card
-    }
+    },
+    animateLayoutChanges: () => false
   });
 
+ 
+
   const style = { 
-    transform: CSS.Transform.toString(transform), 
-    transition
+    transform: CSS.Transform.toString(transform),
+    transition: isDragging ? 'transform 0.1s ease-out' : 'none',
+    opacity: isDragging ? 0.3 : 1,
+    boxShadow: isDragging ? '0px 4px 10px rgba(0, 0, 0, 0.3)' : '0 1.2px 3px #121212',
+    cursor: isDragging ? 'grabbing' : 'pointer',
   };
-
-    if (isDragging) {
-        return (
-            <article
-            ref={setNodeRef}
-            style={{...style, opacity: 0.5}}
-            className='cardItem' >
-
-            <CardCover idBoard={board.idBoard} list={list} card={card} isPlaying={isPlaying} />
-
-            <div className='content_card'>
-                <ul className='tags_active'>
-                {   
-                    tags.map((tag) => 
-                        isActive({tag}) ? 
-                        <li key={tag.idTag} style={{backgroundColor: tag.color}} className='active_tag_view_on_card'>
-                            { tag.nameTag }
-                        </li> :
-                        null
-                    )
-                }
-                </ul>
-                <p className='name_target'>{card.nameCard}</p>   {/*NOMBRE DE LA TARJETA*/}
-            </div>
-            <footer className='footer_card_info'>
-                { card.description !== null && <MdDescription /> } {/*ICON DESCRIPTION*/}
-            </footer>
-        </article>
-        )
-    }
 
   return(
     <>
@@ -101,23 +85,13 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
         onMouseLeave={() => setIsPlaying(false)}
       >
         {
-          !showDescription && (
+          !showDescription ?
             <>
               <CardCover idBoard={board.idBoard} list={list} card={card} isPlaying={isPlaying} />
-          
               <div className='content_card'>
                 <ul className='tags_active'>
-                {   
-                  tags.map((tag) => 
-                    isActive({tag}) ? 
-                    <li key={tag.idTag} style={{color: betterColorText(tag.color), backgroundColor: tag.color}} className='active_tag_view_on_card'>
-                      { tag.nameTag }
-                    </li> :
-                    null
-                  )
-                }
+                {tagsForThisCard}
                 </ul>
-      
                 {
                   card.description !== null && (
                     <button 
@@ -126,7 +100,7 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
                         e.stopPropagation();
                         setShowDescription(true);
                       }}
-                    >
+                      >
                       <TbFileDescription 
                         className='description_icon'
                       />
@@ -135,44 +109,29 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
                   )
                 }
               </div>
-            </>
-          )
-        }
-
-        { 
-          showDescription && (
-          // <div className='description_modal'>
+            </> : 
             <Fade in={showDescription}>
-              <Box 
-                onClick={(e) => e.stopPropagation()}
-                className='description_modal'
-              >
-                <div className='description_header'>
-                  <p className='description_title roboto_light'>
-                    <span>Descripción de </span>{card.nameCard}
-                  </p>
-                  <button>
-                    <GoEyeClosed 
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setShowDescription(false);
-                      }
-                      }
-                      className='icon_close_description' 
-                    />
-                  </button>
-                </div>
-                
-                <p className='description_text roboto'>
-                {
-                  card.description
-                }
+            <Box 
+              onClick={(e) => e.stopPropagation()}
+              className='description_modal'
+            >
+              <div className='description_header'>
+                <p className='description_title roboto_light'>
+                  <span>Descripción de </span>{card.nameCard}
                 </p>
-              </Box>
-            </Fade>
-          // </div>
-        )
-      }
+                <button onClick={(e) => { e.stopPropagation(); setShowDescription(false); }}>
+                  <GoEyeClosed 
+                    
+                    className='icon_close_description' 
+                  />
+                </button>
+              </div>
+              <p className='description_text roboto'>
+              { card.description }
+              </p>
+            </Box>
+          </Fade>
+        }
         
       </article>
 
@@ -188,7 +147,6 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
           />
         )
       }
-      
     </>
   )
 }

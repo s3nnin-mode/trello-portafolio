@@ -1,13 +1,8 @@
 .cardItem {
     border-radius: 11px;
-    
-    // border: 0.5px solid rgba(255, 255, 255, .1); 
-    // border: 0.5px solid rgb(18, 18, 18, .6);
-
     display: flex;
     flex-direction: column;
     gap: 3px;
-    transition: transform 0.3s ease-in-out;
 
     padding: 4px 6px;
     position: relative;
@@ -15,8 +10,9 @@
     background-color: #303030;
     background-color: rgb(48, 48, 48);
     background-color: transparent;
+    backdrop-filter: blur(5px);
 
-    box-shadow: 0 1.2px 3px #121212;
+    // box-shadow: 0 1.2px 3px #121212;
 
     .card_cover {
         display: flex;
@@ -51,6 +47,7 @@
     }
 
     .content_card {
+        
         .tags_active {
             overflow: hidden;
             list-style: none;

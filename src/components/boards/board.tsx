@@ -162,7 +162,7 @@ export const Tablero = () => {
   const sensors = useSensors(
     useSensor(PointerSensor, {  //esto es para que el drag empiece cuando el mouse este a 15px de distancia, en otras palabras
       activationConstraint: {
-        distance: 5
+        distance: 0.1
       }
     })
   );
@@ -208,41 +208,43 @@ export const Tablero = () => {
       //primero hay que encontrar la lista a la que pertenece la card
       const idList = cardsGroup.find((cardGroup) => cardGroup.cards.some((card) => card.idCard === activeId))?.idList;
       if(!idList) return;
-      const cardGroupIndex = cardsGroup.findIndex((cardGroup) => cardGroup.idBoard === idBoard && cardGroup.idList === idList);
-      if (cardGroupIndex === -1) return;
 
-      const oldIndex = cardsGroup[cardGroupIndex].cards.findIndex((card) => card.idCard === activeId);
-      const newIndex = cardsGroup[cardGroupIndex].cards.findIndex((card) => card.idCard === overId);
+      const onlyCardGroup = cardsGroup.find((cardGroup) => cardGroup.idBoard === idBoard && cardGroup.idList === idList);
+      if (!onlyCardGroup) return;
+
+      const oldIndex = onlyCardGroup.cards.findIndex((card) => card.idCard === activeId);
+      const newIndex = onlyCardGroup.cards.findIndex((card) => card.idCard === overId);
       if (oldIndex === -1 || newIndex === -1 || oldIndex === newIndex) return;
 
-      let newCards = arrayMove(cardsGroup[cardGroupIndex].cards, oldIndex, newIndex);
-      
-      newCards = newCards.map((card, index) => {
-        if (index === newIndex) {
-          const prevCard = newCards[index - 1]
-          const postCard = newCards[index + 1]
-
-          if (prevCard && postCard) {
-            card = {...card, order: (prevCard.order + postCard.order) / 2}
-          } else if (prevCard) {
-            card = {...card, order: prevCard.order + 10}
-          } else if (postCard) {
-            card = {...card, order: postCard.order - 10}
-          }
-
-          if (userAuth) {
-            updateOrderCard({idBoard, idList, card});
-          }
-        }
-        return card
-      });
+      let newCards = arrayMove(onlyCardGroup.cards, oldIndex, newIndex);
 
       //falta logica para reordenar si empieza haber numeros negativos u orders duplicados
 
       cardsServices({
         updateFn: (cardsGroup) => cardsGroup.map((cardGroup) => {
           if (cardGroup.idBoard === idBoard && cardGroup.idList === idList) {
-            return { ...cardGroup, cards: newCards };
+            return { ...cardGroup, 
+              cards: newCards.map((card, index) => {
+                if (index === newIndex) {
+                  const prevCard = newCards[index - 1]
+                  const postCard = newCards[index + 1]
+        
+                  if (prevCard && postCard) {
+                    card = {...card, order: (prevCard.order + postCard.order) / 2}
+                  } else if (prevCard) {
+                    card = {...card, order: prevCard.order + 10}
+                  } else if (postCard) {
+                    card = {...card, order: postCard.order - 10}
+                  }
+        
+                  if (userAuth) {
+                    updateOrderCard({idBoard, idList, card});
+                  }
+                  return card
+                }
+                return card
+              })
+            };
           }
           return cardGroup;
         })
@@ -256,42 +258,43 @@ export const Tablero = () => {
     if (isActiveCard && isOverList) {
       const idList = overId;
         
-      const groupOrigenCard = cardsGroup.findIndex((cardGroup) => cardGroup.cards.some((card) => card.idCard === activeId));
-      if (groupOrigenCard === -1) return;
+      const origenCardGroup = cardsGroup.find((cardGroup) => cardGroup.cards.some((card) => card.idCard === activeId)); //esta variable es para sacar el idList y para obtener la card a mover
+      if (!origenCardGroup) return;
 
-      const cardToMove = cardsGroup[groupOrigenCard].cards.find((card) => card.idCard === activeId);
+      const cardToMove = origenCardGroup.cards.find((card) => card.idCard === activeId);
       if (!cardToMove) return;
 
       //Se elimina la card del cardGroup al que estaba
       cardsServices({
         updateFn: (cardsGroup) => cardsGroup.map((cardGroup) => {
-          if (cardGroup.idBoard === idBoard && cardGroup.idList === cardsGroup[groupOrigenCard].idList) {
-            return { ...cardGroup, cards:  cardGroup.cards.filter((card) => card.idCard !== activeId) };
-          }
+          if (cardGroup.idBoard === idBoard && cardGroup.idList === origenCardGroup.idList) { //cardsGroup[groupOrigenCard].idList
+            return { ...cardGroup, cards: cardGroup.cards.filter((card) => card.idCard !== activeId) };
+          } 
           return cardGroup;
         })
       });
 
-      //Se agrega a la lista en donde se dejó caer
       cardsServices({
-        updateFn: (cardsGroup) => cardsGroup.map((cardGroup) => {
+        updateFn: (cardGroup) => cardGroup.map((cardGroup) => {
           if (cardGroup.idBoard === idBoard && cardGroup.idList === idList) {
-            return { ...cardGroup, cards: [...cardGroup.cards, cardToMove].map((card, index) => {
-              card = {...card, order: index === 0 ? 0 : cardGroup.cards[index - 1].order + 10}
-              return card;
+            const cardsUpdate = [...cardGroup.cards, cardToMove];
+            return { ...cardGroup, cards: cardsUpdate.map((card, index) => {
+              return {...card, order: index === 0 ? 0 : cardGroup.cards[index - 1].order + 10}
             })};
           }
           return cardGroup;
         })
       });
 
-      const cardsUpdate = useCardsStore.getState().cardsGroup.find(cardGroup => cardGroup.idList === idList)?.cards;
-      if (!cardsUpdate) return;
+      //Se agrega a la lista en donde se dejó caer
 
       if (userAuth) {
-        moveCardThoAnotherList({
+        const cardsUpdate = useCardsStore.getState().cardsGroup.find(cardGroup => cardGroup.idList === idList)?.cards;
+        if (!cardsUpdate) return;
+
+        moveCardThoAnotherList({ 
           idBoard, 
-          idListOrigen: cardsGroup[groupOrigenCard].idList, 
+          idListOrigen: origenCardGroup.idList,
           idListDestiny: idList as string, 
           card: cardToMove,
           cardsUpdate
@@ -326,9 +329,9 @@ export const Tablero = () => {
         )
         }
 
-        <DragOverlay>
-          { activeList && currentBoard && <List board={currentBoard} list={activeList} />}
-          { activeCard && currentBoard && listToActiveCard && <Card board={currentBoard} list={listToActiveCard} card={activeCard} /> }
+        <DragOverlay dropAnimation={null}>
+          { activeList && currentBoard && activeList && <List board={currentBoard} list={activeList} />}
+          { activeCard && currentBoard && listToActiveCard && activeCard && <Card board={currentBoard} list={listToActiveCard} card={activeCard} /> }
         </DragOverlay>
 
         <BtnAdd

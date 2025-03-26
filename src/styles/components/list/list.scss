@@ -12,6 +12,7 @@
     display: flex;
     flex-direction: column;
     gap: 5px;
+    max-height: 85vh;
     // border: 0.5px solid rgba(255, 255, 255, .1); 
     // box-shadow: inset 0 0 3px #1E1E1E;
     // box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
@@ -76,7 +77,24 @@
         display: flex;
         flex-direction: column;
         gap: 10px;
+        overflow-y: auto;
         // // position: relative;
+    }
+
+    .content_list::-webkit-scrollbar {
+        width: 5px;
+        position: absolute;
+    }
+
+    .content_list::-webkit-scrollbar-track { 
+        background-color: #2e2e2e;
+        border-radius: 12px;
+    }
+
+    .content_list::-webkit-scrollbar-thumb {
+        background-color: rgb(128, 128, 128, .1);
+        background-color: #ccc;
+        border-radius: 14px;
     }
 
     footer {      

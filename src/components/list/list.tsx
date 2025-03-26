@@ -85,10 +85,16 @@ export const List: React.FC<ListPropsComponent> = ({ board, list }) => {
     data: {
       type: 'list',
       list, 
-    }
+    },
+    animateLayoutChanges: () => false
   });  
 
-  const style = { transform: CSS.Transform.toString(transform), transition, backgroundColor: list.colorList }
+  const style = { 
+    transform: CSS.Transform.toString(transform), 
+    transition, 
+    backgroundColor: list.colorList,
+    opacity: isDragging ? 0.5 : 1
+  }
     
   useEffect(() => {
     const indexCardGroup = cardsGroup.findIndex((targetGroup) => targetGroup.idBoard === board.idBoard && targetGroup.idList === list.idList);
@@ -97,69 +103,19 @@ export const List: React.FC<ListPropsComponent> = ({ board, list }) => {
     }
   }, [cardsGroup]);
 
-  if (isDragging) {
-      return (
-          <article
-              ref={setNodeRef}
-              style={{...style, opacity: 0.5}}
-              className='board_list' >
-              <header 
-                  {...attributes} 
-                  {...listeners} 
-                  className='header_list'
-              >  
-                  <NameComponent idBoard={board.idBoard} list={list} componentType='list' />                     {/* NAMELIST */}
-                  <div className='btns_header_list'>
-                      <button className='btn_collapse_list' onClick={() => setIsListCollapse(!isListCollapse)}>
-                          <RiCollapseHorizontalLine className='icon_collapse_list' />
-                      </button>
-                      <SettingsList idBoard={board.idBoard} list={list} />
-                  </div>
-              </header>
-              <div className='content_list'>
-                  <SortableContext items={currentCards.map(card => card.idCard)}> 
-                  {
-                      currentCards.map((card) => (
-                          <Card 
-                              card={card}
-                              board={board}
-                              list={list}
-                              key={card.idCard}
-                          />
-                      ))
-                  }
-                  </SortableContext>
-              </div>
-              <footer>
-                  {
-                      list && (
-                          <BtnAdd 
-                          className='btn_add_card'
-                          createListOrTargetName={(nameCard: string) => addNewCard({board, list, nameCard})} 
-                          nameComponentToAdd='target' 
-                          />
-                      )
-                  }
-              </footer>
-          </article>
-      )
-  }
-
   return (
     <div 
       ref={setNodeRef}
+      {...attributes} //el drag and drop de la lista funcionará solo si se arrastra desde el header
+      {...listeners}
       style={style}
       className='list' 
     >    
-      <header 
-        {...attributes} //el drag and drop de la lista funcionará solo si se arrastra desde el header
-        {...listeners} 
-        className='header_list'
-      >  
+      <header className='header_list'>  
         <NameComponent 
           idBoard={board.idBoard} 
           list={list} 
-          componentType='list' 
+          componentType='list'
           className='listName_container' 
         />                     
         <div className='btns_header_list'>
@@ -169,18 +125,23 @@ export const List: React.FC<ListPropsComponent> = ({ board, list }) => {
           <SettingsList idBoard={board.idBoard} list={list} />
         </div>
       </header>
-      <div className='content_list'>
-        <SortableContext items={currentCards.map(card => card.idCard)}> 
-        {
-          currentCards.map((card) => (
-            <Card 
-              card={card}
-              board={board}
-              list={list}
-              key={card.idCard}
-            />
-          ))
-        }
+      <div 
+        className='content_list' 
+        {...attributes} //el drag and drop de la lista funcionará solo si se arrastra desde el header
+        {...listeners}>
+        <SortableContext 
+          items={currentCards.map(card => card.idCard)}
+          > 
+          {
+            currentCards.map((card) => (
+              <Card 
+                card={card}
+                board={board}
+                list={list}
+                key={card.idCard}
+              />
+            ))
+          }
         </SortableContext>
       </div>
       <footer>
