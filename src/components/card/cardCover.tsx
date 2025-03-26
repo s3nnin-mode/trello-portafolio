@@ -1,6 +1,6 @@
 import { useEffect } from "react"
-import { useAuthContext } from "../../customHooks/useAuthContext"
-import { useCardsServices } from "../../services/cardsServices"
+// import { useAuthContext } from "../../customHooks/useAuthContext"
+// import { useCardsServices } from "../../services/cardsServices"
 // import { updateCompleteCard } from "../../services/firebase/updateData/updateCards"
 import { CardProps, ListProps } from "../../types/boardProps"
 // import { CheckAnimation } from "../animations/checked"
@@ -13,9 +13,11 @@ interface CardCoverProps {
 }
 
 export const CardCover: React.FC<CardCoverProps> = ({idBoard, list, card, isPlaying}) => {
-  const { cardsServices } = useCardsServices();
-  const { userAuth } = useAuthContext();
-  
+  // const { cardsServices } = useCardsServices();
+  // const { userAuth } = useAuthContext();
+  useEffect(() => {
+    console.log(idBoard, list, card, isPlaying)
+  }, [])
     
   // const cardComplete = (e: React.MouseEvent) => {
   //     e.stopPropagation();
