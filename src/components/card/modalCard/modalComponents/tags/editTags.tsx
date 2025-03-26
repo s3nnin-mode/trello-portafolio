@@ -131,17 +131,11 @@ export const EditTags: React.FC<EditTagsProps> = ({idBoard, list, idCard, tag, t
     console.log('color text', betterColorText(color))
   }, []);
 
-  const hexToRgb = (hex: string, opacity: number) => {
-    const bigint = parseInt(hex.slice(1), 16);
-    return `rgb(${(bigint >> 16) & 255}, ${(bigint >> 8) & 255}, ${bigint & 255}, ${opacity})`;
-  }
-
   return (
     <div   
       className='container_edit_or_create_tag'
       style={{
         background: list?.colorList
-      // backgroundColor: list?.colorList ? hexToRgb(list?.colorList, 0.6) : ''
       }}
       >
         <header>
