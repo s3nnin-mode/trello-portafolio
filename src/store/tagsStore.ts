@@ -4,6 +4,7 @@ import { TagsProps } from "../types/boardProps";
 interface State {
     tags: TagsProps[]
     loadTags: (tags: TagsProps[]) => void
+    
     // setCreateTag: (newTag: TagsProps) => void
     // setUpdateTag: ({idTag, nameTag, color}: {idTag: string, nameTag: string, color: string}) => void
     // setTagUsage: ({idBoard, idList, idCard, idTag}: {idBoard: string, idList: string, idCard: string, idTag: string}) => void

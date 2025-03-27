@@ -47,9 +47,12 @@ export const Tags: React.FC<TagsSettings> = ({ board, list, card, closeTagsSetti
       tag.idTag === idTag 
       ? { ...tag,
         cardsThatUseIt: tag.cardsThatUseIt.some(card => 
-        card.idBoard === board.idBoard && card.idList === list.idList && card.idCard === idCard) 
+          card.idBoard === board.idBoard && 
+          card.idList === list.idList && 
+          card.idCard === idCard) 
         ? 
-        tag.cardsThatUseIt.filter(card => card.idBoard !== board.idBoard && card.idList !== list.idList && card.idCard !== idCard) 
+        tag.cardsThatUseIt.filter(card => 
+          card.idCard !== idCard) //Si filtras con !== idBoard y !== idList puedes borrar referencias de más
         : 
         [...tag.cardsThatUseIt, {idBoard: board.idBoard, idList: list.idList, idCard}]
       }
@@ -65,8 +68,8 @@ export const Tags: React.FC<TagsSettings> = ({ board, list, card, closeTagsSetti
 
   const isActive = ({tag}: {tag: TagsProps}) => {
     return tag.cardsThatUseIt.some((t) =>
-      // t.idBoard === board.idBoard && 
-      // t.idList === list.idList && 
+      t.idBoard === board.idBoard && 
+      t.idList === list.idList && 
       t.idCard === card.idCard
     )
   }

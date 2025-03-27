@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import '../../styles/components/card/card.scss';
 import { useState } from "react";
 import { CardModal } from "./modalCard/modalCard";
@@ -54,11 +54,15 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
 
   const isActive = ({tag}: {tag: TagsProps}) => {
     return tag.cardsThatUseIt.some((item) =>
-      // item.idBoard === board.idBoard && 
-      // item.idList === list.idList && 
+      item.idBoard === board.idBoard && 
+      item.idList === list.idList && 
       item.idCard === card.idCard 
     )
   }
+
+  useEffect(() => {
+    console.log('tags', tags);
+  }, [tags])
 
   return(
     <>

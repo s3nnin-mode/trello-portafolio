@@ -21,6 +21,7 @@ import { useCardsStore } from '../../store/cardsStore';
 import { useAuthContext } from '../../customHooks/useAuthContext';
 import { addListFirebase, updateOrderListsFirebase, updtateOrderList } from '../../services/firebase/updateData/updateLists';
 import { moveCardThoAnotherList } from '../../services/firebase/updateData/updateCards';
+import { useTagsService } from '../../services/tagsServices';
 
 const useCustomBoard = () => {
   const { listsGroup } = useListsStore();
@@ -71,6 +72,7 @@ export const Tablero = () => {
     const [currentBoard, setCurrentBoard] = useState<BoardProps>();
     const [idBoard, setIdBoard] = useState('');
     const { userAuth } = useAuthContext();
+    const { tagsServices } = useTagsService();
 
     const [currentLists, setCurrentLists] = useState<ListProps[]>()
     const { currentIdBoard } = useParams();
@@ -281,7 +283,6 @@ export const Tablero = () => {
       cardsServices({
         updateFn: (cardGroup) => cardGroup.map((cardGroup) => {
           if (cardGroup.idBoard === idBoard && cardGroup.idList === idList) {
-            // const cardsUpdate = [...cardGroup.cards, cardToMove];
 
             return { ...cardGroup, cards: [...cardGroup.cards, cardToMove].map((card, index) => {
               return {...card, order: index === 0 ? 0 : cardGroup.cards[index - 1].order + 10}
@@ -290,6 +291,18 @@ export const Tablero = () => {
           return cardGroup;
         })
       });
+
+      //Activar las etiquetas en las cards copiadas
+      tagsServices((tags) => tags.map((tag) => {
+        let tagToUpdate = tag.cardsThatUseIt.find(item => item.idCard === cardToMove.idCard);
+        if (tagToUpdate) {
+          return {
+            ...tag, 
+            cardsThatUseIt: [...tag.cardsThatUseIt, {...tagToUpdate, idList: overId as string}]
+          }
+        }
+        return tag
+      }));
 
       //Se agrega a la lista en donde se dejó caer
 

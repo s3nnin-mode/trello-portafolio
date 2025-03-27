@@ -27,30 +27,31 @@ export const useFormCopyList = ({ setIsModalOptionsActive }: UseFormCopyList) =>
         const indexListToCopy = listsGroup[indexListGroup].lists.findIndex(list => list.idList === idListToCopy);
         // if (!indexListGroup) return;
 
-        const idList = (Date.now() + list.nameList).toString();  //nuevo id para la lista copiada
+        const idList = (Date.now() + 'copyList').toString();  //nuevo id para la lista copiada
 
         let listCopy = {
             ...list, 
             idList: idList,
             nameList: inputText
         }
-
+        //grupo de cards que se copiaran con nuevo id y nuevo idList
         const indexTargetGroup = cardsGroup.findIndex(cardGroup => cardGroup.idBoard === idBoard && cardGroup.idList === idListToCopy);
 
         if (indexTargetGroup > -1) {
-            const cards = cardsGroup[indexTargetGroup].cards.map((card) => {
-                const newIdCard = `${card.nameCard}copy${Date.now()}`;
-                
-                tagsServices((tags) => tags.map((tag) => 
-                    tag.cardsThatUseIt.some(item => item.idCard === card.idCard) ?
-                    {...tag, cardsThatUseIt: [...tag.cardsThatUseIt, { idBoard, idList: listCopy.idList, idCard: newIdCard}]} :
-                    tag
-                ))
-                return {...card, idCard: newIdCard}
-            });       //se copia las targets de la lista copiada con un nuevo idList 
-            createCardGroup({idBoard, idList, cards});
+            const copyCards = cardsGroup[indexTargetGroup].cards.map((card) => {
+              const newIdCard = `copyCard${card.idCard}${Date.now()}`;
+
+              tagsServices((tags) => tags.map((tag) => 
+                tag.cardsThatUseIt.some(item => item.idCard === card.idCard) ?
+                {...tag, 
+                    cardsThatUseIt: [...tag.cardsThatUseIt, { idBoard, idList, idCard: newIdCard}]} :
+                tag
+              ));
+
+              return {...card, idCard: newIdCard}
+            });       
+            createCardGroup({idBoard, idList, cards: copyCards});
         }
-        
 
         //{   ESTA PARTE POSICIONA LA LISTA COPIADA JUSTO EN LA SIGUIENTE COLUMNA DE LA LISTA QUE SE COPIÓ
         const LISTS = [...listsGroup[indexListGroup].lists];          
@@ -80,6 +81,10 @@ export const useFormCopyList = ({ setIsModalOptionsActive }: UseFormCopyList) =>
                 if (userAuth) addListFirebase({idBoard, list: {...listCopy, order: newOrder}}); //Se agrega la lista copiada
             }
         }
+
+        console.log('updateLists', updateLists);
+        console.log('cards', useCardsStore.getState().cardsGroup);
+
 
         listsService({ 
             updateFn: (listsGroup) => listsGroup.map((listGroup) =>
