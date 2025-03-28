@@ -92,16 +92,42 @@
     .btn_close_modal_card:hover {
     }
 
-    .container_color_Card {
-        display: flex;
-        gap: 3px;
-        height: 35px;
+    .container_color_card {
+        // height: 35px;
+        display: inline-block;
+        cursor: pointer;
+        border-radius: 14px;
+        padding: 2px;
         
         div {
             border-radius: 50%;
             width: 25px;
             height: 25px;
-            
+            display: inline-block;
+            margin-right: 3px;
+
+            .icon_open_settings_cover {
+                width: 100%;
+                height: 100%;
+                color: #121212;
+            }
+        }
+
+        .icon_open_settings_cover {
+            position: absolute;
+            top: 12px;
+            left: 45px;
+            font-size: 19px;
+            border-radius: 50%;
+            margin: 0;
+        }
+        
+    }
+
+    .container_color_card:hover {
+        box-shadow: 0 0 8px #121212;
+        .icon_open_settings_cover {
+            box-shadow: 0 0 5px #121212;
         }
     }
 }

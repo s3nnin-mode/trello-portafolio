@@ -1,7 +1,7 @@
 import '../../../styles/components/card/modalCard/modalCard.scss';
 import { BoardProps, ListProps, CardProps } from '../../../types/boardProps';
 //COMPONENTS
-import { CardModalCover } from "./modalComponents/cover/cardModalCover";
+import { CardModalCover } from "./modalComponents/cover/coverCardModal";
 import { TitleModalCard } from "./modalComponents/titleModalCard";
 import { ActiveTags } from "./activeTags";
 import { CardDescription } from './modalComponents/cardDescription';
