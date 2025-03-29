@@ -63,8 +63,8 @@ export const Start = () => {
         idCard: 'cardDemoHabitacionPrincipal',
         nameCard: 'Habitación principal',
         coverColorCard: '#E63946',
-        coverImgCard: null,
-        coverCardImgs: [],
+        coverImgCard: 'https://media.istockphoto.com/id/1300331505/es/vector/sal%C3%B3n-interior-c%C3%B3modo-sof%C3%A1-estanter%C3%ADa-silla-y-plantas-de-la-casa-ilustraci%C3%B3n-de-dibujos.jpg?s=612x612&w=0&k=20&c=IaqHAuS45tNGll3JI47u-NgCGJwc1Kmpg1UJD5KiSug=',
+        coverCardImgs: ['https://www.prisma.org.pe/wp-content/uploads/home-office-mujer-800x480.png', 'https://media.istockphoto.com/id/1300331505/es/vector/sal%C3%B3n-interior-c%C3%B3modo-sof%C3%A1-estanter%C3%ADa-silla-y-plantas-de-la-casa-ilustraci%C3%B3n-de-dibujos.jpg?s=612x612&w=0&k=20&c=IaqHAuS45tNGll3JI47u-NgCGJwc1Kmpg1UJD5KiSug='],
         complete: false,
         description: 'La habitación principal necesita ser limpiada con urgencia',
         order: 0

@@ -1,7 +1,7 @@
 .name_card_container {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+    // display: flex;
+    // flex-direction: column;
+    // align-items: flex-start;
     width: 100%;
     color: #ccc;
 
@@ -14,32 +14,72 @@
         // font-style: italic;
     }
 
-    .nameList_modal_card {
-        font-size: 18px;
+    .card_name_modal {
+        // font-size: 18px;
         // font-weight: bold;
         // color: #0099FF !important;
 
-        span {
-            // color: #0099FF !important;
-            font-weight: normal;
-        }
-    }
-
-    .title_component {
-        max-width: 100%;
+        // span {
+        //     // color: #0099FF !important;
+        //     font-weight: normal;
+        // }
+        // display: flex;
+        // min-width: 100%;
+        min-width: 100%;
+        display: flex;
+        gap: 5px;
+        cursor: default;
+        
         .name_component {
-            font-size: 20px;
+            align-content: end;
+            font-size: 22px;
             font-size: 1.4rem;
             color: #0099FF;
             color: #ff9800;
-            // color: #F5E6CC;
+            cursor: pointer;
+
+            &:hover {
+                .icon_open_textarea {
+                    color: #0099FF;
+                }
+            }
+
+            .icon_open_textarea {
+                display: inline-block;
+                margin-left: 3px;
+                border-radius: 6px;
+                font-size: 23px;
+                color: white;
+                color: gray;
+                transition: color linear .2s;
+                // transition: background linear .3s;
+
+                // &:hover {
+                //     background: rgba(128, 128, 128, .4);
+                // }
+            }
         }
 
-        
+       
 
-        textarea {
-            min-width: 100%;
-            width: 100%;
-        }
+        // .title_component {
+        //     max-width: 100%;
+        //     .name_component {
+        //         font-size: 20px;
+        //         font-size: 1.4rem;
+        //         color: #0099FF;
+        //         color: #ff9800;
+        //         width: 100%;
+        //         border: 1px solid;
+        //         // color: #F5E6CC;
+        //     }
+    
+            
+    
+            textarea {
+                min-width: 100%;
+                width: 100%;
+            }
+        // }
     }
 }

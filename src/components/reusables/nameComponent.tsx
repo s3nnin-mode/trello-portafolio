@@ -6,6 +6,8 @@ import { useCardsServices } from "../../services/cardsServices";
 import { updateNameListFirebase } from "../../services/firebase/updateData/updateLists";
 import { useAuthContext } from "../../customHooks/useAuthContext";
 import { updateNameCardFirebase } from "../../services/firebase/updateData/updateCards";
+// import { CiEdit } from "react-icons/ci";
+import { FiEdit3 } from "react-icons/fi";
 
 interface NameListPropsComponent {
   idBoard: string
@@ -116,6 +118,7 @@ export const NameComponent: React.FC<NameListPropsComponent> = ({idBoard, list, 
         onClick={() => setIsOpenInput(true)}
       >        
         {nameComponent}
+        <FiEdit3 className='icon_open_textarea' />
       </h3>
 
       {isOpenInput && (

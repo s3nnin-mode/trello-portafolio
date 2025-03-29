@@ -29,15 +29,16 @@ export const CardModal: React.FC<ModalTargetComponentProps> = ({ card, list, boa
 
   const style = {
     position: 'absolute',
-    top: '40%',
+    top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    minWidth: 500,
+    width: 600,
+    // maxWidth: 600,
     // backdropFilter: 'blur(5px)',
     // background: 'rgba(255, 255, 255, .01)',
     background: hexToRgb(list.colorList),
     boxShadow: 24,
-    p: 2,
+    // p: 2,
   };
 
 	return (
@@ -62,11 +63,11 @@ export const CardModal: React.FC<ModalTargetComponentProps> = ({ card, list, boa
         }}
         className='card_modal'>
         <CardModalCover card={card} idBoard={board.idBoard} idList={list.idList} closeModal={closeModal} />
-        <TitleModalCard board={board} list={list} card={card} />
 
         {/*CONTENIDO*/}
         
-        <div className='modal_content_container'>         
+        <div className='modal_content_container'> 
+          <TitleModalCard board={board} list={list} card={card} />
           <div className='modal_content'>
             <ActiveTags board={board} list={list} card={card} />   
             <CardDescription card={card} idList={list.idList} idBoard={board.idBoard} />

@@ -18,19 +18,45 @@
         display: flex;
         flex-direction: column;
         
-        .container_color_card {
-            .circle {
-                width: 15px;
-                min-width: 15px;
-                height: 15px;
-                margin-right: 4px;
-                border-radius: 50%;
-                display: inline-block;
+        .color_indicator_and_img {
+            display: flex;
+            overflow: hidden;
+            min-height: 2px;
+            max-height: 120px;
+            height: 100%;
+
+            .container_color_card, .container_color_card_with_img {
+                display: flex;
+                padding: 5px;
+                
+                .circle {
+                    width: 15px;
+                    min-width: 15px;
+                    height: 15px;
+                    margin-right: 4px;
+                    border-radius: 50%;
+                    display: inline-block;
+                }
+            }
+
+            .container_color_card_with_img {
+                position: absolute;
+                top: 8px;
+                left: 10px;
+                border-radius: 6px;
+                box-shadow: 0 0 20px #121212;
+            }
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                border-radius: 6px;
             }
         }
 
         .cardName {
-            margin: 0;
+            margin: 0.3rem 0 0 0;
             overflow-wrap: break-word;
             letter-spacing: .7px;
             font-size: 0.9rem;

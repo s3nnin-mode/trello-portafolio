@@ -14,6 +14,7 @@
   background-color: #0A192F;
   background-color: #121212;
   /* background-color: #1E1E1E; */
+  overflow-y: auto;
   display: flex;
   color: #E0E0E0;
 }

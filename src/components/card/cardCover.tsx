@@ -56,30 +56,32 @@ export const CardCover: React.FC<CardCoverProps> = ({idBoard, list, card, isPlay
 
   return (
     <div className='card_cover'>
-        {/* Para el color */}
-        <div className='container_color_card'>  
-          {
-            card.coverColorCard !== null && (
-              <>
-            <span 
-              className='circle' 
-              style={{background: card.coverColorCard}}
-            />
-            <span 
-              className='circle' 
-              style={{background: card.coverColorCard}}
-            />
-            </>
-            )
-          }
-        </div>
 
-        {/* Nombre de la tarjeta */}
-        {/* <div className='container_cardName'> */}
-        <p className='cardName roboto_light'>
-          {card.nameCard}
-        </p>
-      {/* </div> */}
+      <div className='color_indicator_and_img'>
+        {
+          card.coverColorCard !== null && (
+            <div className={card.coverImgCard ? 'container_color_card_with_img' : 'container_color_card'} 
+              >  
+              <span 
+                className='circle' 
+                style={{background: card.coverColorCard}}
+              />
+              <span 
+                className='circle' 
+                style={{background: card.coverColorCard}}
+              />
+            </div>
+          )
+        }
+
+        {
+          card.coverImgCard && <img src={card.coverImgCard} alt='portada tarjeta' />
+        }
+      </div>
+
+      <p className='cardName roboto_light'>
+        {card.nameCard}
+      </p>
 
     </div>
   )

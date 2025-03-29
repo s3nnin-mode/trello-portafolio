@@ -33,16 +33,17 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  // minWidth: 600,
-  background: '#121212',
-  boxShadow: 24,
-  p: 2,
-};
+// const style = {
+//   // position: 'fixed',
+//   // top: 0,
+//   // left: 0,
+//   // // transform: 'translate(-50%, -50%)',
+//   // width: '100%',
+//   // background: '#121212',
+//   // boxShadow: 24,
+//   // overflow: 'auto',
+//   // p: 2,
+// };
   
 interface SettingsCoverProps {
   idBoard: string
@@ -55,7 +56,7 @@ interface SettingsCoverProps {
 export const SettingsCover: React.FC<SettingsCoverProps> = ({ card, idList, idBoard, closeComponent, openSettingsCover}) => {
   const { cardsServices } = useCardsServices();
   // const { userAuth } = useAuthContext();
-  // const [file, setFile] = useState<File | undefined>();
+  // const [file, setFile] = useState<File | undefined>(); //este file es para firebase sino mal recuerdo
   const [limitColors, setLimitColors] = useState(8);
   const [coverColorPreview, setCoverColorPreview] = useState<string | null>(null);             //coverPreview será el color o la url de la imagen
   const [coverImgPreview, setCoverImgPreview] = useState<string | null>(null);
@@ -126,124 +127,145 @@ export const SettingsCover: React.FC<SettingsCoverProps> = ({ card, idList, idBo
   }
 
   return (
-    <>
-    {/* <div className='backdrop_settings_cover'> */}
     <Modal
-          aria-labelledby="transition-modal-title"
-          aria-describedby="transition-modal-description"
-          open={openSettingsCover}
-          onClose={closeComponent}
-          closeAfterTransition
-          slots={{ backdrop: Backdrop }}
-          slotProps={{
-            backdrop: {
-              timeout: 350,
-            },
-          }}
-        >
-        <Fade in={openSettingsCover}>
-          <Box 
-            sx={{
-              ...style,
-            }} >
-    <div className='settings_card_cover' onPointerDown={(e) => e.stopPropagation()}>
-      <header className='header_preview_cover_card'> 
-        
-        <div className='color_maker_and_btn_close'>
-          <div className='container_color_maker'> 
-            {
-              coverColorPreview !== null ?
-              <>
-                <div style={{backgroundColor: coverColorPreview}} />
-                <div style={{backgroundColor: coverColorPreview}} />
-              </> :
-              <span style={{fontStyle: 'italic'}}>Sin indicador visual</span>
-            }
-          </div>
-          <button onClick={closeComponent}>
-            <IoIosArrowBack />
-          </button>
-        </div>
-        <AiOutlinePicture className='icon_no_img_cover' />
-          {/* {
-            coverType === 'color' ?
-            <div style={{backgroundColor: coverPreview}} className='color_preview' /> :
-            <img src={coverPreview} alt='cover card' />
-          } */}
-      </header>
-      <main>
-        <div className='colors_to_cover'>
-          <p className='roboto'>
-            Selecciona un color para tu tarjeta: 
-            <br/> 
-            <span> Se mostrará con dos círculos de color como indicador visual</span>
-          </p>
-          <div>
-            {
-              cardColors.slice(0, limitColors).map((color) => (
-                <button 
-                  key={color}
-                  // className='btn_select_color_preview'
-                  onClick={() => setColorSelect(color)}
-                  onMouseEnter={() => setCoverColorPreview(color)}
-                  onMouseLeave={() => setCoverColorPreview(colorSelect)}
-                  className={color === colorSelect ? 'btn_color_selected' : 'btn_select_color_preview'}
-                  style={{
-                      backgroundColor: color, 
-                  }}
-                />
-              ))
-            }
-          </div>
-          <div className='actions_colors'>
-            {
-              limitColors === 8 ?
-              <button className='btn_toggle_limitColors' onClick={() => setLimitColors(20)}>Ver más colores</button>  :
-              <button className='btn_toggle_limitColors' onClick={() => setLimitColors(8)}>Ocultar colores</button>
-            }
-            <button 
-              className='btn_remove_indicator roboto' 
-              onClick={() => {setColorSelect(null); setCoverColorPreview(null)}} 
-              >
-                Quitar indicador
-            </button>    
-          </div>  
-        </div>
+      aria-labelledby="transition-modal-title"
+      aria-describedby="transition-modal-description"
+      open={openSettingsCover}
+      onClose={closeComponent}
+      closeAfterTransition
+      slots={{ backdrop: Backdrop }}
+      slotProps={{
+        backdrop: {
+          timeout: 350,
+        },
+      }}
+    >
+      <Fade in={openSettingsCover}>
+        <Box 
+          // sx={{...style}} 
+          className='backdrop_settings_cover'>
+          <div className='settings_card_cover' onPointerDown={(e) => e.stopPropagation()}>
+            <header className='header_preview_cover_card'> 
+              
+              {/* <div className='color_maker_and_btn_close'>
+                <div className='container_color_maker'> 
+                  {
+                    coverColorPreview !== null ?
+                    <>
+                      <div style={{backgroundColor: coverColorPreview}} />
+                      <div style={{backgroundColor: coverColorPreview}} />
+                    </> :
+                    <span style={{fontStyle: 'italic'}}>Sin indicador visual</span>
+                  }
+                </div>
+                <button onClick={closeComponent}>
+                  <IoIosArrowBack />
+                </button>
+              </div> */}
 
-        <div className='container_setting_cover_imgs'>
-          <p className='roboto'>
-            Selecciona una imagén para portada de tu tarjeta: 
-            <br />
-            <span style={{color: 'orange'}}>Esta funcionalidad estará disponible en breve</span>
-          </p>
-          <label htmlFor='inputFile' className='roboto' aria-disabled>Cargar imagen</label>
-          <input disabled type='file' id='inputFile' onChange={(e) => handleUpdateImg(e)} style={{display: 'none'}} />
+              <div className='container_color_indicator'> 
+                {
+                  coverColorPreview !== null ?
+                  <>
+                    <div style={{backgroundColor: coverColorPreview}} />
+                    <div style={{backgroundColor: coverColorPreview}} />
+                  </> :
+                  <span style={{fontStyle: 'italic'}}>Sin indicador visual</span>
+                }
+              </div>
 
-          <div className='cover_imgs_container'>
-            {
-              card.coverCardImgs !== undefined && (
-                card.coverCardImgs.map((img) => {
-                  return (
+              <button onClick={closeComponent}>
+                <IoIosArrowBack />
+              </button>
+              
+              {
+                coverImgPreview ?
+                <img src={coverImgPreview} alt='portada de card' /> :
+                <AiOutlinePicture className='icon_no_img_cover' />
+              }
+                {/* {
+                  coverType === 'color' ?
+                  <div style={{backgroundColor: coverPreview}} className='color_preview' /> :
+                  <img src={coverPreview} alt='cover card' />
+                } */}
+            </header>
+            <main>
+              <div className='colors_to_cover'>
+                <p className='roboto'>
+                  Selecciona un color para tu tarjeta: 
+                  <br/> 
+                  <span> Se mostrará con dos círculos de color como indicador visual</span>
+                </p>
+                <div>
+                  {
+                    cardColors.slice(0, limitColors).map((color) => (
+                      <button 
+                        key={color}
+                        // className='btn_select_color_preview'
+                        onClick={() => setColorSelect(color)}
+                        onMouseEnter={() => setCoverColorPreview(color)}
+                        onMouseLeave={() => setCoverColorPreview(colorSelect)}
+                        className={color === colorSelect ? 'btn_color_selected' : 'btn_select_color_preview'}
+                        style={{
+                            backgroundColor: color, 
+                        }}
+                      />
+                    ))
+                  }
+                </div>
+                <div className='actions_colors'>
+                  {
+                    limitColors === 8 ?
+                    <button className='btn_toggle_limitColors' onClick={() => setLimitColors(20)}>Ver más colores</button>  :
+                    <button className='btn_toggle_limitColors' onClick={() => setLimitColors(8)}>Ocultar colores</button>
+                  }
                   <button 
-                  // onClick={() => handleImgPreview(img)} 
-                  key={img}>
-                    <img src={img} alt='cover card' />
-                  </button>)
-                })
-              )              
-            }
+                    className='btn_remove_indicator roboto' 
+                    onClick={() => {setColorSelect(null); setCoverColorPreview(null)}} 
+                    >
+                      Quitar indicador
+                  </button>    
+                </div>  
+              </div>
+
+              <div className='container_setting_cover_imgs'>
+                <p className='roboto'>
+                  Selecciona una imagén para portada de tu tarjeta: 
+                  <br />
+                  
+                </p>
+                <div className='actions_cover_img'>
+                  <label htmlFor='inputFile' className='roboto' aria-disabled>Cargar imagen</label>
+                  <input disabled type='file' id='inputFile' onChange={(e) => handleUpdateImg(e)} style={{display: 'none'}} />
+                  <button onClick={() => setCoverImgPreview(null)}>Quitar imagen</button>
+                </div>
+
+                <div className='cover_imgs_container'>
+                  {
+                    card.coverCardImgs !== undefined && (
+                      card.coverCardImgs.map((img) => {
+                        return (
+                        <button 
+                        onClick={() => setCoverImgPreview(img)} 
+                        key={img}>
+                          <img src={img} alt='cover card' />
+                        </button>)
+                      })
+                    )              
+                  }
+                </div>
+                <span style={{color: 'orange', fontStyle: 'italic'}}>
+                  La opción para agregar una imagen desde tu PC estará disponible pronto, pero solo para usuarios con una cuenta.
+                  </span>
+              </div>
+            </main>
+            <footer>
+              <button onClick={handleSaveChanges}>Guardar cambios</button>
+              <button onClick={closeComponent}>Cancelar</button>
+            </footer>
           </div>
-        </div>
-      </main>
-      <footer>
-          <button onClick={handleSaveChanges}>Guardar cambios</button>
-          <button onClick={closeComponent}>Cancelar</button>
-      </footer>
-    </div>
-    </Box>
-    </Fade>
+        </Box>
+      </Fade>
     </Modal>
-    {/* </div> */}
-    </>
   )
 }

@@ -73,31 +73,24 @@
 
 .header_modal_card {
     position: relative;
-    height: 50px;
-    max-height: 100px;
-
-    .btn_close_modal_card {
-        width: 35px;
-        height: 35px;
-        border-radius: 4px;
-        background-color: transparent;
-        border: 1px solid;
-        // border: none;
-        color: #ccc;
-        position: absolute;
-        right: 0;
-        top: 0;
-    }
-
-    .btn_close_modal_card:hover {
-    }
+    min-height: 50px;
+    max-height: 150px;
+    display: flex;
+    justify-content: space-between;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
 
     .container_color_card {
         // height: 35px;
-        display: inline-block;
+        // display: inline-block;
         cursor: pointer;
         border-radius: 14px;
-        padding: 2px;
+        // padding: 10px;
+        display: flex;
+        position: absolute;
+        top: 12px;
+        left: 10px;
+        box-shadow: 0 0 8px #121212;
         
         div {
             border-radius: 50%;
@@ -120,6 +113,8 @@
             font-size: 19px;
             border-radius: 50%;
             margin: 0;
+            color: #ccc;
+            background-color: #121212;
         }
         
     }
@@ -129,5 +124,31 @@
         .icon_open_settings_cover {
             box-shadow: 0 0 5px #121212;
         }
+    }
+
+    .btn_close_modal_card {
+        width: 35px;
+        height: 35px;
+        border-radius: 4px;
+        background-color: gray;
+        border: 1px solid white;
+        // border: none;
+        color: #ccc;
+        color: white;
+        position: absolute;
+        right: 10px;
+        top: 9px;
+
+        &:hover {
+            color: #121212;
+            background-color: rgb(128, 128, 128, .4);
+        }
+    }
+
+    .img_cover_modal {
+        width: 100%;
+        height: 100%;
+        border-radius: 9px;
+        object-fit: cover;
     }
 }

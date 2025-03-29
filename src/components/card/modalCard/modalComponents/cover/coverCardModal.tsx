@@ -22,42 +22,20 @@ export const CardModalCover: React.FC<CardModalCoverProps> = ({card, idList, idB
 
   return (
     <>
-      <header 
-          // style={{backgroundColor: card.currentCoverType === 'color' ? card.coverCard : '' }} 
-          className='header_modal_card'>
+      <header className='header_modal_card' >
+        <div className='container_color_card' onClick={() => setIsEditCover(true)}> 
+          <div style={{backgroundColor: card.coverColorCard ? card.coverColorCard : 'grey'}} />
+          <div style={{backgroundColor: card.coverColorCard ? card.coverColorCard : 'grey'}} />
+          <IoMdSettings className='icon_open_settings_cover' />
+        </div>
+        
+        {
+          card.coverImgCard !== null ? <img className='img_cover_modal' src={card.coverImgCard} alt='cover card' /> : <div></div>
+        }
 
-          {/* <div className='btns_header_modal_card'>
-              <button 
-                  className='btn_close_modal_card'
-                  onClick={closeModal}>
-                  <IoMdClose />
-              </button>
-
-              <button className='btn_open_setting_cover' onClick={() => setIsEditCover(true)}>
-                  <FaImage />
-                  <p>Portada</p>
-              </button>
-          </div> */}
         <button className='btn_close_modal_card' onClick={closeModal} >
           <IoMdClose />
         </button>
-
-        {/* className='color_preview' */}
-
-        {
-          card.coverColorCard !== null && (
-            <div className='container_color_card' onClick={() => setIsEditCover(true)}> 
-              <div style={{backgroundColor: card.coverColorCard}} />
-              <div style={{backgroundColor: card.coverColorCard}}>
-              </div> 
-              <IoMdSettings className='icon_open_settings_cover' />
-            </div>
-          )
-        }
-        
-        {
-          card.coverImgCard !== null && <img src={card.coverImgCard} alt='cover card' />
-        }
 
         {
           card.complete && (
