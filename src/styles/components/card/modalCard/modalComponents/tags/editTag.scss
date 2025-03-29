@@ -119,16 +119,23 @@
                 font-weight: bold;
                 display: block;
                 width: 100%;
+
+                &:hover {
+                    color: #2e2e2e;
+                    background-color: #4A90E2;
+                }
             }
 
             button:nth-child(2) {
-                color: brown;
+                color: #FF4D4D;
+
+                &:hover {
+                    color: #2e2e2e;
+                    background-color: #FF4D4D;
+                }
             }
     
-            button:hover {
-                color: #2e2e2e;
-                background-color: #4A90E2;
-            }
+            
         }
     }
 

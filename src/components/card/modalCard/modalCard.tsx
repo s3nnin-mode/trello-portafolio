@@ -29,10 +29,10 @@ export const CardModal: React.FC<ModalTargetComponentProps> = ({ card, list, boa
 
   const style = {
     position: 'absolute',
-    top: '50%',
+    top: '40%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 500,
+    minWidth: 500,
     // backdropFilter: 'blur(5px)',
     // background: 'rgba(255, 255, 255, .01)',
     background: hexToRgb(list.colorList),

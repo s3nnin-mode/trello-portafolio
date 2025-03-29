@@ -34,9 +34,10 @@ export interface TagsProps {
 export interface CardProps {
     idCard: string
     nameCard: string
-    coverCard: string
+    coverColorCard: string | null //!!
+    coverImgCard: string | null
     coverCardImgs: string[]
-    currentCoverType: 'color' | 'img' | null
+    // currentCoverType: 'color' | 'img' | null
     complete: boolean
     description: string | null
     order: number

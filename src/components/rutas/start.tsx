@@ -62,9 +62,9 @@ export const Start = () => {
       cards: [{
         idCard: 'cardDemoHabitacionPrincipal',
         nameCard: 'Habitación principal',
-        coverCard: 'red',
+        coverColorCard: '#E63946',
+        coverImgCard: null,
         coverCardImgs: [],
-        currentCoverType: 'color',
         complete: false,
         description: 'La habitación principal necesita ser limpiada con urgencia',
         order: 0
@@ -72,9 +72,9 @@ export const Start = () => {
       {
         idCard: 'cardDemoHabitacionNiños',
         nameCard: 'Habitación de los niños',
-        coverCard: 'green',
+        coverColorCard: '#FF9F40',
         coverCardImgs: [],
-        currentCoverType: 'color',
+        coverImgCard: null,
         complete: false,
         description: 'La habitación de los niños puedes dejarlo al final',
         order: 10
@@ -82,9 +82,9 @@ export const Start = () => {
       {
         idCard: 'cardDemoBaño',
         nameCard: 'Baño',
-        coverCard: 'orange',
+        coverColorCard: '#FD7E14',
         coverCardImgs: [],
-        currentCoverType: 'color',
+        coverImgCard: null,
         complete: false,
         description: 'El baño es de lo más importante, no lo olvides',
         order: 20

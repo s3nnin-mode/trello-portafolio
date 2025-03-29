@@ -187,7 +187,7 @@ export const EditTags: React.FC<EditTagsProps> = ({idBoard, list, idCard, tag, t
                 >
                 {titleAction === 'Editar' ? 'Guardar' : 'Crear'}
               </button>
-              {titleAction === 'Editar' && <button onClick={removeTag}>Eliminar</button>}
+              {titleAction === 'Editar' && <button onClick={removeTag}>Eliminar etiqueta</button>}
             </article>
         </main>
       </div>

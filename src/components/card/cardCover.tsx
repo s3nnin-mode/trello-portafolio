@@ -59,15 +59,15 @@ export const CardCover: React.FC<CardCoverProps> = ({idBoard, list, card, isPlay
         {/* Para el color */}
         <div className='container_color_card'>  
           {
-            card.currentCoverType === 'color' && (
+            card.coverColorCard !== null && (
               <>
             <span 
               className='circle' 
-              style={{background: card.coverCard}}
+              style={{background: card.coverColorCard}}
             />
             <span 
               className='circle' 
-              style={{background: card.coverCard}}
+              style={{background: card.coverColorCard}}
             />
             </>
             )

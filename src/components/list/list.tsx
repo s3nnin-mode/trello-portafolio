@@ -43,9 +43,9 @@ export const useList = () => {
     const newCard: CardProps = {
       idCard: (nameCard + Date.now()).toString(), 
       nameCard: nameCard,
-      coverCard: 'grey',
+      coverColorCard: null,
+      coverImgCard: null,
       coverCardImgs: [],
-      currentCoverType: 'color',
       complete: false,
       description: null,
       order

@@ -11,10 +11,10 @@ import { IoMdSettings } from "react-icons/io";
 
 
 interface CardModalCoverProps {
-    idBoard: string
-    idList: string
-    card: CardProps
-    closeModal: () => void
+  idBoard: string
+  idList: string
+  card: CardProps
+  closeModal: () => void
 }
 
 export const CardModalCover: React.FC<CardModalCoverProps> = ({card, idList, idBoard, closeModal}) => {
@@ -45,16 +45,18 @@ export const CardModalCover: React.FC<CardModalCoverProps> = ({card, idList, idB
         {/* className='color_preview' */}
 
         {
-          card.currentCoverType === 'color' 
-          ?
-          <div className='container_color_card' onClick={() => setIsEditCover(true)}> 
-            <div style={{backgroundColor: card.coverCard}} />
-            <div style={{backgroundColor: card.coverCard}}>
-            </div> 
-            <IoMdSettings className='icon_open_settings_cover' />
-          </div>
-          :
-          <img src={card.coverCard} alt='cover card' />
+          card.coverColorCard !== null && (
+            <div className='container_color_card' onClick={() => setIsEditCover(true)}> 
+              <div style={{backgroundColor: card.coverColorCard}} />
+              <div style={{backgroundColor: card.coverColorCard}}>
+              </div> 
+              <IoMdSettings className='icon_open_settings_cover' />
+            </div>
+          )
+        }
+        
+        {
+          card.coverImgCard !== null && <img src={card.coverImgCard} alt='cover card' />
         }
 
         {
@@ -67,7 +69,7 @@ export const CardModalCover: React.FC<CardModalCoverProps> = ({card, idList, idB
       </header>
 
       {
-        isEditCover && <SettingsCover idBoard={idBoard} idList={idList} card={card} closeComponent={() => setIsEditCover(false)} />
+        isEditCover && <SettingsCover openSettingsCover={isEditCover} idBoard={idBoard} idList={idList} card={card} closeComponent={() => setIsEditCover(false)} />
       }
     </>
   )

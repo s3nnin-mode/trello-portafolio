@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react';
 import '../../../../../styles/components/card/modalCard/modalComponents/cover/settingsCoverCard.scss';
 import { CardProps } from '../../../../../types/boardProps';
 import { useCardsServices } from '../../../../../services/cardsServices';
-import { useAuthContext } from '../../../../../customHooks/useAuthContext';
-import { updateCoverCard } from '../../../../../services/firebase/updateData/updateCards';
-import { IoMdClose } from 'react-icons/io';
+// import { useAuthContext } from '../../../../../customHooks/useAuthContext';
+// import { updateCoverCard } from '../../../../../services/firebase/updateData/updateCards';
+import { IoIosArrowBack } from "react-icons/io";
+// import { IoMdClose } from 'react-icons/io';
 import { AiOutlinePicture } from "react-icons/ai";
 // const colors = [
 //     "#E63946", "#F4A261", "#2A9D8F", "#264653", "blue",
@@ -25,90 +26,142 @@ const cardColors = [
   "#E63946", "#B35C00", // Rojo lava & Marrón otoño
   "#17A2B8", "#C08497"  // Aqua & Malva suave
 ];
-  
 
+import * as React from 'react';
+import Backdrop from '@mui/material/Backdrop';
+import Box from '@mui/material/Box';
+import Modal from '@mui/material/Modal';
+import Fade from '@mui/material/Fade';
+
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  // minWidth: 600,
+  background: '#121212',
+  boxShadow: 24,
+  p: 2,
+};
+  
 interface SettingsCoverProps {
   idBoard: string
   idList: string
   card: CardProps
   closeComponent: () => void
+  openSettingsCover: boolean
 }
 
-export const SettingsCover: React.FC<SettingsCoverProps> = ({ card, idList, idBoard, closeComponent }) => {
-  const [coverType, setCoverType] = useState<'color' | 'img'>('color');
-  const [coverPreview, setCoverPreview] = useState('');             //coverPreview será el color o la url de la imagen
+export const SettingsCover: React.FC<SettingsCoverProps> = ({ card, idList, idBoard, closeComponent, openSettingsCover}) => {
   const { cardsServices } = useCardsServices();
-  const { userAuth } = useAuthContext();
-  const [file, setFile] = useState<File | undefined>();
+  // const { userAuth } = useAuthContext();
+  // const [file, setFile] = useState<File | undefined>();
   const [limitColors, setLimitColors] = useState(8);
+  const [coverColorPreview, setCoverColorPreview] = useState<string | null>(null);             //coverPreview será el color o la url de la imagen
+  const [coverImgPreview, setCoverImgPreview] = useState<string | null>(null);
+  const [colorSelect, setColorSelect] = useState<string | null>(null);
 
   useEffect(() => {
-    setCoverPreview(card.coverCard);
-    if (!card.currentCoverType) return;
-    setCoverType(card.currentCoverType);
+    if (card.coverColorCard) {
+      setCoverColorPreview(card.coverColorCard);
+      setColorSelect(card.coverColorCard);
+    }
+    if (card.coverImgCard) {
+      setCoverImgPreview(card.coverImgCard);
+    }
   }, []);
 
   if (!card) return;
 
-  const handleColorPreview = (availableColor: string) => { //Para dar una vista previa al usuario de como se veria la portada con el respectivo color
-    setCoverType('color');
-    setCoverPreview(availableColor);
-  }
-
   const handleUpdateImg = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const file = e.target.files?.[0];  //file
-      if (!file) return;
-      setFile(file);
-      setCoverType('img');
-      setCoverPreview(URL.createObjectURL(file));
+    const file = e.target.files?.[0];  //file
+    if (!file) return;
+    // setFile(file);
+    setCoverImgPreview(URL.createObjectURL(file));
   }
 
   const handleSaveChanges = () => {
-      const idCard = card.idCard;
-      if (userAuth) {
-          updateCoverCard({
-              idBoard, 
-              idList, 
-              idCard, 
-              type: coverType, 
-              cover: coverType === 'img' && file ? file : coverPreview
-          });
-      }
+    const idCard = card.idCard;
+    // if (userAuth) {
+    //   updateCoverCard({
+    //     idBoard, 
+    //     idList, 
+    //     idCard, 
+    //     type: coverType, 
+    //     cover: coverType === 'img' && file ? file : coverPreview
+    //   });
+    // }
+    if (colorSelect !== card.coverColorCard) {
       cardsServices({
-          updateFn: (cardsGroup) => cardsGroup.map((cardGroup) => 
-              (cardGroup.idBoard === idBoard && cardGroup.idList === idList) ?
-                  {   ...cardGroup,
-                      cards: cardGroup.cards.map((card) => 
-                          card.idCard === idCard ?
-                          { 
-                              ...card, 
-                              currentCoverType: coverType,
-                              coverCard: coverPreview
-                          } :
-                          card
-                      )
-                  }
-              :
-              cardGroup
-          )
+        updateFn: (cardsGroup) => cardsGroup.map((cardGroup) => 
+          (cardGroup.idBoard === idBoard && cardGroup.idList === idList) ?
+            { ...cardGroup,
+              cards: cardGroup.cards.map((card) => 
+                card.idCard === idCard ?
+                { ...card, coverColorCard: colorSelect} :
+                card
+              )
+            } :
+            cardGroup
+        )
       });
-      closeComponent();
+    }
+
+    if (coverImgPreview !== card.coverImgCard) { //aqui falta verificar si coverImgPreview concuerda con los datos de una imagen
+      cardsServices({
+        updateFn: (cardsGroup) => cardsGroup.map((cardGroup) => 
+          (cardGroup.idBoard === idBoard && cardGroup.idList === idList) ?
+            { ...cardGroup,
+              cards: cardGroup.cards.map((card) => 
+                card.idCard === idCard ?
+                { ...card, coverImgCard: coverImgPreview} :
+                card
+              )
+            } :
+            cardGroup
+        )
+      });
+    }
+    closeComponent();
   }
 
   return (
     <>
     {/* <div className='backdrop_settings_cover'> */}
-
-    <div className='settings_card_cover'>
-      <header className='header_preview_cover_card'>          {/*Aqui debes renderizar un componente nuevo y similar al header para la vista previa */}
+    <Modal
+          aria-labelledby="transition-modal-title"
+          aria-describedby="transition-modal-description"
+          open={openSettingsCover}
+          onClose={closeComponent}
+          closeAfterTransition
+          slots={{ backdrop: Backdrop }}
+          slotProps={{
+            backdrop: {
+              timeout: 350,
+            },
+          }}
+        >
+        <Fade in={openSettingsCover}>
+          <Box 
+            sx={{
+              ...style,
+            }} >
+    <div className='settings_card_cover' onPointerDown={(e) => e.stopPropagation()}>
+      <header className='header_preview_cover_card'> 
         
         <div className='color_maker_and_btn_close'>
           <div className='container_color_maker'> 
-            <div style={{backgroundColor: coverPreview}} />
-            <div style={{backgroundColor: coverPreview}} />
+            {
+              coverColorPreview !== null ?
+              <>
+                <div style={{backgroundColor: coverColorPreview}} />
+                <div style={{backgroundColor: coverColorPreview}} />
+              </> :
+              <span style={{fontStyle: 'italic'}}>Sin indicador visual</span>
+            }
           </div>
           <button onClick={closeComponent}>
-            <IoMdClose />
+            <IoIosArrowBack />
           </button>
         </div>
         <AiOutlinePicture className='icon_no_img_cover' />
@@ -127,13 +180,16 @@ export const SettingsCover: React.FC<SettingsCoverProps> = ({ card, idList, idBo
           </p>
           <div>
             {
-              cardColors.slice(0, limitColors).map((availableColor) => (
+              cardColors.slice(0, limitColors).map((color) => (
                 <button 
-                  key={availableColor}
-                  onClick={() => handleColorPreview(availableColor)}
+                  key={color}
+                  // className='btn_select_color_preview'
+                  onClick={() => setColorSelect(color)}
+                  onMouseEnter={() => setCoverColorPreview(color)}
+                  onMouseLeave={() => setCoverColorPreview(colorSelect)}
+                  className={color === colorSelect ? 'btn_color_selected' : 'btn_select_color_preview'}
                   style={{
-                      backgroundColor: availableColor, 
-                      border: coverType === 'color' && availableColor === coverPreview ? '2px solid': 0,
+                      backgroundColor: color, 
                   }}
                 />
               ))
@@ -145,7 +201,12 @@ export const SettingsCover: React.FC<SettingsCoverProps> = ({ card, idList, idBo
               <button className='btn_toggle_limitColors' onClick={() => setLimitColors(20)}>Ver más colores</button>  :
               <button className='btn_toggle_limitColors' onClick={() => setLimitColors(8)}>Ocultar colores</button>
             }
-            <button className='btn_remove_indicator roboto' disabled style={{opacity: 0.7}}>Quitar indicador</button>    
+            <button 
+              className='btn_remove_indicator roboto' 
+              onClick={() => {setColorSelect(null); setCoverColorPreview(null)}} 
+              >
+                Quitar indicador
+            </button>    
           </div>  
         </div>
 
@@ -156,7 +217,7 @@ export const SettingsCover: React.FC<SettingsCoverProps> = ({ card, idList, idBo
             <span style={{color: 'orange'}}>Esta funcionalidad estará disponible en breve</span>
           </p>
           <label htmlFor='inputFile' className='roboto' aria-disabled>Cargar imagen</label>
-          <input type='file' id='inputFile' onChange={(e) => handleUpdateImg(e)} style={{display: 'none'}} />
+          <input disabled type='file' id='inputFile' onChange={(e) => handleUpdateImg(e)} style={{display: 'none'}} />
 
           <div className='cover_imgs_container'>
             {
@@ -179,6 +240,9 @@ export const SettingsCover: React.FC<SettingsCoverProps> = ({ card, idList, idBo
           <button onClick={closeComponent}>Cancelar</button>
       </footer>
     </div>
+    </Box>
+    </Fade>
+    </Modal>
     {/* </div> */}
     </>
   )
