@@ -25,6 +25,7 @@ export const CheckAnimation: React.FC<CheckAnimationProps> = ({className, isPlay
 
     return (
         <Lottie 
+            onPointerDown={(e) => e.stopPropagation()}
             lottieRef={lottieRef}
             className={className} 
             onClick={handleClick}

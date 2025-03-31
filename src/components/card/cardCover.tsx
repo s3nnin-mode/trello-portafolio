@@ -6,10 +6,10 @@ import { CardProps, ListProps } from "../../types/boardProps"
 // import { CheckAnimation } from "../animations/checked"
 
 interface CardCoverProps {
-    idBoard: string
-    list: ListProps
-    card: CardProps
-    isPlaying: boolean
+  idBoard: string
+  list: ListProps
+  card: CardProps
+  isPlaying: boolean
 }
 
 export const CardCover: React.FC<CardCoverProps> = ({idBoard, list, card, isPlaying}) => {

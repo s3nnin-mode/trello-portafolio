@@ -107,8 +107,9 @@ export const Start = () => {
           </h4>
           <p className='montserrat'>
             Si decides usar la demo, los datos se guardarán temporalmente en tu navegador mediante localStorage, 
-            lo que te permitirá explorar las características de la aplicación sin necesidad de crear una cuenta. 
-            ¡Elige tu opción y empieza a explorar!
+            lo que te permitirá explorar las características de la aplicación sin necesidad de crear una cuenta.
+            <br /> 
+            Elige lo que mejor se adapte a ti.            
           </p>
           <Button sx={{backgroundColor: 'orange'}} onClick={demo} variant="contained">
             Usar modo Demo

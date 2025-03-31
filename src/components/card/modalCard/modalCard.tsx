@@ -56,10 +56,9 @@ export const CardModal: React.FC<ModalTargetComponentProps> = ({ card, list, boa
       }}
     >
     <Fade in={open}>
-      <Box 
+      <Box
         sx={{
-          ...style,
-          // willChange: 'transform'
+          ...style
         }}
         className='card_modal'>
         <CardModalCover card={card} idBoard={board.idBoard} idList={list.idList} closeModal={closeModal} />

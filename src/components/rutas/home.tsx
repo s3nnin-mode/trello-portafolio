@@ -29,9 +29,13 @@ export const Home = () => {
     <div className='container_home'>
       <div className='mensaje_proyecto_en_construccion'>
         <p>
-          Este proyecto está aún en desarrollo, por lo que es posible que encuentres errores o fallos en su funcionamiento.
+          Este proyecto está aún en desarrollo, por lo que es posible que encuentres errores o fallos en su funcionamiento al autenticarte.
           <br/>
+          <strong>Por el momento recomiendo encarecidamente uses el modo 'demo', ya que es lo que más he estado puliendo. </strong>
+          <br />
+          Aunque puedes registrarte y usar la app pero puede que haya un par de fallos.
           Cualquier mejora o sugerencia es bienvenida.
+          <br />
           Mi correo: leyderlevel1@gmail.com
         </p>
       </div>

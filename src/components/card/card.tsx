@@ -4,7 +4,7 @@ import { useState } from "react";
 import { CardModal } from "./modalCard/modalCard";
 import { BoardProps, ListProps, TagsProps, CardProps } from '../../types/boardProps';
 import { useTagsStore } from "../../store/tagsStore";
-import { CardCover } from "./cardCover";
+// import { CardCover } from "./cardCover";
 import { TbFileDescription } from "react-icons/tb";
 import { GoEyeClosed } from "react-icons/go";
 
@@ -15,6 +15,9 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { betterColorText } from "../../utils/tagsColors";
 
+import { CheckAnimation } from "../animations/checked";
+import { useCardsServices } from "../../services/cardsServices";
+
 interface TargetComponentProps {
   card: CardProps
   board: BoardProps
@@ -24,8 +27,9 @@ interface TargetComponentProps {
 export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
   const { tags } = useTagsStore();
   const [showCardModal, setShowCardModal] = useState<boolean>(false);
-  const [isPlaying, setIsPlaying] = useState(false);
+  // const [isPlaying, setIsPlaying] = useState(true);
   const [showDescription, setShowDescription] = useState(false);
+  const { cardsServices } = useCardsServices();
 
   if (!card) return null;
 
@@ -62,7 +66,40 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
 
   useEffect(() => {
     console.log('tags', tags);
-  }, [tags])
+  }, [tags]);
+
+  const cardComplete = () => {
+    const idCard = card.idCard;
+    // if (userAuth) {
+    //   updateCompleteCard({
+    //     idBoard,
+    //     idList: list.idList,
+    //     idCard: card.idCard,
+    //     complete: !card.complete
+    //   });
+    // }
+
+    cardsServices({
+      updateFn: (cardsGroup) => cardsGroup.map((cardGroup) =>
+        cardGroup.idBoard === board.idBoard && cardGroup.idList === list.idList
+        ?
+        {
+          ...cardGroup,
+          cards: cardGroup.cards.map((card) =>
+            card.idCard === idCard 
+            ?
+            { ...card,
+              complete: !card.complete
+            }
+            :
+            card
+          )
+        }
+        :
+        cardGroup
+      )
+    })
+  }
 
   return(
     <>
@@ -73,14 +110,65 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
         {...attributes}
         {...listeners}
         onClick={() => { setShowCardModal(true)}}
-        onMouseEnter={() => setIsPlaying(true)}
-        onMouseLeave={() => setIsPlaying(false)}
+        // onMouseEnter={() => setIsPlaying(true)}
+        // onMouseLeave={() => setIsPlaying(false)}
       >
         {
           !showDescription ?
             <>
-              <CardCover idBoard={board.idBoard} list={list} card={card} isPlaying={isPlaying} />
+              {/* <CardCover idBoard={board.idBoard} list={list} card={card} isPlaying={isPlaying} /> */}
+              <div className='card_cover'>
+                <div className='color_indicator_and_img'>
+                  <div 
+                  style={{
+                    boxShadow: card.complete ? '0 0 5px #121212' : 'none'
+                  }}
+                  className={card.coverImgCard ? 'container_color_card_with_img' : 'container_color_card'} >
+                    {
+                      card.complete ? 
+                      <CheckAnimation 
+                        isPlaying={true} 
+                        handleClick={(e) => {e.stopPropagation(); cardComplete()}} 
+                        className='card_complete' 
+                      />
+                      :
+                      <input 
+                        type="checkbox"
+                        onClick={(e) => e.stopPropagation()}
+                        onChange={cardComplete}
+                        // className={card.complete ? 'card_complete' : 'checked_card_animation'} 
+                        className='checkbox_card_complete'
+                        // handleClick={cardComplete} 
+                        // isPlaying={card.complete ? card.complete : isPlaying}
+                      /> 
+                    }
+                    {
+                      card.coverColorCard !== null && (
+                        <>
+                          <span 
+                            className='circle' 
+                            style={{background: card.coverColorCard}}
+                          />
+                          <span 
+                            className='circle' 
+                            style={{background: card.coverColorCard}}
+                          />
+                        </>
+                      )
+                    }
+                  </div>
+                  {
+                    card.coverImgCard && <img src={card.coverImgCard} alt='portada tarjeta' />
+                  }
+                </div>
+                {/* <p className='cardName roboto_light'>
+                  {card.nameCard}
+                </p> */}
+              </div>
               <div className='content_card'>
+                <p className='cardName roboto_light'>
+                  {card.nameCard}
+                </p>
                 <ul className='tags_active'>
                 {
                   tags.map((tag) => 
@@ -109,7 +197,8 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
                   )
                 }
               </div>
-            </> : 
+            </> 
+            : 
             <Fade in={showDescription}>
             <Box 
               onClick={(e) => e.stopPropagation()}

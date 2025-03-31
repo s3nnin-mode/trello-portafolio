@@ -142,30 +142,13 @@ export const SettingsCover: React.FC<SettingsCoverProps> = ({ card, idList, idBo
     >
       <Fade in={openSettingsCover}>
         <Box 
-          // sx={{...style}} 
-          className='backdrop_settings_cover'>
-          <div className='settings_card_cover' onPointerDown={(e) => e.stopPropagation()}>
+          onClick={closeComponent}
+          className='backdrop_settings_cover'
+        >
+          <div className='settings_card_cover' onClick={(e) => e.stopPropagation()} onPointerDown={(e) => e.stopPropagation()}>
             <header className='header_preview_cover_card'> 
-              
-              {/* <div className='color_maker_and_btn_close'>
-                <div className='container_color_maker'> 
-                  {
-                    coverColorPreview !== null ?
-                    <>
-                      <div style={{backgroundColor: coverColorPreview}} />
-                      <div style={{backgroundColor: coverColorPreview}} />
-                    </> :
-                    <span style={{fontStyle: 'italic'}}>Sin indicador visual</span>
-                  }
-                </div>
-                <button onClick={closeComponent}>
-                  <IoIosArrowBack />
-                </button>
-              </div> */}
-
               <div className='container_color_indicator'> 
-                {
-                  coverColorPreview !== null ?
+                { coverColorPreview !== null ?
                   <>
                     <div style={{backgroundColor: coverColorPreview}} />
                     <div style={{backgroundColor: coverColorPreview}} />
@@ -173,21 +156,15 @@ export const SettingsCover: React.FC<SettingsCoverProps> = ({ card, idList, idBo
                   <span style={{fontStyle: 'italic'}}>Sin indicador visual</span>
                 }
               </div>
+              
+              { coverImgPreview ?
+                <img src={coverImgPreview} alt='portada de card' /> :
+                <AiOutlinePicture className='icon_no_img_cover' />
+              }
 
               <button onClick={closeComponent}>
                 <IoIosArrowBack />
               </button>
-              
-              {
-                coverImgPreview ?
-                <img src={coverImgPreview} alt='portada de card' /> :
-                <AiOutlinePicture className='icon_no_img_cover' />
-              }
-                {/* {
-                  coverType === 'color' ?
-                  <div style={{backgroundColor: coverPreview}} className='color_preview' /> :
-                  <img src={coverPreview} alt='cover card' />
-                } */}
             </header>
             <main>
               <div className='colors_to_cover'>
@@ -234,12 +211,6 @@ export const SettingsCover: React.FC<SettingsCoverProps> = ({ card, idList, idBo
                   <br />
                   
                 </p>
-                <div className='actions_cover_img'>
-                  <label htmlFor='inputFile' className='roboto' aria-disabled>Cargar imagen</label>
-                  <input disabled type='file' id='inputFile' onChange={(e) => handleUpdateImg(e)} style={{display: 'none'}} />
-                  <button onClick={() => setCoverImgPreview(null)}>Quitar imagen</button>
-                </div>
-
                 <div className='cover_imgs_container'>
                   {
                     card.coverCardImgs !== undefined && (
@@ -253,6 +224,11 @@ export const SettingsCover: React.FC<SettingsCoverProps> = ({ card, idList, idBo
                       })
                     )              
                   }
+                </div>
+                <div className='actions_cover_img'>
+                  <label htmlFor='inputFile' className='roboto' aria-disabled>Cargar imagen</label>
+                  <input disabled type='file' id='inputFile' onChange={(e) => handleUpdateImg(e)} style={{display: 'none'}} />
+                  <button onClick={() => setCoverImgPreview(null)}>Quitar imagen</button>
                 </div>
                 <span style={{color: 'orange', fontStyle: 'italic'}}>
                   La opción para agregar una imagen desde tu PC estará disponible pronto, pero solo para usuarios con una cuenta.
