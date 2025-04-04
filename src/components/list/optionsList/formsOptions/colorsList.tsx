@@ -34,7 +34,6 @@ const listColors = [
 export const ColorsToList: React.FC<ColorsToListComponentProps> = ({idBoard, list}) => {
     const { listsService } = useListsServices();
     const [colorsWrapper, setColorsWrappers] = useState(true);              //COLORS WRAPPER
-    // const colors = ["brown", "blue", "green", "yellow", "black", "white", "orange", "purple", "gray", "pink"];
     const idList = list.idList;
     const { userAuth } = useAuthContext();
 

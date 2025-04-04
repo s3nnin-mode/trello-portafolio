@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useBoardsStore } from '../../store/boardsStore';
 import { useBoardsServices } from '../../services/boardsServices';
 import { useListsServices } from '../../services/listsServices';
-import { BoardProps, CardGroupProps } from '../../types/boardProps';
+import { BoardProps, CardGroupProps, ListsGroup } from '../../types/boardProps';
 import { useListsStore } from '../../store/listsStore';
 import { getCardsFirebase, getListsFirebase, getTagsFirebase } from '../../services/firebase/firebaseFunctions';
 import { useCardsStore } from '../../store/cardsStore';
@@ -46,9 +46,9 @@ export const Tableros = () => {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  // useEffect(() => {
+  //   fetchData();
+  // }, []);
 
   const handleClick = async (idBoard: string) => {
     if (userAuth) {
@@ -63,6 +63,7 @@ export const Tableros = () => {
       const fetchCards = async () => {
         return Promise.all(listsData.map(async list => {
           const cards = await getCardsFirebase(idBoard, list.idList);
+          
           const cardGroup: CardGroupProps = {
             idBoard,
             idList: list.idList,
@@ -73,12 +74,10 @@ export const Tableros = () => {
       }
 
       const cardsGroup = await fetchCards();
-      console.log(cardsGroup, 'cardsGroup');
       loadCards(cardsGroup);
 
       const tags = await getTagsFirebase();
       loadTags(tags);
-      console.log('tags cargado exitosamente', tags);
       navigate(`${idBoard}`);
       return
     } 

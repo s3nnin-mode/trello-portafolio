@@ -9,6 +9,8 @@ import { IoMdClose } from 'react-icons/io';
 import { IoMdSettings } from "react-icons/io";
 import { CheckAnimation } from '../../../../animations/checked';
 import { useCardsServices } from '../../../../../services/cardsServices';
+import { useAuthContext } from '../../../../../customHooks/useAuthContext';
+import { updateCompleteCard } from '../../../../../services/firebase/updateData/updateCards';
 
 
 interface CardModalCoverProps {
@@ -21,17 +23,18 @@ interface CardModalCoverProps {
 export const CardModalCover: React.FC<CardModalCoverProps> = ({card, idList, idBoard, closeModal}) => {
   const [isEditCover, setIsEditCover] = useState(false);
   const { cardsServices } = useCardsServices();
+  const { userAuth } = useAuthContext();
 
   const cardComplete = () => {
     const idCard = card.idCard;
-    // if (userAuth) {
-    //   updateCompleteCard({
-    //     idBoard,
-    //     idList: list.idList,
-    //     idCard: card.idCard,
-    //     complete: !card.complete
-    //   });
-    // }
+    if (userAuth) {
+      updateCompleteCard({
+        idBoard,
+        idList,
+        idCard: card.idCard,
+        complete: !card.complete
+      });
+    }
 
     cardsServices({
       updateFn: (cardsGroup) => cardsGroup.map((cardGroup) =>

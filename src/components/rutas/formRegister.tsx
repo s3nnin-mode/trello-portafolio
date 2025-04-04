@@ -4,11 +4,14 @@ import { useForm } from 'react-hook-form';
 import { userRegister } from '../../services/firebase/firebaseFunctions';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../../customHooks/useAuthContext';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { Loader } from '../reusables/loader';
+
 
 export const FormRegister = () => {
-  const { userAuth, setUserAuth } = useAuthContext();
+  const { userAuth, setUserAuth, fetchData } = useAuthContext();
   const navigate = useNavigate();
+  const [loader, setLoader] = useState(false);
 
   const { 
     register, 
@@ -22,28 +25,33 @@ export const FormRegister = () => {
   const password = watch('password');
 
   const onSubmit = async (data: any) => {
-    console.log('btn submit clicked', data)
+    setLoader(true);
+
     const res = await userRegister({
       email: data.email,
       password: data.password
     });
 
-    if (res === 'Registro exitoso') {
-      // fetchData();
-      setUserAuth(true);
-      navigate('/kanbaX');
-    }
+    setLoader(false);
 
+    if (res) {
+      fetchData();
+      console.log('estado de registro: ', res)
+      setUserAuth(true);
+      // fetchAndActivate()
+      // navigate('/kanbaX');
+    }
   };
 
-  useEffect(() => {
-    if (userAuth) {
-      navigate('/kanbaX');
-    }
-  }, [userAuth]);
+  // useEffect(() => {
+  //   if (userAuth) {
+  //     navigate('/kanbaX');
+  //   }
+  // }, [userAuth]);
 
   return (
     <Paper elevation={3} sx={{ padding: 4, margin: "auto" }}>
+      <Loader open={loader} />
       <Typography variant="h5" fontWeight="bold" textAlign="center" mb={2}>
         Registro
       </Typography>

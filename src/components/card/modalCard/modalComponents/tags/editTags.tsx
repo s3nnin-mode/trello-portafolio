@@ -85,6 +85,7 @@ export const EditTags: React.FC<EditTagsProps> = ({idBoard, list, idCard, tag, t
         color: !(color === tag.color) ? color : undefined
       });
     }
+    
     tagsServices((tags) => tags.map((tag) => 
       tag.idTag === idTag ?
       { 

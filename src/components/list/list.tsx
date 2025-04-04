@@ -38,7 +38,7 @@ export const useList = () => {
     const cards = cardsGroup.find(card => card.idBoard === board.idBoard && card.idList === list.idList)?.cards;
     if (!cards) return;
 
-    let order = cards?.length === 0 ? 0 : cards[cards?.length - 1].order + 10
+    // let order = cards?.length === 0 ? 0 : cards[cards.length - 1].order + 10
     
     const newCard: CardProps = {
       idCard: (nameCard + Date.now()).toString(), 
@@ -48,9 +48,9 @@ export const useList = () => {
       coverCardImgs: [],
       complete: false,
       description: null,
-      order
+      order: cards.length === 0 ? 0 : cards[cards.length - 1].order + 10
     };
-      
+    
     cardsServices({
       updateFn: (cardsGroup) => cardsGroup.map((cardGroup) =>
       (cardGroup.idBoard === idBoard && cardGroup.idList === idList) ?
@@ -97,7 +97,8 @@ export const List: React.FC<ListPropsComponent> = ({ board, list }) => {
   }
     
   useEffect(() => {
-    const indexCardGroup = cardsGroup.findIndex((targetGroup) => targetGroup.idBoard === board.idBoard && targetGroup.idList === list.idList);
+    const indexCardGroup = cardsGroup.findIndex((cardGroup) => 
+      cardGroup.idBoard === board.idBoard && cardGroup.idList === list.idList);
     if (indexCardGroup > -1) {
       setCurrentCards(cardsGroup[indexCardGroup].cards);
     }

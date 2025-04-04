@@ -2,17 +2,10 @@ import { useEffect, useState } from 'react';
 import '../../../../../styles/components/card/modalCard/modalComponents/cover/settingsCoverCard.scss';
 import { CardProps } from '../../../../../types/boardProps';
 import { useCardsServices } from '../../../../../services/cardsServices';
-// import { useAuthContext } from '../../../../../customHooks/useAuthContext';
+import { useAuthContext } from '../../../../../customHooks/useAuthContext';
 // import { updateCoverCard } from '../../../../../services/firebase/updateData/updateCards';
 import { IoIosArrowBack } from "react-icons/io";
-// import { IoMdClose } from 'react-icons/io';
 import { AiOutlinePicture } from "react-icons/ai";
-// const colors = [
-//     "#E63946", "#F4A261", "#2A9D8F", "#264653", "blue",
-//     "#F39C12", "#16A085", "#2980B9", "#D35400", "#C0392B",
-//     "#3498DB", "#27AE60", "#8E44AD", "#F1C40F", "#2C3E50",
-//     "#E67E22", "#1ABC9C", "#9B59B6", "#34495E", "#E74C3C", 'grey'
-// ];
 
 const cardColors = [
   "#007BFF", "#FFC107", // Azul eléctrico & Amarillo dorado
@@ -32,6 +25,7 @@ import Backdrop from '@mui/material/Backdrop';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
+import { updateColorCoverCard, updateImgCoverCard } from '../../../../../services/firebase/updateData/updateCards';
 
 // const style = {
 //   // position: 'fixed',
@@ -55,8 +49,8 @@ interface SettingsCoverProps {
 
 export const SettingsCover: React.FC<SettingsCoverProps> = ({ card, idList, idBoard, closeComponent, openSettingsCover}) => {
   const { cardsServices } = useCardsServices();
-  // const { userAuth } = useAuthContext();
-  // const [file, setFile] = useState<File | undefined>(); //este file es para firebase sino mal recuerdo
+  const { userAuth } = useAuthContext();
+  const [file, setFile] = useState<File | null>(null); //este file es para firebase sino mal recuerdo
   const [limitColors, setLimitColors] = useState(8);
   const [coverColorPreview, setCoverColorPreview] = useState<string | null>(null);             //coverPreview será el color o la url de la imagen
   const [coverImgPreview, setCoverImgPreview] = useState<string | null>(null);
@@ -77,21 +71,13 @@ export const SettingsCover: React.FC<SettingsCoverProps> = ({ card, idList, idBo
   const handleUpdateImg = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];  //file
     if (!file) return;
-    // setFile(file);
+    setFile(file);
     setCoverImgPreview(URL.createObjectURL(file));
   }
 
   const handleSaveChanges = () => {
     const idCard = card.idCard;
-    // if (userAuth) {
-    //   updateCoverCard({
-    //     idBoard, 
-    //     idList, 
-    //     idCard, 
-    //     type: coverType, 
-    //     cover: coverType === 'img' && file ? file : coverPreview
-    //   });
-    // }
+
     if (colorSelect !== card.coverColorCard) {
       cardsServices({
         updateFn: (cardsGroup) => cardsGroup.map((cardGroup) => 
@@ -106,6 +92,10 @@ export const SettingsCover: React.FC<SettingsCoverProps> = ({ card, idList, idBo
             cardGroup
         )
       });
+
+      if (userAuth) {
+        updateColorCoverCard({idBoard, idList, idCard, color: colorSelect ? colorSelect : null})
+      }
     }
 
     if (coverImgPreview !== card.coverImgCard) { //aqui falta verificar si coverImgPreview concuerda con los datos de una imagen
@@ -122,6 +112,10 @@ export const SettingsCover: React.FC<SettingsCoverProps> = ({ card, idList, idBo
             cardGroup
         )
       });
+
+      if (userAuth) {
+        updateImgCoverCard({idBoard, idList, idCard, img: file});
+      }
     }
     closeComponent();
   }
@@ -213,7 +207,7 @@ export const SettingsCover: React.FC<SettingsCoverProps> = ({ card, idList, idBo
                 </p>
                 <div className='cover_imgs_container'>
                   {
-                    card.coverCardImgs !== undefined && (
+                    // card.coverCardImgs && (
                       card.coverCardImgs.map((img) => {
                         return (
                         <button 
@@ -222,12 +216,12 @@ export const SettingsCover: React.FC<SettingsCoverProps> = ({ card, idList, idBo
                           <img src={img} alt='cover card' />
                         </button>)
                       })
-                    )              
+                    // )              
                   }
                 </div>
                 <div className='actions_cover_img'>
                   <label htmlFor='inputFile' className='roboto' aria-disabled>Cargar imagen</label>
-                  <input disabled type='file' id='inputFile' onChange={(e) => handleUpdateImg(e)} style={{display: 'none'}} />
+                  <input type='file' id='inputFile' onChange={(e) => handleUpdateImg(e)} style={{display: 'none'}} />
                   <button onClick={() => setCoverImgPreview(null)}>Quitar imagen</button>
                 </div>
                 <span style={{color: 'orange', fontStyle: 'italic'}}>

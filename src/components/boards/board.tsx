@@ -67,31 +67,31 @@ const useCustomBoard = () => {
 }
 
 export const Tablero = () => {
-    const { listsService } = useListsServices();
-    const { boards, listsGroup, addNewList } = useCustomBoard();
-    const [currentBoard, setCurrentBoard] = useState<BoardProps>();
-    const [idBoard, setIdBoard] = useState('');
-    const { userAuth } = useAuthContext();
-    const { tagsServices } = useTagsService();
+  const { listsService } = useListsServices();
+  const { boards, listsGroup, addNewList } = useCustomBoard();
+  const [currentBoard, setCurrentBoard] = useState<BoardProps>();
+  const [idBoard, setIdBoard] = useState('');
+  const { userAuth } = useAuthContext();
+  const { tagsServices } = useTagsService();
 
-    const [currentLists, setCurrentLists] = useState<ListProps[]>()
-    const { currentIdBoard } = useParams();
+  const [currentLists, setCurrentLists] = useState<ListProps[]>()
+  const { currentIdBoard } = useParams(); //RUTA ACTUAL
 
-    const [activeList, setActiveList] = useState<ListProps | null>(null); //esto es para saber que lista esta siendo arrastrada y crear un efecto visual
-    const [activeCard, setActiveCard] = useState<CardProps | null>(null);
+  const [activeList, setActiveList] = useState<ListProps | null>(null); //esto es para saber que lista esta siendo arrastrada y crear un efecto visual
+  const [activeCard, setActiveCard] = useState<CardProps | null>(null);
 
-    if (!currentIdBoard) {
-      return <p>Tablero no encontrado</p>
+  if (!currentIdBoard) {
+    return <p>Tablero no encontrado</p>
+  }
+
+  useEffect(()=> {
+    const indexBoard = boards.findIndex(b => b.idBoard === currentIdBoard);
+    if (indexBoard > -1) {
+      setCurrentBoard(boards[indexBoard]);
+      setIdBoard(boards[indexBoard].idBoard);
+      return
     }
-
-    useEffect(()=> {
-      const indexBoard = boards.findIndex(b => b.idBoard === currentIdBoard);
-      if (indexBoard > -1) {
-        setCurrentBoard(boards[indexBoard]);
-        setIdBoard(boards[indexBoard].idBoard);
-        return
-      }
-    }, [boards, currentIdBoard]);
+  }, [boards, currentIdBoard]);
 
   useEffect(() => {
     const indexListGroup = listsGroup.findIndex((listGroup) => listGroup.idBoard === currentIdBoard);
@@ -324,7 +324,7 @@ export const Tablero = () => {
   return (
     <div className='board' >
       <header className='header_board'>
-        <h2 className='inter_title¿'>{currentBoard?.nameBoard}</h2>                                      {/* NAME BOARD */}
+        <h2 className='inter_title'>{currentBoard?.nameBoard}</h2>                                      {/* NAME BOARD */}
       </header>
       <DndContext
         sensors={sensors}

@@ -24,7 +24,7 @@ import { CardProps } from "../../../types/boardProps";
 import { useCardsServices } from "../../../services/cardsServices";
 import { useCardsStore } from "../../../store/cardsStore";
 import { useAuthContext } from "../../../customHooks/useAuthContext";
-import { addCardToTopFirebase } from "../../../services/firebase/updateData/updateCards";
+import { addCardAtTopFirebase } from "../../../services/firebase/updateData/updateCards";
 import { IconButton } from "@mui/material";
 
 interface SettingsListProps {
@@ -45,38 +45,39 @@ export const SettingsList: React.FC<SettingsListProps> = ({ idBoard, list }) => 
   const { cardsServices } = useCardsServices();
   const { userAuth } = useAuthContext();
 
-    const addNewCard = (nameCard: string) => {
-      const cardToAdd: CardProps = {
-        idCard: (nameCard + Date.now()).toString(), 
-        nameCard: nameCard,
-        coverColorCard: null,
-        coverImgCard: null,
-        coverCardImgs: [],
-        complete: false,
-        description: null,
-        order: 0
-      };
+  const addNewCardAtTop = (nameCard: string) => {
+    const cardToAdd: CardProps = {
+      idCard: (nameCard + Date.now()).toString(), 
+      nameCard: nameCard,
+      coverColorCard: null,
+      coverImgCard: null,
+      coverCardImgs: [],
+      complete: false,
+      description: null,
+      order: 0
+    };
 
-      cardsServices({
-        updateFn: (cardsGroup) => cardsGroup.map((cardGroup) => 
-          cardGroup.idBoard === idBoard && cardGroup.idList === list.idList ?
-          {
-            ...cardGroup,
-            cards: [cardToAdd, ...cardGroup.cards].map((card, index) => {
-              return { ...card, order: index * 10};
-            })
-          }
-          :
-          cardGroup
-        )
-      });
+    cardsServices({
+      updateFn: (cardsGroup) => cardsGroup.map((cardGroup) => 
+        cardGroup.idBoard === idBoard && cardGroup.idList === list.idList ?
+        {
+          ...cardGroup,
+          cards: [cardToAdd, ...cardGroup.cards].map((card, index) => {
+            return { ...card, order: index * 10};
+          })
+        }
+        :
+        cardGroup
+      )
+    });
 
+    
+    if (userAuth) {
       const cardsUpdate = useCardsStore.getState().cardsGroup.find(cardGroup => cardGroup.idList === list.idList)?.cards;
-      if (!cardsUpdate) return;
-      if (userAuth) {
-        addCardToTopFirebase({idBoard, idList: list.idList, card: cardToAdd, cardsUpdate});
-      }
-    }
+      if (!cardsUpdate) return
+      addCardAtTopFirebase({idBoard, idList: list.idList, card: cardToAdd, cardsUpdate}); //al agregar una card al principio se reordenan las cards en firebase
+    } //aqui en vez de reordenar las cards en firebase puedes obtener order de la card que estaba primero y dividirlo en 2 y asignarselo a la nueva card
+  }
 
   return (
     <div className='options' onPointerDown={(e) => e.stopPropagation()}>       
@@ -94,7 +95,7 @@ export const SettingsList: React.FC<SettingsListProps> = ({ idBoard, list }) => 
         <BtnAdd 
           className='btn_add_card_to_top'
           nameComponentToAdd='target'
-          createListOrTargetName={(nameCard: string) => addNewCard(nameCard)} 
+          createListOrTargetName={(nameCard: string) => addNewCardAtTop(nameCard)} 
         />
 
         <button className='btn_setting_list' onClick={openFormCopyList}>             {/*BTN OPEN FORM COPY LIST*/}

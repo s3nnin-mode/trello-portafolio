@@ -41,9 +41,10 @@ export const CardDescription: React.FC<CardDescriptionProps> = ({card, idList, i
         idBoard, 
         idList, 
         idCard, 
-        description: inputValue
+        description: inputValue || null
       })
     }
+
     cardsServices({
       updateFn: (cardsGroup) => cardsGroup.map((cardGroup) =>
       cardGroup.idBoard === idBoard && cardGroup.idList === idList ?

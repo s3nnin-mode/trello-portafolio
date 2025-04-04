@@ -1,10 +1,9 @@
-import React, { useEffect } from "react";
+import React from "react";
 import '../../styles/components/card/card.scss';
 import { useState } from "react";
 import { CardModal } from "./modalCard/modalCard";
 import { BoardProps, ListProps, TagsProps, CardProps } from '../../types/boardProps';
 import { useTagsStore } from "../../store/tagsStore";
-// import { CardCover } from "./cardCover";
 import { TbFileDescription } from "react-icons/tb";
 import { GoEyeClosed } from "react-icons/go";
 
@@ -17,6 +16,8 @@ import { betterColorText } from "../../utils/tagsColors";
 
 import { CheckAnimation } from "../animations/checked";
 import { useCardsServices } from "../../services/cardsServices";
+import { useAuthContext } from "../../customHooks/useAuthContext";
+import { updateCompleteCard } from "../../services/firebase/updateData/updateCards";
 
 interface TargetComponentProps {
   card: CardProps
@@ -30,6 +31,7 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
   // const [isPlaying, setIsPlaying] = useState(true);
   const [showDescription, setShowDescription] = useState(false);
   const { cardsServices } = useCardsServices();
+  const { userAuth } = useAuthContext();
 
   if (!card) return null;
 
@@ -56,28 +58,18 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
     cursor: isDragging ? 'grabbing' : 'pointer',
   };
 
-  const isActive = ({tag}: {tag: TagsProps}) => {
-    return tag.cardsThatUseIt.some((item) =>
-      item.idBoard === board.idBoard && 
-      item.idList === list.idList && 
-      item.idCard === card.idCard 
-    )
-  }
-
-  useEffect(() => {
-    console.log('tags', tags);
-  }, [tags]);
+  const isActive = ({tag}: {tag: TagsProps}) => tag.cardsThatUseIt.some((item) => item.idCard === card.idCard);
 
   const cardComplete = () => {
     const idCard = card.idCard;
-    // if (userAuth) {
-    //   updateCompleteCard({
-    //     idBoard,
-    //     idList: list.idList,
-    //     idCard: card.idCard,
-    //     complete: !card.complete
-    //   });
-    // }
+    if (userAuth) {
+      updateCompleteCard({
+        idBoard: board.idBoard,
+        idList: list.idList,
+        idCard: card.idCard,
+        complete: !card.complete
+      });
+    }
 
     cardsServices({
       updateFn: (cardsGroup) => cardsGroup.map((cardGroup) =>

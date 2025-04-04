@@ -20,21 +20,25 @@ export const KanbaX = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
+        if (userAuth) {
+            fetchData();
+            return
+        }
+
         const boardsLS = localStorage.getItem('boards-storage');
         const listsLS = localStorage.getItem('lists-storage');
         const cardsLS = localStorage.getItem('cards-storage');
         const tagsLS = localStorage.getItem('tags-storage');
 
-        if (userAuth) {
-            fetchData();
-        } else if (boardsLS && listsLS && cardsLS && tagsLS) {
+        if (boardsLS && listsLS && cardsLS && tagsLS) {
             loadBoards(JSON.parse(boardsLS));
             loadLists(JSON.parse(listsLS));
             loadCards(JSON.parse(cardsLS));
             loadTags(JSON.parse(tagsLS));
-        } else {
-            navigate('/');
+            return
         }
+            
+        navigate('/');
     }, [userAuth]);
 
     return (

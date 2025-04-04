@@ -14,9 +14,7 @@ const initialData = async (userId: string) => {
       idBoard: 'primerboardid',  
       nameBoard: 'Tablero de ejemplo',
     }
-
     await setDoc(boardRef, initialBoard);
-
     console.log('tableros creado exitosamente');
 
     const specificBoardRef = doc(db, `users/${userId}/boards/primerboardid`);
@@ -25,7 +23,7 @@ const initialData = async (userId: string) => {
     const initialList = {
       idList: 'primerlistid',
       nameList: 'lista de ejemplo',
-      colorList: 'white',
+      colorList: '#252526',
       order: 0
     };
 
@@ -35,17 +33,18 @@ const initialData = async (userId: string) => {
 
     const cardsRef = doc(collection(listsRef, 'cards'), 'primercardid');
 
-    const initialCards = {
+    const initialCard = {
       idCard: 'primercardid',
       nameCard: 'card de ejemplo',
-      coverCard: '',
+      coverColorCard: '#FD7E14',
+      coverImgCard: null,
       coverCardImgs: [],
-      currentCoverType: '',
       complete: false,
-      description: ''
+      description: '',
+      order: 0
     };
 
-    await setDoc(cardsRef, initialCards);
+    await setDoc(cardsRef, initialCard);
     console.log('tarjeta creada exitosamente');
 
     await Promise.all(initialTags.map(async tag => {
@@ -77,7 +76,7 @@ export const userRegister = async ({email, password}: {email: string, password: 
 
     await initialData(userId);
     
-    return 'Registro exitoso';
+    return true
   } catch(error: any) {
     if (error.code === 'auth/email-already-in-use') {
       console.error('The email is already registered.');
@@ -160,6 +159,7 @@ export const getCardsFirebase = async (idBoard: string, idList: string) => {
   const q = query(cardsCollection, orderBy('order'));
 
   const cardsSnapshot = await getDocs(q);
+
   const cards = cardsSnapshot.docs.map(doc => doc.data() as CardProps);
   return cards;
 }

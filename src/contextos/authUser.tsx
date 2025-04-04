@@ -27,10 +27,10 @@ export const AuthProvider = ({children}: ChildrenProps) => {
             onAuthStateChanged(auth, (user) => {
             resolve(user);
             });
-        })
+        });
     }
 
-    const fetchData = async () => {
+    const fetchDataX = async () => {
         const LS = localStorage.getItem('boards-storage');
         if (userAuth) {
             const boards = await getBoardsFirebase();
@@ -45,11 +45,21 @@ export const AuthProvider = ({children}: ChildrenProps) => {
         }
     }
 
+    const fetchData = async () => {
+        const boards = await getBoardsFirebase();
+        if (boards) {
+            loadBoards(boards);
+            navigate('/kanbaX');
+        }
+    }
+
     const startApp = async () => {
         const userAuth = await getUserAuthState();
         const LS = localStorage.getItem('boards-storage');
         if (userAuth) {
             setUserAuth(true);
+            fetchData();
+            navigate('/kanbaX');
             console.log('usuario auth en contexto', userAuth);
         } else if (LS) {
             setUserAuth(false);

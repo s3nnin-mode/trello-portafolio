@@ -39,22 +39,17 @@ export const Tags: React.FC<TagsSettings> = ({ board, list, card, closeTagsSetti
         idTag,
         idBoard: board.idBoard,
         idList: list.idList,
-        idCard: card.idCard
-      })
-    }
+        idCard
+      });
+    };
 
     tagsServices((tags) => tags.map((tag) => 
       tag.idTag === idTag 
       ? { ...tag,
-        cardsThatUseIt: tag.cardsThatUseIt.some(card => 
-          card.idBoard === board.idBoard && 
-          card.idList === list.idList && 
-          card.idCard === idCard) 
-        ? 
-        tag.cardsThatUseIt.filter(card => 
-          card.idCard !== idCard) //Si filtras con !== idBoard y !== idList puedes borrar referencias de más
-        : 
-        [...tag.cardsThatUseIt, {idBoard: board.idBoard, idList: list.idList, idCard}]
+        cardsThatUseIt: tag.cardsThatUseIt.some(card => card.idCard === idCard)
+        ? tag.cardsThatUseIt.filter(card => 
+            card.idCard !== idCard) //Si filtras con !== idBoard y !== idList puedes borrar referencias de más
+        : [...tag.cardsThatUseIt, {idBoard: board.idBoard, idList: list.idList, idCard}]
       }
       :
       tag
@@ -66,13 +61,9 @@ export const Tags: React.FC<TagsSettings> = ({ board, list, card, closeTagsSetti
     setTagToEdit(tag);
   }
 
-  const isActive = ({tag}: {tag: TagsProps}) => {
-    return tag.cardsThatUseIt.some((t) =>
-      t.idBoard === board.idBoard && 
-      t.idList === list.idList && 
-      t.idCard === card.idCard
-    )
-  }
+  const isActive = ({tag}: {tag: TagsProps}) => tag.cardsThatUseIt.some((t) =>
+    t.idCard === card.idCard
+  )
 
   const tagsFilter = useMemo(() => {
     if (inputValue === '') return tags;

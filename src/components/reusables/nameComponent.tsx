@@ -24,8 +24,9 @@ export const NameComponent: React.FC<NameListPropsComponent> = ({idBoard, list, 
   const [nameComponent, setNameComponent] = useState('');
   const { userAuth } = useAuthContext();
 
-  const textareaRef = useRef<HTMLTextAreaElement | null>(null)
- 
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+  const debounceTimer = useRef<NodeJS.Timeout | null>(null);
+
   useEffect(() => {
     if (componentType === 'list') {
       setNameComponent(list.nameList);
@@ -45,57 +46,72 @@ export const NameComponent: React.FC<NameListPropsComponent> = ({idBoard, list, 
   const handleChangeList = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const idList = list.idList;
     setNameComponent(e.target.value);
-    
-    if (userAuth) {
-      updateNameListFirebase({idBoard, idList, nameList: e.target.value});
+
+    if (debounceTimer.current) {
+      clearTimeout(debounceTimer.current);
     }
 
-    listsService({
-      updateFn: (listsGroup) => listsGroup.map((listGroup) => 
-        listGroup.idBoard === idBoard
-        ?
-        { ...listGroup,
-          lists: listGroup.lists.map((list) => 
-            list.idList === idList ? 
-            { ...list, nameList: e.target.value } 
-            : 
-            list
-          )
-        }
-        :
-        listGroup
-      )
-    });
+    debounceTimer.current = setTimeout(() => {
+
+      if (userAuth) {
+        updateNameListFirebase({idBoard, idList, nameList: e.target.value});
+      }
+  
+      listsService({
+        updateFn: (listsGroup) => listsGroup.map((listGroup) => 
+          listGroup.idBoard === idBoard
+          ?
+          { ...listGroup,
+            lists: listGroup.lists.map((list) => 
+              list.idList === idList ? 
+              { ...list, nameList: e.target.value } 
+              : 
+              list
+            )
+          }
+          :
+          listGroup
+        )
+      });
+
+    }, 500); // Esperar 500ms antes de ejecutar la función
+
   }
 
   const handleChangeCard = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const idCard = card?.idCard;
     if (!idCard) return;
     setNameComponent(e.target.value);
-    
-    if (userAuth) {
-      updateNameCardFirebase({
-        idBoard, 
-        idList: list.idList, 
-        idCard, 
-        name: e.target.value
-      });
+
+    if (debounceTimer.current) {
+      clearTimeout(debounceTimer.current);
     }
 
-    cardsServices({
-      updateFn: (cardsGroup) => cardsGroup.map((cardGroup) =>
-      cardGroup.idBoard === idBoard && cardGroup.idList === list.idList ?
-      { ...cardGroup, cards: cardGroup.cards.map((card) => 
-        card.idCard === idCard ? 
-        {...card, nameCard: e.target.value}
-        :
-        card
-        )
+    debounceTimer.current = setTimeout(() => {
+      if (userAuth) {
+        updateNameCardFirebase({
+          idBoard, 
+          idList: list.idList, 
+          idCard, 
+          name: e.target.value
+        });
       }
-      :
-        cardGroup
-      )
-    })
+
+      cardsServices({
+        updateFn: (cardsGroup) => cardsGroup.map((cardGroup) =>
+        cardGroup.idBoard === idBoard && cardGroup.idList === list.idList ?
+        { ...cardGroup, cards: cardGroup.cards.map((card) => 
+          card.idCard === idCard ? 
+          {...card, nameCard: e.target.value}
+          :
+          card
+          )
+        }
+        :
+          cardGroup
+        )
+      });
+    }, 500); // Esperar 500ms antes de ejecutar la función
   }
 
   const onInput = (e: React.FormEvent<HTMLTextAreaElement>) => {

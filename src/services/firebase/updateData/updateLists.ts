@@ -12,7 +12,7 @@ export const addListFirebase = async ({idBoard, list}:{idBoard: string, list: Li
     const userId = auth.currentUser?.uid;
     const listsCollection = doc(collection(db, `users/${userId}/boards/${idBoard}/lists`), list.idList);
     await setDoc(listsCollection, list);
-}
+} //ESTA FUNCIÓN ESTA LISTA PARA USARSE CON FIREBASE
 
 export const updateNameListFirebase = async ({idBoard, idList, nameList}:{idBoard: string, idList: string, nameList: string}) => {
     const userId = auth.currentUser?.uid;
@@ -30,26 +30,21 @@ export const deleteListFirebase = async ({idBoard, idList}:{idBoard: string, idL
     const userId = auth.currentUser?.uid;
     const listRef = doc(db, `users/${userId}/boards/${idBoard}/lists/${idList}`);
     await deleteDoc(listRef);
-    console.log('lista eliminada');
 }
 
-export const updateOrderListsFirebase = async ({idBoard, updateLists}: {idBoard: string, updateLists: ListProps[]}) => {  //esto se usa cuando copias o mueves una lista
+export const updateOrderListsFirebase = async ({idBoard, updatedLists}: {idBoard: string, updatedLists: ListProps[]}) => {  //esto se usa cuando copias o mueves una lista
     const userId = auth.currentUser?.uid;
 
-    const updates = updateLists.map(async list => {
+    const updates = updatedLists.map(async (list, index) => {
         const listRef = doc(db, `users/${userId}/boards/${idBoard}/lists/${list.idList}`);
         // const lista = getDoc(listRef);
-        await updateDoc(listRef, { order: list.order });
-
-
-        // if ((await lista).exists()) {
-        //     await updateDoc(listRef, { order: list.order });
-        // } else {
-        //     console.log('listas inexistente')
-        // }
+        const order = index === 0 ? 0 : index * 10;
+        await updateDoc(listRef, { order });
+        console.log('se actualiza cada lista', list, list.order)
     });
 
     await Promise.all(updates);
+    console.log('listas actualizadas', updatedLists);
 };
 
 export const updtateOrderList = async ({idBoard, list}: {idBoard: string, list: ListProps}) => {
