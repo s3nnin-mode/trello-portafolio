@@ -118,22 +118,31 @@ export const updateImgCoverCard = async ({idBoard, idList, idCard, img}:{idBoard
   const userId = auth.currentUser?.uid;
   let downloadUrl = null;
   const cardRef = doc(db, `users/${userId}/boards/${idBoard}/lists/${idList}/cards/${idCard}`);
+  const cardSnap = await getDoc(cardRef);
+  if (!cardSnap.exists()) return;
+  const historyImgs = cardSnap.data().coverCardImgs;
 
   if (img instanceof File) {
-    const storageRef = ref(storage, `users/${userId}/cards/${idCard}`);
+    const uniqueId = `${idCard}-img-${Date.now()}`;
+    const storageRef = ref(storage, `users/${userId}/cards/${uniqueId}`);
     await uploadBytes(storageRef, img);
     downloadUrl = await getDownloadURL(storageRef);
-    
-    const cardSnap = await getDoc(cardRef);
-    if (!cardSnap.exists()) return;
-    const historyImgs = cardSnap.data().coverCardImgs || [];
 
     await updateDoc(cardRef, {
       coverImgCard: downloadUrl,
       coverCardImgs: [...historyImgs, downloadUrl]
     });
+
+    return {
+      currentCover: downloadUrl,
+      historyImgs: [...historyImgs, downloadUrl]
+    };
   } else {
     await updateDoc(cardRef, { coverImgCard: null });
+    return {
+      currentCover: null,
+      historyImgs
+    }
   }
 }
 

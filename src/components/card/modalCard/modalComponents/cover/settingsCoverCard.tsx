@@ -75,7 +75,7 @@ export const SettingsCover: React.FC<SettingsCoverProps> = ({ card, idList, idBo
     setCoverImgPreview(URL.createObjectURL(file));
   }
 
-  const handleSaveChanges = () => {
+  const handleSaveChanges = async () => {
     const idCard = card.idCard;
 
     if (colorSelect !== card.coverColorCard) {
@@ -98,14 +98,19 @@ export const SettingsCover: React.FC<SettingsCoverProps> = ({ card, idList, idBo
       }
     }
 
-    if (coverImgPreview !== card.coverImgCard) { //aqui falta verificar si coverImgPreview concuerda con los datos de una imagen
+    if (coverImgPreview !== card.coverImgCard && userAuth) { //aqui falta verificar si coverImgPreview concuerda con los datos de una imagen
+      const imgCover = await updateImgCoverCard({idBoard, idList, idCard, img: file});
+
       cardsServices({
         updateFn: (cardsGroup) => cardsGroup.map((cardGroup) => 
           (cardGroup.idBoard === idBoard && cardGroup.idList === idList) ?
             { ...cardGroup,
               cards: cardGroup.cards.map((card) => 
                 card.idCard === idCard ?
-                { ...card, coverImgCard: coverImgPreview} :
+                { ...card, 
+                  coverImgCard: imgCover?.currentCover || null,
+                  coverCardImgs: imgCover?.historyImgs
+                } :
                 card
               )
             } :
@@ -113,9 +118,7 @@ export const SettingsCover: React.FC<SettingsCoverProps> = ({ card, idList, idBo
         )
       });
 
-      if (userAuth) {
-        updateImgCoverCard({idBoard, idList, idCard, img: file});
-      }
+      updateImgCoverCard({idBoard, idList, idCard, img: file});
     }
     closeComponent();
   }
