@@ -14,10 +14,12 @@
     .mensaje_proyecto_en_construccion {
         background-color: #f8d7da;
         color: #721c24;
-        padding: 8px;
+        background-color: rgb(248, 215, 218, .8);
+        padding: 2px 8px;
         border-radius: 0 0 6px 6px;
         position: absolute;
         top: 0;
+        margin: 0;
     }
     
     .box {

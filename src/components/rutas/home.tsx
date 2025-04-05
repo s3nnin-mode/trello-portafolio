@@ -29,11 +29,16 @@ export const Home = () => {
     <div className='container_home'>
       <div className='mensaje_proyecto_en_construccion'>
         <p>
-          Este proyecto está aún en desarrollo, por lo que es posible que encuentres errores o fallos en su funcionamiento al autenticarte.
-          <br/>
-          <strong>Por el momento recomiendo encarecidamente uses el modo 'demo', ya que es lo que más he estado puliendo. </strong>
+          Este proyecto está aún en desarrollo,
+          el modo "demo" está listo para usarse y
+          recomiendo encarecidamente este modo si solo deseas 'ojear de que va'.
           <br />
-          Aunque puedes registrarte y usar la app pero puede que haya un par de fallos.
+          Si deseas registrarte puedes hacerlo, practicamente puedes usar todas las funcionalidades existentes menos el drag & drop (arrastre de tarjetas y listas) ya que recien empecé a crear esta funcionalidad y no está pulida.
+          Si deseas mover una lista puedes hacerlo desde el menú de opciones de la lista.
+          <br />
+          <br />
+          En cuanto al diseño, es un diseño simple y minimalista, pero funcional, aunque le falta una manita de gato.
+          <br />
           Cualquier mejora o sugerencia es bienvenida.
           <br />
           Mi correo: leyderlevel1@gmail.com

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useBoardsStore } from '../../store/boardsStore';
 import { useBoardsServices } from '../../services/boardsServices';
 import { useListsServices } from '../../services/listsServices';
-import { BoardProps, CardGroupProps, ListsGroup } from '../../types/boardProps';
+import { BoardProps, CardGroupProps } from '../../types/boardProps';
 import { useListsStore } from '../../store/listsStore';
 import { getCardsFirebase, getListsFirebase, getTagsFirebase } from '../../services/firebase/firebaseFunctions';
 import { useCardsStore } from '../../store/cardsStore';
@@ -12,7 +12,6 @@ import { useTagsStore } from '../../store/tagsStore';
 import { useAuthContext } from '../../customHooks/useAuthContext';
 import { addBoardFirebase } from '../../services/firebase/updateData/updateBoards';
 import { Box } from '@mui/material';
-import { useEffect } from 'react';
 
 const useBoards = () => {
   const { boards } = useBoardsStore();
@@ -42,13 +41,9 @@ export const Tableros = () => {
   const { loadLists } = useListsStore();
   const { loadCards } = useCardsStore();
   const { loadTags } = useTagsStore();
-  const { userAuth, fetchData } = useAuthContext();
+  const { userAuth } = useAuthContext();
 
   const navigate = useNavigate();
-
-  // useEffect(() => {
-  //   fetchData();
-  // }, []);
 
   const handleClick = async (idBoard: string) => {
     if (userAuth) {

@@ -2,15 +2,14 @@ import '../../styles/components/routes/formRegister.scss';
 import { Button, Paper, Stack, TextField, Typography } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { userRegister } from '../../services/firebase/firebaseFunctions';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useAuthContext } from '../../customHooks/useAuthContext';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Loader } from '../reusables/loader';
 
 
 export const FormRegister = () => {
-  const { userAuth, setUserAuth, fetchData } = useAuthContext();
-  const navigate = useNavigate();
+  const { setUserAuth, fetchData } = useAuthContext();
   const [loader, setLoader] = useState(false);
 
   const { 
