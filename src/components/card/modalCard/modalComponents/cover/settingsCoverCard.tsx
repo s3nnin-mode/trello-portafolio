@@ -25,7 +25,8 @@ import Backdrop from '@mui/material/Backdrop';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
-import { updateColorCoverCard, updateImgCoverCard } from '../../../../../services/firebase/updateData/updateCards';
+import { updateColorCoverCard, updatedCoverImg, updateImgCoverCard } from '../../../../../services/firebase/updateData/updateCards';
+import { Loader } from '../../../../reusables/loader';
 
 // const style = {
 //   // position: 'fixed',
@@ -55,6 +56,7 @@ export const SettingsCover: React.FC<SettingsCoverProps> = ({ card, idList, idBo
   const [coverColorPreview, setCoverColorPreview] = useState<string | null>(null);             //coverPreview será el color o la url de la imagen
   const [coverImgPreview, setCoverImgPreview] = useState<string | null>(null);
   const [colorSelect, setColorSelect] = useState<string | null>(null);
+  const [loader, setLoader] = useState(false);
 
   useEffect(() => {
     if (card.coverColorCard) {
@@ -98,27 +100,54 @@ export const SettingsCover: React.FC<SettingsCoverProps> = ({ card, idList, idBo
       }
     }
 
+
     if (coverImgPreview !== card.coverImgCard && userAuth) { //aqui falta verificar si coverImgPreview concuerda con los datos de una imagen
-      const imgCover = await updateImgCoverCard({idBoard, idList, idCard, img: file});
+      setLoader(true);
+      const isNewImg = !card.coverCardImgs.some(img => img === coverImgPreview);
 
-      cardsServices({
-        updateFn: (cardsGroup) => cardsGroup.map((cardGroup) => 
-          (cardGroup.idBoard === idBoard && cardGroup.idList === idList) ?
-            { ...cardGroup,
-              cards: cardGroup.cards.map((card) => 
-                card.idCard === idCard ?
-                { ...card, 
-                  coverImgCard: imgCover?.currentCover || null,
-                  coverCardImgs: imgCover?.historyImgs
-                } :
-                card
-              )
-            } :
-            cardGroup
-        )
-      });
+      if (isNewImg && coverImgPreview !== null) {
+        //si es nueva imagen, (no seleccionada del historial) se sube a firebase y se actualiza el estado de coverImgCard y coverCardImgs
+        //y devuelve la url de la imagen y el historial actualizado, ya que de no ser asi, el historial estaría desactualizado
+        const imgCover = await updateImgCoverCard({idBoard, idList, idCard, img: file}); 
 
-      updateImgCoverCard({idBoard, idList, idCard, img: file});
+        cardsServices({
+          updateFn: (cardsGroup) => cardsGroup.map((cardGroup) => 
+            (cardGroup.idBoard === idBoard && cardGroup.idList === idList) ?
+              { ...cardGroup,
+                cards: cardGroup.cards.map((card) => 
+                  card.idCard === idCard ?
+                  { ...card, 
+                    coverImgCard: imgCover?.coverImgCard || null,
+                    coverCardImgs: imgCover?.coverCardImgs
+                  } :
+                  card
+                )
+              } :
+              cardGroup
+          )
+        });
+      } else {
+        updatedCoverImg({idBoard, idList, idCard, img: coverImgPreview}); //si no es nueva imagen, solo se actualiza el estado de coverImgCard
+        
+        cardsServices({
+          updateFn: (cardsGroup) => cardsGroup.map((cardGroup) => 
+            (cardGroup.idBoard === idBoard && cardGroup.idList === idList) ?
+              { ...cardGroup,
+                cards: cardGroup.cards.map((card) => 
+                  card.idCard === idCard ?
+                  { ...card, 
+                    coverImgCard: coverImgPreview,
+                  } :
+                  card
+                )
+              } :
+              cardGroup
+          )
+        });
+        console.log('solo se actualizó la imagen de portada de la tarjeta');
+      }
+      
+      setLoader(false);
     }
     closeComponent();
   }
@@ -143,7 +172,11 @@ export const SettingsCover: React.FC<SettingsCoverProps> = ({ card, idList, idBo
           className='backdrop_settings_cover'
         >
           <div className='settings_card_cover' onClick={(e) => e.stopPropagation()} onPointerDown={(e) => e.stopPropagation()}>
-            <header className='header_preview_cover_card'> 
+            <header 
+            style={{
+              backgroundImage: coverImgPreview ? `url(${coverImgPreview})` : 'none',
+            }}
+            className='header_preview_cover_card'> 
               <div className='container_color_indicator'> 
                 { coverColorPreview !== null ?
                   <>
@@ -153,10 +186,12 @@ export const SettingsCover: React.FC<SettingsCoverProps> = ({ card, idList, idBo
                   <span style={{fontStyle: 'italic'}}>Sin indicador visual</span>
                 }
               </div>
-              
-              { coverImgPreview ?
-                <img src={coverImgPreview} alt='portada de card' /> :
-                <AiOutlinePicture className='icon_no_img_cover' />
+
+              {
+                coverImgPreview === null && <AiOutlinePicture className='icon_no_img_cover' />
+              }
+              {
+                loader && <Loader open={loader} />
               }
 
               <button onClick={closeComponent}>
@@ -183,7 +218,9 @@ export const SettingsCover: React.FC<SettingsCoverProps> = ({ card, idList, idBo
                         style={{
                             backgroundColor: color, 
                         }}
-                      />
+                      >
+                        {color}
+                      </button>
                     ))
                   }
                 </div>
@@ -210,26 +247,29 @@ export const SettingsCover: React.FC<SettingsCoverProps> = ({ card, idList, idBo
                 </p>
                 <div className='cover_imgs_container'>
                   {
-                    // card.coverCardImgs && (
-                      card.coverCardImgs.map((img) => {
-                        return (
-                        <button 
-                        onClick={() => setCoverImgPreview(img)} 
-                        key={img}>
-                          <img src={img} alt='cover card' />
-                        </button>)
-                      })
-                    // )              
+                    card.coverCardImgs.length > 0 
+                    ? card.coverCardImgs.map((img) => {
+                      return (
+                      <button 
+                      onClick={() => setCoverImgPreview(img)} 
+                      key={img}>
+                        <img src={img} alt='cover card' />
+                      </button>)
+                    }) 
+                    :
+                    <span style={{color: 'grey', fontStyle: 'italic', gridColumn: '1/-1'}}>
+                      No hay imágenes de portada disponibles
+                    </span>
                   }
                 </div>
                 <div className='actions_cover_img'>
-                  <label htmlFor='inputFile' className='roboto' aria-disabled>Cargar imagen</label>
-                  <input type='file' id='inputFile' onChange={(e) => handleUpdateImg(e)} style={{display: 'none'}} />
+                  <label htmlFor='inputFile' className={`${userAuth ? 'label_load_img_enable' : 'label_load_img_disabled'} roboto`} aria-disabled>Cargar imagen</label>
+                  <input disabled={!userAuth} type='file' id='inputFile' onChange={(e) => handleUpdateImg(e)} style={{display: 'none'}} />
                   <button onClick={() => setCoverImgPreview(null)}>Quitar imagen</button>
                 </div>
                 <span style={{color: 'orange', fontStyle: 'italic'}}>
-                  La opción para agregar una imagen desde tu PC estará disponible pronto, pero solo para usuarios con una cuenta.
-                  </span>
+                  Para agregar una imagen desde tu PC necesitas registrarte.
+                </span>
               </div>
             </main>
             <footer>

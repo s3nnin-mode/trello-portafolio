@@ -37,7 +37,6 @@ export interface CardProps {
     coverColorCard: string | null //!!
     coverImgCard: string | null
     coverCardImgs: string[]
-    // currentCoverType: 'color' | 'img' | null
     complete: boolean
     description: string | null
     order: number

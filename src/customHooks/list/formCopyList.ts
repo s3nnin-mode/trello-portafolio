@@ -11,7 +11,7 @@ import { useTagsStore } from "../../store/tagsStore";
 import { updateStateTag } from "../../services/firebase/updateData/updateTags";
 
 interface UseFormCopyList {
-    setIsModalOptionsActive: React.Dispatch<React.SetStateAction<boolean>>
+  setIsModalOptionsActive: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export const useFormCopyList = ({ setIsModalOptionsActive }: UseFormCopyList) => {
@@ -22,81 +22,6 @@ export const useFormCopyList = ({ setIsModalOptionsActive }: UseFormCopyList) =>
   const [showFormCopyList, setShowFormCopyList] = useState(false);
   const { userAuth } = useAuthContext();
   const { tags, loadTags } = useTagsStore();
-
-  // const copyListX = ({idBoard, list, inputText}: {idBoard: string, list: ListProps, inputText: string}) => {
-  //   const idListToCopy = list.idList;  //id a buscar
-  //   const indexListGroup = listsGroup.findIndex(listGroup => listGroup.idBoard === idBoard);
-  //   const indexListToCopy = listsGroup[indexListGroup].lists.findIndex(list => list.idList === idListToCopy);
-  //   // if (!indexListGroup) return;
-
-  //   const idList = (Date.now() + 'copyList').toString();  //nuevo id para la lista copiada
-
-  //   let listCopy = {
-  //     ...list, 
-  //     idList: idList,
-  //     nameList: inputText
-  //   }
-  //   //grupo de cards que se copiaran con nuevo id y nuevo idList
-  //   const indexTargetGroup = cardsGroup.findIndex(cardGroup => cardGroup.idBoard === idBoard && cardGroup.idList === idListToCopy);
-
-  //   if (indexTargetGroup > -1) {
-  //     const copyCards = cardsGroup[indexTargetGroup].cards.map((card) => {
-  //       const newIdCard = `copyCard${card.idCard}${Date.now()}`;
-
-  //       tagsServices((tags) => tags.map((tag) => 
-  //         tag.cardsThatUseIt.some(item => item.idCard === card.idCard) ?
-  //         {...tag, 
-  //           cardsThatUseIt: [...tag.cardsThatUseIt, { idBoard, idList, idCard: newIdCard}]} :
-  //         tag
-  //       ));
-
-  //       return {...card, idCard: newIdCard}
-  //     });       
-  //     createCardGroup({idBoard, idList, cards: copyCards});
-  //   }
-
-  //   //{   ESTA PARTE POSICIONA LA LISTA COPIADA JUSTO EN LA SIGUIENTE COLUMNA DE LA LISTA QUE SE COPIÓ
-  //   const LISTS = [...listsGroup[indexListGroup].lists];          
-  //   let updateLists: ListProps[] = [];
-
-  //   for (let i = 0; i < LISTS.length; i++) {
-  //     updateLists.push(LISTS[i]);
-  //     if (i === indexListToCopy) {
-  //       updateLists.push(listCopy);
-  //     }
-  //   }
-
-  //   const indexListCopy = updateLists.findIndex(list => list.idList === listCopy.idList);
-
-  //   if (indexListCopy > -1) {
-  //     const prevList = updateLists[indexListCopy - 1];
-  //     const postList = updateLists[indexListCopy + 1];
-  //     let newOrder: number | undefined = undefined;
-
-  //     if (prevList && postList) {
-  //       newOrder = (prevList.order + postList.order) / 2;
-  //     } else if (prevList) {
-  //       newOrder = prevList.order + 10;
-  //     }
-
-  //     if (newOrder !== undefined) {
-  //       updateLists = updateLists.map(list => list.idList === idList ? {...list, order: newOrder} : list);
-  //       if (userAuth) addListFirebase({idBoard, list: {...listCopy, order: newOrder}}); //Se agrega la lista copiada
-  //     }
-  //   }
-
-  //   console.log('updateLists', updateLists);
-  //   console.log('cards', useCardsStore.getState().cardsGroup);
-
-
-  //   listsService({ 
-  //     updateFn: (listsGroup) => listsGroup.map((listGroup) =>
-  //       listGroup.idBoard === idBoard ?
-  //       {...listGroup, lists: updateLists} :
-  //       listGroup
-  //     ),
-  //   });
-  // }
 
   const copyList = ({idBoard, listToCopy, inputText}: {idBoard: string, listToCopy: ListProps, inputText: string}) => {
     const listGroup = listsGroup.find(listGroup => listGroup.idBoard === idBoard)?.lists; 

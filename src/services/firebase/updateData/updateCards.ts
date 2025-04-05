@@ -120,7 +120,7 @@ export const updateImgCoverCard = async ({idBoard, idList, idCard, img}:{idBoard
   const cardRef = doc(db, `users/${userId}/boards/${idBoard}/lists/${idList}/cards/${idCard}`);
   const cardSnap = await getDoc(cardRef);
   if (!cardSnap.exists()) return;
-  const historyImgs = cardSnap.data().coverCardImgs;
+  const coverCardImgs = cardSnap.data().coverCardImgs;
 
   if (img instanceof File) {
     const uniqueId = `${idCard}-img-${Date.now()}`;
@@ -130,20 +130,26 @@ export const updateImgCoverCard = async ({idBoard, idList, idCard, img}:{idBoard
 
     await updateDoc(cardRef, {
       coverImgCard: downloadUrl,
-      coverCardImgs: [...historyImgs, downloadUrl]
+      coverCardImgs: [...coverCardImgs, downloadUrl]
     });
 
     return {
-      currentCover: downloadUrl,
-      historyImgs: [...historyImgs, downloadUrl]
+      coverImgCard: downloadUrl,
+      coverCardImgs: [...coverCardImgs, downloadUrl]
     };
   } else {
     await updateDoc(cardRef, { coverImgCard: null });
     return {
-      currentCover: null,
-      historyImgs
+      coverImgCard: null,
+      coverCardImgs
     }
   }
+}
+
+export const updatedCoverImg = async ({idBoard, idList, idCard, img}:{idBoard: string, idList: string, idCard: string, img: string | null}) => {
+  const userId = auth.currentUser?.uid;
+  const cardRef = doc(db, `users/${userId}/boards/${idBoard}/lists/${idList}/cards/${idCard}`);
+  await updateDoc(cardRef, { coverImgCard: img })
 }
 
 export const updateCompleteCard = async ({idBoard, idList, idCard, complete}:{idBoard: string, idList: string, idCard: string, complete: boolean}) => {
