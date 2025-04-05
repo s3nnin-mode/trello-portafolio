@@ -36,8 +36,7 @@ export const Home = () => {
           Si deseas registrarte puedes hacerlo, practicamente puedes usar todas las funcionalidades existentes menos el drag & drop (arrastre de tarjetas y listas) ya que recien empecé a crear esta funcionalidad y no está pulida.
           Si deseas mover una lista puedes hacerlo desde el menú de opciones de la lista.
           <br />
-          <br />
-          En cuanto al diseño, es un diseño simple y minimalista, pero funcional, aunque le falta una manita de gato.
+          En general me falta por agregar un par de cosas como mostrar mensajes claros cuando un registro o inicio de sesión falla, ser responsive y una manita de gato al diseño. Pero en general estoy cerca de terminar este proyecto.
           <br />
           Cualquier mejora o sugerencia es bienvenida.
           <br />

@@ -30,21 +30,6 @@ export const AuthProvider = ({children}: ChildrenProps) => {
         });
     }
 
-    const fetchDataX = async () => {
-        const LS = localStorage.getItem('boards-storage');
-        if (userAuth) {
-            const boards = await getBoardsFirebase();
-            loadBoards(boards);
-            navigate('/kanbaX');
-            
-        } else if (LS) {  
-            loadBoards(JSON.parse(LS));
-            navigate('/kanbaX'); 
-        } else {
-            console.log('no hay LS ni UserAuth');
-        }
-    }
-
     const fetchData = async () => {
         const boards = await getBoardsFirebase();
         if (boards) {

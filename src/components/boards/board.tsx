@@ -152,7 +152,7 @@ export const Tablero = () => {
         .sort((a, b) => a.order - b.order) // Asegurar orden ascendente
         .map((list, index) => ({ ...list, order: index * 10 })); // Reasignar desde 0
 
-      updateOrderListsFirebase({ idBoard, updateLists: lists });
+      updateOrderListsFirebase({ idBoard, updatedLists: lists });
       console.log('Se reorganizaron los orders en drag and drop: ', lists);
     }
 
