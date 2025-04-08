@@ -37,7 +37,6 @@ export const updateOrderListsFirebase = async ({idBoard, updatedLists}: {idBoard
 
     const updates = updatedLists.map(async (list, index) => {
         const listRef = doc(db, `users/${userId}/boards/${idBoard}/lists/${list.idList}`);
-        // const lista = getDoc(listRef);
         const order = index === 0 ? 0 : index * 10;
         await updateDoc(listRef, { order });
         console.log('se actualiza cada lista', list, list.order)

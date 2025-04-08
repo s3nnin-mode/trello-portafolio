@@ -45,7 +45,6 @@ export const AuthProvider = ({children}: ChildrenProps) => {
             setUserAuth(true);
             fetchData();
             navigate('/kanbaX');
-            console.log('usuario auth en contexto', userAuth);
         } else if (LS) {
             setUserAuth(false);
             console.log('usuario no auth en contexto', userAuth);

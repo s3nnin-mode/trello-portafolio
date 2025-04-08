@@ -34,6 +34,18 @@ export const updateOrderCard = async ({idBoard, idList, card}: {idBoard: string,
   await updateDoc(cardRef, { order: card.order });
 }
 
+export const updateOrderCards = async ({idBoard, idList, updatedCards}: {idBoard: string, idList: string, updatedCards: CardProps[]}) => {
+  const userId = auth.currentUser?.uid;
+
+  const updates = updatedCards.map(async (card, index) => {
+    const cardRef = doc(db, `users/${userId}/boards/${idBoard}/lists/${idList}/cards/${card.idCard}`);
+    const order = index === 0 ? 0 : index * 10;
+    await updateDoc(cardRef, { order });
+  });
+
+  await Promise.all(updates);
+}
+
 // export const updateOrdersCard = async ({idBoard, idList, cards}: {idBoard: string, idList: string, cards: CardProps[]}) => {
 //     const userId = auth.currentUser?.uid;
 //     const batch = writeBatch(db);

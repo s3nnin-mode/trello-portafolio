@@ -282,7 +282,7 @@
     position: fixed;
     top: 0;
     left: 0;
-  // transform: 'translate(-50%, -50%)',
+    // transform: translate(-50%, -50%);
     width: 100%;
     background: '#121212';
     box-shadow: 0 0 24px #121212;
@@ -291,7 +291,7 @@
     max-height: 100vh;
 
     display: flex;
-    justify-content: left;
+    justify-content: center;
     background-color: rgb(128, 128, 128, .1) !important;
 }
 

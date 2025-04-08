@@ -94,7 +94,6 @@ export const Tableros = () => {
         {
           boards.length > 0 && (
             boards.map(board => {
-              console.log(board)
               return (
                 <Box
                 

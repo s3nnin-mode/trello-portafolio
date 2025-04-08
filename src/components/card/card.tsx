@@ -18,6 +18,7 @@ import { CheckAnimation } from "../animations/checked";
 import { useCardsServices } from "../../services/cardsServices";
 import { useAuthContext } from "../../customHooks/useAuthContext";
 import { updateCompleteCard } from "../../services/firebase/updateData/updateCards";
+import { useDroppable } from "@dnd-kit/core";
 
 interface TargetComponentProps {
   card: CardProps
@@ -39,7 +40,8 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
     attributes, 
     listeners, 
     setNodeRef, 
-    transform, 
+    transform,
+    transition,
     isDragging
   } = useSortable({
     id: card.idCard,
@@ -52,10 +54,12 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
 
   const style = { 
     transform: CSS.Transform.toString(transform),
-    transition: isDragging ? 'transform 0.1s ease-out' : 'none',
+    transition,
+    // transition: isDragging ? 'transform 0.1s linear' : 'none',
     opacity: isDragging ? 0.3 : 1,
     boxShadow: isDragging ? '0px 4px 10px rgba(0, 0, 0, 0.3)' : '0 1.2px 3px #121212',
     cursor: isDragging ? 'grabbing' : 'pointer',
+    border: isDragging ? '2px solid red' : '1px solid'
   };
 
   const isActive = ({tag}: {tag: TagsProps}) => tag.cardsThatUseIt.some((item) => item.idCard === card.idCard);
@@ -102,8 +106,6 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
         {...attributes}
         {...listeners}
         onClick={() => { setShowCardModal(true)}}
-        // onMouseEnter={() => setIsPlaying(true)}
-        // onMouseLeave={() => setIsPlaying(false)}
       >
         {
           !showDescription ?
