@@ -7,14 +7,14 @@ import { List } from '../list/list';
 import { Card } from '../card/card';
 import { BtnAdd } from '../reusables/btnAgregar';
 //DND-KIT
-import {  DragOverlay, DndContext, DragEndEvent, DragOverEvent, DragStartEvent, PointerSensor, useSensor, useSensors, CollisionDetection, closestCenter } from '@dnd-kit/core';
-import { arrayMove, SortableContext } from '@dnd-kit/sortable';
+import {  DragOverlay, DndContext, DragEndEvent, DragOverEvent, DragStartEvent, PointerSensor, useSensor, useSensors, closestCenter, closestCorners } from '@dnd-kit/core';
+import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 
 //STORES
 import { useListsStore } from '../../store/listsStore';
 import { useBoardsStore } from '../../store/boardsStore';
 //TYPES
-import { BoardProps, CardProps, ListProps } from '../../types/boardProps';
+import { BoardProps, CardGroupProps, CardProps, ListProps } from '../../types/boardProps';
 import { useListsServices } from '../../services/listsServices';
 import { useCardsServices } from '../../services/cardsServices';
 import { useCardsStore } from '../../store/cardsStore';
@@ -200,6 +200,9 @@ export const Tablero = () => {
     };
   }
 
+  const [count, setCount] = useState(0);
+  const [origenGroup, setOrigenGroup] = useState<CardGroupProps | null>(null);
+
   const onDragOver = (event: DragOverEvent) => {
     const { active, over } = event;
     if (!over) return;
@@ -210,78 +213,86 @@ export const Tablero = () => {
     if (activeId === overId) return;
 
     const isActiveCard = active.data.current?.type === 'card';
-    const isOverCard = over.data.current?.type === 'card';
 
-    if (isActiveCard && isOverCard) {
-      //primero hay que encontrar la lista a la que pertenece la card
-      const idList = cardsGroup.find((cardGroup) => cardGroup.cards.some((card) => card.idCard === activeId))?.idList;
-      if(!idList) return;
+    // const isOverCard = over.data.current?.type === 'card';
 
-      const cards = cardsGroup.find((cardGroup) => cardGroup.idBoard === idBoard && cardGroup.idList === idList)?.cards;
-      if (!cards) return;
+    // if (isActiveCard && isOverCard) {
+    //   //primero hay que encontrar la lista a la que pertenece la card
+    //   const idList = cardsGroup.find((cardGroup) => cardGroup.cards.some((card) => card.idCard === activeId))?.idList;
+    //   if(!idList) return;
 
-      const oldIndex = cards.findIndex((card) => card.idCard === activeId);
-      const newIndex = cards.findIndex((card) => card.idCard === overId);
-      if (oldIndex === -1 || newIndex === -1 || oldIndex === newIndex) return;
+    //   const cards = cardsGroup.find((cardGroup) => cardGroup.idBoard === idBoard && cardGroup.idList === idList)?.cards;
+    //   if (!cards) return;
 
-      // let updatedCards = arrayMove(cards, oldIndex, newIndex);
+    //   const oldIndex = cards.findIndex((card) => card.idCard === activeId);
+    //   const newIndex = cards.findIndex((card) => card.idCard === overId);
+    //   if (oldIndex === -1 || newIndex === -1 || oldIndex === newIndex) return;
 
-      //calcular el nuevo order de la card movida
+    //   // let updatedCards = arrayMove(cards, oldIndex, newIndex);
 
-      // if (userAuth) {
-      //   const prevCard = updatedCards[newIndex - 1];
-      //   const postCard = updatedCards[newIndex + 1];
-      //   let newOrderCard = 0;
+    //   //calcular el nuevo order de la card movida
 
-      //   if (prevCard && postCard) {
-      //     newOrderCard = (prevCard.order + postCard.order) / 2;
-      //     console.log('la card cayo en medio')
-      //   } else if (prevCard) {
-      //     newOrderCard = prevCard.order + 10;
-      //     console.log('la card cayo al final')
-      //   } else if (postCard) {
-      //     newOrderCard = postCard.order - 10;
-      //     console.log('la card cayó al principio')
-      //   } else {
-      //     console.log('la card no cayó en ningun lado, POSIBLE ERROR');
-      //   }
+    //   // if (userAuth) {
+    //   //   const prevCard = updatedCards[newIndex - 1];
+    //   //   const postCard = updatedCards[newIndex + 1];
+    //   //   let newOrderCard = 0;
 
-      //   updatedCards[newIndex].order = newOrderCard;
-      //   updateOrderCard({idBoard, idList, card: updatedCards[newIndex]});
+    //   //   if (prevCard && postCard) {
+    //   //     newOrderCard = (prevCard.order + postCard.order) / 2;
+    //   //     console.log('la card cayo en medio')
+    //   //   } else if (prevCard) {
+    //   //     newOrderCard = prevCard.order + 10;
+    //   //     console.log('la card cayo al final')
+    //   //   } else if (postCard) {
+    //   //     newOrderCard = postCard.order - 10;
+    //   //     console.log('la card cayó al principio')
+    //   //   } else {
+    //   //     console.log('la card no cayó en ningun lado, POSIBLE ERROR');
+    //   //   }
 
-      //   const hasDuplicates = updatedCards.some((card, index, arr) => 
-      //     arr.some((otherCard, otherIndex) => otherIndex !== index && otherCard.order === card.order)
-      //   );
+    //   //   updatedCards[newIndex].order = newOrderCard;
+    //   //   updateOrderCard({idBoard, idList, card: updatedCards[newIndex]});
+
+    //   //   const hasDuplicates = updatedCards.some((card, index, arr) => 
+    //   //     arr.some((otherCard, otherIndex) => otherIndex !== index && otherCard.order === card.order)
+    //   //   );
       
-      //   const hasNegativeOrders = updatedCards.some(card => card.order < 0);
+    //   //   const hasNegativeOrders = updatedCards.some(card => card.order < 0);
         
-      //   if (hasDuplicates || hasNegativeOrders) {
-      //     updatedCards = updatedCards.sort((a, b) => a.order - b.order).map((card, index) => ({ ...card, order: index * 10 }));
+    //   //   if (hasDuplicates || hasNegativeOrders) {
+    //   //     updatedCards = updatedCards.sort((a, b) => a.order - b.order).map((card, index) => ({ ...card, order: index * 10 }));
 
-      //     updateOrderCards({idBoard, idList, updatedCards: updatedCards});
-      //     console.log('se reseteo order de cards', updatedCards);
-      //   }
-      // }
+    //   //     updateOrderCards({idBoard, idList, updatedCards: updatedCards});
+    //   //     console.log('se reseteo order de cards', updatedCards);
+    //   //   }
+    //   // }
 
-      // cardsServices({
-      //   updateFn: (cardsGroup) => cardsGroup.map((cardGroup) => {
-      //     if (cardGroup.idBoard === idBoard && cardGroup.idList === idList) {
-      //       return { ...cardGroup, cards: updatedCards };
-      //     }
-      //     return cardGroup;
-      //   })
-      // });
+    //   // cardsServices({
+    //   //   updateFn: (cardsGroup) => cardsGroup.map((cardGroup) => {
+    //   //     if (cardGroup.idBoard === idBoard && cardGroup.idList === idList) {
+    //   //       return { ...cardGroup, cards: updatedCards };
+    //   //     }
+    //   //     return cardGroup;
+    //   //   })
+    //   // });
 
-      return
-    }
+    //   return
+    // }
     //LOGICA PARA MOVER LA CARD A OTRA LISTA
 
     const isOverList = over.data.current?.type === 'list';
 
+    const origenCardGroup = cardsGroup.find((cardGroup) => cardGroup.cards.some((card) => card.idCard === activeId)); //esta variable es para sacar el idList y para obtener la card a mover
+
+    if (isActiveCard && origenCardGroup && !origenGroup) {
+      setOrigenGroup(origenCardGroup);
+      console.log('origenGroup state', origenCardGroup);
+    }
+
     if (isActiveCard && isOverList) {
       const idList = overId;
         
-      const origenCardGroup = cardsGroup.find((cardGroup) => cardGroup.cards.some((card) => card.idCard === activeId)); //esta variable es para sacar el idList y para obtener la card a mover
+      // const origenCardGroup = cardsGroup.find((cardGroup) => cardGroup.cards.some((card) => card.idCard === activeId)); //esta variable es para sacar el idList y para obtener la card a mover
       if (!origenCardGroup) return;
 
       const cardToMove = origenCardGroup.cards.find((card) => card.idCard === activeId);
@@ -297,12 +308,13 @@ export const Tablero = () => {
         })
       });
 
+      //se agrega al nuevo grupo
       cardsServices({
         updateFn: (cardGroup) => cardGroup.map((cardGroup) => {
           if (cardGroup.idBoard === idBoard && cardGroup.idList === idList) {
-
+            
             return { ...cardGroup, cards: [...cardGroup.cards, cardToMove].map((card, index) => {
-              return {...card, order: index === 0 ? 0 : cardGroup.cards[index - 1].order + 10}
+              return {...card, order: index === 0 ? 0 : cardGroup.cards[index - 1].order + 10} //no recuerdo porque se resetea el order
             })};
           }
           return cardGroup;
@@ -323,68 +335,58 @@ export const Tablero = () => {
 
       //Se agrega a la lista en donde se dejó caer
 
-      if (userAuth) {
-        const cardsUpdate = useCardsStore.getState().cardsGroup.find(cardGroup => cardGroup.idList === idList)?.cards;
-        if (!cardsUpdate) return;
+      // if (userAuth) {
+      //   const cardsUpdate = useCardsStore.getState().cardsGroup.find(cardGroup => cardGroup.idList === idList)?.cards;
+      //   if (!cardsUpdate) return;
+      //   console.log('se ha llamado a firebase', count);
+      //   setCount(prevCount => prevCount + 1);
 
-        moveCardThoAnotherList({ 
-          idBoard, 
-          idListOrigen: origenCardGroup.idList,
-          idListDestiny: idList as string, 
-          card: cardToMove,
-          cardsUpdate
-        });
-        console.log('test para ver cuantas veces se ejecuta el update a firebase')
-      }
+      //   moveCardThoAnotherList({ 
+      //     idBoard, 
+      //     idListOrigen: origenCardGroup.idList,
+      //     idListDestiny: idList as string, 
+      //     card: cardToMove,
+      //     cardsUpdate
+      //   });
+      //   console.log('test para ver cuantas veces se ejecuta el update a firebase')
+      // }
     }
   }
 
   const onDragEnd = (event: DragEndEvent) => {
-    console.log('se ejecutó dragEnd');
-    // setActiveCard(null);
-    // setActiveList(null);
+    setActiveCard(null);
+    setActiveList(null);
 
     const { active, over } = event;
-    if (!over) return;
+    if (!over) return
   
     const activeId = active.id;
     const overId = over.id;
   
     if (activeId === overId) {
-      console.log('activeId y overId son iguales: ');
-      console.log(active);
-      console.log(over);
       return;
-    } else {
-      console.log('no son iguales')
-      console.log(active);
-      console.log(over);
     }
   
     const typeActive = active.data.current?.type;
     const typeOver = over.data.current?.type;
   
-    // card movida dentro de la misma lista
     if (typeActive === 'card' && typeOver === 'card') {
-      const idList = cardsGroup.find((cardGroup) => cardGroup.cards.some((card) => card.idCard === activeId))?.idList;
-  
+
+      const overGroup = cardsGroup.find(cardGroup => cardGroup.cards.some(card => card.idCard === overId)); //overGroup es el grupo donde cayó la card
+
+      // if (overGroup?.idList === origenCardGroup?.idList) {  //Si cayó dentro del mismo grupo quiere decir que la card fue soltado dentro de su propia lista
+
+      const idList = cardsGroup.find((cardGroup) => cardGroup.cards.some((card) => card.idCard === activeId))?.idList; //este idList de la lista en donde se dejó caer la card
       if (!idList) return;
-      console.log('se encontró idList')
   
       const cards = cardsGroup.find((group) => group.idBoard === idBoard && group.idList === idList)?.cards;
-  
       if (!cards) return;
-      console.log('se encontró cards');
 
       const oldIndex = cards.findIndex((card) => card.idCard === activeId);
       const newIndex = cards.findIndex((card) => card.idCard === overId);
   
-      if (oldIndex === -1 || newIndex === -1 || oldIndex === newIndex) {
-        console.log('no se halló ni madres')
-        return
-      } 
-      console.log('se encontró oldIndex etc');
-  
+      if (oldIndex === -1 || newIndex === -1 || oldIndex === newIndex) return;
+      
       let updatedCards = arrayMove(cards, oldIndex, newIndex);
   
       const prevCard = updatedCards[newIndex - 1];
@@ -407,15 +409,53 @@ export const Tablero = () => {
       );
   
       const hasNegativeOrders = updatedCards.some((card) => card.order < 0);
-  
-      if (hasDuplicates || hasNegativeOrders) {
-        updatedCards = updatedCards.sort((a, b) => a.order - b.order).map((card, index) => ({ ...card, order: index * 10 }));
-        updateOrderCards({ idBoard, idList, updatedCards });
-        console.log('se reseteó las cards');
+
+      const updateOrders = hasDuplicates || hasNegativeOrders;
+
+      if (!overGroup) {
+        console.log('no se halló overGroup');
+        return
+      }
+
+      if (!origenGroup) {
+        console.log('no se halló origenCardGroup')
+        return
+      }
+
+      if (origenGroup.idList === overGroup.idList) {
+        console.log('card arrastrada dentro de su propia lista');
+        if (updateOrders) {
+          updatedCards = updatedCards.sort((a, b) => a.order - b.order).map((card, index) => ({ ...card, order: index * 10 }));
+          updateOrderCards({ idBoard, idList, updatedCards });
+          console.log('se reseteó las cards donde la card fue movida dentro de su propia lista');
+        } else {
+          updateOrderCard({idBoard, idList, card: updatedCards[newIndex]});
+          console.log('se cambió unicamente el order de una card dentro de su propia lista');
+        }
       } else {
-        updateOrderCard({idBoard, idList, card: updatedCards[newIndex]});
-        console.log('se actualizó solo una card');
-      }  
+        
+        moveCardThoAnotherList({
+          idBoard,
+          idListOrigen: origenGroup.idList,
+          idListDestiny: overGroup.idList,
+          card: updatedCards[newIndex],
+          updateCards: updateOrders ? updatedCards : undefined
+        });
+        console.log('se movió card a otra lista')
+        // if (hasDuplicates || hasNegativeOrders) {
+        //   updatedCards = updatedCards.sort((a, b) => a.order - b.order).map((card, index) => ({ ...card, order: index * 10 }));
+        //   //primero eliminar la card de la lista de origen
+        //   if (!origenCardGroup) return
+        //   if (!overGroup) return;
+
+        //   moveCardThoAnotherList({
+        //     idBoard,
+        //     idListOrigen: origenCardGroup.idList,
+        //     idListDestiny: overGroup?.idList,
+        //     card: updatedCards[newIndex]
+        //   });
+        
+      } 
 
       cardsServices({
         updateFn: (cardsGroup) => cardsGroup.map((cardGroup) => {
@@ -425,47 +465,66 @@ export const Tablero = () => {
           return cardGroup;
         })
       });
-      console.log('se movio la cardddddd')
-      return;
+      setOrigenGroup(null);
     }
+
   
     // 🟡 CARD MOVIDA A OTRA LISTA
     if (typeActive === 'card' && typeOver === 'list') {
-      const idListDestino = overId as string;
+      // const idListDestino = overId as string;
+      // console.log('la card cayó en otra lista', idListDestino);
   
-      const origenGroup = useCardsStore.getState().cardsGroup.find((group) =>
-        group.cards.some((card) => card.idCard === activeId)
-      );
+      // const origenGroup = useCardsStore.getState().cardsGroup.find((group) =>
+      //   group.cards.some((card) => card.idCard === activeId)
+      // );
+
   
-      if (!origenGroup) return;
+      // if (!origenGroup) return;
   
-      const cardToMove = origenGroup.cards.find((card) => card.idCard === activeId);
+      // const cardToMove = origenGroup.cards.find((card) => card.idCard === activeId);
+      // if (!cardToMove) return;
+  
+      // const cardsDestino = useCardsStore.getState().cardsGroup.find(
+      //   (group) => group.idList === idListDestino
+      // )?.cards;
+  
+      // if (!cardsDestino) return;
+  
+      // const updatedCard = { ...cardToMove, idList: idListDestino };
+  
+      // const newOrder =
+      //   cardsDestino.length > 0
+      //     ? cardsDestino[cardsDestino.length - 1].order + 10
+      //     : 0;
+  
+      // updatedCard.order = newOrder;
+  
+      // const updatedCards = [...cardsDestino, updatedCard];
+      console.log('la card cayo en otra lista')
+      console.log('typeActive', typeActive);
+      console.log('typeOver', typeOver);
+
+      const idList = overId;
+        
+      const origenCardGroup = cardsGroup.find((cardGroup) => cardGroup.cards.some((card) => card.idCard === activeId)); //esta variable es para sacar el idList y para obtener la card a mover
+      if (!origenCardGroup) return;
+
+      const cardToMove = origenCardGroup.cards.find((card) => card.idCard === activeId);
       if (!cardToMove) return;
   
-      const cardsDestino = useCardsStore.getState().cardsGroup.find(
-        (group) => group.idList === idListDestino
-      )?.cards;
-  
-      if (!cardsDestino) return;
-  
-      const updatedCard = { ...cardToMove, idList: idListDestino };
-  
-      const newOrder =
-        cardsDestino.length > 0
-          ? cardsDestino[cardsDestino.length - 1].order + 10
-          : 0;
-  
-      updatedCard.order = newOrder;
-  
-      const updatedCards = [...cardsDestino, updatedCard];
-  
-      moveCardThoAnotherList({
-        idBoard,
-        idListOrigen: origenGroup.idList,
-        idListDestiny: idListDestino,
-        card: updatedCard,
-        cardsUpdate: updatedCards,
-      });
+      if (userAuth) {
+        const cardsUpdate = useCardsStore.getState().cardsGroup.find(cardGroup => cardGroup.idList === idList)?.cards;
+        if (!cardsUpdate) return;
+        console.log('se ha llamado a firebase', count);
+        setCount(prevCount => prevCount + 1);
+
+        moveCardThoAnotherList({ 
+          idBoard, 
+          idListOrigen: origenCardGroup.idList,
+          idListDestiny: idList as string, 
+          card: cardToMove
+        });
+      }
   
       return;
     }
@@ -508,7 +567,10 @@ export const Tablero = () => {
         <div className='board_content'>
         {
         currentLists !== undefined && (
-          <SortableContext items={currentLists.map((list) => list.idList)}> {/*strategy={verticalListSortingStrategy}*/}
+          <SortableContext 
+            items={currentLists.map((list) => list.idList)}
+            strategy={verticalListSortingStrategy}
+            >
             {
               currentBoard && (               //antes de pasar board verifico que exista
                 currentLists.map((list) => {

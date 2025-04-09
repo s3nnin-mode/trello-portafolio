@@ -8,7 +8,7 @@ import { NameComponent } from "../reusables/nameComponent";
 import { BtnAdd } from "../reusables/btnAgregar";
 import { Card } from "../card/card";
 //DRAG AND DROP List
-import { useSortable } from "@dnd-kit/sortable";
+import { useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 //STORES
 import { useCardsStore } from "../../store/cardsStore";
@@ -130,6 +130,7 @@ export const List: React.FC<ListPropsComponent> = ({ board, list }) => {
         className='content_list' >
         <SortableContext 
           items={currentCards.map(card => card.idCard)}
+          strategy={verticalListSortingStrategy}
           > 
           {
             currentCards.map((card) => (

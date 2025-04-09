@@ -59,8 +59,8 @@ export const updateOrderCards = async ({idBoard, idList, updatedCards}: {idBoard
 // }
 
 export const moveCardThoAnotherList = async (
-  {idBoard, idListOrigen, idListDestiny, card, cardsUpdate}: 
-  {idBoard: string, idListOrigen: string, idListDestiny: string, card: CardProps, cardsUpdate: CardProps[]}
+  {idBoard, idListOrigen, idListDestiny, card, updateCards}: 
+  {idBoard: string, idListOrigen: string, idListDestiny: string, card: CardProps, updateCards?: CardProps[]}
   ) => {
 
   const userId = auth.currentUser?.uid;
@@ -70,15 +70,19 @@ export const moveCardThoAnotherList = async (
   batch.delete(origenCardRef);
 
   const destinyCardRef = doc(collection(db, `users/${userId}/boards/${idBoard}/lists/${idListDestiny}/cards`), card.idCard);
-  batch.set(destinyCardRef, card);
+  // batch.set(destinyCardRef, card);
+  await setDoc(destinyCardRef, card);
   console.log('se movio una card a otra lista exitosamente');
 
-  cardsUpdate.forEach((card, index) => {
-    const cardRef = doc(db, `users/${userId}/boards/${idBoard}/lists/${idListDestiny}/cards/${card.idCard}`);
-    batch.update(cardRef, { order:  10 * index});
-  });
+  if (updateCards) {
+    updateCards.forEach((card, index) => {
+      const cardRef = doc(db, `users/${userId}/boards/${idBoard}/lists/${idListDestiny}/cards/${card.idCard}`);
+      batch.update(cardRef, { order:  10 * index});
+    });
+    console.log('se reordeno cards al mover card a otra lista')
+  }
+
   await batch.commit();
-  console.log("card movida y orders actualizados en firestore");
 }
 
 export const updateNameCardFirebase = async ({idBoard, idList, idCard, name}:{idBoard: string, idList: string, idCard: string, name: string}) => {
