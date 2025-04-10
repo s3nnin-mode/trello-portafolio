@@ -76,20 +76,28 @@ export const userRegister = async ({email, password}: {email: string, password: 
 
     await initialData(userId);
     
-    return true
+    return true;
   } catch(error: any) {
     if (error.code === 'auth/email-already-in-use') {
-      console.error('The email is already registered.');
-      return 'The email is already registered.'
+      throw {
+        field: 'email',
+        message: 'Este correo ya está registrado',
+      };
     } else if (error.code === 'auth/invalid-email') {
-      console.error('Invalid email format.');
-      return 'Invalid email format.';
+      throw {
+        field: 'email',
+        message: 'Formato de correo inválido',
+      };
     } else if (error.code === 'auth/weak-password') {
-      console.error('Password is too weak.');
-      return 'Password is too weak.';  //esta validacion sirve
+      throw {
+        field: 'password',
+        message: 'La contraseña es demasiado débil',
+      };
     } else {
-      console.error('Error during registration:', error.message);
-      return 'Error during registration';
+      throw {
+        field: '',
+        message: 'Ocurrió un error durante el registro',
+      };
     }
   }
 }
@@ -99,22 +107,34 @@ export const userLogin = async ({email, password}: {email: string, password: str
   .then((userCredential) => {
     const user = userCredential.user;
     console.log('usuario logeado correctamente: ', user)
-    return 'Login exitoso';
+    return true;
   })
   .catch((error) => {
     const errorCode = error.code.trim();
     const errorMessage = error.message;
     console.log('error login errorCode: ', errorCode);
-    console.log('error login message: ', errorMessage)
+    console.log('error login message: ', errorMessage);
     switch (error.code) {
       case 'auth/invalid-email':
-        return 'El formato del correo electrónico no es válido.';
+        throw {
+          field: 'email',
+          message: 'El formato del correo electrónico no es válido.'
+        };
       case 'auth/too-many-requests':
-        return 'Demasiados intentos fallidos. Inténtalo de nuevo más tarde.';
+        throw {
+          field: 'email',
+          message: 'Demasiados intentos fallidos. Inténtalo de nuevo más tarde.'
+        }
       case 'auth/invalid-credential':
-        return 'Credenciales invalidas, porfavor verifica tu correo y contraseña.'
+        throw {
+          field: '',
+          message: 'Credenciales invalidas, porfavor verifica tu correo y contraseña.'
+        }
       default:
-        return 'Ocurrió un error inesperado. Inténtalo más tarde.';
+        throw {
+          field: '',
+          message: 'Ocurrió un error inesperado. Inténtalo más tarde.'
+        }
     } 
   });
 }

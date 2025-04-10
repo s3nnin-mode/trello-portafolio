@@ -178,6 +178,7 @@ export const Tablero = () => {
   );
 
   const [listToActiveCard, setListToActiveCard] = useState<ListProps | null>(null);
+  const [origenGroup, setOrigenGroup] = useState<CardGroupProps | null>(null);
 
   const onDragStart = (event: DragStartEvent) => {
     setActiveList(null);
@@ -192,6 +193,9 @@ export const Tablero = () => {
       setActiveCard(event.active.data.current.card);
       const cardGroup = cardsGroup.find((cardGroup) => cardGroup.cards.some((card) => card.idCard === event.active.data.current?.card.idCard));
       if (!cardGroup) return;
+      // if (!origenGroup) {
+      //   setOrigenGroup(cardGroup); //!!
+      // }
       const idList = cardGroup.idList;
       const list = listsGroup.find((listGroup) => listGroup.lists.some((list) => list.idList === idList))?.lists.find((list) => list.idList === idList);
       if (list) {
@@ -201,7 +205,6 @@ export const Tablero = () => {
   }
 
   const [count, setCount] = useState(0);
-  const [origenGroup, setOrigenGroup] = useState<CardGroupProps | null>(null);
 
   const onDragOver = (event: DragOverEvent) => {
     const { active, over } = event;
@@ -213,6 +216,9 @@ export const Tablero = () => {
     if (activeId === overId) return;
 
     const isActiveCard = active.data.current?.type === 'card';
+    const isOverList = over.data.current?.type === 'list';
+
+
 
     // const isOverCard = over.data.current?.type === 'card';
 
@@ -280,29 +286,37 @@ export const Tablero = () => {
     // }
     //LOGICA PARA MOVER LA CARD A OTRA LISTA
 
-    const isOverList = over.data.current?.type === 'list';
 
     const origenCardGroup = cardsGroup.find((cardGroup) => cardGroup.cards.some((card) => card.idCard === activeId)); //esta variable es para sacar el idList y para obtener la card a mover
-
-    if (isActiveCard && origenCardGroup && !origenGroup) {
-      setOrigenGroup(origenCardGroup);
-      console.log('origenGroup state', origenCardGroup);
+    if (!origenCardGroup) {
+      console.log('no hay origenCardGroup DrageOver', origenCardGroup);
+      return
     }
+    
+    if (!origenGroup) {
+      setOrigenGroup(origenCardGroup);
+    }
+
+    // if (isActiveCard && origenGroup && !origenGroup) {
+    //   setOrigenGroup(origenGroup);
+    //   console.log('origenGroup state', origenGroup);
+    // }
 
     if (isActiveCard && isOverList) {
       const idList = overId;
         
       // const origenCardGroup = cardsGroup.find((cardGroup) => cardGroup.cards.some((card) => card.idCard === activeId)); //esta variable es para sacar el idList y para obtener la card a mover
-      if (!origenCardGroup) return;
+      if (!origenGroup) return;
 
-      const cardToMove = origenCardGroup.cards.find((card) => card.idCard === activeId);
+      // const cardToMove = origenGroup.cards.find((card) => card.idCard === activeId);
+      const cardToMove = activeCard;
       if (!cardToMove) return;
 
       //Se elimina la card del cardGroup al que estaba
       cardsServices({
         updateFn: (cardsGroup) => cardsGroup.map((cardGroup) => {
           if (cardGroup.idBoard === idBoard && cardGroup.idList === origenCardGroup.idList) { //cardsGroup[groupOrigenCard].idList
-            return { ...cardGroup, cards: cardGroup.cards.filter((card) => card.idCard !== activeId) };
+            return { ...cardGroup, cards: cardGroup.cards.filter((card) => card.idCard !== cardToMove.idCard) };
           }
           return cardGroup;
         })
@@ -312,10 +326,12 @@ export const Tablero = () => {
       cardsServices({
         updateFn: (cardGroup) => cardGroup.map((cardGroup) => {
           if (cardGroup.idBoard === idBoard && cardGroup.idList === idList) {
-            
-            return { ...cardGroup, cards: [...cardGroup.cards, cardToMove].map((card, index) => {
-              return {...card, order: index === 0 ? 0 : cardGroup.cards[index - 1].order + 10} //no recuerdo porque se resetea el order
-            })};
+            const newCards = [...cardGroup.cards].some(card => card.idCard === cardToMove.idCard) ? [...cardGroup.cards] : [...cardGroup.cards, cardToMove]
+            return { 
+              ...cardGroup, 
+              cards: newCards
+              // return {...card, order: index === 0 ? 0 : cardGroup.cards[index - 1].order + 10} //no recuerdo porque se resetea el order
+            };
           }
           return cardGroup;
         })
@@ -334,36 +350,22 @@ export const Tablero = () => {
       }));
 
       //Se agrega a la lista en donde se dejó caer
-
-      // if (userAuth) {
-      //   const cardsUpdate = useCardsStore.getState().cardsGroup.find(cardGroup => cardGroup.idList === idList)?.cards;
-      //   if (!cardsUpdate) return;
-      //   console.log('se ha llamado a firebase', count);
-      //   setCount(prevCount => prevCount + 1);
-
-      //   moveCardThoAnotherList({ 
-      //     idBoard, 
-      //     idListOrigen: origenCardGroup.idList,
-      //     idListDestiny: idList as string, 
-      //     card: cardToMove,
-      //     cardsUpdate
-      //   });
-      //   console.log('test para ver cuantas veces se ejecuta el update a firebase')
-      // }
     }
   }
 
   const onDragEnd = (event: DragEndEvent) => {
-    setActiveCard(null);
-    setActiveList(null);
-
     const { active, over } = event;
     if (!over) return
   
     const activeId = active.id;
     const overId = over.id;
-  
-    if (activeId === overId) {
+
+    const idListDestiny = cardsGroup.find(cardGroup => cardGroup.cards.some(card => card.idCard === overId))?.idList; //overGroup es el grupo donde cayó la card
+
+    if (activeId === overId && idListDestiny === origenGroup?.idList) {
+      console.log('activeId y overId son iguales');
+      console.log('activeId', activeId);
+      console.log('overId', overId)
       return;
     }
   
@@ -371,21 +373,29 @@ export const Tablero = () => {
     const typeOver = over.data.current?.type;
   
     if (typeActive === 'card' && typeOver === 'card') {
+      console.log('si entra a condicional');
 
-      const overGroup = cardsGroup.find(cardGroup => cardGroup.cards.some(card => card.idCard === overId)); //overGroup es el grupo donde cayó la card
-
-      // if (overGroup?.idList === origenCardGroup?.idList) {  //Si cayó dentro del mismo grupo quiere decir que la card fue soltado dentro de su propia lista
-
-      const idList = cardsGroup.find((cardGroup) => cardGroup.cards.some((card) => card.idCard === activeId))?.idList; //este idList de la lista en donde se dejó caer la card
+      const idList = cardsGroup.find((cardGroup) => cardGroup.cards.some((card) => card.idCard === activeId))?.idList; //este idList de la lista en donde se dejó caer la card, no se usa la de origen group porque ese es el origen
       if (!idList) return;
   
       const cards = cardsGroup.find((group) => group.idBoard === idBoard && group.idList === idList)?.cards;
-      if (!cards) return;
-
+      if (!cards) {
+        console.log('no se encontró cards');
+        return;
+      }
+      
       const oldIndex = cards.findIndex((card) => card.idCard === activeId);
       const newIndex = cards.findIndex((card) => card.idCard === overId);
   
-      if (oldIndex === -1 || newIndex === -1 || oldIndex === newIndex) return;
+      if (oldIndex === -1 || newIndex === -1) {
+        console.log('index no encontrados')
+        return;
+      }
+
+      if (oldIndex === newIndex && origenGroup?.idList === idList) {
+        console.log('index iguales')
+        return;
+      }
       
       let updatedCards = arrayMove(cards, oldIndex, newIndex);
   
@@ -412,7 +422,7 @@ export const Tablero = () => {
 
       const updateOrders = hasDuplicates || hasNegativeOrders;
 
-      if (!overGroup) {
+      if (!idListDestiny) {
         console.log('no se halló overGroup');
         return
       }
@@ -422,7 +432,7 @@ export const Tablero = () => {
         return
       }
 
-      if (origenGroup.idList === overGroup.idList) {
+      if (origenGroup.idList === idListDestiny) {
         console.log('card arrastrada dentro de su propia lista');
         if (updateOrders) {
           updatedCards = updatedCards.sort((a, b) => a.order - b.order).map((card, index) => ({ ...card, order: index * 10 }));
@@ -433,29 +443,16 @@ export const Tablero = () => {
           console.log('se cambió unicamente el order de una card dentro de su propia lista');
         }
       } else {
-        
         moveCardThoAnotherList({
           idBoard,
           idListOrigen: origenGroup.idList,
-          idListDestiny: overGroup.idList,
+          idListDestiny: idListDestiny,
           card: updatedCards[newIndex],
           updateCards: updateOrders ? updatedCards : undefined
         });
+        setOrigenGroup(null);
         console.log('se movió card a otra lista')
-        // if (hasDuplicates || hasNegativeOrders) {
-        //   updatedCards = updatedCards.sort((a, b) => a.order - b.order).map((card, index) => ({ ...card, order: index * 10 }));
-        //   //primero eliminar la card de la lista de origen
-        //   if (!origenCardGroup) return
-        //   if (!overGroup) return;
-
-        //   moveCardThoAnotherList({
-        //     idBoard,
-        //     idListOrigen: origenCardGroup.idList,
-        //     idListDestiny: overGroup?.idList,
-        //     card: updatedCards[newIndex]
-        //   });
-        
-      } 
+      }
 
       cardsServices({
         updateFn: (cardsGroup) => cardsGroup.map((cardGroup) => {
@@ -465,11 +462,10 @@ export const Tablero = () => {
           return cardGroup;
         })
       });
-      setOrigenGroup(null);
+
     }
 
-  
-    // 🟡 CARD MOVIDA A OTRA LISTA
+    //CARD MOVIDA A OTRA LISTA
     if (typeActive === 'card' && typeOver === 'list') {
       // const idListDestino = overId as string;
       // console.log('la card cayó en otra lista', idListDestino);
@@ -529,7 +525,7 @@ export const Tablero = () => {
       return;
     }
   
-    // 🟡 LISTA MOVIDA (reordenamiento visual)
+    //LISTA MOVIDA (reordenamiento visual)
     // if (typeActive === 'list' && typeOver === 'list') {
     //   const oldIndex = lists.findIndex((list) => list.idList === activeId);
     //   const newIndex = lists.findIndex((list) => list.idList === overId);
@@ -549,7 +545,7 @@ export const Tablero = () => {
   
     //   return;
     // }
-    console.log('finalizó dragEnd')
+    console.log('finalizó dragEnd');
   };
   
   return (

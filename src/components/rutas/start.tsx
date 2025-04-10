@@ -105,13 +105,13 @@ export const Start = () => {
           <h4 className='inter_title'>
             Elige entre registrarte para una experiencia personalizada o probar la funcionalidad de la aplicación mediante una cuenta demo.                  
           </h4>
-          <p className='montserrat'>
+          <p className='roboto'>
             Si decides usar la demo, los datos se guardarán temporalmente en tu navegador mediante localStorage, 
             lo que te permitirá explorar las características de la aplicación sin necesidad de crear una cuenta.
             <br /> 
             Elige lo que mejor se adapte a ti.            
           </p>
-          <Button sx={{backgroundColor: 'orange'}} onClick={demo} variant="contained">
+          <Button onClick={demo} variant="contained">
             Usar modo Demo
           </Button>
         </div>

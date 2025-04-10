@@ -106,13 +106,16 @@ export const List: React.FC<ListPropsComponent> = ({ board, list }) => {
 
   return (
     <div 
-      ref={setNodeRef}
-      {...attributes} //el drag and drop de la lista funcionará solo si se arrastra desde el header
-      {...listeners}
       style={style}
       className='list' 
-    >    
-      <header className='header_list'>  
+      ref={setNodeRef}
+        {...attributes} //el drag and drop de la lista funcionará solo si se arrastra desde el header
+        {...listeners}
+    >
+      <header 
+        className='header_list'
+        
+      >  
         <NameComponent 
           idBoard={board.idBoard} 
           list={list} 

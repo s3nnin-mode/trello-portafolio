@@ -69,9 +69,12 @@ export const moveCardThoAnotherList = async (
   const origenCardRef = doc(db, `users/${userId}/boards/${idBoard}/lists/${idListOrigen}/cards/${card.idCard}`);
   batch.delete(origenCardRef);
 
+  console.log('idList Origen: ', idListOrigen);
+  console.log('idListDestiny', idListDestiny);
+  console.log('card eliminada en firebase: ', origenCardRef);
+
   const destinyCardRef = doc(collection(db, `users/${userId}/boards/${idBoard}/lists/${idListDestiny}/cards`), card.idCard);
-  // batch.set(destinyCardRef, card);
-  await setDoc(destinyCardRef, card);
+  batch.set(destinyCardRef, card);
   console.log('se movio una card a otra lista exitosamente');
 
   if (updateCards) {
@@ -79,7 +82,7 @@ export const moveCardThoAnotherList = async (
       const cardRef = doc(db, `users/${userId}/boards/${idBoard}/lists/${idListDestiny}/cards/${card.idCard}`);
       batch.update(cardRef, { order:  10 * index});
     });
-    console.log('se reordeno cards al mover card a otra lista')
+    console.log('se reordeno cards al mover card a otra lista en firebase');
   }
 
   await batch.commit();

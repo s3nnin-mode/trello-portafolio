@@ -96,8 +96,9 @@ export const Tableros = () => {
             boards.map(board => {
               return (
                 <Box
-                
-                 className='board' onClick={() => handleClick(board.idBoard)} key={board.idBoard}>
+                 className='board' 
+                 onClick={() => handleClick(board.idBoard)} key={board.idBoard}
+                >
                   <span className='name_board inter_title'>{board.nameBoard}</span>
                   <span className='icon_fav'>Star fav</span>
                 </Box>
