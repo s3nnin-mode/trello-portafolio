@@ -179,32 +179,37 @@ export const Tablero = () => {
 
   const [listToActiveCard, setListToActiveCard] = useState<ListProps | null>(null);
   const [origenGroup, setOrigenGroup] = useState<CardGroupProps | null>(null);
+  // const [activeStart, setActiveStart] = useState(false);
 
   const onDragStart = (event: DragStartEvent) => {
-    setActiveList(null);
-    setActiveCard(null);
-
+    
     if (event.active.data.current?.type === 'list') {
       setActiveList(event.active.data.current.list);
       return;
     }
-
+    
     if (event.active.data.current?.type === 'card') {
-      setActiveCard(event.active.data.current.card);
-      const cardGroup = cardsGroup.find((cardGroup) => cardGroup.cards.some((card) => card.idCard === event.active.data.current?.card.idCard));
-      if (!cardGroup) return;
-      // if (!origenGroup) {
-      //   setOrigenGroup(cardGroup); //!!
-      // }
-      const idList = cardGroup.idList;
-      const list = listsGroup.find((listGroup) => listGroup.lists.some((list) => list.idList === idList))?.lists.find((list) => list.idList === idList);
-      if (list) {
-        setListToActiveCard(list);
+      if (activeCard === null) {
+        setActiveCard(event.active.data.current.card);
+      }
+
+      if (origenGroup === null) {
+        
+        const cardGroup = cardsGroup.find((cardGroup) => cardGroup.cards.some((card) => card.idCard === event.active.data.current?.card.idCard));
+        if (!cardGroup) return;
+        setOrigenGroup(cardGroup);
+        console.log('se dió un nuevo origenGroup', cardGroup);
+
+        const idList = cardGroup.idList;
+        const list = listsGroup.find((listGroup) => listGroup.lists.some((list) => list.idList === idList))?.lists.find((list) => list.idList === idList);
+        if (!list) return;
+
+        if (listToActiveCard === null) {
+          setListToActiveCard(list);
+        }
       }
     };
   }
-
-  const [count, setCount] = useState(0);
 
   const onDragOver = (event: DragOverEvent) => {
     const { active, over } = event;
@@ -213,101 +218,37 @@ export const Tablero = () => {
     const activeId = active.id;
     const overId = over.id;
 
-    if (activeId === overId) return;
+    if (activeId === overId) {
+      console.log('////////')
+      console.log('activeID y overId son iguales en DragOver');
+      console.log(activeId, overId)
+      console.log('////////')
+      // setActiveCard(null);
+      // setOrigenGroup(null);
+      // setActiveList(null);
+      // setListToActiveCard(null);
+      return;
+    }
 
     const isActiveCard = active.data.current?.type === 'card';
     const isOverList = over.data.current?.type === 'list';
 
-
-
-    // const isOverCard = over.data.current?.type === 'card';
-
-    // if (isActiveCard && isOverCard) {
-    //   //primero hay que encontrar la lista a la que pertenece la card
-    //   const idList = cardsGroup.find((cardGroup) => cardGroup.cards.some((card) => card.idCard === activeId))?.idList;
-    //   if(!idList) return;
-
-    //   const cards = cardsGroup.find((cardGroup) => cardGroup.idBoard === idBoard && cardGroup.idList === idList)?.cards;
-    //   if (!cards) return;
-
-    //   const oldIndex = cards.findIndex((card) => card.idCard === activeId);
-    //   const newIndex = cards.findIndex((card) => card.idCard === overId);
-    //   if (oldIndex === -1 || newIndex === -1 || oldIndex === newIndex) return;
-
-    //   // let updatedCards = arrayMove(cards, oldIndex, newIndex);
-
-    //   //calcular el nuevo order de la card movida
-
-    //   // if (userAuth) {
-    //   //   const prevCard = updatedCards[newIndex - 1];
-    //   //   const postCard = updatedCards[newIndex + 1];
-    //   //   let newOrderCard = 0;
-
-    //   //   if (prevCard && postCard) {
-    //   //     newOrderCard = (prevCard.order + postCard.order) / 2;
-    //   //     console.log('la card cayo en medio')
-    //   //   } else if (prevCard) {
-    //   //     newOrderCard = prevCard.order + 10;
-    //   //     console.log('la card cayo al final')
-    //   //   } else if (postCard) {
-    //   //     newOrderCard = postCard.order - 10;
-    //   //     console.log('la card cayó al principio')
-    //   //   } else {
-    //   //     console.log('la card no cayó en ningun lado, POSIBLE ERROR');
-    //   //   }
-
-    //   //   updatedCards[newIndex].order = newOrderCard;
-    //   //   updateOrderCard({idBoard, idList, card: updatedCards[newIndex]});
-
-    //   //   const hasDuplicates = updatedCards.some((card, index, arr) => 
-    //   //     arr.some((otherCard, otherIndex) => otherIndex !== index && otherCard.order === card.order)
-    //   //   );
-      
-    //   //   const hasNegativeOrders = updatedCards.some(card => card.order < 0);
-        
-    //   //   if (hasDuplicates || hasNegativeOrders) {
-    //   //     updatedCards = updatedCards.sort((a, b) => a.order - b.order).map((card, index) => ({ ...card, order: index * 10 }));
-
-    //   //     updateOrderCards({idBoard, idList, updatedCards: updatedCards});
-    //   //     console.log('se reseteo order de cards', updatedCards);
-    //   //   }
-    //   // }
-
-    //   // cardsServices({
-    //   //   updateFn: (cardsGroup) => cardsGroup.map((cardGroup) => {
-    //   //     if (cardGroup.idBoard === idBoard && cardGroup.idList === idList) {
-    //   //       return { ...cardGroup, cards: updatedCards };
-    //   //     }
-    //   //     return cardGroup;
-    //   //   })
-    //   // });
-
-    //   return
-    // }
-    //LOGICA PARA MOVER LA CARD A OTRA LISTA
-
-
-    const origenCardGroup = cardsGroup.find((cardGroup) => cardGroup.cards.some((card) => card.idCard === activeId)); //esta variable es para sacar el idList y para obtener la card a mover
-    if (!origenCardGroup) {
-      console.log('no hay origenCardGroup DrageOver', origenCardGroup);
-      return
-    }
-    
-    if (!origenGroup) {
-      setOrigenGroup(origenCardGroup);
+    if (overId === origenGroup?.idList) {
+      console.log('se arrastró dentro de su propia lista')
+    } else {
+      console.log('se llevo la card fuera de la lista')
     }
 
-    // if (isActiveCard && origenGroup && !origenGroup) {
-    //   setOrigenGroup(origenGroup);
-    //   console.log('origenGroup state', origenGroup);
-    // }
-
-    if (isActiveCard && isOverList) {
+   
+    if (isActiveCard && isOverList && overId !== origenGroup?.idList) {
       const idList = overId;
         
       // const origenCardGroup = cardsGroup.find((cardGroup) => cardGroup.cards.some((card) => card.idCard === activeId)); //esta variable es para sacar el idList y para obtener la card a mover
-      if (!origenGroup) return;
-
+      if (!origenGroup) {
+        console.log('no hay origenCardGroup DrageOver', origenGroup);
+        return
+      }
+      
       // const cardToMove = origenGroup.cards.find((card) => card.idCard === activeId);
       const cardToMove = activeCard;
       if (!cardToMove) return;
@@ -315,7 +256,7 @@ export const Tablero = () => {
       //Se elimina la card del cardGroup al que estaba
       cardsServices({
         updateFn: (cardsGroup) => cardsGroup.map((cardGroup) => {
-          if (cardGroup.idBoard === idBoard && cardGroup.idList === origenCardGroup.idList) { //cardsGroup[groupOrigenCard].idList
+          if (cardGroup.idBoard === idBoard && cardGroup.idList === origenGroup.idList) { //cardsGroup[groupOrigenCard].idList
             return { ...cardGroup, cards: cardGroup.cards.filter((card) => card.idCard !== cardToMove.idCard) };
           }
           return cardGroup;
@@ -349,7 +290,7 @@ export const Tablero = () => {
         return tag
       }));
 
-      //Se agrega a la lista en donde se dejó caer
+      //Se agrega a la lista en donde se dejó caer    
     }
   }
 
@@ -365,7 +306,12 @@ export const Tablero = () => {
     if (activeId === overId && idListDestiny === origenGroup?.idList) {
       console.log('activeId y overId son iguales');
       console.log('activeId', activeId);
-      console.log('overId', overId)
+      console.log('overId', overId);
+      setActiveCard(null);
+      setOrigenGroup(null);
+      setActiveList(null);
+      setListToActiveCard(null);
+      console.log('se dio null a todos los estados del drag')
       return;
     }
   
@@ -379,6 +325,7 @@ export const Tablero = () => {
       if (!idList) return;
   
       const cards = cardsGroup.find((group) => group.idBoard === idBoard && group.idList === idList)?.cards;
+
       if (!cards) {
         console.log('no se encontró cards');
         return;
@@ -393,7 +340,7 @@ export const Tablero = () => {
       }
 
       if (oldIndex === newIndex && origenGroup?.idList === idList) {
-        console.log('index iguales')
+        console.log('index iguales');
         return;
       }
       
@@ -450,9 +397,18 @@ export const Tablero = () => {
           card: updatedCards[newIndex],
           updateCards: updateOrders ? updatedCards : undefined
         });
-        setOrigenGroup(null);
+        
         console.log('se movió card a otra lista')
       }
+
+      // cardsServices({
+      //   updateFn: (cardsGroup) => cardsGroup.map((cardGroup) => {
+      //     if (cardGroup.idBoard === idBoard && cardGroup.idList === origenGroup.idList) { //cardsGroup[groupOrigenCard].idList
+      //       return { ...cardGroup, cards: cardGroup.cards.filter((card) => card.idCard !== updatedCards[newIndex].idCard) };
+      //     }
+      //     return cardGroup;
+      //   })
+      // });
 
       cardsServices({
         updateFn: (cardsGroup) => cardsGroup.map((cardGroup) => {
@@ -463,67 +419,43 @@ export const Tablero = () => {
         })
       });
 
+      setOrigenGroup(null);
+      setActiveList(null);
+      setActiveCard(null);
+      setListToActiveCard(null);
     }
 
     //CARD MOVIDA A OTRA LISTA
-    if (typeActive === 'card' && typeOver === 'list') {
-      // const idListDestino = overId as string;
-      // console.log('la card cayó en otra lista', idListDestino);
-  
-      // const origenGroup = useCardsStore.getState().cardsGroup.find((group) =>
-      //   group.cards.some((card) => card.idCard === activeId)
-      // );
+    // if (typeActive === 'card' && typeOver === 'list') {
+    //   console.log('la card cayo en otra lista');
 
-  
-      // if (!origenGroup) return;
-  
-      // const cardToMove = origenGroup.cards.find((card) => card.idCard === activeId);
-      // if (!cardToMove) return;
-  
-      // const cardsDestino = useCardsStore.getState().cardsGroup.find(
-      //   (group) => group.idList === idListDestino
-      // )?.cards;
-  
-      // if (!cardsDestino) return;
-  
-      // const updatedCard = { ...cardToMove, idList: idListDestino };
-  
-      // const newOrder =
-      //   cardsDestino.length > 0
-      //     ? cardsDestino[cardsDestino.length - 1].order + 10
-      //     : 0;
-  
-      // updatedCard.order = newOrder;
-  
-      // const updatedCards = [...cardsDestino, updatedCard];
-      console.log('la card cayo en otra lista')
-      console.log('typeActive', typeActive);
-      console.log('typeOver', typeOver);
-
-      const idList = overId;
+    //   const idList = overId;
         
-      const origenCardGroup = cardsGroup.find((cardGroup) => cardGroup.cards.some((card) => card.idCard === activeId)); //esta variable es para sacar el idList y para obtener la card a mover
-      if (!origenCardGroup) return;
+    //   const origenCardGroup = cardsGroup.find((cardGroup) => cardGroup.cards.some((card) => card.idCard === activeId)); //esta variable es para sacar el idList y para obtener la card a mover
+    //   if (!origenCardGroup) return;
 
-      const cardToMove = origenCardGroup.cards.find((card) => card.idCard === activeId);
-      if (!cardToMove) return;
+    //   const cardToMove = origenCardGroup.cards.find((card) => card.idCard === activeId);
+    //   if (!cardToMove) return;
   
-      if (userAuth) {
-        const cardsUpdate = useCardsStore.getState().cardsGroup.find(cardGroup => cardGroup.idList === idList)?.cards;
-        if (!cardsUpdate) return;
-        console.log('se ha llamado a firebase', count);
-        setCount(prevCount => prevCount + 1);
+    //   if (userAuth) {
+    //     const cardsUpdate = useCardsStore.getState().cardsGroup.find(cardGroup => cardGroup.idList === idList)?.cards;
+    //     if (!cardsUpdate) return;
 
-        moveCardThoAnotherList({ 
-          idBoard, 
-          idListOrigen: origenCardGroup.idList,
-          idListDestiny: idList as string, 
-          card: cardToMove
-        });
-      }
+    //     moveCardThoAnotherList({ 
+    //       idBoard, 
+    //       idListOrigen: origenCardGroup.idList,
+    //       idListDestiny: idList as string, 
+    //       card: cardToMove
+    //     });
+    //   }
   
-      return;
-    }
+    //   return;
+    // }
+
+    setOrigenGroup(null);
+    setActiveList(null);
+    setActiveCard(null);
+    setListToActiveCard(null);
   
     //LISTA MOVIDA (reordenamiento visual)
     // if (typeActive === 'list' && typeOver === 'list') {
