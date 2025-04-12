@@ -71,7 +71,7 @@ export const moveCardThoAnotherList = async (
 
   console.log('idList Origen: ', idListOrigen);
   console.log('idListDestiny', idListDestiny);
-  console.log('card eliminada en firebase: ', origenCardRef);
+  console.log('card a eliminar en firebase: cardName:', card.nameCard);
 
   const destinyCardRef = doc(collection(db, `users/${userId}/boards/${idBoard}/lists/${idListDestiny}/cards`), card.idCard);
   batch.set(destinyCardRef, card);

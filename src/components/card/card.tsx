@@ -54,7 +54,7 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
 
   const style = { 
     transform: CSS.Transform.toString(transform),
-    transition,
+    // transition,
     // transition: isDragging ? 'transform 0.1s linear' : 'none',
     opacity: isDragging ? 0.3 : 1,
     boxShadow: isDragging ? '0px 4px 10px rgba(0, 0, 0, 0.3)' : '0 1.2px 3px #121212',
@@ -101,6 +101,7 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
     <>
       <article
         ref={setNodeRef}
+        // ref={isDragging ? setNodeRef : undefined}
         style={style}
         className='cardItem'
         {...attributes}
