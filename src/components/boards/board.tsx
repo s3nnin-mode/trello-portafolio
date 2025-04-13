@@ -174,7 +174,7 @@ export const Tablero = () => {
   const sensors = useSensors(
     useSensor(PointerSensor, {  //esto es para que el drag empiece cuando el mouse este a 15px de distancia, en otras palabras
       activationConstraint: {
-        distance: 0.1
+        distance: 3
       }
     })
   );
@@ -249,12 +249,12 @@ export const Tablero = () => {
 
     const isActiveCard = active.data.current?.type === 'card';
     const isOverList = over.data.current?.type === 'list';
-    const isOverCard = active.data.current?.type === 'card';
    
     if (isActiveCard && isOverList && overId !== origenGroupRef.current?.idList) {
       const idList = overId;
         
-      // const origenCardGroup = cardsGroup.find((cardGroup) => cardGroup.cards.some((card) => card.idCard === activeId)); //esta variable es para sacar el idList y para obtener la card a mover
+      const origenCardGroup = cardsGroup.find((cardGroup) => cardGroup.cards.some((card) => card.idCard === activeId)); //esta variable es para sacar el idList y para obtener la card a mover
+
       if (!origenGroupRef.current) {
         console.log('no hay origenCardGroup DrageOver', origenGroupRef.current);
         return
@@ -267,7 +267,7 @@ export const Tablero = () => {
       //Se elimina la card del cardGroup al que estaba
       cardsServices({
         updateFn: (cardsGroup) => cardsGroup.map((cardGroup) => {
-          if (cardGroup.idBoard === idBoard && cardGroup.idList === origenGroupRef.current?.idList) { //cardsGroup[groupOrigenCard].idList
+          if (cardGroup.idBoard === idBoard && cardGroup.idList === origenCardGroup?.idList) { //origenGroupRef.current?.idList
             return { ...cardGroup, cards: cardGroup.cards.filter((card) => card.idCard !== cardToMove.idCard) };
           }
           return cardGroup;
