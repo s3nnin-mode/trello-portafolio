@@ -23,6 +23,7 @@ export const BtnAdd: React.FC<BtnAddProps> = ({ createListOrTargetName, nameComp
     setShowForm(false);
     if (inputValue.trim() === '') return;
     createListOrTargetName(inputValue);
+    setInputValue('');
   }
 
   const components = {
@@ -37,7 +38,7 @@ export const BtnAdd: React.FC<BtnAddProps> = ({ createListOrTargetName, nameComp
     if (showForm && inputRef.current) {
       inputRef.current.focus();
     }
-  }, [showForm])
+  }, [showForm]);
 
   return (
     <div 

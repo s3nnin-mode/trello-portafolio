@@ -57,9 +57,8 @@ export const CardModal: React.FC<ModalTargetComponentProps> = ({ card, list, boa
     >
     <Fade in={open}>
       <Box
-        sx={{
-          ...style
-        }}
+        onPointerDown={(e) => e.stopPropagation()} //Para que no se pueda arrastrar items con el modal abierto
+        sx={{...style}}
         className='card_modal'>
         <CardModalCover card={card} idBoard={board.idBoard} idList={list.idList} closeModal={closeModal} />
 

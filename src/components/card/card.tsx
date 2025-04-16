@@ -18,7 +18,6 @@ import { CheckAnimation } from "../animations/checked";
 import { useCardsServices } from "../../services/cardsServices";
 import { useAuthContext } from "../../customHooks/useAuthContext";
 import { updateCompleteCard } from "../../services/firebase/updateData/updateCards";
-import { useDroppable } from "@dnd-kit/core";
 
 interface TargetComponentProps {
   card: CardProps
@@ -29,7 +28,6 @@ interface TargetComponentProps {
 export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
   const { tags } = useTagsStore();
   const [showCardModal, setShowCardModal] = useState<boolean>(false);
-  // const [isPlaying, setIsPlaying] = useState(true);
   const [showDescription, setShowDescription] = useState(false);
   const { cardsServices } = useCardsServices();
   const { userAuth } = useAuthContext();
@@ -41,7 +39,6 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
     listeners, 
     setNodeRef, 
     transform,
-    transition,
     isDragging
   } = useSortable({
     id: card.idCard,
@@ -54,12 +51,11 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
 
   const style = { 
     transform: CSS.Transform.toString(transform),
-    // transition,
-    // transition: isDragging ? 'transform 0.1s linear' : 'none',
+    transition: 'none',
     opacity: isDragging ? 0.3 : 1,
     boxShadow: isDragging ? '0px 4px 10px rgba(0, 0, 0, 0.3)' : '0 1.2px 3px #121212',
     cursor: isDragging ? 'grabbing' : 'pointer',
-    border: isDragging ? '2px solid red' : '1px solid'
+    // border: isDragging ? '2px solid red' : 'none',
   };
 
   const isActive = ({tag}: {tag: TagsProps}) => tag.cardsThatUseIt.some((item) => item.idCard === card.idCard);
@@ -101,11 +97,10 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
     <>
       <article
         ref={setNodeRef}
-        // ref={isDragging ? setNodeRef : undefined}
         style={style}
-        className='cardItem'
         {...attributes}
         {...listeners}
+        className='cardItem'
         onClick={() => { setShowCardModal(true)}}
       >
         {

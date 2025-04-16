@@ -78,7 +78,6 @@ export const List: React.FC<ListPropsComponent> = ({ board, list }) => {
     listeners, 
     setNodeRef, 
     transform, 
-    transition,
     isDragging
   } = useSortable({
     id: list.idList,
@@ -86,14 +85,18 @@ export const List: React.FC<ListPropsComponent> = ({ board, list }) => {
       type: 'list',
       list, 
     },
-    animateLayoutChanges: () => false
-  });  
+    animateLayoutChanges: () => false,
+  }); 
 
   const style = { 
     transform: CSS.Transform.toString(transform), 
-    transition, 
+    // transition,
     backgroundColor: list.colorList,
-    opacity: isDragging ? 0.5 : 1
+    opacity: isDragging ? 0.4 : 1,
+    // minWidth: "280px",
+    // minHeight: "120px",
+    // maxHeight: '85vh'
+    // boxSizing: "border-box",
   }
     
   useEffect(() => {
@@ -107,14 +110,13 @@ export const List: React.FC<ListPropsComponent> = ({ board, list }) => {
   return (
     <div 
       style={style}
-      className='list' 
       ref={setNodeRef}
-        {...attributes} //el drag and drop de la lista funcionará solo si se arrastra desde el header
-        {...listeners}
+      {...attributes}
+      {...listeners}
+      className='list' 
     >
       <header 
         className='header_list'
-        
       >  
         <NameComponent 
           idBoard={board.idBoard} 

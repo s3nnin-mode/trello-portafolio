@@ -69,10 +69,11 @@ export const EditTags: React.FC<EditTagsProps> = ({idBoard, list, idCard, tag, t
   const { tagsServices } = useTagsService();
   const { userAuth } = useAuthContext();
 
-  useEffect(() => {        //si es para editar una tag existente se cargan sus respectivas caracteristicas(color, nameTag)
-    if (!tag) return;
-    setNameTag(tag.nameTag);
-    setColor(tag.color);
+  useEffect(() => { //si es para editar una tag existente se cargan sus respectivas caracteristicas(color, nameTag)
+    if (tag) { 
+      setNameTag(tag.nameTag);
+      setColor(tag.color);
+    }
   }, []);
 
   const handleSaveChanges = () => {
@@ -99,8 +100,22 @@ export const EditTags: React.FC<EditTagsProps> = ({idBoard, list, idCard, tag, t
     closeComponent();
   }
 
+  const [colorError, setColorError] = useState(false);
+  const [nameTagError, setNameTagError] = useState(false);
+
   const createTag = () => {
-    if (!idBoard || !list || !idCard) return
+    if (!nameTag) {
+      setNameTagError(true);
+      return;
+    }
+
+    if (!color) {
+      setColorError(true);
+      return;
+    }
+
+    if (!idBoard || !list || !idCard) return;
+    
     const newTag: TagsProps = {
       idTag: (idCard + list.idList + idBoard + Date.now()).toString(), 
       color, 
@@ -113,12 +128,13 @@ export const EditTags: React.FC<EditTagsProps> = ({idBoard, list, idCard, tag, t
     if (userAuth) {
       createTagFirebase({tag: newTag});
     }
+
     tagsServices((tags) => [newTag, ...tags]);
     closeComponent();
   }
 
   const removeTag = () => {
-    if (!tag) return
+    if (!tag) return;
     const idTag = tag.idTag;
     if (userAuth) {
       deleteTagFirebase(idTag);
@@ -135,10 +151,8 @@ export const EditTags: React.FC<EditTagsProps> = ({idBoard, list, idCard, tag, t
   return (
     <div   
       className='container_edit_or_create_tag'
-      style={{
-        background: list?.colorList
-      }}
-      >
+      style={{background: list?.colorList}}
+    >
         <header>
           <button onClick={closeComponent} >
             <FaArrowLeft />
@@ -153,16 +167,18 @@ export const EditTags: React.FC<EditTagsProps> = ({idBoard, list, idCard, tag, t
           <article className='current_tag_to_edit'>
             <div 
               style={{ 
-              backgroundColor: color,
+              backgroundColor: color ? color : 'black',
               color: betterColorText(color)
               }} 
-              >
+            >
               {nameTag}
             </div>
+            {colorError && <span className='colorError'>La etiqueta necesita un color.</span>}
           </article>
           <article className='input_to_edit_tag'>
             <p>Titulo</p>
             <input type='text' value={nameTag} onChange={(e) => setNameTag(e.target.value)} />
+            {nameTagError && <span className='nameTagError'>La etiqueta necesita un nombre.</span>}
           </article>
             <article className='tag_colors'>
               <p>Selecciona un color</p>
