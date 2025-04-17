@@ -1,7 +1,7 @@
 import '../../styles/components/boards/board.scss';
 //HOOKS
 import { useEffect, useRef, useState } from "react";
-import { useParams } from 'react-router-dom';
+import { Route, Routes, useNavigate, useParams } from 'react-router-dom';
 //COMPONENTS
 import { List } from '../list/list';
 import { Card } from '../card/card';
@@ -22,13 +22,16 @@ import { useAuthContext } from '../../customHooks/useAuthContext';
 import { addListFirebase, updateOrderListsFirebase, updtateOrderList } from '../../services/firebase/updateData/updateLists';
 import { moveCardThoAnotherList, updateOrderCard, updateOrderCards } from '../../services/firebase/updateData/updateCards';
 import { useTagsService } from '../../services/tagsServices';
+import { CardModal, getBoard } from '../card/modalCard/modalCard';
+import { getCardsFirebase, getListsFirebase, getTagsFirebase } from '../../services/firebase/firebaseFunctions';
+import { useTagsStore } from '../../store/tagsStore';
 
 const useCustomBoard = () => {
-  const { listsGroup } = useListsStore();
-  const { boards } = useBoardsStore();
+  const { listsGroup, loadLists } = useListsStore();
+  const { boards, loadBoards } = useBoardsStore();
   const { listsService } = useListsServices();
   const { createCardGroup } = useCardsServices();
-  const { userAuth } = useAuthContext();
+  const { userAuth, getUserAuthState } = useAuthContext();
 
   const addNewList = ({value, idBoard}: {value: string, idBoard: string}) => {
     const nameList = value;
@@ -63,18 +66,19 @@ const useCustomBoard = () => {
     //para saber que estas cartas pertenece a este tablero y a esta lista
   }
 
-  return { addNewList, boards, listsGroup }
+  return { addNewList, boards, listsGroup, loadLists, loadBoards, getUserAuthState }
 }
 
 export const Tablero = () => {
   const { listsService } = useListsServices();
-  const { boards, listsGroup, addNewList } = useCustomBoard();
+  const { boards, listsGroup, addNewList, loadLists, loadBoards, getUserAuthState } = useCustomBoard();
   const [currentBoard, setCurrentBoard] = useState<BoardProps>();
   const [idBoard, setIdBoard] = useState('');
   const { userAuth } = useAuthContext();
   const { tagsServices } = useTagsService();
   const { cardsServices } = useCardsServices();
-  const { cardsGroup } = useCardsStore();
+  const { cardsGroup, loadCards } = useCardsStore();
+  const { loadTags } = useTagsStore();
 
   const [currentLists, setCurrentLists] = useState<ListProps[]>()
   const { currentIdBoard } = useParams(); //RUTA ACTUAL
@@ -82,17 +86,80 @@ export const Tablero = () => {
   const [activeList, setActiveList] = useState<ListProps | null>(null); //esto es para saber que lista esta siendo arrastrada y crear un efecto visual
   const [activeCard, setActiveCard] = useState<CardProps | null>(null);
   let origenGroupRef = useRef<CardGroupProps | null>(null);
+  const navigate = useNavigate();
 
   if (!currentIdBoard) {
     return <p>Tablero no encontrado</p>
   }
 
+  useEffect(() => {
+
+      const fetchData = async () => {
+        const user_Auth = await getUserAuthState();
+        if (user_Auth) {
+
+          const boardData = await getBoard(currentIdBoard);
+          loadBoards([boardData]);
+
+          const listsData = await getListsFirebase(currentIdBoard);
+
+          const lists = [{
+            idBoard: currentIdBoard,
+            lists: listsData
+          }];
+
+          loadLists(lists);
+          console.log('se cargaron listas de tablero: ', listsData, lists)
+      
+          const fetchCards = async () => {
+            return Promise.all(listsData.map(async list => {
+              const cards = await getCardsFirebase(currentIdBoard, list.idList);
+              
+              const cardGroup: CardGroupProps = {
+                idBoard: currentIdBoard,
+                idList: list.idList,
+                cards
+              }
+              return cardGroup
+            }))
+          }
+    
+          const cardsGroup = await fetchCards();
+          loadCards(cardsGroup);
+
+          const tags = await getTagsFirebase();
+          loadTags(tags);
+          return
+        }
+
+        const boardsLS = localStorage.getItem('boards-storage');
+        const listsLS = localStorage.getItem('lists-storage');
+        const cardsLS = localStorage.getItem('cards-storage');
+        const tagsLS = localStorage.getItem('tags-storage');
+    
+        if (boardsLS && listsLS && cardsLS && tagsLS) {
+          loadBoards(JSON.parse(boardsLS));
+          loadLists(JSON.parse(listsLS));
+          loadCards(JSON.parse(cardsLS));
+          loadTags(JSON.parse(tagsLS));
+          return
+        }
+
+        navigate('/');
+      }
+
+      fetchData();
+  }, [userAuth]); //se carga los datos del tablero actual según la ruta
+
   useEffect(()=> {
     const indexBoard = boards.findIndex(b => b.idBoard === currentIdBoard);
     if (indexBoard > -1) {
+      console.log('se halló indexBoard', indexBoard, boards[indexBoard]);
       setCurrentBoard(boards[indexBoard]);
       setIdBoard(boards[indexBoard].idBoard);
       return
+    } else {
+      console.log('no hay indexBoard', indexBoard, currentIdBoard, boards)
     }
   }, [boards, currentIdBoard]);
 
@@ -467,37 +534,42 @@ export const Tablero = () => {
         collisionDetection={pointerWithin}
       >
         <div className='board_content'>
-        {
-        currentLists !== undefined && (
-          <SortableContext 
-            items={currentLists.map((list) => list.idList)}
-            strategy={horizontalListSortingStrategy}
-          >
-            {
-              currentBoard && (               //antes de pasar board verifico que exista
-                currentLists.map((list) => {
-                  return <List board={currentBoard} list={list} key={list.idList} />
-                })
-              )
-            }
-          </SortableContext>
-        )
-        }
+          {
+          currentLists !== undefined && (
+            <SortableContext 
+              items={currentLists.map((list) => list.idList)}
+              strategy={horizontalListSortingStrategy}
+            >
+              {
+                currentBoard && (               //antes de pasar board verifico que exista
+                  currentLists.map((list) => {
+                    return <List board={currentBoard} list={list} key={list.idList} />
+                  })
+                )
+              }
+            </SortableContext>
+          )
+          }
 
-        <DragOverlay 
-          dropAnimation={null}
-          >
-          { activeList && currentBoard && <List board={currentBoard} list={activeList} />}
-          { activeCard && currentBoard && listToActiveCard && <Card board={currentBoard} list={listToActiveCard} card={activeCard} /> }
-        </DragOverlay>
+          <DragOverlay 
+            dropAnimation={null}
+            >
+            { activeList && currentBoard && <List board={currentBoard} list={activeList} />}
+            { activeCard && currentBoard && listToActiveCard && <Card board={currentBoard} list={listToActiveCard} card={activeCard} /> }
+          </DragOverlay>
 
-        <BtnAdd
+          <BtnAdd
             className='form_add_list'
             createListOrTargetName={(value: string) => addNewList({value, idBoard})}
             nameComponentToAdd='list'
-        />
+          />
+
         </div>
       </DndContext>
+
+      <Routes>
+        <Route path='list/:idList/card/:idCard' element={<CardModal />} />
+      </Routes>
     </div>
   )
 };

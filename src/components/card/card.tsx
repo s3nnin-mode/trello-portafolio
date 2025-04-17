@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import '../../styles/components/card/card.scss';
 import { useState } from "react";
 import { CardModal } from "./modalCard/modalCard";
@@ -18,6 +18,7 @@ import { CheckAnimation } from "../animations/checked";
 import { useCardsServices } from "../../services/cardsServices";
 import { useAuthContext } from "../../customHooks/useAuthContext";
 import { updateCompleteCard } from "../../services/firebase/updateData/updateCards";
+import { Route, Routes, useNavigate, useParams } from "react-router-dom";
 
 interface TargetComponentProps {
   card: CardProps
@@ -31,6 +32,7 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
   const [showDescription, setShowDescription] = useState(false);
   const { cardsServices } = useCardsServices();
   const { userAuth } = useAuthContext();
+  const navigate = useNavigate();
 
   if (!card) return null;
 
@@ -101,10 +103,12 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
         {...attributes}
         {...listeners}
         className='cardItem'
-        onClick={() => { setShowCardModal(true)}}
+        // onClick={() => { setShowCardModal(true)}}
+        onClick={() => navigate(`list/${list.idList}/card/${card.idCard}`)}
       >
         {
-          !showDescription ?
+          !showDescription 
+            ?
             <>
               {/* <CardCover idBoard={board.idBoard} list={list} card={card} isPlaying={isPlaying} /> */}
               <div className='card_cover'>
@@ -151,9 +155,6 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
                     card.coverImgCard && <img src={card.coverImgCard} alt='portada tarjeta' />
                   }
                 </div>
-                {/* <p className='cardName roboto_light'>
-                  {card.nameCard}
-                </p> */}
               </div>
               <div className='content_card'>
                 <p className='cardName roboto_light'>
@@ -190,31 +191,31 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
             </> 
             : 
             <Fade in={showDescription}>
-            <Box 
-              onClick={(e) => e.stopPropagation()}
-              className='description_modal'
-            >
-              <div className='description_header'>
-                <p className='description_title roboto_light'>
-                  <span>Descripción de </span>{card.nameCard}
-                </p>
-                <button onClick={(e) => { e.stopPropagation(); setShowDescription(false); }}>
-                  <GoEyeClosed 
-                    
-                    className='icon_close_description' 
-                  />
-                </button>
-              </div>
-              <p className='description_text roboto'>
-              { card.description }
-              </p>
-            </Box>
-          </Fade>
-        }
-        
-      </article>
+              <Box 
+                onClick={(e) => e.stopPropagation()}
+                className='description_modal'
+              >
+                <div className='description_header'>
+                  <p className='description_title roboto_light'>
+                    <span>Descripción de </span>{card.nameCard}
+                  </p>
+                  <button onClick={(e) => { e.stopPropagation(); setShowDescription(false); }}>
+                    <GoEyeClosed 
+                      className='icon_close_description' 
+                    />
+                  </button>
+                </div>
 
-      {
+                <p className='description_text roboto'>
+                  { card.description }
+                </p>
+              </Box>
+            </Fade>
+        } 
+      </article>
+      {/* <CardModal /> */}
+
+      {/* {
         //M O D A L
         showCardModal && (
           <CardModal 
@@ -225,7 +226,7 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
             open={showCardModal}
           />
         )
-      }
+      } */}
     </>
   )
 }

@@ -182,3 +182,11 @@ export const deleteCard = async ({idBoard, idList, idCard}:{idBoard: string, idL
   const cardRef = doc(db, `users/${userId}/boards/${idBoard}/lists/${idList}/cards/${idCard}`);
   await deleteDoc(cardRef);
 }
+
+export const getCardFirebase = async ({ idBoard, idList, idCard }: { idBoard: string, idList: string, idCard: string }) => {
+  const userId = auth.currentUser?.uid;
+  const cardRef = doc(db, `users/${userId}/boards/${idBoard}/lists/${idList}/cards/${idCard}`);
+  const card = await getDoc(cardRef);
+
+  return card.data() as CardProps;
+};

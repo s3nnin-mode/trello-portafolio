@@ -90,13 +90,8 @@ export const List: React.FC<ListPropsComponent> = ({ board, list }) => {
 
   const style = { 
     transform: CSS.Transform.toString(transform), 
-    // transition,
     backgroundColor: list.colorList,
     opacity: isDragging ? 0.4 : 1,
-    // minWidth: "280px",
-    // minHeight: "120px",
-    // maxHeight: '85vh'
-    // boxSizing: "border-box",
   }
     
   useEffect(() => {

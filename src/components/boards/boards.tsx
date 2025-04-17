@@ -4,20 +4,20 @@ import { useNavigate } from 'react-router-dom';
 import { useBoardsStore } from '../../store/boardsStore';
 import { useBoardsServices } from '../../services/boardsServices';
 import { useListsServices } from '../../services/listsServices';
-import { BoardProps, CardGroupProps } from '../../types/boardProps';
+import { BoardProps } from '../../types/boardProps';
 import { useListsStore } from '../../store/listsStore';
-import { getCardsFirebase, getListsFirebase, getTagsFirebase } from '../../services/firebase/firebaseFunctions';
 import { useCardsStore } from '../../store/cardsStore';
 import { useTagsStore } from '../../store/tagsStore';
 import { useAuthContext } from '../../customHooks/useAuthContext';
 import { addBoardFirebase } from '../../services/firebase/updateData/updateBoards';
 import { Box } from '@mui/material';
+import { useEffect } from 'react';
 
 const useBoards = () => {
-  const { boards } = useBoardsStore();
+  const { boards, loadBoards } = useBoardsStore();
   const { boardsService } = useBoardsServices();
   const { createGroupList } = useListsServices();
-  const { userAuth } = useAuthContext();
+  const { userAuth, fetchBoards } = useAuthContext();
 
   const addNewBoard = (nameBoard: string) => {
     const idBoard = (nameBoard + Date.now()).toString();
@@ -33,51 +33,46 @@ const useBoards = () => {
     }
   }
 
-  return { boards, addNewBoard }
+  return { boards, addNewBoard, fetchBoards, loadBoards }
 }
 
 export const Tableros = () => {
-  const { boards, addNewBoard } = useBoards();
+  const { boards, addNewBoard, fetchBoards, loadBoards } = useBoards();
   const { loadLists } = useListsStore();
   const { loadCards } = useCardsStore();
   const { loadTags } = useTagsStore();
-  const { userAuth } = useAuthContext();
+  const { getUserAuthState } = useAuthContext();
 
   const navigate = useNavigate();
 
-  const handleClick = async (idBoard: string) => {
-    if (userAuth) {
-      const listsData = await getListsFirebase(idBoard);
+  useEffect(() => {
 
-      const lists = [{
-        idBoard,
-        lists: listsData
-      }];
-      loadLists(lists);
+    const fetchData = async () => {
+      const user_auth = await getUserAuthState();
 
-      const fetchCards = async () => {
-        return Promise.all(listsData.map(async list => {
-          const cards = await getCardsFirebase(idBoard, list.idList);
-          
-          const cardGroup: CardGroupProps = {
-            idBoard,
-            idList: list.idList,
-            cards
-          }
-          return cardGroup
-        }))
+      if (user_auth) {
+        fetchBoards()
+        return
       }
 
-      const cardsGroup = await fetchCards();
-      loadCards(cardsGroup);
+      const boardsLS = localStorage.getItem('boards-storage');
+      const listsLS = localStorage.getItem('lists-storage');
+      const cardsLS = localStorage.getItem('cards-storage');
+      const tagsLS = localStorage.getItem('tags-storage');
 
-      const tags = await getTagsFirebase();
-      loadTags(tags);
-      navigate(`${idBoard}`);
-      return
-    } 
-    navigate(`${idBoard}`);
-  }
+      if (boardsLS && listsLS && cardsLS && tagsLS) {
+        loadBoards(JSON.parse(boardsLS));
+        loadLists(JSON.parse(listsLS));
+        loadCards(JSON.parse(cardsLS));
+        loadTags(JSON.parse(tagsLS));
+        return
+      }
+
+      navigate('/')
+    }
+
+    fetchData();
+  }, []);
 
   return (
     <div className='boards_container'>
@@ -88,7 +83,7 @@ export const Tableros = () => {
         className='btn_add_board'
       />
 
-      <div className='divider'></div>
+      <div className='divider' />
       
       <div className='boards'>
         {
@@ -96,11 +91,13 @@ export const Tableros = () => {
             boards.map(board => {
               return (
                 <Box
-                 className='board_item' 
-                 onClick={() => handleClick(board.idBoard)} key={board.idBoard}
+                  className='board_item' 
+                  onClick={() => navigate(board.idBoard)} 
+                  key={board.idBoard}
                 >
-                  <span className='name_board inter_title'>{board.nameBoard}</span>
-                  {/* <span className='icon_fav'>Star fav</span> */}
+                  <span className='name_board inter_title'>
+                    {board.nameBoard}
+                  </span>
                 </Box>
               )
             })

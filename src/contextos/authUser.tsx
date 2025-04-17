@@ -1,13 +1,13 @@
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getAuth, onAuthStateChanged, User } from "firebase/auth";
 import React, { createContext, ReactNode, useEffect, useState } from "react";
 import { getBoardsFirebase } from "../services/firebase/firebaseFunctions";
 import { useBoardsStore } from "../store/boardsStore";
-import { useNavigate } from "react-router-dom";
 
 interface AuthContextProps {
     userAuth: boolean;
     setUserAuth: React.Dispatch<React.SetStateAction<boolean>>
-    fetchData: () => void
+    fetchBoards: () => void
+    getUserAuthState: () => Promise<User | null>
 }
 
 export const AuthContext = createContext<AuthContextProps | undefined>(undefined);
@@ -19,9 +19,8 @@ interface ChildrenProps {
 export const AuthProvider = ({children}: ChildrenProps) => {
     const [userAuth, setUserAuth] = useState(false);
     const { loadBoards } = useBoardsStore();
-    const navigate = useNavigate();
 
-    const getUserAuthState = () => {
+    const getUserAuthState = (): Promise<User | null> => {
         return new Promise((resolve) => {
             const auth = getAuth();
             onAuthStateChanged(auth, (user) => {
@@ -30,11 +29,11 @@ export const AuthProvider = ({children}: ChildrenProps) => {
         });
     }
 
-    const fetchData = async () => {
+    const fetchBoards = async () => {
         const boards = await getBoardsFirebase();
         if (boards) {
             loadBoards(boards);
-            navigate('/kanbaX');
+            // navigate('/kanbaX');
         }
     }
 
@@ -43,12 +42,12 @@ export const AuthProvider = ({children}: ChildrenProps) => {
         const LS = localStorage.getItem('boards-storage');
         if (userAuth) {
             setUserAuth(true);
-            fetchData();
-            navigate('/kanbaX');
+            // fetchBoards();
+            // navigate('/kanbaX');
         } else if (LS) {
             setUserAuth(false);
             console.log('usuario no auth en contexto', userAuth);
-        } 
+        }
     }
     
     useEffect(() => {
@@ -56,7 +55,7 @@ export const AuthProvider = ({children}: ChildrenProps) => {
     }, [userAuth]);
 
     return (
-        <AuthContext.Provider value={{userAuth, setUserAuth, fetchData}}>
+        <AuthContext.Provider value={{userAuth, setUserAuth, fetchBoards, getUserAuthState}}>
             {children}
         </AuthContext.Provider>
     )

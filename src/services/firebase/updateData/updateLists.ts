@@ -1,4 +1,4 @@
-import { collection, deleteDoc, doc, setDoc, updateDoc } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { ListProps } from "../../../types/boardProps";
 import { auth, db } from "../firebaseConfig";
 
@@ -53,3 +53,11 @@ export const updtateOrderList = async ({idBoard, list}: {idBoard: string, list: 
 
     await updateDoc(listRef, {...list});
 };
+
+export const getListFirebase = async ({idBoard, idList}: {idBoard: string, idList: string}) => {
+    const userId = auth.currentUser?.uid;
+    const listRef = doc(db, `users/${userId}/boards/${idBoard}/lists/${idList}`);
+    const list = await getDoc(listRef);
+
+    return list.data() as ListProps;
+}

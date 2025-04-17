@@ -1,7 +1,7 @@
 // import { FaImage } from 'react-icons/fa';
 import '../../../../../styles/components/card/modalCard/modalComponents/cover/coverCardModal.scss';
 import { CardProps } from '../../../../../types/boardProps';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SettingsCover } from './settingsCoverCard';
 //ICONS
 import { IoMdClose } from 'react-icons/io';
@@ -24,9 +24,15 @@ export const CardModalCover: React.FC<CardModalCoverProps> = ({card, idList, idB
   const [isEditCover, setIsEditCover] = useState(false);
   const { cardsServices } = useCardsServices();
   const { userAuth } = useAuthContext();
+  const [currentCard, setCurrentCard] = useState<CardProps>();
+
+  useEffect(() => {
+    setCurrentCard(card);
+  }, [card]);
 
   const cardComplete = () => {
     const idCard = card.idCard;
+
     if (userAuth) {
       updateCompleteCard({
         idBoard,
@@ -35,6 +41,8 @@ export const CardModalCover: React.FC<CardModalCoverProps> = ({card, idList, idB
         complete: !card.complete
       });
     }
+
+    if (currentCard) setCurrentCard({...currentCard, complete: !currentCard.complete});
 
     cardsServices({
       updateFn: (cardsGroup) => cardsGroup.map((cardGroup) =>
@@ -63,7 +71,7 @@ export const CardModalCover: React.FC<CardModalCoverProps> = ({card, idList, idB
       <header className='header_modal_card' >
         <div className='container_color_card' onClick={() => setIsEditCover(true)}>
           {
-            card.complete ? 
+            currentCard && currentCard.complete ? 
             <CheckAnimation 
               isPlaying={true} 
               handleClick={(e) => {e.stopPropagation(); cardComplete()}} 
@@ -92,7 +100,7 @@ export const CardModalCover: React.FC<CardModalCoverProps> = ({card, idList, idB
         } */}
         
         {
-          card.coverImgCard !== null ? <img className='img_cover_modal' src={card.coverImgCard} alt='cover card' /> : <div></div>
+          currentCard && currentCard.coverImgCard !== null ? <img className='img_cover_modal' src={currentCard.coverImgCard} alt='cover card' /> : <div></div>
         }
 
         <button className='btn_close_modal_card' onClick={closeModal} >
