@@ -26,10 +26,16 @@ export const BtnAdd: React.FC<BtnAddProps> = ({ createListOrTargetName, nameComp
     setInputValue('');
   }
 
-  const components = {
+  const componentsPlaceholder = {
     board: 'el tablero',
     list: 'la lista',
     target: 'la tarjeta'
+  }
+
+  const componenteToAdd = {
+    board: 'tablero',
+    list: 'lista',
+    target: 'tarjeta'
   }
 
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -55,7 +61,7 @@ export const BtnAdd: React.FC<BtnAddProps> = ({ createListOrTargetName, nameComp
           >
             <AiOutlinePlus className='icon_add' />
             <span className='inter_medium'>
-              Agregar {nameComponentToAdd}
+              Agregar {componenteToAdd[nameComponentToAdd]}
             </span>
           </Button>
         )
@@ -69,7 +75,7 @@ export const BtnAdd: React.FC<BtnAddProps> = ({ createListOrTargetName, nameComp
               onKeyDown={(e) => e.stopPropagation()}
               type='text'
               className='input_add work_sans'
-              placeholder={`Titulo de ${components[nameComponentToAdd]}...`}
+              placeholder={`Titulo de ${componentsPlaceholder[nameComponentToAdd]}...`}
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
             />

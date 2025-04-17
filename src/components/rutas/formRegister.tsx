@@ -10,7 +10,7 @@ import { MdVisibility, MdVisibilityOff } from 'react-icons/md';
 
 
 export const FormRegister = () => {
-  const { setUserAuth, fetchData } = useAuthContext();
+  const { setUserAuth, fetchBoards } = useAuthContext();
   const [loader, setLoader] = useState(false);
   const [generalError, setGeneralError] = useState<string | null>(null);
 
@@ -37,7 +37,7 @@ export const FormRegister = () => {
       console.log('estado de registro: ', res)
 
       if (res) {
-        fetchData();
+        fetchBoards();
         setUserAuth(true);
       }
 

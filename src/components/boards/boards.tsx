@@ -10,8 +10,8 @@ import { useCardsStore } from '../../store/cardsStore';
 import { useTagsStore } from '../../store/tagsStore';
 import { useAuthContext } from '../../customHooks/useAuthContext';
 import { addBoardFirebase } from '../../services/firebase/updateData/updateBoards';
-import { Box } from '@mui/material';
-import { useEffect } from 'react';
+import { Box, Skeleton } from '@mui/material';
+import { useEffect, useState } from 'react';
 
 const useBoards = () => {
   const { boards, loadBoards } = useBoardsStore();
@@ -42,16 +42,19 @@ export const Tableros = () => {
   const { loadCards } = useCardsStore();
   const { loadTags } = useTagsStore();
   const { getUserAuthState } = useAuthContext();
+  const [loader, setLoader] = useState(false);
 
   const navigate = useNavigate();
 
   useEffect(() => {
 
     const fetchData = async () => {
+      setLoader(true);
       const user_auth = await getUserAuthState();
 
       if (user_auth) {
-        fetchBoards()
+        fetchBoards();
+        setLoader(false);
         return
       }
 
@@ -65,10 +68,12 @@ export const Tableros = () => {
         loadLists(JSON.parse(listsLS));
         loadCards(JSON.parse(cardsLS));
         loadTags(JSON.parse(tagsLS));
+        setLoader(false);
         return
       }
 
-      navigate('/')
+      setLoader(false);
+      navigate('/');
     }
 
     fetchData();
@@ -87,7 +92,7 @@ export const Tableros = () => {
       
       <div className='boards'>
         {
-          boards.length > 0 && (
+          !loader ?
             boards.map(board => {
               return (
                 <Box
@@ -101,7 +106,8 @@ export const Tableros = () => {
                 </Box>
               )
             })
-          )
+          :
+          <Skeleton sx={{ bgcolor: 'grey.800' }} animation={'wave'} variant="rectangular" width={250} height={120} />
         }
       </div>
     </div>

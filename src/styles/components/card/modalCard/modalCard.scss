@@ -1,75 +1,7 @@
-// .modal_show {
-//     position: absolute; /* Fijo en la ventana del navegador */
-//     top: 50%;        /* Posiciona en el 50% desde la parte superior */
-//     left: 50%;       /* Posiciona en el 50% desde la izquierda */
-//     transform: translate(-50%, -50%); /* Centra el elemento usando transformación */
-//     z-index: 500;   /* Asegúrate de que esté por encima de otros elementos */
-//     background-color: white; /* Fondo del modal */
-//     padding: 20px;   /* Espaciado interno */
-//     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra */
-//     border-radius: 8px; /* Opcional: esquinas redondeadas */
-//     // width: 50%;      /* Ancho responsivo */
-//     // max-width: 500px;
-//     // min-height: 90vh;
-//     // overflow-y: auto;
-//     cursor: auto;
 
-//     display: flex;
-//     gap: 10px;
-//     flex-direction: column;
-
-//     .modal_content_container {
-//         display: flex;
-//         height: 100%;
-
-//         .modal_content {
-//             width: 70%;
-//             display: flex;
-//             flex-direction: column;
-//             gap: 10px;
-//         }
-
-//         .sidebar_tags {
-//             width: 30%;
-//         }
-//     }
-
-//     .btns_modal {
-//         // width: 30%;
-//         display: flex;
-//         gap: 9px;
-        
-//         .btn_modal_sidebar {
-//             padding: 5px;
-//             border-radius: 6px;
-//             border: none;
-//             cursor: pointer;
-//             background-color: #ccc;
-//         }
-
-//         .remove_card:hover {
-//             color: white;
-//             background-color: red;
-//         }
-
-//         button:hover {
-//             background-color: grey;
-//         }
-//     }
-// }
 
 .div_modal {
-    // margin: 0;
-    // padding: 0;
-    // position: fixed;
-    // color: #ccc; 
-    // border: 1px solid red;
-    // width: 100%;
-    // height: 100vh;
-    // background-color: aqua;
-
   .card_modal {
-    // background: rgba(255, 255, 255, .1) !important;
     backdrop-filter: blur(50px);
 
     .modal_content_container {
@@ -79,10 +11,7 @@
 
 .card_modal {
   outline: none;
-  color: #ccc;
-  // border: 1px ;
-  // z-index: 9999;
-  // position: relative;  
+  color: #ccc;  
 
   .modal_content_container {
     padding: 1rem;
@@ -112,6 +41,23 @@
   z-index: -1;
 }
 
+
+.loader_test {
+  border: 10px solid red;
+  margin: 100px auto;
+  width: 40px;
+  height: 40px;
+  border: 4px solid #ccc;
+  border-top-color: #333;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
 //uso el pseudo selector before porque si le daba el estilo backdropFilter desde la variable 'styles' de el componente,
 //el contenido del modal se veia algo borroso aunque le diera un valor pequeño al filtro 
 

@@ -2,28 +2,57 @@ import { useEffect, useState } from "react";
 import '../../styles/components/routes/home.scss';
 
 import { useNavigate } from "react-router-dom";
-import { Box, Button, Fade } from "@mui/material";
+import { Backdrop, Box, Button, CircularProgress, Fade } from "@mui/material";
 import { useAuthContext } from "../../customHooks/useAuthContext";
 
 export const Home = () => {
-  const { userAuth } = useAuthContext();
+  const { getUserAuthState } = useAuthContext();
   const navigate = useNavigate();
   const [animation, setAnimation] = useState(false);
+  const [loader, setLoader] = useState(true);
 
   useEffect(() => {
-    if (userAuth) {
-      navigate('/kanbaX');
+    const fetchAuth = async () => {
+      const user_auth = await getUserAuthState();
+
+      if (user_auth) { 
+        navigate('/kanbaX');
+        setLoader(false);
+        return
+      }
+
+      const boardsLS = localStorage.getItem('boards-storage');
+      const listsLS = localStorage.getItem('lists-storage');
+      const cardsLS = localStorage.getItem('cards-storage');
+      const tagsLS = localStorage.getItem('tags-storage');
+
+      if (boardsLS || listsLS || cardsLS || tagsLS) {
+        setLoader(false);
+        navigate('/kanbaX');
+        return
+      }
     }
-  });
+    
+    fetchAuth();
+  }, []);
 
   const handleClick = () => {
     setAnimation(true);
     navigate('/auth/register');
-
-    setTimeout(() => {
-    //   navigate('/auth');
-    }, 600);
   }
+
+   if (loader) {
+    return (
+      // <div>
+        <Backdrop
+          sx={(theme) => ({ bgcolor: 'black', color: '#fff', zIndex: theme.zIndex.drawer + 1 })}
+          open={true}
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      // </div>
+    )
+   }
 
   return(
     <div className='container_home'>

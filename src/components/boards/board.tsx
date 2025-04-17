@@ -93,62 +93,61 @@ export const Tablero = () => {
   }
 
   useEffect(() => {
+    const fetchData = async () => {
+      const user_Auth = await getUserAuthState();
+      if (user_Auth) {
 
-      const fetchData = async () => {
-        const user_Auth = await getUserAuthState();
-        if (user_Auth) {
+        const boardData = await getBoard(currentIdBoard);
+        loadBoards([boardData]);
 
-          const boardData = await getBoard(currentIdBoard);
-          loadBoards([boardData]);
+        const listsData = await getListsFirebase(currentIdBoard);
 
-          const listsData = await getListsFirebase(currentIdBoard);
+        const lists = [{
+          idBoard: currentIdBoard,
+          lists: listsData
+        }];
 
-          const lists = [{
-            idBoard: currentIdBoard,
-            lists: listsData
-          }];
-
-          loadLists(lists);
-          console.log('se cargaron listas de tablero: ', listsData, lists)
-      
-          const fetchCards = async () => {
-            return Promise.all(listsData.map(async list => {
-              const cards = await getCardsFirebase(currentIdBoard, list.idList);
-              
-              const cardGroup: CardGroupProps = {
-                idBoard: currentIdBoard,
-                idList: list.idList,
-                cards
-              }
-              return cardGroup
-            }))
-          }
+        loadLists(lists);
+        console.log('se cargaron listas de tablero: ', listsData, lists)
     
-          const cardsGroup = await fetchCards();
-          loadCards(cardsGroup);
-
-          const tags = await getTagsFirebase();
-          loadTags(tags);
-          return
+        const fetchCards = async () => {
+          return Promise.all(listsData.map(async list => {
+            const cards = await getCardsFirebase(currentIdBoard, list.idList);
+            
+            const cardGroup: CardGroupProps = {
+              idBoard: currentIdBoard,
+              idList: list.idList,
+              cards
+            }
+            return cardGroup
+          }))
         }
+  
+        const cardsGroup = await fetchCards();
+        loadCards(cardsGroup);
 
-        const boardsLS = localStorage.getItem('boards-storage');
-        const listsLS = localStorage.getItem('lists-storage');
-        const cardsLS = localStorage.getItem('cards-storage');
-        const tagsLS = localStorage.getItem('tags-storage');
-    
-        if (boardsLS && listsLS && cardsLS && tagsLS) {
-          loadBoards(JSON.parse(boardsLS));
-          loadLists(JSON.parse(listsLS));
-          loadCards(JSON.parse(cardsLS));
-          loadTags(JSON.parse(tagsLS));
-          return
-        }
-
-        navigate('/');
+        const tags = await getTagsFirebase();
+        loadTags(tags);
+        return
       }
 
-      fetchData();
+      const boardsLS = localStorage.getItem('boards-storage');
+      const listsLS = localStorage.getItem('lists-storage');
+      const cardsLS = localStorage.getItem('cards-storage');
+      const tagsLS = localStorage.getItem('tags-storage');
+  
+      if (boardsLS && listsLS && cardsLS && tagsLS) {
+        loadBoards(JSON.parse(boardsLS));
+        loadLists(JSON.parse(listsLS));
+        loadCards(JSON.parse(cardsLS));
+        loadTags(JSON.parse(tagsLS));
+        return
+      }
+
+      navigate('/');
+    }
+
+    fetchData();
   }, [userAuth]); //se carga los datos del tablero actual según la ruta
 
   useEffect(()=> {

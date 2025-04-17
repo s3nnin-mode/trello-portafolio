@@ -71,6 +71,8 @@ export const CardModal = () => {
   const [board, setBoard] = React.useState<BoardProps | undefined>();
   const [card, setCard] = React.useState<CardProps>();
 
+  const [loader, setLoader] = React.useState(false);
+
   // React.useEffect(() => {
     
   //   if (userAuth) {
@@ -113,62 +115,66 @@ export const CardModal = () => {
 
   React.useEffect(() => {
     const fetchData = async () => {
+      setLoader(true)
       const user_Auth = await getUserAuthState();
       if (!currentIdBoard) return
 
-        if (user_Auth) {
+      if (user_Auth) {
 
-          const boardData = await getBoard(currentIdBoard);
-          loadBoards([boardData]);
+        const boardData = await getBoard(currentIdBoard);
+        loadBoards([boardData]);
 
-          const listsData = await getListsFirebase(currentIdBoard);
+        const listsData = await getListsFirebase(currentIdBoard);
 
-          const lists = [{
-            idBoard: currentIdBoard,
-            lists: listsData
-          }];
+        const lists = [{
+          idBoard: currentIdBoard,
+          lists: listsData
+        }];
 
-          loadLists(lists);
-          console.log('se cargaron listas de tablero: ', listsData, lists)
-      
-          const fetchCards = async () => {
-            return Promise.all(listsData.map(async list => {
-              const cards = await getCardsFirebase(currentIdBoard, list.idList);
-              
-              const cardGroup: CardGroupProps = {
-                idBoard: currentIdBoard,
-                idList: list.idList,
-                cards
-              }
-              return cardGroup
-            }))
-          }
+        loadLists(lists);
+        console.log('se cargaron listas de tablero: ', listsData, lists)
     
-          const cardsGroup = await fetchCards();
-          loadCards(cardsGroup);
-
-          const tags = await getTagsFirebase();
-          loadTags(tags);
-          return
+        const fetchCards = async () => {
+          return Promise.all(listsData.map(async list => {
+            const cards = await getCardsFirebase(currentIdBoard, list.idList);
+            
+            const cardGroup: CardGroupProps = {
+              idBoard: currentIdBoard,
+              idList: list.idList,
+              cards
+            }
+            return cardGroup
+          }))
         }
 
-        const boardsLS = localStorage.getItem('boards-storage');
-        const listsLS = localStorage.getItem('lists-storage');
-        const cardsLS = localStorage.getItem('cards-storage');
-        const tagsLS = localStorage.getItem('tags-storage');
-    
-        if (boardsLS && listsLS && cardsLS && tagsLS) {
-          loadBoards(JSON.parse(boardsLS));
-          loadLists(JSON.parse(listsLS));
-          loadCards(JSON.parse(cardsLS));
-          loadTags(JSON.parse(tagsLS));
-          return
-        }
-        
-        navigate('/')
-      }   
-      fetchData();
-    }, []) //se carga los datos del tablero actual según la ruta
+        setLoader(false);
+  
+        const cardsGroup = await fetchCards();
+        loadCards(cardsGroup);
+
+        const tags = await getTagsFirebase();
+        loadTags(tags);
+        return
+      }
+
+      const boardsLS = localStorage.getItem('boards-storage');
+      const listsLS = localStorage.getItem('lists-storage');
+      const cardsLS = localStorage.getItem('cards-storage');
+      const tagsLS = localStorage.getItem('tags-storage');
+  
+      if (boardsLS && listsLS && cardsLS && tagsLS) {
+        loadBoards(JSON.parse(boardsLS));
+        loadLists(JSON.parse(listsLS));
+        loadCards(JSON.parse(cardsLS));
+        loadTags(JSON.parse(tagsLS));
+        setLoader(false);
+        return
+      }
+      setLoader(false);
+      navigate('/')
+    }   
+    fetchData();
+  }, []); //se carga los datos del tablero actual según la ruta
 
   React.useEffect(() => {
     const board = boards.find(b => b.idBoard === currentIdBoard);
@@ -215,37 +221,25 @@ export const CardModal = () => {
         sx={{...style}}
         className='card_modal'
       >
-
         {
-          card && board && list && (
-            <CardModalCover card={card} idBoard={board.idBoard} idList={list.idList} closeModal={closeModal} />
-          )
+          card && board && list && !loader ?
+            <>
+              <CardModalCover card={card} idBoard={board.idBoard} idList={list.idList} closeModal={closeModal} />
+              <div className='modal_content_container'> 
+              <TitleModalCard board={board} list={list} card={card} /> 
+              <div className='modal_content'>
+                <ActiveTags board={board} list={list} card={card} /> 
+                <CardDescription card={card} idList={list.idList} idBoard={board.idBoard} /> 
+              </div>
+              <div className='sidebar_tags' />
+            </div>
+            </>
+          :
+          <div className='loader_test'></div>
         }
 
         {/*CONTENIDO*/}
-        
-        <div className='modal_content_container'> 
-          {
-            board && list && card ?
-            <TitleModalCard board={board} list={list} card={card} /> :
-            'cargando titulo...'
-          }
-          <div className='modal_content'>
-            {
-              board && list && card ?
-              <ActiveTags board={board} list={list} card={card} /> :
-              'cargando etiquetas...'
-            }
-            {
-              board && list && card ?
-              <CardDescription card={card} idList={list.idList} idBoard={board.idBoard} /> :
-              'cargando descripción...'
-            }
-          </div>
-          <div className='sidebar_tags'>
-            
-          </div>
-        </div>
+      
       </Box>
     </Fade>
   </Modal>
