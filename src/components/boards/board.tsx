@@ -420,27 +420,27 @@ export const Tablero = () => {
         })
       });
 
-      if (!userAuth) return;
-
-      if (origenGroupRef.current.idList === idListDestiny) {
-        console.log('card arrastrada dentro de su propia lista');
-        if (updateOrders) {
-          updatedCards = updatedCards.sort((a, b) => a.order - b.order).map((card, index) => ({ ...card, order: index * 10 }));
-          updateOrderCards({ idBoard, idList: idListDestiny, updatedCards }); //aqui usabas idList
-          console.log('se reseteó las cards donde la card fue movida dentro de su propia lista');
+      if (userAuth) {
+        if (origenGroupRef.current.idList === idListDestiny) {
+          console.log('card arrastrada dentro de su propia lista');
+          if (updateOrders) {
+            updatedCards = updatedCards.sort((a, b) => a.order - b.order).map((card, index) => ({ ...card, order: index * 10 }));
+            updateOrderCards({ idBoard, idList: idListDestiny, updatedCards }); //aqui usabas idList
+            console.log('se reseteó las cards donde la card fue movida dentro de su propia lista');
+          } else {
+            updateOrderCard({idBoard, idList: idListDestiny, card: updatedCards[newIndex]}); //aqui usabas idList
+            console.log('se cambió unicamente el order de una card dentro de su propia lista');
+          }
         } else {
-          updateOrderCard({idBoard, idList: idListDestiny, card: updatedCards[newIndex]}); //aqui usabas idList
-          console.log('se cambió unicamente el order de una card dentro de su propia lista');
+          moveCardThoAnotherList({
+            idBoard,
+            idListOrigen: origenGroupRef.current.idList,
+            idListDestiny: idListDestiny as string,
+            card: updatedCards[newIndex],
+            updateCards: updateOrders ? updatedCards : undefined
+          });  
+          console.log('se movió card a otra lista')
         }
-      } else {
-        moveCardThoAnotherList({
-          idBoard,
-          idListOrigen: origenGroupRef.current.idList,
-          idListDestiny: idListDestiny as string,
-          card: updatedCards[newIndex],
-          updateCards: updateOrders ? updatedCards : undefined
-        });  
-        console.log('se movió card a otra lista')
       }
 
       origenGroupRef.current = null;
