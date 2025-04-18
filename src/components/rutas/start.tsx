@@ -1,38 +1,45 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import '../../../src/styles/components/routes/start.scss';
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { useBoardsStore } from "../../store/boardsStore";
 import { useAuthContext } from "../../customHooks/useAuthContext";
-import { getBoardsFirebase } from "../../services/firebase/firebaseFunctions";
 import { initialTagsDemo } from "../../utils/tagsColors";
 import { Button, Fade } from "@mui/material";
+import { Loader } from "../reusables/loader";
 
 export const Start = () => {
-  const { userAuth } = useAuthContext();
-  const { loadBoards } = useBoardsStore();
+  const { getUserAuthState } = useAuthContext();
   const navigate = useNavigate();
   const location = useLocation();
+  const [loader, setLoader] = useState(true);
+  const LS = localStorage.getItem('boards-storage');
 
   useEffect(() => {
     console.log('test para ver cuantas veces se renderiza');
-    const LS = localStorage.getItem('boards-storage');
 
     const fetchData = async () => {
-      if (userAuth) {
-        const boards = await getBoardsFirebase();
-        loadBoards(boards);
+      const user_auth = await getUserAuthState();
+      if (user_auth) {
+        // const boards = await getBoardsFirebase();
+        // loadBoards(boards);
         navigate('/kanbaX');
-        console.log('user auth en start')
-      } else if (LS) {  
-          loadBoards(JSON.parse(LS));
-          navigate('/kanbaX'); 
-          console.log('hay LS en start')
-      } else {
-        console.log('no hay LS ni UserAuth');
+        console.log('user auth en start');
+        return
       }
+      
+      setLoader(false);
+      // if (LS) {
+
+      // }
+        //   else if (LS) {  
+        //     loadBoards(JSON.parse(LS));
+        //     navigate('/kanbaX'); 
+        //     console.log('hay LS en start')
+        // } else {
+        //   console.log('no hay LS ni UserAuth');
+        // }
     }
     fetchData();
-  }, [userAuth]);
+  }, []);
 
   //como demo al principio se debe agregar al menos un tablero, lista y tarjeta con un par de etiquetas
   //para que se pueda visualizar algo en la aplicación y que el usuario pueda entender su funcionamiento
@@ -40,6 +47,11 @@ export const Start = () => {
   //sino con un tema que pueda ser de interes para el usuario
 
   const demo = () => {
+    if (LS) {
+      navigate('/kanbaX');
+      return;
+    }
+
     localStorage.setItem('boards-storage', JSON.stringify([
       {
         idBoard: 'TableroDemo', nameBoard: 'Tablero de ejemplo: Limpiar la casa'
@@ -98,6 +110,10 @@ export const Start = () => {
 
   const isStart = location.pathname.includes('/auth');
 
+  if (loader) {
+    return <Loader open={true} bgColor='black' />
+  }
+
   return (
     <div className='container_route_auth'>
       <Fade in={isStart} timeout={600} >
@@ -111,8 +127,12 @@ export const Start = () => {
             <br /> 
             Elige lo que mejor se adapte a ti.            
           </p>
-          <Button onClick={demo} variant="contained">
-            Usar modo Demo
+          {LS && <span style={{color: 'orange'}}>El modo demo ya está activo en este dispositivo.</span>}
+          <Button 
+            onClick={demo} 
+            variant="contained"
+          >
+            { LS ? 'Seguir en modo demo' : 'Usar modo Demo' }
           </Button>
         </div>
       </Fade>

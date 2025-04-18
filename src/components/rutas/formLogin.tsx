@@ -29,9 +29,11 @@ export const FormLogin = () => {
         email: data.email,
         password: data.password
       });
-      console.log('estado de login', loginState);
+
       if (loginState) {
         setUserAuth(true);
+        navigate('/Kanbax');
+        // setLoader(false);
       }
     } catch(error: any) {
       if (error.field) {
@@ -44,12 +46,6 @@ export const FormLogin = () => {
     }
     setLoader(false);
   });
-
-  useEffect(() => {
-    if (userAuth) {
-      navigate('/kanbaX');
-    }
-  }, []);
 
   return (
     <Paper elevation={3} sx={{padding: 3, margin: 'auto'}}>

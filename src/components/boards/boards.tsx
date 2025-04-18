@@ -53,8 +53,8 @@ export const Tableros = () => {
       const user_auth = await getUserAuthState();
 
       if (user_auth) {
-        fetchBoards();
         setLoader(false);
+        fetchBoards();
         return
       }
 
@@ -78,6 +78,14 @@ export const Tableros = () => {
 
     fetchData();
   }, []);
+
+  if (loader) {
+    return (
+      <div className='container_loader_board'>
+        <div className='loader_board'></div>
+      </div>
+    )
+  }
 
   return (
     <div className='boards_container'>

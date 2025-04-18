@@ -87,6 +87,7 @@ export const Tablero = () => {
   const [activeCard, setActiveCard] = useState<CardProps | null>(null);
   let origenGroupRef = useRef<CardGroupProps | null>(null);
   const navigate = useNavigate();
+  const [loader, setLoader] = useState(true);
 
   if (!currentIdBoard) {
     return <p>Tablero no encontrado</p>
@@ -96,6 +97,7 @@ export const Tablero = () => {
     const fetchData = async () => {
       const user_Auth = await getUserAuthState();
       if (user_Auth) {
+        setLoader(false);
 
         const boardData = await getBoard(currentIdBoard);
         loadBoards([boardData]);
@@ -128,6 +130,7 @@ export const Tablero = () => {
 
         const tags = await getTagsFirebase();
         loadTags(tags);
+
         return
       }
 
@@ -137,6 +140,8 @@ export const Tablero = () => {
       const tagsLS = localStorage.getItem('tags-storage');
   
       if (boardsLS && listsLS && cardsLS && tagsLS) {
+        setLoader(false);
+
         loadBoards(JSON.parse(boardsLS));
         loadLists(JSON.parse(listsLS));
         loadCards(JSON.parse(cardsLS));
@@ -144,11 +149,12 @@ export const Tablero = () => {
         return
       }
 
+      setLoader(false);
       navigate('/');
     }
 
     fetchData();
-  }, [userAuth]); //se carga los datos del tablero actual según la ruta
+  }, []); //se carga los datos del tablero actual según la ruta
 
   useEffect(()=> {
     const indexBoard = boards.findIndex(b => b.idBoard === currentIdBoard);
@@ -158,7 +164,7 @@ export const Tablero = () => {
       setIdBoard(boards[indexBoard].idBoard);
       return
     } else {
-      console.log('no hay indexBoard', indexBoard, currentIdBoard, boards)
+      console.log('no hay indexBoard', indexBoard, currentIdBoard, boards);
     }
   }, [boards, currentIdBoard]);
 
@@ -519,6 +525,14 @@ export const Tablero = () => {
     setActiveList(null);
     console.log('finalizó dragEnd');
   };
+
+  if (loader) {
+    return (
+      <div className='container_loader_board'>
+        <div className='loader_board'></div>
+      </div>
+    )
+  }
   
   return (
     <div className='board' >

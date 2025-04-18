@@ -2,17 +2,17 @@ import '../../styles/components/routes/formRegister.scss';
 import { Button, IconButton, InputAdornment, Paper, Stack, TextField, Typography } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { userRegister } from '../../services/firebase/firebaseFunctions';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../../customHooks/useAuthContext';
 import { useState } from 'react';
 import { Loader } from '../reusables/loader';
 import { MdVisibility, MdVisibilityOff } from 'react-icons/md';
 
-
 export const FormRegister = () => {
   const { setUserAuth, fetchBoards } = useAuthContext();
   const [loader, setLoader] = useState(false);
   const [generalError, setGeneralError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   const { 
     register, 
@@ -34,10 +34,11 @@ export const FormRegister = () => {
         email: data.email,
         password: data.password
       });
+
       console.log('estado de registro: ', res)
 
       if (res) {
-        fetchBoards();
+        navigate('/kanbaX')
         setUserAuth(true);
       }
 
@@ -60,7 +61,9 @@ export const FormRegister = () => {
 
   return (
     <Paper elevation={3} sx={{ padding: 4, margin: "auto" }}>
+
       <Loader open={loader} />
+
       <Typography variant="h5" fontWeight="bold" textAlign="center" mb={2}>
         Registro
       </Typography>

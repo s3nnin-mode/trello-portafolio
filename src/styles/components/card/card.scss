@@ -234,13 +234,14 @@
             top: 0;
 
             overflow: hidden;
-            overflow-y: auto;
+            // overflow-y: auto;
 
             // display: flex;
             // justify-content: space-between;
 
             background-color: #ccc;
             box-shadow: 0 0 4px #2e2e2e;
+            padding: 5px 0;
 
             .description_title {
                 font-size: 15px;
@@ -251,7 +252,7 @@
                 
                 // word-wrap: break-word;
                 overflow-wrap: break-word;
-
+                width: 93%;
                 span {
                     font-style: normal;
                 }

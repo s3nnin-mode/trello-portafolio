@@ -15,6 +15,8 @@ import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
 import { MdChevronLeft } from "react-icons/md";
 import { IoClipboardSharp } from "react-icons/io5";
+import { FiLogIn } from 'react-icons/fi';
+import { useAuthContext } from "../../customHooks/useAuthContext";
 
 const drawerWidth = 240;
 
@@ -54,6 +56,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 export const Sidebar = () => {
   const [open, setOpen] = useState(true);
   const navigate = useNavigate();
+  const { userAuth } = useAuthContext();
 
   return (
     <Box sx={{display: 'flex', ml: open ? '240px' : '60px', transition: '.3s linear'}}>
@@ -73,6 +76,17 @@ export const Sidebar = () => {
               {open && <ListItemText primary={'Tableros'} />}
             </ListItemButton>
           </ListItem>
+          { !userAuth && (
+            <ListItem disablePadding>
+              <ListItemButton onClick={() => navigate('/kanbaX')}>
+                <ListItemIcon>
+                  <FiLogIn style={{color: '#03DAC5'}} />
+                </ListItemIcon>
+                {open && <ListItemText primary={'Iniciar sesión'} />}
+              </ListItemButton>
+            </ListItem>
+            )
+          }
         </List>
       </Drawer>
     </Box>

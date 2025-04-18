@@ -17,7 +17,6 @@ export const Home = () => {
 
       if (user_auth) { 
         navigate('/kanbaX');
-        setLoader(false);
         return
       }
 
@@ -28,9 +27,10 @@ export const Home = () => {
 
       if (boardsLS || listsLS || cardsLS || tagsLS) {
         setLoader(false);
-        navigate('/kanbaX');
-        return
+        // navigate('/kanbaX');
+        return;
       }
+      setLoader(false);
     }
     
     fetchAuth();
