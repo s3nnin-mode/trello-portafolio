@@ -17,6 +17,7 @@ import { MdChevronLeft } from "react-icons/md";
 import { IoClipboardSharp } from "react-icons/io5";
 import { FiLogIn } from 'react-icons/fi';
 import { useAuthContext } from "../../customHooks/useAuthContext";
+import { logoutFirebase } from "../../services/firebase/firebaseFunctions";
 
 const drawerWidth = 240;
 
@@ -58,6 +59,13 @@ export const Sidebar = () => {
   const navigate = useNavigate();
   const { userAuth } = useAuthContext();
 
+  const logout = async () => {
+    const logoutState = await logoutFirebase();
+    if (logoutState) {
+      navigate('/');
+    }
+  }
+
   return (
     <Box sx={{display: 'flex', ml: open ? '240px' : '60px', transition: '.3s linear'}}>
       <Drawer variant="permanent" open={open}>
@@ -76,15 +84,26 @@ export const Sidebar = () => {
               {open && <ListItemText primary={'Tableros'} />}
             </ListItemButton>
           </ListItem>
-          { !userAuth && (
+          { !userAuth ? (
             <ListItem disablePadding>
-              <ListItemButton onClick={() => navigate('/kanbaX')}>
+              <ListItemButton onClick={() => navigate('/auth/login')}>
                 <ListItemIcon>
                   <FiLogIn style={{color: '#03DAC5'}} />
                 </ListItemIcon>
                 {open && <ListItemText primary={'Iniciar sesión'} />}
               </ListItemButton>
             </ListItem>
+            )
+            :
+            (
+              <ListItem disablePadding>
+                <ListItemButton onClick={logout} >
+                  <ListItemIcon>
+                    <FiLogIn style={{color: '#03DAC5'}} />
+                  </ListItemIcon>
+                  {open && <ListItemText primary={'Cerrar sesión'} />}
+                </ListItemButton>
+              </ListItem>
             )
           }
         </List>

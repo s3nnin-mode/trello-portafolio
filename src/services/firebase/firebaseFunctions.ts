@@ -6,6 +6,18 @@ import { BoardProps, CardProps, TagsProps } from '../../types/boardProps';
 import { ListProps } from '../../types/boardProps';
 import { initialTags } from '../../utils/tagsColors';
 
+export const logoutFirebase = async () => {
+  return await auth.signOut()
+  .then(() => {
+    console.log('sesion cerrada correctamente')
+    return true
+  }).catch((error) => {
+    console.log('error al cerrar sesion: ', error)
+    return false
+  }
+  );
+}
+
 const initialData = async (userId: string) => {
   try {
     

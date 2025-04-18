@@ -15,28 +15,22 @@
     }
 
     .card_name_modal {
-        // font-size: 18px;
-        // font-weight: bold;
-        // color: #0099FF !important;
-
-        // span {
-        //     // color: #0099FF !important;
-        //     font-weight: normal;
-        // }
-        // display: flex;
-        // min-width: 100%;
         min-width: 100%;
         display: flex;
         gap: 5px;
         cursor: default;
+        overflow: hidden;
         
         .name_component {
+            width: 100%;
             align-content: end;
             font-size: 22px;
             font-size: 1.4rem;
             color: #0099FF;
             color: #ff9800;
             cursor: pointer;
+            overflow-wrap: break-word;
+            
 
             &:hover {
                 .icon_open_textarea {
