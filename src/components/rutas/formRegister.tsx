@@ -9,7 +9,7 @@ import { Loader } from '../reusables/loader';
 import { MdVisibility, MdVisibilityOff } from 'react-icons/md';
 
 export const FormRegister = () => {
-  const { setUserAuth, fetchBoards } = useAuthContext();
+  const { setUserAuth } = useAuthContext();
   const [loader, setLoader] = useState(false);
   const [generalError, setGeneralError] = useState<string | null>(null);
   const navigate = useNavigate();

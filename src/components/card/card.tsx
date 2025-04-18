@@ -1,7 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import '../../styles/components/card/card.scss';
 import { useState } from "react";
-import { CardModal } from "./modalCard/modalCard";
 import { BoardProps, ListProps, TagsProps, CardProps } from '../../types/boardProps';
 import { useTagsStore } from "../../store/tagsStore";
 import { TbFileDescription } from "react-icons/tb";
@@ -18,7 +17,7 @@ import { CheckAnimation } from "../animations/checked";
 import { useCardsServices } from "../../services/cardsServices";
 import { useAuthContext } from "../../customHooks/useAuthContext";
 import { updateCompleteCard } from "../../services/firebase/updateData/updateCards";
-import { Route, Routes, useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 interface TargetComponentProps {
   card: CardProps
@@ -28,7 +27,6 @@ interface TargetComponentProps {
 
 export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
   const { tags } = useTagsStore();
-  const [showCardModal, setShowCardModal] = useState<boolean>(false);
   const [showDescription, setShowDescription] = useState(false);
   const { cardsServices } = useCardsServices();
   const { userAuth } = useAuthContext();

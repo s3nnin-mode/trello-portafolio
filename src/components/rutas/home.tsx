@@ -60,9 +60,9 @@ export const Home = () => {
         <p>
           Este proyecto está aún en desarrollo, aun asi, ya puedes usar todas las funcionalidades existentes.
           <br />
-          Se trata de un proyecto para gestionar tus tareas basado en el método kanban.
+          Quizá encuentres uno que otro fallo, nada grave que estropee las funcionalidades. Se trata de un proyecto para gestionar tus tareas basado en el método kanban.
           <br />
-          En general me falta por agregar un par de cosas como mostrar mensajes claros cuando un registro o inicio de sesión falla, ser responsive y una manita de gato al diseño. Pero en general estoy cerca de terminar este proyecto.
+          En general me falta por agregar un par de cosas como el responsive y una manita de gato al diseño. Pero en general estoy cerca de terminar este proyecto.
           <br />
           Cualquier mejora o sugerencia es bienvenida.
           <br />

@@ -3,13 +3,13 @@ import { Button, IconButton, InputAdornment, Paper, Stack, TextField, Typography
 import { useForm } from "react-hook-form";
 import { userLogin } from '../../services/firebase/firebaseFunctions';
 import { Link, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useAuthContext } from '../../customHooks/useAuthContext';
 import { MdVisibility, MdVisibilityOff } from 'react-icons/md';
 import { Loader } from '../reusables/loader';
 
 export const FormLogin = () => {
-  const { userAuth, setUserAuth } = useAuthContext();
+  const { setUserAuth } = useAuthContext();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [generalError, steGeneralError] = useState<string | null>(null);
@@ -33,7 +33,6 @@ export const FormLogin = () => {
       if (loginState) {
         setUserAuth(true);
         navigate('/Kanbax');
-        // setLoader(false);
       }
     } catch(error: any) {
       if (error.field) {
