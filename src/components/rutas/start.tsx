@@ -136,7 +136,7 @@ export const Start = () => {
           </Button>
         </div>
       </Fade>
-      <div className='container_forms'> 
+      <div className='container_forms'>
         <Outlet />
       </div>
     </div>
