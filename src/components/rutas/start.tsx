@@ -118,16 +118,16 @@ export const Start = () => {
     <div className='container_route_auth'>
       <Fade in={isStart} timeout={600} >
         <div className='intro'>
-          <h4 className='inter_title'>
+          <h3 className='inter_title'>
             Elige entre registrarte para una experiencia personalizada o probar la funcionalidad de la aplicación mediante una cuenta demo.                  
-          </h4>
-          <p className='roboto'>
+          </h3>
+          <p className='inter'>
             Si decides usar la demo, los datos se guardarán temporalmente en tu navegador mediante localStorage, 
             lo que te permitirá explorar las características de la aplicación sin necesidad de crear una cuenta.
             <br /> 
             Elige lo que mejor se adapte a ti.            
           </p>
-          {LS && <span style={{color: 'orange'}}>El modo demo ya está activo en este dispositivo.</span>}
+          {LS && <span className='inter'>El modo demo ya está activo en este dispositivo.</span>}
           <Button 
             onClick={demo} 
             variant="contained"

@@ -47,11 +47,20 @@ export const FormLogin = () => {
   });
 
   return (
-    <Paper elevation={3} sx={{padding: 3, margin: 'auto'}}>
+    <Paper 
+      elevation={3} 
+      sx={{
+        padding: 4, 
+        borderRadius: '4px',
+        margin: 'auto',
+        backgroundColor: '#161b22'
+      }}
+    >
       <Loader open={loader} />
+
       <form onSubmit={onSubmit}>
         <Stack spacing={2}>
-          <Typography variant="h5" component="h1" align="center">
+          <Typography sx={{color: '#ccc'}} variant="h5" component="h1" align="center">
             Iniciar sesión
           </Typography>
 
@@ -64,6 +73,28 @@ export const FormLogin = () => {
             {...register('email', { required: 'Coloca tu correo, porfavor.'})}
             error={!!errors.email} // Muestra el error si existe
             helperText={errors.email ? String(errors.email.message) : '' } // Muestra el mensaje de error
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                color: '#ccc',
+                '& fieldset': {
+                  border: '2px solid #0d1117', //borde cuando NO está enfocado
+                },
+                '&:hover fieldset': {
+                  border: '1px solid #1976d2'
+                },
+                'input:-webkit-autofill': {
+                  WebkitBoxShadow: '0 0 0 1000px transparent inset', // 🔹 fuerza fondo transparente
+                  WebkitTextFillColor: '#ccc', //color del texto
+                  transition: 'background-color 5000s ease-in-out 0s', // evita parpadeo
+                }
+              },
+              '& .MuiInputLabel-root': {
+                  color: '#ccc',
+                  '& .MuiInputLabel-shrink': {
+                    color: '#121212'
+                  }
+                },
+            }}
           />
 
           <TextField
@@ -78,12 +109,33 @@ export const FormLogin = () => {
               input: {
                 endAdornment: (
                 <InputAdornment position="end">
-                  <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
+                  <IconButton sx={{color: '#ccc'}} onClick={() => setShowPassword(!showPassword)} edge="end">
                     {showPassword ? <MdVisibilityOff /> : <MdVisibility />}
                   </IconButton>
                 </InputAdornment>
                 )
               }
+            }}
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                color: '#ccc',
+                '& fieldset': {
+                  bgcolor: 'transparent',
+                  border: '2px solid #0d1117', 
+                },
+                '&:hover fieldset': {
+                  border: '1px solid #1976d2'
+                },
+                '&.Mui-focused fieldset': {
+                },
+                
+              },
+              '& .MuiInputLabel-root': {
+                color: '#ccc',
+                '& .MuiInputLabel-shrink': {
+                  color: '#121212'
+                }
+              },
             }}
           />
 
@@ -97,7 +149,8 @@ export const FormLogin = () => {
 
           <Button 
             sx={{
-              backgroundColor: '#6200ee'
+              backgroundColor: '#1976d2',
+              color: '#fff'
             }}
             variant='contained' 
             type='submit'
@@ -105,12 +158,13 @@ export const FormLogin = () => {
             Iniciar sesión
           </Button>
 
-          <Typography variant="body2" align="center">
+          <Typography sx={{color: '#ccc'}} variant="body2" align="center">
             ¿No tienes una cuenta?{" "}
             <Link 
-              to="/auth/register"
-              style={{
-                color: "#6200ee",
+              to='/auth/register'
+              style={{ 
+                textDecoration: "none", 
+                color: 'orange',
                 fontWeight: 'bold'
               }}
             >

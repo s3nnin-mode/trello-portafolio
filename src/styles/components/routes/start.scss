@@ -12,6 +12,7 @@
     background-color: #fafafa;
     background-color: #e3f2fd;
     background-color: #121212;
+    background-color: #0d1117;
     // background-color: #41dab8;
     // background-color: #7FDBFF;
     padding: 80px;
@@ -26,7 +27,8 @@
         align-items: flex-start;
         gap: 6px;
 
-        h4 {
+        h2, h3, h4 {
+            font-size: 1.3rem;
             margin: 0;
             color: white;
         }
@@ -35,7 +37,11 @@
             margin: 5px 0;
             opacity: 0.9;
             color: #ccc;
-            font-size: 1.1rem;
+            font-size: 1.15rem;
+        }
+
+        span {
+            color: orange;
         }
 
         button {
@@ -43,6 +49,7 @@
             display: block;
             color: #121212;
             background-color: orange;
+            border-radius: 4px;
         }
 
         button:hover {

@@ -3,12 +3,9 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    // background: url(/src/assets/imgs/DALL·E\ 2025-03-06\ 17.05.58\ -\ A\ modern\,\ professional\,\ and\ clean\ abstract\ background.\ The\ design\ should\ feature\ soft\ gradient\ colors\,\ subtle\ abstract\ shapes\,\ and\ a\ minimalistic\ aest.webp);
     background-size: cover;
     background-color: #fafafa;
     background-color: #e3f2fd;
-    // background-color: #41dab8;
-    // background-color: #7FDBFF;
     padding: 50px;
 
     .mensaje_proyecto_en_construccion {
@@ -40,6 +37,10 @@
             }
     
             .card_presentation {
+                display: flex;
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 5px;
             }
         }
     }

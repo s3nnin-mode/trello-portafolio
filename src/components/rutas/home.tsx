@@ -76,7 +76,7 @@ export const Home = () => {
               <h2 className='inter_title'>
                 Organiza tus tareas y proyectos de manera fácil y rápida.
               </h2>
-              <p className='work_sans'>
+              <p className='inter'>
                 Simplifica tu día a día con una interfaz intuitiva y funcionalidades clave.
               </p>
               <Button

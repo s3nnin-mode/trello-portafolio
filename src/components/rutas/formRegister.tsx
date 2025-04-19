@@ -59,13 +59,24 @@ export const FormRegister = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+  
+  // bgcolor: '#6bb2ec
+  //#0d47a1
   return (
-    <Paper elevation={3} sx={{ padding: 4, margin: "auto" }}>
+    <Paper elevation={3} 
+      sx={{ 
+        borderRadius: '4px', 
+        padding: 4, 
+        margin: "auto", 
+        backgroundColor: '#161b22',
+        // background: `linear-gradient(to bottom, #0d47a1, #6bb2ec 95%)`,
+      }}
+    >
 
       <Loader open={loader} />
 
-      <Typography variant="h5" fontWeight="bold" textAlign="center" mb={2}>
-        Registro
+      <Typography sx={{color: '#ccc'}} variant="h5" fontWeight="bold" textAlign="center" mb={2}>
+        KanbaX
       </Typography>
 
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -88,10 +99,25 @@ export const FormRegister = () => {
             fullWidth
             sx={{
               '& .MuiOutlinedInput-root': {
-                '&.Mui-focused fieldset': {
-                  borderColor: '#6200ee', // color del borde cuando está enfocado
+                color: '#ccc',
+                '& fieldset': {
+                  border: '2px solid #0d1117', //borde cuando NO está enfocado
                 },
+                '&:hover fieldset': {
+                  border: '1px solid #1976d2'
+                },
+                'input:-webkit-autofill': {
+                  WebkitBoxShadow: '0 0 0 1000px transparent inset', // 🔹 fuerza fondo transparente
+                  WebkitTextFillColor: '#ccc', //color del texto
+                  transition: 'background-color 5000s ease-in-out 0s', // evita parpadeo
+                }
               },
+              '& .MuiInputLabel-root': {
+                  color: '#ccc',
+                  '& .MuiInputLabel-shrink': {
+                    color: '#121212'
+                  }
+                },
             }}
           />
 
@@ -110,7 +136,7 @@ export const FormRegister = () => {
               input: {
                 endAdornment: (
                 <InputAdornment position="end">
-                  <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
+                  <IconButton sx={{color: '#ccc'}} onClick={() => setShowPassword(!showPassword)} edge="end">
                     {showPassword ? <MdVisibilityOff /> : <MdVisibility />}
                   </IconButton>
                 </InputAdornment>
@@ -119,9 +145,23 @@ export const FormRegister = () => {
             }}
             sx={{
               '& .MuiOutlinedInput-root': {
-                '&.Mui-focused fieldset': {
-                  borderColor: '#6200ee', // color del borde cuando está enfocado
+                color: '#ccc',
+                '& fieldset': {
+                  bgcolor: 'transparent',
+                  border: '2px solid #0d1117', 
                 },
+                '&:hover fieldset': {
+                  border: '1px solid #1976d2'
+                },
+                '&.Mui-focused fieldset': {
+                },
+                
+              },
+              '& .MuiInputLabel-root': {
+                color: '#ccc',
+                '& .MuiInputLabel-shrink': {
+                  color: '#121212'
+                }
               },
             }}
           />
@@ -142,7 +182,7 @@ export const FormRegister = () => {
               input: {
                 endAdornment: (
                 <InputAdornment position="end">
-                  <IconButton onClick={() => setShowConfirmPassword(!showConfirmPassword)} edge="end">
+                  <IconButton sx={{color: '#ccc'}} onClick={() => setShowConfirmPassword(!showConfirmPassword)} edge="end">
                     {showConfirmPassword ? <MdVisibilityOff /> : <MdVisibility />}
                   </IconButton>
                 </InputAdornment>
@@ -151,13 +191,21 @@ export const FormRegister = () => {
             }}
             sx={{
               '& .MuiOutlinedInput-root': {
-                '&.Mui-focused fieldset': {
-                  color: '#6200ee',
-                  borderColor: '#6200ee', // color del borde cuando está enfocado
-                  '&.Mui-focused': {
-                    color: '#6200ee'  // Color del label cuando está enfocado
-                  },         
+                color: '#ccc',
+                '& fieldset': {
+                  border: '2px solid #0d1117', // 🔹 borde cuando NO está enfocado
                 },
+                '&:hover fieldset': {
+                  border: '1px solid #1976d2'
+                },
+                '&.Mui-focused fieldset': {
+                },
+              },
+              '& .MuiInputLabel-root': {
+                color: '#ccc',
+                '& .MuiInputLabel-shrink': {
+                  color: '#121212'
+                }
               },
             }}
           />
@@ -171,22 +219,23 @@ export const FormRegister = () => {
           }
 
           <Button sx={{
-              backgroundColor: '#6200ee'
+              backgroundColor: '#1976d2',
+              color: '#fff'
             }} 
-            type="submit" 
-            variant="contained" 
-            size="large" 
+            type='submit' 
+            variant='contained'
+            size='large'
           >
             Registrarme
           </Button>
 
-          <Typography variant="body2" textAlign="center">
+          <Typography sx={{color: '#ccc'}} variant="body2" textAlign="center">
             ¿Ya tienes una cuenta?{" "}
             <Link 
-              to="/auth/login" 
+              to='/auth/login'
               style={{ 
                 textDecoration: "none", 
-                color: "#6200ee",
+                color: 'orange',
                 fontWeight: 'bold'
               }}
             >
