@@ -59,24 +59,24 @@ export const FormRegister = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  
-  // bgcolor: '#6bb2ec
-  //#0d47a1
   return (
-    <Paper elevation={3} 
+    <>
+    <Typography sx={{color: '#ccc'}} variant="h5" fontWeight="bold" textAlign="center" mb={2}>
+      ¡Organiza tu mundo con kanbaX!
+    </Typography>    
+    <Paper 
+      elevation={3} 
       sx={{ 
         borderRadius: '4px', 
         padding: 4, 
         margin: "auto", 
         backgroundColor: '#161b22',
-        // background: `linear-gradient(to bottom, #0d47a1, #6bb2ec 95%)`,
       }}
     >
-
       <Loader open={loader} />
 
       <Typography sx={{color: '#ccc'}} variant="h5" fontWeight="bold" textAlign="center" mb={2}>
-        KanbaX
+        Registro
       </Typography>
 
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -245,5 +245,6 @@ export const FormRegister = () => {
         </Stack>
       </form>
     </Paper>
+    </>
   )
 }
