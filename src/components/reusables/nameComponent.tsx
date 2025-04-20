@@ -130,7 +130,9 @@ export const NameComponent: React.FC<NameListPropsComponent> = ({idBoard, list, 
     <div className={`title_component ${className}`}>
       <button 
         className='name_component inter_subtitle'                                         //abrir input
-        style={{display: isOpenInput ? 'none' : 'block'}}
+        style={{
+          display: isOpenInput ? 'none' : 'block',
+        }}
         onClick={() => setIsOpenInput(true)}
       >        
         {nameComponent}

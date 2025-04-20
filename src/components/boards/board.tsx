@@ -537,7 +537,7 @@ export const Tablero = () => {
   return (
     <div className='board' >
       <header className='header_board'>
-        <h2 className='inter_title'>{currentBoard?.nameBoard}</h2>                                      {/* NAME BOARD */}
+        <h2 className='inter_title'>{currentBoard?.nameBoard}</h2>                                     {/* NAME BOARD */}
       </header>
       <DndContext
         sensors={sensors}

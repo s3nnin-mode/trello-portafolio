@@ -53,10 +53,7 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
     transform: CSS.Transform.toString(transform),
     transition: 'none',
     opacity: isDragging ? 0.3 : 1,
-    // boxShadow: isDragging ? '0px 4px 10px rgba(0, 0, 0, 0.3)' : '0 0 1px #2e2e2e',
     cursor: isDragging ? 'grabbing' : 'pointer',
-    // border: `1px solid ${list.colorList}`
-    // border: isDragging ? '2px solid red' : 'none',
   };
 
   const isActive = ({tag}: {tag: TagsProps}) => tag.cardsThatUseIt.some((item) => item.idCard === card.idCard);
@@ -114,7 +111,9 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
                 <div className='color_indicator_and_img'>
                   <div 
                   style={{
-                    boxShadow: card.complete ? '0 0 5px #121212' : 'none'
+                    background: card.complete ? 'rgba(0, 0, 0, 0.06)' : 'none',
+                    border: card.complete ? '1px solid rgba(255, 255, 255, 0.1)' : 'none',
+                    boxShadow: card.complete ? '0 1px 1px #121212' : 'none'
                   }}
                   className={card.coverImgCard ? 'container_color_card_with_img' : 'container_color_card'} >
                     {
@@ -156,7 +155,7 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
                 </div>
               </div>
               <div className='content_card'>
-                <p className='cardName inter'>
+                <p className='cardName inter_subtitle'>
                   {card.nameCard}
                 </p>
                 <ul className='tags_active'>
@@ -166,7 +165,7 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
                     <li 
                       key={tag.idTag} 
                       style={{backgroundColor: tag.color, color: betterColorText(tag.color)}} 
-                      className='active_tag_view_on_card inter_light_cursive'
+                      className='active_tag_view_on_card inter_subtitle'
                     >
                       { tag.nameTag }
                     </li> :
@@ -200,10 +199,17 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
               >
                 <div className='description_header'>
                   <p className='description_title roboto_light'>
-                    <span>Descripción de </span>{card.nameCard}
+                    <span>Descripción de </span><span>{card.nameCard}</span>:
                   </p>
-                  <button onClick={(e) => { e.stopPropagation(); setShowDescription(false); }}>
+                  <button 
+                  style={{
+                    // background: list.colorList,
+                    border: `1px solid ${list.colorList}`,
+                    
+                  }}
+                  onClick={(e) => { e.stopPropagation(); setShowDescription(false); }}>
                     <GoEyeClosed 
+                    
                       className='icon_close_description' 
                     />
                   </button>

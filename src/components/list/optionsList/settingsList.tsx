@@ -98,16 +98,16 @@ export const SettingsList: React.FC<SettingsListProps> = ({ idBoard, list }) => 
           createListOrTargetName={(nameCard: string) => addNewCardAtTop(nameCard)} 
         />
 
-        <button className='btn_setting_list' onClick={openFormCopyList}>             {/*BTN OPEN FORM COPY LIST*/}
+        <button className='btn_setting_list inter_light' onClick={openFormCopyList}>             {/*BTN OPEN FORM COPY LIST*/}
           Copiar lista
         </button>
-        <button className='btn_setting_list' onClick={openFormMoveList}>            {/*BTN OPEN FORM MOVE LIST*/}
+        <button className='btn_setting_list inter_light' onClick={openFormMoveList}>            {/*BTN OPEN FORM MOVE LIST*/}
           Mover lista
         </button>
 
         <ColorsToList idBoard={idBoard} list={list} />                              {/*CHANGE COLOR LIST*/}
 
-        <button className='btn_setting_list' onClick={() => setShowModalToRemoveList(true)}>             {/* REMOVE LIST */}
+        <button className='btn_setting_list inter_light' onClick={() => setShowModalToRemoveList(true)}>             {/* REMOVE LIST */}
           Eliminar lista
         </button>   
       </div>

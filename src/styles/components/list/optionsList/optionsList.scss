@@ -75,7 +75,6 @@
             width: 100%;
             text-align: left;
             
-
             .btn_add_some {
                 border-radius: 0;
                 box-shadow: none;
@@ -92,7 +91,7 @@
                     padding: 3px;  //el componente BtnAdd ya tiene un paddin de 7px y para que halla consistencia con los demas botones le agrego 3px, asi cada elemento tiene 10px
                     font-family: "Inter", sans-serif;
                     font-optical-sizing: auto;
-                    font-weight: 350;
+                    font-weight: normal;
                     font-style: normal;
                     color: #ccc;
                     letter-spacing: normal;
@@ -124,10 +123,10 @@
             background: transparent;
             color: inherit;
 
-            font-family: "Inter", sans-serif;
-            font-optical-sizing: auto;
-            font-weight: 350;
-            font-style: normal;
+            // font-family: "Inter", sans-serif;
+            // font-optical-sizing: auto;
+            // font-weight: 350;
+            // font-style: normal;
         }
 
         .btn_setting_list:hover {

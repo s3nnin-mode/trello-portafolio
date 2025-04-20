@@ -60,7 +60,7 @@ export const BtnAdd: React.FC<BtnAddProps> = ({ createListOrTargetName, nameComp
           onClick={() => setShowForm(true)} 
           >
             <AiOutlinePlus className='icon_add' />
-            <span className='inter_medium'>
+            <span className=''>
               Agregar {componenteToAdd[nameComponentToAdd]}
             </span>
           </Button>

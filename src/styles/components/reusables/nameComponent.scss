@@ -13,6 +13,10 @@
         text-align: left;
         cursor: pointer;
         color: #ccc;
+        color: #FAF9F6;
+        color: #EAEAEA;
+        // color: #F8F8F8;
+        // text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
         // letter-spacing: 0.3px;
        
 
@@ -24,10 +28,10 @@
             text-transform: uppercase;
         }
 
-        &:hover {
-            color: #0099FF;
-            // background-color: rgba(128, 128, 128, .4);
-        }
+        // &:hover {
+        //     color: #0099FF;
+        //     // background-color: rgba(128, 128, 128, .4);
+        // }
 
         .icon_open_textarea {
             opacity: 0;
@@ -39,15 +43,15 @@
         }
     }
 
-    .name_component:hover {
-        .icon_open_textarea {
-            display: inline;
-            width: auto;
-            height: auto;
-            opacity: 1;
-            transition: opacity .5s ease;
-        }
-    }
+    // .name_component:hover {
+    //     .icon_open_textarea {
+    //         display: inline;
+    //         width: auto;
+    //         height: auto;
+    //         opacity: 1;
+    //         transition: opacity .5s ease;
+    //     }
+    // }
 
     textarea {
         width: 100%;
@@ -63,5 +67,17 @@
 
     textarea:focus {
         outline: 2px solid #2196F3; /* Color azul */
+    }
+}
+
+.title_component:hover {
+    .name_component {
+        .icon_open_textarea {
+            display: inline;
+            width: auto;
+            height: auto;
+            opacity: 1;
+            transition: opacity .3s linear;
+        }
     }
 }

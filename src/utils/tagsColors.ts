@@ -85,5 +85,5 @@ export const lightTextColors = [
 ];
 
 export const betterColorText = (color: string) => {
-    return darkTextColors.some(c => c === color) ? 'black' : 'white';
+    return darkTextColors.some(c => c === color) ? '#121212' : '#F8F8F8';
 }
