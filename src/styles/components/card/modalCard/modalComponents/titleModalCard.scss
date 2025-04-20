@@ -20,6 +20,7 @@
         gap: 5px;
         cursor: default;
         overflow: hidden;
+        align-items: flex-end;
         
         .name_component {
             width: 100%;
@@ -30,22 +31,30 @@
             color: #ff9800;
             cursor: pointer;
             overflow-wrap: break-word;
-            
-
+        
             &:hover {
                 .icon_open_textarea {
                     color: #0099FF;
+                    color: #1976d2;
                 }
             }
 
             .icon_open_textarea {
-                display: inline-block;
-                margin-left: 3px;
-                border-radius: 6px;
-                font-size: 23px;
-                color: white;
-                color: gray;
-                transition: color linear .2s;
+                // opacity: 1;
+                // height: auto;
+                // width: auto;
+                
+                // display: inline-block;
+                // align-self: flex-end;
+                
+
+                // margin: 0;
+                // margin-left: 3px;
+                // border-radius: 6px;
+                // font-size: 23px;
+                // color: white;
+                // color: gray;
+                // transition: color linear .2s;
                 // transition: background linear .3s;
 
                 // &:hover {

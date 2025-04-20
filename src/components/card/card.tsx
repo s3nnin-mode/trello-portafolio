@@ -53,8 +53,9 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
     transform: CSS.Transform.toString(transform),
     transition: 'none',
     opacity: isDragging ? 0.3 : 1,
-    boxShadow: isDragging ? '0px 4px 10px rgba(0, 0, 0, 0.3)' : '0 1.2px 3px #121212',
+    // boxShadow: isDragging ? '0px 4px 10px rgba(0, 0, 0, 0.3)' : '0 0 1px #2e2e2e',
     cursor: isDragging ? 'grabbing' : 'pointer',
+    // border: `1px solid ${list.colorList}`
     // border: isDragging ? '2px solid red' : 'none',
   };
 
@@ -155,14 +156,18 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
                 </div>
               </div>
               <div className='content_card'>
-                <p className='cardName roboto_light'>
+                <p className='cardName inter'>
                   {card.nameCard}
                 </p>
                 <ul className='tags_active'>
                 {
                   tags.map((tag) => 
                     isActive({tag}) ? 
-                    <li key={tag.idTag} style={{backgroundColor: tag.color, color: betterColorText(tag.color)}} className='active_tag_view_on_card'>
+                    <li 
+                      key={tag.idTag} 
+                      style={{backgroundColor: tag.color, color: betterColorText(tag.color)}} 
+                      className='active_tag_view_on_card inter_light_cursive'
+                    >
                       { tag.nameTag }
                     </li> :
                     null
@@ -172,7 +177,7 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
                 {
                   card.description !== null && (
                     <button 
-                      className='btn_open_description'
+                      className='btn_open_description inter'
                       onClick={(e) => {
                         e.stopPropagation();
                         setShowDescription(true);
@@ -181,7 +186,7 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
                       <TbFileDescription 
                         className='description_icon'
                       />
-                      <span className='roboto'>Ver descripción</span>
+                      <span className='inter'>Ver descripción</span>
                     </button>
                   )
                 }

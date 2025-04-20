@@ -128,14 +128,15 @@ export const NameComponent: React.FC<NameListPropsComponent> = ({idBoard, list, 
 
   return (
     <div className={`title_component ${className}`}>
-      <h3 
-        className='name_component inter'                                         //abrir input
+      <button 
+        className='name_component inter_subtitle'                                         //abrir input
         style={{display: isOpenInput ? 'none' : 'block'}}
         onClick={() => setIsOpenInput(true)}
       >        
         {nameComponent}
         <FiEdit3 className='icon_open_textarea' />
-      </h3>
+      </button>
+      {/* <FiEdit3 className='icon_open_textarea' /> */}
 
       {isOpenInput && (
         <textarea

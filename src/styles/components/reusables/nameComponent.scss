@@ -4,17 +4,21 @@
     left: 0;
     max-width: 175px;
     cursor: pointer;
+    display: flex;
+    // justify-content: space-between;
     
     .name_component {
-        // width: 100%;
-        // overflow-wrap: break-word;
+        background-color: transparent;
+        border: none;
+        text-align: left;
+        cursor: pointer;
         color: #ccc;
-        letter-spacing: 0.3px;
+        // letter-spacing: 0.3px;
+       
 
         font-size: 0.95rem;
-        font-weight: 500;
-        // display: inline;
-        // display: flex;
+        // font-weight: 500;
+        
 
         &::first-letter {
             text-transform: uppercase;
@@ -26,8 +30,22 @@
         }
 
         .icon_open_textarea {
-          
-            display: none;
+            opacity: 0;
+            // display: no;
+            width: 0;
+            height: 0;
+            margin-left: 2px;
+            transition: opacity .5s ease ;
+        }
+    }
+
+    .name_component:hover {
+        .icon_open_textarea {
+            display: inline;
+            width: auto;
+            height: auto;
+            opacity: 1;
+            transition: opacity .5s ease;
         }
     }
 

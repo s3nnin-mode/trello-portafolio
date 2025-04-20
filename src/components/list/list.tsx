@@ -92,6 +92,7 @@ export const List: React.FC<ListPropsComponent> = ({ board, list }) => {
     transform: CSS.Transform.toString(transform), 
     backgroundColor: list.colorList,
     opacity: isDragging ? 0.4 : 1,
+    border: `1px solid ${list.colorList}`
   }
     
   useEffect(() => {

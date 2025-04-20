@@ -31,7 +31,7 @@
   font-optical-sizing: auto;
   font-weight: 600;
   font-style: normal;
-  letter-spacing: .5px;
+  letter-spacing: .4px;
 }
 
 .inter_subtitle {
@@ -40,6 +40,7 @@
   font-weight: 550;
   font-style: normal;
   letter-spacing: .3px;
+  /* text-shadow: 0 2px 1px #121212; */
 }
 
 .inter {
@@ -47,13 +48,37 @@
   font-optical-sizing: auto;
   font-weight: 350;
   font-style: normal;
+  /* text-shadow: 0 1px 1px #121212; */
+  /* letter-spacing: 0.1px; */
+}
+
+.inter_light_cursive {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: italic;
 }
 
 .inter_light {
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-weight: 200;
+  font-weight: 300;
   font-style: normal;
+}
+
+.inter_super_light {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 200;
+  font-style: italic;
+}
+
+.work_sans_title {
+  font-family: "Work Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
+  letter-spacing: 1px;
 }
 
 .work_sans {
@@ -61,6 +86,7 @@
   font-optical-sizing: auto;
   font-weight: normal;
   font-style: normal;
+  /* letter-spacing: 1px; */
 }
 
 .work_sans_light {
@@ -77,7 +103,6 @@
   font-style: normal;
 }
 
-
 .source_code_pro {
   font-family: "Source Code Pro", monospace;
   font-optical-sizing: auto;
@@ -85,6 +110,22 @@
   font-style: normal;
 }
 
+.source_code_pro_text {
+  font-family: "Source Code Pro", monospace;
+  /* font-optical-sizing: auto; */
+  /* font-weight: normal; */
+  /* font-style: normal; */
+  letter-spacing: .1px;
+}
+
+.roboto_title {
+  font-family: "Roboto", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+  font-variation-settings: "wdth" 100;
+  letter-spacing: .3px;
+}
 
 .roboto_light {
   font-family: "Roboto", sans-serif;
@@ -107,10 +148,10 @@
 .roboto {
   font-family: "Roboto", sans-serif;
   font-optical-sizing: auto;
-  font-weight: 400;
+  font-weight: normal;
   font-style: normal;
   font-variation-settings: "wdth" 100;
-  letter-spacing: .3px;
+  /* letter-spacing: .5px; */
 }
 
 .roboto_subtitles {

@@ -6,12 +6,25 @@
 
     padding: 4px 6px;
     position: relative;
+    // border: 1px solid rgb(255, 255, 255, .08);
 
-    background-color: #303030;
-    background-color: rgb(48, 48, 48);
-    background-color: transparent;
+    // background-color: #303030;
+    // background-color: rgb(48, 48, 48);
+    // background-color: transparent;
     // backdrop-filter: blur(5px);
     cursor: default;
+    background-color: rgba(150, 150, 150, .1);
+    background-color: rgba(255, 255, 255, .05);
+    // background-color: rgb(136, 136, 136, .2);
+    // background-color: rgb(18, 18, 18, .17);
+    // background-color: rgb(204, 204, 204, .3);
+ 
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.1); /* si fondo oscuro */
+
+    // background-color: rgba(255, 255, 255);
+
+    // backdrop-filter: blur(10px);
 
     // box-shadow: 0 1.2px 3px #121212;
 
@@ -44,8 +57,7 @@
                 transition: width linear 0.4s, box-shadow linear 0.2s;
                 cursor: default;
                 border-radius: 6px;
-                margin: 5px;
-                
+                margin: 5px 5px 4px 5px;                
                 
                 .circle {
                     transition: transform linear 0.5s;
@@ -147,11 +159,12 @@
         gap: 2px;
 
         .cardName {
-            margin: 0.3rem 0 0 0;
+            margin: 0 0 3px 0;
             overflow-wrap: break-word;
-            letter-spacing: .7px;
             font-size: 0.9rem;
-            margin: 0;
+            font-size: 15px;
+            // font-family: sans-serif;
+            // font-weight: 500;
         }
         
         .tags_active {
@@ -221,6 +234,10 @@
 
         color: #1E1E1E;
         background-color: #ccc;
+
+        background-color: rgb(48, 48, 48);
+        color: #ccc;
+        color: #fff;
         
         border-radius: 8px;
         box-shadow: inset 0 0 15px #2e2e2e;
@@ -234,12 +251,8 @@
             top: 0;
 
             overflow: hidden;
-            // overflow-y: auto;
 
-            // display: flex;
-            // justify-content: space-between;
-
-            background-color: #ccc;
+            // background-color: #ccc;
             box-shadow: 0 0 4px #2e2e2e;
             padding: 5px 0;
 
@@ -270,6 +283,8 @@
   
                 padding: 4px;
                 color: #1E1E1E;
+                color: #ccc;
+
                 margin: 0;
                 background: transparent;
                 box-shadow: inset 0 0 3px #1e1e1e;
@@ -298,7 +313,8 @@
             padding: 2px 5px;
             font-size: 15px;
             letter-spacing: .2px;
-            padding-bottom: 10px;        
+            padding-bottom: 10px; 
+            color: #fff       
         }
     }
 
@@ -324,7 +340,7 @@
 
 .cardItem:hover {
     // background-color: rgb(48, 48, 48, .1);
-    background-color: rgba(255, 255, 255, .05);
+    background-color: rgba(255, 255, 255, .01);
 
     .card_cover {
         .container_color_card,

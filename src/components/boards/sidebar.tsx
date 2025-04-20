@@ -1,5 +1,7 @@
 import { useState } from "react";
 import '../../styles/components/boards/sidebar.scss';
+import '../../App.css';
+
 import { MdChevronRight } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 
@@ -67,7 +69,7 @@ export const Sidebar = () => {
   }
 
   return (
-    <Box sx={{display: 'flex', ml: open ? '240px' : '60px', transition: '.3s linear'}}>
+    <Box sx={{display: 'flex', ml: open ? '240px' : '60px', transition: '.3s linear',}}>
       <Drawer variant="permanent" open={open}>
         <DrawerHeader>
           <IconButton onClick={() => setOpen(!open)}>
@@ -75,20 +77,28 @@ export const Sidebar = () => {
           </IconButton>
         </DrawerHeader>
         <Divider />
-        <List>
-          <ListItem disablePadding>
+        <List sx={{overflow: 'hidden'}}>
+          <ListItem disablePadding >
             <ListItemButton onClick={() => navigate('/kanbaX')}>
-              <ListItemIcon>
-                <IoClipboardSharp style={{color: '#03DAC5'}} />
+              <ListItemIcon sx={{color: '#ccc'}}>
+                <IoClipboardSharp />
               </ListItemIcon>
-              {open && <ListItemText primary={'Tableros'} />}
+
+              {open && <ListItemText 
+                primary={'Tableros'} 
+                slotProps={{
+                  primary: {
+                    className: 'inter' //Falta arreglar la fuente de los items
+                  },
+                }}
+              />}
             </ListItemButton>
           </ListItem>
           { !userAuth ? (
             <ListItem disablePadding>
               <ListItemButton onClick={() => navigate('/auth/login')}>
-                <ListItemIcon>
-                  <FiLogIn style={{color: '#03DAC5'}} />
+                <ListItemIcon sx={{color: '#ccc'}}>
+                  <FiLogIn />
                 </ListItemIcon>
                 {open && <ListItemText primary={'Iniciar sesión'} />}
               </ListItemButton>
@@ -98,8 +108,8 @@ export const Sidebar = () => {
             (
               <ListItem disablePadding>
                 <ListItemButton onClick={logout} >
-                  <ListItemIcon>
-                    <FiLogIn style={{color: '#03DAC5'}} />
+                  <ListItemIcon sx={{color: '#ccc'}}>
+                    <FiLogIn />
                   </ListItemIcon>
                   {open && <ListItemText primary={'Cerrar sesión'} />}
                 </ListItemButton>
