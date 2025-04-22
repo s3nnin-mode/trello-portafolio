@@ -6,7 +6,7 @@ import { Tags } from "./modalComponents/tags/tags";
 // import { CiSquarePlus } from "react-icons/ci";
 import { RiStickyNoteAddLine } from "react-icons/ri";
 
-import { FaSquarePlus } from "react-icons/fa6";
+// import { FaSquarePlus } from "react-icons/fa6";
 import { BsPinAngleFill } from "react-icons/bs";
 
 import { betterColorText } from '../../../utils/tagsColors';
@@ -74,7 +74,7 @@ export const ActiveTags: React.FC<Props> = ({board, list, card}) => {
 					</div>
 				}
 			</div>
-      
+
 			{
 				showTags && (
 					<Tags 

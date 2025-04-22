@@ -8,6 +8,7 @@ import { useAuthContext } from '../../../../../customHooks/useAuthContext';
 import { IoMdClose } from 'react-icons/io';
 import { FaArrowLeft } from "react-icons/fa";
 import { betterColorText } from '../../../../../utils/tagsColors';
+import { MdOutlineArrowBackIos } from "react-icons/md";
 
 // const colors = [
 //   "#E63946", "#F4A261", "#2A9D8F", "#264653", "blue",
@@ -151,15 +152,18 @@ export const EditTags: React.FC<EditTagsProps> = ({idBoard, list, idCard, tag, t
   return (
     <div   
       className='container_edit_or_create_tag'
-      style={{background: list?.colorList}}
+      style={{
+        boxShadow: tag ? `0 0 5px ${tag.color}` : '0 0 20px #1E1E1E'
+        // background: list?.colorList
+      }}
     >
         <header>
           <button onClick={closeComponent} >
-            <FaArrowLeft />
+            <MdOutlineArrowBackIos className='icon' />
           </button>
-          <span className='inter_title'>{titleAction} etiqueta</span>
+          <span className='inter'>{titleAction} etiqueta</span>
           <button onClick={closeAll}>
-            <IoMdClose />
+            <IoMdClose className='icon' />
           </button>
         </header>
 
@@ -176,12 +180,12 @@ export const EditTags: React.FC<EditTagsProps> = ({idBoard, list, idCard, tag, t
             {colorError && <span className='colorError'>La etiqueta necesita un color.</span>}
           </article>
           <article className='input_to_edit_tag'>
-            <p>Titulo</p>
+            <h2 className='roboto'>Titulo</h2>
             <input type='text' value={nameTag} onChange={(e) => setNameTag(e.target.value)} />
             {nameTagError && <span className='nameTagError'>La etiqueta necesita un nombre.</span>}
           </article>
             <article className='tag_colors'>
-              <p>Selecciona un color</p>
+              <h2 className='roboto'>Selecciona un color</h2>
               <div>
                 {
                 colors.map((availableColor) => (
@@ -200,11 +204,12 @@ export const EditTags: React.FC<EditTagsProps> = ({idBoard, list, idCard, tag, t
             </article> */}
             <article className='btns_actions'>
               <button 
+                className='inter'
                 onClick={titleAction === 'Editar' ? handleSaveChanges : createTag}
                 >
                 {titleAction === 'Editar' ? 'Guardar' : 'Crear'}
               </button>
-              {titleAction === 'Editar' && <button onClick={removeTag}>Eliminar etiqueta</button>}
+              {titleAction === 'Editar' && <button className='inter' onClick={removeTag}>Eliminar etiqueta</button>}
             </article>
         </main>
       </div>

@@ -1,45 +1,41 @@
 .container_edit_or_create_tag {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    max-width: 300px;
-    width: 300px;
-    overflow: hidden;
-    z-index: 1000;
-    border-radius: 9px;
-    box-shadow: 0 0 5px #121212;
-    padding-bottom: 10px;
-    // backdrop-filter: blur(100px);
-    // header {
-    //     width: 100%;
-    //     border: 1px solid;
-    //     display: flex;
-    //     align-items: center;
-    //     justify-content: space-between;
-    //     position: absolute;
-    //     top: 0;
-    //     left: 0;
-    // }
+  position: fixed;
+  top: 0;
+  width: 100%;
+  max-width: 300px;
+  width: 300px;
+  overflow: hidden;
+  z-index: 1000;
+  border-radius: 9px;
+  // box-shadow: 0 0 5px #121212;
+  padding-bottom: 10px;
+  background-color: #1E1E1E;
 
-    header {
-        display: flex;
-        justify-content: space-between;
-        padding: 5px;
+  header {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px;
 
-        button {
-            color: #ccc;
-            border: none;
-            background: transparent;
-            border-radius: 9px;
-            cursor: pointer;
-            padding: 4px;
-            
-        }
-
-        button:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-        }
+    button {
+      color: #ccc;
+      border: none;
+      background: transparent;
+      border-radius: 9px;
+      cursor: pointer;
+      padding: 7px;
+      display: flex;
+      font-size: 17px;
+      // font-weight: bold;
+      .icon {
+        font-size: 1rem;
+        font-size: inherit;
+      }
     }
+
+    button:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+  }
 
     main {
         // margin-top: 4rem;
@@ -48,35 +44,45 @@
         max-height: 500px;
 
         .current_tag_to_edit {
-            padding: 25px 20px;
-            background: #ccc;
-            position: relative;
+          padding: 25px 20px;
+          background: #ccc;
+          position: relative;
 
-            div {
-                border-radius: 4px;
-                padding: 5px;
-            }
+          div {
+            border-radius: 4px;
+            padding: 10px 5px;
+            // max-width: ;
+            overflow: hidden;
+            letter-spacing: .3px;
+          }
 
-            .colorError {
-                color: #FF4D4D;
-                font-style: italic;
-            }
+          .colorError {
+            color: #FF4D4D;
+            font-style: italic;
+          }
         }
 
         .input_to_edit_tag {
             padding: 10px;
 
-            p {
-                margin: 0;
-                font-weight: bold;
+            p, h1, h2 {
+              margin-bottom: 4px;
+              font-size: 1.2rem;
+              // font-weight: bold;
             }
 
             input {
-                width: 100%;
-                padding: 4px;
-                outline-color: blue;
-                border-radius: 4px;
-                border: 2px solid saddlebrown;
+              width: 100%;
+              padding: 10px 5px;
+              outline-color: #4A90E2;
+              border-radius: 4px;
+              border: none;
+              // border: 2px solid saddlebrown;
+              font-size: 1rem;
+              letter-spacing: .3px;
+              color: #1E1E1E;
+              font-size: 1.1rem;
+              font-family: 'Times New Roman', Times, serif;
             }
 
             .nameTagError {
@@ -87,19 +93,21 @@
 
         .tag_colors {
             padding: 10px;
-            p {
-                margin: 0;
+
+            p, h2 {
+              margin-bottom: 4px;
+              font-size: 1.2rem;
             }
 
             div {
-                display: grid;
-                gap: 4px;
-                grid-template-columns: repeat(5, 1fr);
-                button {
-                    height: 35px;
-                    border-radius: 4px;
-                    border: 1px solid red;
-                }
+              display: grid;
+              gap: 4px;
+              grid-template-columns: repeat(5, 1fr);
+              button {
+                height: 35px;
+                border-radius: 4px;
+                border: 1px solid red;
+              }
             }
         }
 
@@ -123,14 +131,16 @@
                 padding: 4px 6px;
                 color: #ccc;
                 border: none;
-                border-radius: 9px;
+                border-radius: 6px;
                 box-shadow: 0 3px 5px #121212;
                 background-color: rgb(128, 128, 128, .1);
-                padding: 4px 6px;
+                padding: 7px 5px;
                 color: #4A90E2;
                 font-weight: bold;
                 display: block;
                 width: 100%;
+                cursor: pointer;
+                font-size: 1rem;
 
                 &:hover {
                     color: #2e2e2e;
@@ -146,8 +156,8 @@
                     background-color: #FF4D4D;
                 }
             }
-    
-            
+
+
         }
     }
 
@@ -155,7 +165,7 @@
         width: 8px;
     }
 
-    main::-webkit-scrollbar-track { 
+    main::-webkit-scrollbar-track {
         background-color: #2e2e2e;
         border-radius: 12px;
     }

@@ -9,9 +9,13 @@ import { updateStateTag } from '../../../../../services/firebase/updateData/upda
 
 // import { FaArrowLeft } from "react-icons/fa";
 import { IoMdClose } from 'react-icons/io';
-import { FaRegEdit } from "react-icons/fa";
-import { Checkbox } from '@mui/material'; 
+// import { FaRegEdit } from "react-icons/fa";
+// import { Checkbox } from '@mui/material'; 
+import { LuPinOff } from "react-icons/lu";
+import { BsPinFill } from "react-icons/bs";
+
 import { betterColorText } from '../../../../../utils/tagsColors';
+import { MdEdit } from "react-icons/md";
 
 interface TagsSettings {
   board: BoardProps
@@ -33,6 +37,7 @@ export const Tags: React.FC<TagsSettings> = ({ board, list, card, closeTagsSetti
   const onChangeCheckbox = (prop: string) => {
     const idCard = card.idCard;
     const idTag = prop;
+    console.log('se ejecutó onChange')
 
     if (userAuth) {
       updateStateTag({
@@ -106,7 +111,7 @@ export const Tags: React.FC<TagsSettings> = ({ board, list, card, closeTagsSetti
             
             {/* <label>Filtra</label> */}
             <input
-              className='input_search_tags'
+              className='input_search_tags roboto'
               type="text"
               value={inputValue}
               placeholder='buscar etiquetas...'
@@ -114,24 +119,36 @@ export const Tags: React.FC<TagsSettings> = ({ board, list, card, closeTagsSetti
             />
 
             <div className='container_tags'>
-              <span>Etiquetas</span>
+              <h2 className='roboto'>Etiquetas</h2>
                 <ul>
                   {
                     tagsFilter.slice(0, limitTagsToShow).map((tag) => {
                       return (
                       <li key={tag.idTag} >     
-                        <div className='roboto' style={{backgroundColor: tag.color}} >
-                          <FaRegEdit 
+                        <div  style={{backgroundColor: tag.color}} >
+                          <MdEdit 
+                            
                             onClick={() => openInterfaceToEditTag({tag})}
                             className='icon_edit_tag' 
                           />
                           <span style={{color: betterColorText(tag.color)}}>{tag.nameTag}</span>
                         </div>
-                        <Checkbox
+                        {/* <Checkbox
                           className='checkbox_tag' 
                           checked={isActive({tag})} 
                           onChange={() => onChangeCheckbox(tag.idTag)} 
+                        /> */}
+                        <input 
+                          id={`updatedTag_${tag.idTag}`}
+                          type='checkbox'
+                          style={{display: 'none'}}
+                          onChange={() => onChangeCheckbox(tag.idTag)}
                         />
+                        <label htmlFor={`updatedTag_${tag.idTag}`}>
+                          {isActive({tag}) ? <BsPinFill /> : <LuPinOff />}
+                        </label>
+{/* transform: scale(1.05); 
+box-shadow: 0 20px 12px #121212; */}
                       </li>
                       )
                     })
@@ -141,7 +158,7 @@ export const Tags: React.FC<TagsSettings> = ({ board, list, card, closeTagsSetti
                   {
                     limitTagsToShow < tagsFilter.length && (
                       <button 
-                        className='btn_see_more_tags roboto_medium' 
+                        className='btn_see_more_tags roboto_hard' 
                         onClick={() => setLimitTagsToShow(prevState => prevState + 5)}
                       >
                         ver más etiquetas...
@@ -151,14 +168,14 @@ export const Tags: React.FC<TagsSettings> = ({ board, list, card, closeTagsSetti
                   {
                     limitTagsToShow > 5 && (
                       <button
-                        className='btn_see_fewer_tags roboto_medium'
+                        className='btn_see_fewer_tags roboto_hard'
                         onClick={() => setLimitTagsToShow(prevState => prevState - 5)}
                       >
                         ver menos etiquetas
                       </button>
                     )
                   }
-                  <button onClick={() => setIsCreateTag(true)}>
+                  <button className='roboto_hard' onClick={() => setIsCreateTag(true)}>
                     Crear etiqueta
                   </button>
                 </footer>

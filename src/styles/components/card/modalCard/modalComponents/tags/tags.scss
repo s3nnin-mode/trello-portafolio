@@ -38,10 +38,12 @@
             margin: 0;
             border: none;
             border-radius: 9px;
-            padding: 2px 6px;
+            padding: 6px;
+            display: flex;
             background-color: transparent;
             color: #ccc;
             font-size: 20px;
+            cursor: pointer;
         }
 
         button:hover {
@@ -56,9 +58,10 @@
         border-radius: 4px;
         border: 1px solid palevioletred;
         outline-color: blueviolet;
-        font-family: 'Times New Roman', Times, serif;
-        font-size: 1.05rem;
+        // font-family: 'Times New Roman', Times, serif;
+        font-size: 1rem;
         color: #1E1E1E;
+        font-weight: normal;
     }
 
     .input_search_tags::placeholder {
@@ -69,6 +72,12 @@
     .container_tags {
         overflow-y: auto;
         padding: 5px;
+
+        h2 {
+            padding-left: 5px;
+            font-size: 1.2rem;
+        }
+
         span {
             padding-left: 5px;
         }
@@ -86,6 +95,7 @@
                 margin: 5px 0;
     
                 div {
+                    // align-content: center;
                     width: 100%;
                     padding: 5px;
                     border-radius: 4px;
@@ -96,6 +106,9 @@
                     margin: 0;
                     // text-shadow: 3px 4px 4px #121212;
                     color: white;
+                    font-size: 18px;
+                    font-style: italic;
+                    letter-spacing: .3px;
                     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3); /* Sombra para mejorar la visibilidad */
                 }
 
@@ -105,13 +118,23 @@
                 }
 
                 .icon_edit_tag {
-                    font-size: 20px;
+                    font-size: 1.2rem;
                     margin-right: 5px;
                     color: #121212;
+                    // color: #252526;
+                    // color: rgb(204, 204, 204, .9);
+                    border-radius: 4px;
+                //    border: 1px solid;
+                //    display: flex;
+                position: relative;
+                top: 2px;
+                color: #1E1E1E;
+                //    align-self: flex-end;
                 }
 
                 .icon_edit_tag:hover {
                     cursor: pointer;
+                    color: #1e1e1e;
                     color: #ccc;
                     // background-color: rgba(255, 255, 255, .1);
                 }
@@ -144,6 +167,8 @@
             padding: 5px;
             border: none;
             border-radius: 4px;
+            font-size: 1rem;
+            color: #1E1E1E;
         }
 
         button:hover {

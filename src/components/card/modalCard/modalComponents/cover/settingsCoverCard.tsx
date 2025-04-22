@@ -6,6 +6,8 @@ import { useAuthContext } from '../../../../../customHooks/useAuthContext';
 // import { updateCoverCard } from '../../../../../services/firebase/updateData/updateCards';
 import { IoIosArrowBack } from "react-icons/io";
 import { AiOutlinePicture } from "react-icons/ai";
+import { MdOutlineArrowBackIos } from "react-icons/md";
+
 
 const cardColors = [
   "#007BFF", "#FFC107", // Azul eléctrico & Amarillo dorado
@@ -27,18 +29,6 @@ import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import { updateColorCoverCard, updatedCoverImg, updateImgCoverCard } from '../../../../../services/firebase/updateData/updateCards';
 import { Loader } from '../../../../reusables/loader';
-
-// const style = {
-//   // position: 'fixed',
-//   // top: 0,
-//   // left: 0,
-//   // // transform: 'translate(-50%, -50%)',
-//   // width: '100%',
-//   // background: '#121212',
-//   // boxShadow: 24,
-//   // overflow: 'auto',
-//   // p: 2,
-// };
   
 interface SettingsCoverProps {
   idBoard: string
@@ -154,7 +144,10 @@ export const SettingsCover: React.FC<SettingsCoverProps> = ({ card, idList, idBo
 
   return (
     <Modal
-    
+      sx={{
+        minHeight: '100vh',
+        overflowY: 'auto',
+      }}
       aria-labelledby="transition-modal-title"
       aria-describedby="transition-modal-description"
       open={openSettingsCover}
@@ -169,15 +162,22 @@ export const SettingsCover: React.FC<SettingsCoverProps> = ({ card, idList, idBo
     >
       <Fade in={openSettingsCover}>
         <Box 
+        sx={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)'
+        }}
           onClick={closeComponent}
           className='backdrop_settings_cover'
         >
           <div className='settings_card_cover' onClick={(e) => e.stopPropagation()} onPointerDown={(e) => e.stopPropagation()}>
             <header 
-            style={{
-              backgroundImage: coverImgPreview ? `url(${coverImgPreview})` : 'none',
-            }}
-            className='header_preview_cover_card'> 
+              style={{
+                backgroundImage: coverImgPreview ? `url(${coverImgPreview})` : 'none',
+              }}
+              className='header_preview_cover_card'
+            > 
               <div className='container_color_indicator'> 
                 { coverColorPreview !== null ?
                   <>
@@ -196,7 +196,7 @@ export const SettingsCover: React.FC<SettingsCoverProps> = ({ card, idList, idBo
               }
 
               <button onClick={closeComponent}>
-                <IoIosArrowBack />
+                <MdOutlineArrowBackIos className='icon_close_settings_cover' />
               </button>
             </header>
             <main>
@@ -211,14 +211,14 @@ export const SettingsCover: React.FC<SettingsCoverProps> = ({ card, idList, idBo
                     cardColors.slice(0, limitColors).map((color) => (
                       <button 
                         key={color}
-                        // className='btn_select_color_preview'
                         onClick={() => setColorSelect(color)}
                         onMouseEnter={() => setCoverColorPreview(color)}
                         onMouseLeave={() => setCoverColorPreview(colorSelect)}
-                        className={color === colorSelect ? 'btn_color_selected' : 'btn_select_color_preview'}
+                        className={color === colorSelect ? 'btn_color_selected' : 'btn_select_color_preview inter_subtitle'}
                         style={{
-                            backgroundColor: color, 
+                          backgroundColor: color, 
                         }}
+                        
                       >
                         {color}
                       </button>
@@ -252,8 +252,9 @@ export const SettingsCover: React.FC<SettingsCoverProps> = ({ card, idList, idBo
                     ? card.coverCardImgs.map((img) => {
                       return (
                       <button 
-                      onClick={() => setCoverImgPreview(img)} 
-                      key={img}>
+                        onClick={() => setCoverImgPreview(img)} 
+                        key={img}
+                      >
                         <img src={img} alt='cover card' />
                       </button>)
                     }) 
@@ -268,14 +269,14 @@ export const SettingsCover: React.FC<SettingsCoverProps> = ({ card, idList, idBo
                   <input disabled={!userAuth} type='file' id='inputFile' onChange={(e) => handleUpdateImg(e)} style={{display: 'none'}} />
                   <button onClick={() => setCoverImgPreview(null)}>Quitar imagen</button>
                 </div>
-                <span style={{color: 'orange', fontStyle: 'italic'}}>
+                <span className='msg_user_need_auth'>
                   Para agregar una imagen desde tu PC necesitas registrarte.
                 </span>
               </div>
             </main>
             <footer>
-              <button onClick={handleSaveChanges}>Guardar cambios</button>
-              <button onClick={closeComponent}>Cancelar</button>
+              <button className='inter' onClick={handleSaveChanges}>Guardar cambios</button>
+              <button className='inter' onClick={closeComponent}>Cancelar</button>
             </footer>
           </div>
         </Box>
