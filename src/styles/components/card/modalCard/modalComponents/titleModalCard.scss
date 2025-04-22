@@ -10,7 +10,9 @@
     }
 
     .label_card_title {
-        font-weight: bold;
+        font-size: 20px;
+        font-family: 'Times New Roman', Times, serif;
+        // font-weight: bold;
         // font-style: italic;
     }
 
@@ -26,16 +28,18 @@
             width: 100%;
             align-content: end;
             font-size: 22px;
-            font-size: 1.4rem;
-            color: #0099FF;
-            color: #ff9800;
+            font-size: 1.3rem;
+            // color: #0099FF;
+            // color: #ff9800;
             cursor: pointer;
             overflow-wrap: break-word;
+            font-family: 'Times New Roman';
         
             &:hover {
+                font-family: 'Times new Roman';
                 .icon_open_textarea {
-                    color: #0099FF;
-                    color: #1976d2;
+                    // color: #0099FF;
+                    // color: #1976d2;
                 }
             }
 

@@ -99,7 +99,6 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
         {...attributes}
         {...listeners}
         className='cardItem'
-        // onClick={() => { setShowCardModal(true)}}
         onClick={() => navigate(`list/${list.idList}/card/${card.idCard}`)}
       >
         {

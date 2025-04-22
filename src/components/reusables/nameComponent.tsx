@@ -132,11 +132,12 @@ export const NameComponent: React.FC<NameListPropsComponent> = ({idBoard, list, 
         className='name_component inter_subtitle'                                         //abrir input
         style={{
           display: isOpenInput ? 'none' : 'block',
+          color: card?.coverColorCard || '#ccc'
         }}
         onClick={() => setIsOpenInput(true)}
       >        
         {nameComponent}
-        <FiEdit3 className='icon_open_textarea' />
+        <FiEdit3 style={{color: card?.coverColorCard || 'white'}} className='icon_open_textarea' />
       </button>
       {/* <FiEdit3 className='icon_open_textarea' /> */}
 

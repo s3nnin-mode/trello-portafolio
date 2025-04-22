@@ -30,10 +30,10 @@ import { getCardsFirebase, getListsFirebase, getTagsFirebase } from '../../../se
 //   open: boolean
 // }
 
-export const hexToRgb = (hex: string) => {
-  const bigint = parseInt(hex.slice(1), 16);
-  return `rgb(${(bigint >> 16) & 255}, ${(bigint >> 8) & 255}, ${bigint & 255}, .4)`;
-}
+// export const hexToRgb = (hex: string) => {
+//   const bigint = parseInt(hex.slice(1), 16);
+//   return `rgb(${(bigint >> 16) & 255}, ${(bigint >> 8) & 255}, ${bigint & 255}, .4)`;
+// }
 
 // React.FC<ModalTargetComponentProps>
 // { card, list, board, closeModal, open }
@@ -197,12 +197,25 @@ export const CardModal = () => {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: 600,
-    background: list ? hexToRgb(list.colorList) : '',
-    boxShadow: 24,
+    // background: `linear-gradient(135deg, #121212 50%, ${card?.coverColorCard} 100%)`,
+    // backgroundColor: card?.coverColorCard,
+    // opacity: 0.1, // para que no opaque el contenido
+    // backdropFilter: 'blur(4px)',
+    // borderLeft: `6px solid ${list?.colorList}`
+    // boxShadow: 24,
+    backgroundColor: '#1E1E1E',
+    borderRadius: '12px',
+    boxShadow: `0 0 7px ${list?.colorList}55`,
+    borderLeft: `6px solid ${card?.coverColorCard}`,
+
   };
 
 	return (
     <Modal
+      sx={{
+        minHeight: '100vh',
+        overflowY: 'auto',        
+      }}
       aria-labelledby="transition-modal-title"
       aria-describedby="transition-modal-description"
       open={open}
@@ -226,13 +239,13 @@ export const CardModal = () => {
             <>
               <CardModalCover card={card} idBoard={board.idBoard} idList={list.idList} closeModal={closeModal} />
               <div className='modal_content_container'> 
-              <TitleModalCard board={board} list={list} card={card} /> 
-              <div className='modal_content'>
-                <ActiveTags board={board} list={list} card={card} /> 
-                <CardDescription card={card} idList={list.idList} idBoard={board.idBoard} /> 
+                <TitleModalCard board={board} list={list} card={card} /> 
+                <div className='modal_content'>
+                  <ActiveTags board={board} list={list} card={card} /> 
+                  <CardDescription card={card} idList={list.idList} idBoard={board.idBoard} /> 
+                </div>
+                <div className='sidebar_tags' />
               </div>
-              <div className='sidebar_tags' />
-            </div>
             </>
           :
           <div className='loader_test'></div>

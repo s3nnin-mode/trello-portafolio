@@ -66,19 +66,10 @@ export const CardDescription: React.FC<CardDescriptionProps> = ({card, idList, i
     
   return (
     <div className='container_card_description_modal'>
-      <h5 className='inter_title'>
+      <h2 className=''>
         Descripción
-        {
-        // card.description ?
-        //   <>
-        //   <TbFileDescription className='description_notification' />
-        //   {/* <span className='notification'></span> */}
-        //   {/* <TbFileDescription className='description_notification' /> */}
-        //   </>
-        //   :
-        //   <MdEditDocument />
-        }
-      </h5>
+        
+      </h2>
       {
         !showTextarea && (
           card.description !== null ?
@@ -88,7 +79,7 @@ export const CardDescription: React.FC<CardDescriptionProps> = ({card, idList, i
               {card.description.length > 40 ?
               <>
                 {!showAllDescription ? card.description.slice(0, 39) : card.description}
-                {!showAllDescription && <span className='span_expand_text' onClick={() => setShowAllDescription(true)}> ...ver mas</span>}
+                {!showAllDescription && <span style={{color: card?.coverColorCard || '#ccc'}} className='span_expand_text' onClick={() => setShowAllDescription(true)}> ...ver mas</span>}
               </>
               :
                 `${card.description}.`
@@ -136,7 +127,7 @@ export const CardDescription: React.FC<CardDescriptionProps> = ({card, idList, i
               onChange={(e) => setInputValue(e.target.value)} 
             />
               <div>
-                <button type='button' onClick={saveDescription}>Guardar</button>
+                <button style={{color: card?.coverColorCard || '#ccc'}} type='button' onClick={saveDescription}>Guardar</button>
                 <button type='button' onClick={() => setShowTextarea(false)}>Cancelar</button>
               </div>
           </form>

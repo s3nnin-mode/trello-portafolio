@@ -14,7 +14,7 @@ interface ColorsToListComponentProps {
 // #252526 gris de siempre
 // #2c2c2c Gris acero
 // #17944D
-const listColors = [
+const listColorss = [
   "#252526", // Gris acero
   "#1E3A8A", // Azul noche
   '#17944D',
@@ -32,6 +32,22 @@ const listColors = [
   "#BE185D", // Rosa fucsia apagado
   "#065F46"  // Verde bosque
 ];
+
+const listColors = [
+  "#252526", // Gris acero
+  "#1b336f", // Azul noche (más tenue)
+  "#147c41", // Verde apagado
+  "#4b1c99", // Púrpura profundo
+  "#b86b06", // Naranja quemado más suave
+  "#0b8fc4", // Cyan atenuado
+  "#7f1515", // Rojo oscuro más sobrio
+  "#3f0418", // Vino muy oscuro
+  "#0c625c", // Turquesa apagado
+  "#6c34c5", // Lavanda oscura menos saturada
+  "#2f3741", // Gris humo más apagado
+  "#a81750", // Rosa fucsia más tenue
+  "#054c38" 
+]
 
 export const ColorsToList: React.FC<ColorsToListComponentProps> = ({idBoard, list}) => {
     const { listsService } = useListsServices();

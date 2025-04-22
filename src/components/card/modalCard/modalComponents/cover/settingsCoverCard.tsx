@@ -154,6 +154,7 @@ export const SettingsCover: React.FC<SettingsCoverProps> = ({ card, idList, idBo
 
   return (
     <Modal
+    
       aria-labelledby="transition-modal-title"
       aria-describedby="transition-modal-description"
       open={openSettingsCover}

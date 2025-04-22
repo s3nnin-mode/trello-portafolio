@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import '../../../../../styles/components/card/modalCard/modalComponents/tags/tags.scss';
 import { BoardProps, ListProps, CardProps, TagsProps } from '../../../../../types/boardProps';
 import { EditTags } from './editTags';
@@ -76,32 +76,35 @@ export const Tags: React.FC<TagsSettings> = ({ board, list, card, closeTagsSetti
     setIsCreateTag(false);
   }
 
-  const hexToRgb = (hex: string) => {
-    const bigint = parseInt(hex.slice(1), 16);
-    return `rgb(${(bigint >> 16) & 255}, ${(bigint >> 8) & 255}, ${bigint & 255}, .6)`;
-  }
+  // const hexToRgb = (hex: string) => {
+  //   const bigint = parseInt(hex.slice(1), 16);
+  //   return `rgb(${(bigint >> 16) & 255}, ${(bigint >> 8) & 255}, ${bigint & 255}, .6)`;
+  // }
 
   return (
+    
     <div className='container_tags_settings'>
       {
         !isEditTag && (
+          
           <div 
             style={{
-              background: hexToRgb(list.colorList)
-              // background: `linear-gradient(135deg, rgba(255, 255, 255, .05), ${hexToRgb(list.colorList)})`
+              // background: hexToRgb(list.colorList)
+              // background: `linear-gradient(135deg, rgba(255, 255, 255, .05) 0%, ${hexToRgb(list.colorList)} 100%)`
             }}
             className='tags_settings'
           >
             <header className='tags_settings_header'>
               {/* <span></span> */}
-              <p className='inter_title'>
-                Configuración de etiquetas
-              </p>
+              {/* <h1 className='inter_title'>
+                Etiquetas
+              </h1> */}
               <button onClick={closeTagsSettings}>
                 <IoMdClose />
               </button>
             </header>
-
+            
+            {/* <label>Filtra</label> */}
             <input
               className='input_search_tags'
               type="text"
@@ -161,6 +164,7 @@ export const Tags: React.FC<TagsSettings> = ({ board, list, card, closeTagsSetti
                 </footer>
               </div>
           </div>
+         
         )
       }
       {
@@ -189,6 +193,7 @@ export const Tags: React.FC<TagsSettings> = ({ board, list, card, closeTagsSetti
         )
       }
       </div>
+      
   )
 }
 

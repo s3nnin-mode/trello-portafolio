@@ -12,7 +12,7 @@ export const TitleModalCard: React.FC<TitleModalCardProps> = ({card, list, board
 
   return (
     <div className='name_card_container'>
-      <span className='label_card_title inter_title'>Tarjeta:</span>
+      <h2 className='label_card_title roboto'>Tarjeta:</h2>
       <NameComponent idBoard={board.idBoard} list={list} card={card} componentType='card' className='card_name_modal' />
       {
         /* <p className='nameList_modal_card'>

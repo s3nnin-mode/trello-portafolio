@@ -1,17 +1,13 @@
 
 
-.div_modal {
-  .card_modal {
-    backdrop-filter: blur(50px);
-
-    .modal_content_container {
-    }
-  }
-}
-
 .card_modal {
-  outline: none;
+  // outline: none;
   color: #ccc;  
+  border-radius: 12px;
+  // overflow: hidden;
+  // height: 100%;
+  // max-height: 100vh;
+  // overflow-y: auto;
 
   .modal_content_container {
     padding: 1rem;
@@ -26,20 +22,20 @@
   }
 }
 
-.card_modal::before {
-  content: '';
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 50%;
-  left: 50%;
-  left: 0;
-  top: 0;
-  // filter: blur(5px);
-  backdrop-filter: blur(15px);
-  // transform: translate(-50%, -50%);
-  z-index: -1;
-}
+// .card_modal::before {
+//   content: '';
+//   position: absolute;
+//   width: 100%;
+//   height: 100%;
+//   top: 50%;
+//   left: 50%;
+//   left: 0;
+//   top: 0;
+//   // filter: blur(5px);
+//   backdrop-filter: blur(15px);
+//   // transform: translate(-50%, -50%);
+//   z-index: -1;
+// }
 
 
 .loader_test {
