@@ -14,24 +14,24 @@ interface ColorsToListComponentProps {
 // #252526 gris de siempre
 // #2c2c2c Gris acero
 // #17944D
-const listColorss = [
-  "#252526", // Gris acero
-  "#1E3A8A", // Azul noche
-  '#17944D',
-  // "#1FAA59", // Verde neón tenue
-  "#5B21B6", // Púrpura intenso
-  "#D97706", // Naranja quemado
-  "#0EA5E9", // Cyan eléctrico
-  "#991B1B", // Rojo oscuro
-  // "#B88D4B", // Dorado tenue
-  "#4A051C", // Vino oscuro
-  "#0F766E", // Turquesa apagado
-  "#7C3AED", // Lavanda oscura
-  "#374151", // Gris humo
-  // '#CA9807',
-  "#BE185D", // Rosa fucsia apagado
-  "#065F46"  // Verde bosque
-];
+// const listColorss = [
+//   "#252526", // Gris acero
+//   "#1E3A8A", // Azul noche
+//   '#17944D',
+//   // "#1FAA59", // Verde neón tenue
+//   "#5B21B6", // Púrpura intenso
+//   "#D97706", // Naranja quemado
+//   "#0EA5E9", // Cyan eléctrico
+//   "#991B1B", // Rojo oscuro
+//   // "#B88D4B", // Dorado tenue
+//   "#4A051C", // Vino oscuro
+//   "#0F766E", // Turquesa apagado
+//   "#7C3AED", // Lavanda oscura
+//   "#374151", // Gris humo
+//   // '#CA9807',
+//   "#BE185D", // Rosa fucsia apagado
+//   "#065F46"  // Verde bosque
+// ];
 
 const listColors = [
   "#252526", // Gris acero

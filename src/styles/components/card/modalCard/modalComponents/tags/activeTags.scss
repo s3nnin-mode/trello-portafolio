@@ -35,13 +35,15 @@
             position: relative;
             width: 30px;
             cursor: pointer;
+            transform: rotate(25deg);
 
             &:hover {
                 .icon_add_tag {
-                    scale: 1.05;
+                scale: 1.05;
                 transition:  scale .3s ease;
                 background-color: rgba(0,0,0,0.04);
-                color: orange;
+                // color: orange;
+                color: #C70039;
                 }
             }
           
@@ -55,6 +57,16 @@
                 
                 font-size: 24px;
             }
+        }
+
+        &:hover {
+            .icon_add_tag {
+                scale: 1.05;
+                transition:  scale .3s ease;
+                background-color: rgba(0,0,0,0.04);
+                // color: orange;
+                color: #C70039;
+                }
         }
     }
 
@@ -134,10 +146,19 @@
             width: 30px;
             cursor: pointer;
 
+            .icon_add_tag {
+                position: absolute;
+                top: 0;
+                left: 0;
+                margin-left: 2px;
+                font-size: 24px;
+            }
+
             &:hover {
                 .icon_add_tag {
                     scale: 1.05;
                     color: white;
+                    
                     transition:  scale .3s ease;
                     // background-color: rgba(0,0,0,0.04);
                 // color: orange;
@@ -146,14 +167,7 @@
           
             // background-color: grey;
 
-            .icon_add_tag {
-                position: absolute;
-                top: 0;
-                left: 0;
-                margin-left: 2px;
-                
-                font-size: 24px;
-            }
+            
         }
     }
 

@@ -6,7 +6,6 @@ import { createTagFirebase, deleteTagFirebase, updateTag } from '../../../../../
 import { useAuthContext } from '../../../../../customHooks/useAuthContext';
 
 import { IoMdClose } from 'react-icons/io';
-import { FaArrowLeft } from "react-icons/fa";
 import { betterColorText } from '../../../../../utils/tagsColors';
 import { MdOutlineArrowBackIos } from "react-icons/md";
 

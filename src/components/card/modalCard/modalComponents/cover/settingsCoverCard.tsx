@@ -4,7 +4,6 @@ import { CardProps } from '../../../../../types/boardProps';
 import { useCardsServices } from '../../../../../services/cardsServices';
 import { useAuthContext } from '../../../../../customHooks/useAuthContext';
 // import { updateCoverCard } from '../../../../../services/firebase/updateData/updateCards';
-import { IoIosArrowBack } from "react-icons/io";
 import { AiOutlinePicture } from "react-icons/ai";
 import { MdOutlineArrowBackIos } from "react-icons/md";
 

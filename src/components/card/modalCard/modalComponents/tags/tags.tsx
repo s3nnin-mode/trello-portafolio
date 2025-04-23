@@ -11,7 +11,7 @@ import { updateStateTag } from '../../../../../services/firebase/updateData/upda
 import { IoMdClose } from 'react-icons/io';
 // import { FaRegEdit } from "react-icons/fa";
 // import { Checkbox } from '@mui/material'; 
-import { LuPinOff } from "react-icons/lu";
+// import { LuPinOff } from "react-icons/lu";
 import { BsPinFill } from "react-icons/bs";
 
 import { betterColorText } from '../../../../../utils/tagsColors';
@@ -124,31 +124,28 @@ export const Tags: React.FC<TagsSettings> = ({ board, list, card, closeTagsSetti
                   {
                     tagsFilter.slice(0, limitTagsToShow).map((tag) => {
                       return (
-                      <li key={tag.idTag} >     
-                        <div  style={{backgroundColor: tag.color}} >
+                      <li key={tag.idTag} style={{backgroundColor: tag.color}}>     
+                        <div className='container_icon_edit_and_nametag'>
                           <MdEdit 
-                            
                             onClick={() => openInterfaceToEditTag({tag})}
                             className='icon_edit_tag' 
                           />
                           <span style={{color: betterColorText(tag.color)}}>{tag.nameTag}</span>
                         </div>
-                        {/* <Checkbox
-                          className='checkbox_tag' 
-                          checked={isActive({tag})} 
-                          onChange={() => onChangeCheckbox(tag.idTag)} 
-                        /> */}
                         <input 
                           id={`updatedTag_${tag.idTag}`}
                           type='checkbox'
                           style={{display: 'none'}}
                           onChange={() => onChangeCheckbox(tag.idTag)}
                         />
-                        <label htmlFor={`updatedTag_${tag.idTag}`}>
-                          {isActive({tag}) ? <BsPinFill /> : <LuPinOff />}
+                        <label style={{backgroundColor: tag.color}} htmlFor={`updatedTag_${tag.idTag}`}>
+                          {isActive({tag}) ? 
+                          <BsPinFill className='pin_active' /> : 
+                          <span className='fake_input'>
+                            {/* <BsPinFill className='pin_hover' /> */}
+                          </span>
+                          }
                         </label>
-{/* transform: scale(1.05); 
-box-shadow: 0 20px 12px #121212; */}
                       </li>
                       )
                     })

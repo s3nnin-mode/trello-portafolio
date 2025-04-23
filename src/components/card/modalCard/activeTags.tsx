@@ -8,6 +8,7 @@ import { RiStickyNoteAddLine } from "react-icons/ri";
 
 // import { FaSquarePlus } from "react-icons/fa6";
 import { BsPinAngleFill } from "react-icons/bs";
+import { LuPinOff } from "react-icons/lu";
 
 import { betterColorText } from '../../../utils/tagsColors';
 
@@ -69,7 +70,7 @@ export const ActiveTags: React.FC<Props> = ({board, list, card}) => {
 					<div className='container_no_tags'>
 						<span className='no_tags_text roboto_light'>No hay etiquetas para esta tarjeta..</span>
 						<button className='btn_add_tag' onClick={() => setShowTags(true)}>
-							<RiStickyNoteAddLine className='icon_add_tag' />
+							<LuPinOff className='icon_add_tag' />
 						</button>             {/*PARA ACTIVAR EL MODAL*/}
 					</div>
 				}
