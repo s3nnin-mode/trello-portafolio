@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import '../../styles/components/list/list.scss';
 //REACT-ICONS
-import { RiCollapseHorizontalLine } from "react-icons/ri";
+// import { RiCollapseHorizontalLine } from "react-icons/ri";
 //COMPONENTS
 import { SettingsList } from "./optionsList/settingsList";
 import { NameComponent } from "../reusables/nameComponent";
@@ -19,7 +19,7 @@ import { useCardsServices } from "../../services/cardsServices";
 import { SortableContext } from '@dnd-kit/sortable';
 import { addCardFirebase } from "../../services/firebase/updateData/updateCards";
 import { useAuthContext } from "../../customHooks/useAuthContext";
-import { IconButton } from "@mui/material";
+// import { IconButton } from "@mui/material";
 
 
 interface ListPropsComponent {
@@ -70,7 +70,7 @@ export const useList = () => {
 export const List: React.FC<ListPropsComponent> = ({ board, list }) => {               
   const { addNewCard } = useList();
   const { cardsGroup } = useCardsStore();
-  const [isListCollapse, setIsListCollapse] = useState(false);
+  // const [isListCollapse, setIsListCollapse] = useState(false);
   const [currentCards, setCurrentCards] = useState<CardProps[]>([]);
 
   const { 
