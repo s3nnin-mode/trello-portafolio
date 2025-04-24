@@ -53,7 +53,6 @@ export const getCard = async ({ idBoard, idList, idCard }: { idBoard: string, id
   return card;
 }
 
-
 export const CardModal = () => {
 
   const { getUserAuthState } = useAuthContext();
@@ -196,7 +195,6 @@ export const CardModal = () => {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 600,
     // background: `linear-gradient(135deg, #121212 50%, ${card?.coverColorCard} 100%)`,
     // backgroundColor: card?.coverColorCard,
     // opacity: 0.1, // para que no opaque el contenido
@@ -214,7 +212,7 @@ export const CardModal = () => {
     <Modal
       sx={{
         minHeight: '100vh',
-        overflowY: 'auto',        
+        overflowY: 'auto', 
       }}
       aria-labelledby="transition-modal-title"
       aria-describedby="transition-modal-description"

@@ -146,6 +146,9 @@ export const SettingsCover: React.FC<SettingsCoverProps> = ({ card, idList, idBo
       sx={{
         minHeight: '100vh',
         overflowY: 'auto',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
       }}
       aria-labelledby="transition-modal-title"
       aria-describedby="transition-modal-description"
@@ -162,10 +165,10 @@ export const SettingsCover: React.FC<SettingsCoverProps> = ({ card, idList, idBo
       <Fade in={openSettingsCover}>
         <Box 
         sx={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)'
+          // position: 'absolute',
+          // top: '50%',
+          // left: '50%',
+          // transform: 'translate(-50%, -50%)'
         }}
           onClick={closeComponent}
           className='backdrop_settings_cover'

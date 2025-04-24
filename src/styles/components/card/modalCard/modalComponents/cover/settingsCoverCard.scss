@@ -1,90 +1,98 @@
 .settings_card_cover {
-    // position: absolute;
-    // top: 0;
-    // left: -10%;
-    background-color: #2e2e2e;
-    // min-height: 120%;
-    color: #121212;
-    color: #FAFAFA;
-    // padding: 5px;
-    // overflow: hidden;
-    // min-width: 500px;
+  // position: absolute;
+  // top: 0;
+  // left: -10%;
+  background-color: #2e2e2e;
+  // min-height: 120%;
+  color: #121212;
+  color: #FAFAFA;
+  // padding: 5px;
+  // overflow: hidden;
+  // min-width: 500px;
 
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    border-radius: 9px;
-    width: 600px;
-    height: 100%;
-    // overflow-y: auto;
-    // max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  border-radius: 9px;
+
+  max-width: 600px;
+  width: 100%;
+
+  height: 100%;
+  // overflow-y: auto;
+  // max-height: 100%;
+
+  // position: absolute;
+  // top: 50%;
+  // left: 50%;
+  // transform: translate(-50%, -50%);
     
-    header {
-        position: relative;
-        height: 150px;
-        overflow: hidden;
-        background-size: contain;
-        background-position: center;
-        background-repeat: no-repeat;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+  header {
+      position: relative;
+      height: 150px;
+      overflow: hidden;
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
-        .icon_close_settings_cover {
+      .icon_close_settings_cover {
 
-        }
+      }
 
-        .container_color_indicator {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            display: flex;
-            align-items: center;
-            gap: 3px;
-            height: 35px;
+      .container_color_indicator {
+          position: absolute;
+          top: 10px;
+          left: 10px;
+          display: flex;
+          align-items: center;
+          gap: 3px;
+          height: 35px;
 
-            div {
-                width: 25px;
-                height: 25px;
-                border-radius: 50%;
-            }
-        }
+          div {
+              width: 25px;
+              height: 25px;
+              border-radius: 50%;
+          }
+      }
 
-        button {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            border: none;
-            background: transparent;
-            color: #ccc;
-            color: white;
-            width: 35px;
-            height: 35px;
-            border-radius: 4px;
+      button {
+          position: absolute;
+          top: 10px;
+          right: 10px;
+          border: none;
+          background: transparent;
+          color: #ccc;
+          color: white;
+          width: 35px;
+          height: 35px;
+          border-radius: 4px;
 
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
 
-            &:hover {
-                background-color: rgb(128, 128, 128, .4);
-            }
-        }
+          &:hover {
+              background-color: rgb(128, 128, 128, .4);
+          }
+      }
 
-        .img_preview {
-            // width: 100%;
-            // // height: 100%;
-            // aspect-ratio: 16 / 3; /* o 4 / 3, o lo que prefieras */
+      .img_preview {
+          // width: 100%;
+          // // height: 100%;
+          // aspect-ratio: 16 / 3; /* o 4 / 3, o lo que prefieras */
 
-            // object-fit: cover;
-            // border-radius: 6px;
-        }
+          // object-fit: cover;
+          // border-radius: 6px;
+      }
 
-        .icon_no_img_cover {
-            font-size: 4rem;
-        }
-    }
+      .icon_no_img_cover {
+          font-size: 4rem;
+      }
+  }
 
     main {
         display: flex;
@@ -308,35 +316,34 @@
 }
 
 .backdrop_settings_cover {
-    // position: fixed;
-    // top: 50%;
-    // left: 0;
-    // transform: translate(-50%, -50%);
-    // width: 100%;
-    // background: '#121212';
-    box-shadow: 0 0 24px #121212;
-    // overflow: auto;
-    // padding: 15px;
-    // min-height: 100vh;
-    outline: none;
-    
-
-    // display: flex;
-    // justify-content: center;
-    // background-color: rgb(128, 128, 128, .1) !important;
+  box-shadow: 0 0 24px #121212;
+  outline: none;
+  // position: absolute;
+  // top: 50%;
+  // left: 50%;
+  // transform: translate(-50%, -50%);
+  // border: 2px solid red;
+  z-index: 9999;
+  margin: 0 1rem;
 }
 
 .backdrop_settings_cover::-webkit-scrollbar {
-    width: 8px;
+  width: 8px;
 }
 
 .backdrop_settings_cover::-webkit-scrollbar-track { 
-    background-color: #2e2e2e;
-    border-radius: 12px;
+  background-color: #2e2e2e;
+  border-radius: 12px;
 }
 
 .backdrop_settings_cover::-webkit-scrollbar-thumb {
-    background-color: rgb(128, 128, 128, .1);
-    background-color: #ccc;
-    border-radius: 14px;
+  background-color: rgb(128, 128, 128, .1);
+  background-color: #ccc;
+  border-radius: 14px;
+}
+
+@media screen and (max-width: 768px) {
+  .backdrop_settings_cover {
+
+  }
 }

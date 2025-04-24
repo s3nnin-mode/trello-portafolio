@@ -4,7 +4,8 @@
     top: 0;
     left: -50px;
     // left: 50%;
-    width: 300px;
+    width: 100%;
+    max-width: 300px;
     border-radius: 9px;
     max-height: 500px;
     display: flex;
@@ -260,5 +261,11 @@
     to {
         opacity: 1;
         transform: translate(0, 0) rotate(25deg);
+    }
+}
+
+@media screen and (max-width: 780px) {
+    .tags_settings {
+        left: 0;
     }
 }
