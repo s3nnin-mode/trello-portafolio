@@ -113,19 +113,26 @@
         width: 35px;
         height: 35px;
         border-radius: 4px;
-        background-color: gray;
-        border: 1px solid white;
-        // border: none;
+        // background-color: gray;
+        // border: 1px solid white;
+        border: none;
         color: #ccc;
         color: white;
         position: absolute;
         right: 10px;
         top: 9px;
         color: #121212;
-            background-color: rgb(128, 128, 128, .4);
+        color: #ccc;
+        // background-color: rgb(128, 128, 128, .4);
+        background-color: transparent;
+        font-size: 20px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
 
         &:hover {
-            color: #121212;
             background-color: rgb(128, 128, 128, .4);
         }
     }

@@ -121,9 +121,9 @@ export const List: React.FC<ListPropsComponent> = ({ board, list }) => {
           className='listName_container' 
         />                     
         <div className='btns_header_list'>
-          <IconButton className='btn_collapse_list' onClick={() => setIsListCollapse(!isListCollapse)}>
-            <RiCollapseHorizontalLine className='icon_collapse_list' />
-          </IconButton>
+          {/* <IconButton className='btn_collapse_list' onClick={() => setIsListCollapse(!isListCollapse)}>
+            <RiCollapseHorizontalLine className='icon_collapse_list' /> //ESTA FUNCION FALTA POR HACER
+          </IconButton> */}
           <SettingsList idBoard={board.idBoard} list={list} />
         </div>
       </header>

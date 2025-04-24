@@ -108,7 +108,7 @@ export const Tableros = () => {
                   onClick={() => navigate(board.idBoard)} 
                   key={board.idBoard}
                 >
-                  <span className='name_board'>
+                  <span className='name_board inter'>
                     {board.nameBoard}
                   </span>
                 </Box>
