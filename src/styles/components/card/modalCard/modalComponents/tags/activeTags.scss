@@ -92,11 +92,10 @@
             span {
                 max-width: 100%;
                 font-size: 14px;
-            display: inline-block;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            // overflow: hidden;
-            overflow-wrap: break-word;
+                display: inline-block;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow-wrap: break-word;
                 overflow: hidden;
                 padding: 4px 8px;
             }

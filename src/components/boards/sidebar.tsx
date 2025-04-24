@@ -69,7 +69,7 @@ export const Sidebar = () => {
   }
 
   return (
-    <Box sx={{display: 'flex', ml: open ? '240px' : '60px', transition: '.3s linear',}}>
+    <Box sx={{display: 'flex', ml: open ? '240px' : '55px', transition: '.3s linear',}}>
       <Drawer variant="permanent" open={open}>
         <DrawerHeader>
           <IconButton onClick={() => setOpen(!open)}>

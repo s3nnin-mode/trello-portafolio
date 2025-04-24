@@ -115,7 +115,11 @@ export const Tableros = () => {
               )
             })
           :
-          <Skeleton sx={{ bgcolor: 'grey.800' }} animation={'wave'} variant="rectangular" width={250} height={120} />
+          <>
+            <Skeleton sx={{ bgcolor: 'grey.800' }} animation={'wave'} variant="rectangular" width={250} height={120} />
+            <Skeleton sx={{ bgcolor: 'grey.800' }} animation={'wave'} variant="rectangular" width={250} height={120} />
+            <Skeleton sx={{ bgcolor: 'grey.800' }} animation={'wave'} variant="rectangular" width={250} height={120} />
+          </>
         }
       </div>
     </div>
