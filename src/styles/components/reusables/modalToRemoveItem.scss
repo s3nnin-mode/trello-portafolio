@@ -1,10 +1,45 @@
 .modal_to_remove_item {
-    .modal-body {
-        p {
-            font-size: 18px;
-            span {
-                font-weight: bold;
-            }
-        }
+  padding: 6px;
+  border-radius: 6px;
+  background-color: #fff;
+  z-index: 999;
+  display: flex;
+  gap: 7px;
+  flex-direction: column;
+  outline: none;
+  max-width: 500px;
+
+  .icon_close_modal_to_remove_item {
+    align-self: flex-end;
+    font-size: 22px;
+    cursor: pointer;
+    border-radius: 4px;
+    
+    &:hover {
+      background-color: rgba(0, 0, 0, .5);
     }
+  }
+
+  p {
+    font-size: 1.1rem; 
+    overflow-wrap: break-word;
+
+    span {
+      font-weight: bold;
+    }
+  }
+  
+  button {
+    align-self: flex-end;
+    background-color:#FF4D4D;
+    border: none;
+    padding: 7px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+
+    &:hover {
+      color: white
+    }
+  }
 }

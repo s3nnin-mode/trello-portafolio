@@ -148,3 +148,13 @@
         display: none;
     }
 }
+
+@media screen and (max-width: 768px) {
+    .options {
+        .settings_list_show {
+            left: auto;
+            right: -20px;
+            z-index: 99999;
+        }
+    }
+}
