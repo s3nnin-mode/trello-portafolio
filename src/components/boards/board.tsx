@@ -25,6 +25,7 @@ import { useTagsService } from '../../services/tagsServices';
 import { CardModal, getBoard } from '../card/modalCard/modalCard';
 import { getCardsFirebase, getListsFirebase, getTagsFirebase } from '../../services/firebase/firebaseFunctions';
 import { useTagsStore } from '../../store/tagsStore';
+import { Sidebar } from './sidebar';
 
 const useCustomBoard = () => {
   const { listsGroup, loadLists } = useListsStore();
@@ -535,6 +536,8 @@ export const Tablero = () => {
   }
   
   return (
+    <>
+    <Sidebar />
     <div className='board' >
       <header className='header_board'>
         <h2 className='inter_title'>{currentBoard?.nameBoard}</h2>                                     {/* NAME BOARD */}
@@ -584,5 +587,6 @@ export const Tablero = () => {
         <Route path='list/:idList/card/:idCard' element={<CardModal />} />
       </Routes>
     </div>
+    </>
   )
 };

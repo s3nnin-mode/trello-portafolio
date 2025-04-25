@@ -12,6 +12,7 @@ import { useAuthContext } from '../../customHooks/useAuthContext';
 import { addBoardFirebase } from '../../services/firebase/updateData/updateBoards';
 import { Box, Skeleton } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { Sidebar } from './sidebar';
 
 const useBoards = () => {
   const { boards, loadBoards } = useBoardsStore();
@@ -88,6 +89,8 @@ export const Tableros = () => {
   }
 
   return (
+    <>
+    <Sidebar />
     <div className='boards_container'>
       <h2 className='inter_title'>Mis tableros</h2>
       <BtnAdd 
@@ -123,5 +126,6 @@ export const Tableros = () => {
         }
       </div>
     </div>
+    </>
   )
 }

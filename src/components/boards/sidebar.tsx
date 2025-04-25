@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import '../../styles/components/boards/sidebar.scss';
 import '../../App.css';
 
 import { MdChevronRight } from "react-icons/md";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
-import { styled } from "@mui/material/styles";
+import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
@@ -20,6 +20,7 @@ import { IoClipboardSharp } from "react-icons/io5";
 import { FiLogIn } from 'react-icons/fi';
 import { useAuthContext } from "../../customHooks/useAuthContext";
 import { logoutFirebase } from "../../services/firebase/firebaseFunctions";
+import { useMediaQuery } from "@mui/material";
 
 const drawerWidth = 240;
 
@@ -60,6 +61,11 @@ export const Sidebar = () => {
   const [open, setOpen] = useState(true);
   const navigate = useNavigate();
   const { userAuth } = useAuthContext();
+  const location = useLocation();
+  const { currentIdBoard } = useParams();
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const logout = async () => {
     const logoutState = await logoutFirebase();
@@ -68,17 +74,34 @@ export const Sidebar = () => {
     }
   }
 
+  useEffect(() => {
+    console.log('location', location);
+    console.log('params', currentIdBoard);
+  },[location, currentIdBoard]);
+
   return (
-    <Box sx={{display: 'flex', ml: open ? '240px' : '55px', transition: '.3s linear',}}>
-      <Drawer variant="permanent" open={open}>
-        <DrawerHeader>
+    <Box
+      className='container_sidebar'
+      sx={{
+        display: isMobile && currentIdBoard ? 'none' : 'flex', // para pantallas medianas en adelante,, 
+        // ml: {
+        //   // xs: 0, // para moviles (max-width: 600px)
+        //   sm: isMobile && currentIdBoard ? '0px' : open ? '240px' : '55px', // para pantallas medianas en adelante,
+        //   // md: '0'
+        // }, 
+        ml: isMobile && currentIdBoard ? '0px' : open ? '240px' : '55px', // para pantallas medianas en adelante,
+        transition: '.3s linear',
+      }}
+    >
+      <Drawer className='container_drawer' variant='permanent' open={open}>
+        <DrawerHeader className='header_drawer'>
           <IconButton onClick={() => setOpen(!open)}>
-            { open ? <MdChevronLeft style={{color: 'white'}}/> : <MdChevronRight style={{color: 'white'}} /> }
+            { open ? <MdChevronLeft className='collapse_sidebar' style={{color: 'white'}}/> : <MdChevronRight className='open_sidebar' style={{color: 'white'}} /> }
           </IconButton>
         </DrawerHeader>
         <Divider />
-        <List sx={{overflow: 'hidden'}}>
-          <ListItem disablePadding >
+        <List className='container_btns_sidebar' sx={{overflow: 'hidden'}}>
+          <ListItem className='btn_sidebar' disablePadding >
             <ListItemButton onClick={() => navigate('/kanbaX')}>
               <ListItemIcon sx={{color: '#ccc'}}>
                 <IoClipboardSharp />

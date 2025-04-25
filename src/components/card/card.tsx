@@ -109,12 +109,12 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
               <div className='card_cover'>
                 <div className='color_indicator_and_img'>
                   <div 
-                  style={{
-                    background: card.complete ? 'rgba(0, 0, 0, 0.06)' : 'none',
-                    border: card.complete ? '1px solid rgba(255, 255, 255, 0.1)' : 'none',
-                    boxShadow: card.complete ? '0 1px 1px #121212' : 'none'
-                  }}
-                  className={card.coverImgCard ? 'container_color_card_with_img' : 'container_color_card'} >
+                    style={{
+                      background: card.complete ? 'rgba(0, 0, 0, 0.06)' : 'none',
+                      border: card.complete ? '1px solid rgba(255, 255, 255, 0.1)' : 'none',
+                      boxShadow: card.complete ? '0 1px 1px #121212' : 'none'
+                    }}
+                    className={card.coverImgCard ? 'container_color_card_with_img' : 'container_color_card'} >
                     {
                       card.complete ? 
                       <CheckAnimation 

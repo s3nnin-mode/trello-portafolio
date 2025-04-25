@@ -1,116 +1,89 @@
-.sidebar {
-   
-    // width: 250px;
-    height: 100%;
-    min-height: 100vh;
-    background-color: red;
-    border: 4px solid black;
-    border-radius: 11px;
-    transition: width 0.3s ease;
-    padding: 0 10px;
-    background-color: #232c36;
-
-    .sidebar_header {
-
-      .btn-open-close-sidebar {
-        background-color: transparent;
-        color: white;
-        border: none;
-        padding: 10px;
-        margin: 10px;
-        cursor: pointer;
-      }
-      .btn-open-close-sidebar:hover {
-        background-color: rgba(255, 255, 255, 0.2);
-        border-radius: 10px;
-      }
-    }
-
-    .btn-boards {
-      width: 100%;
-      border-radius: 7px;
-      border: none;
-      padding: 5px;
-      font-size: 18px;
-      align-content: center;
-      text-align: left;
-      cursor: pointer;
-      color: white;
-      background-color: transparent;
-
-      .icon-board {
-        margin-right: 10px;
-        position: relative;
-        top: 2px;
-        font-size: 18px;
-      }
-    }
-
-    .btn-boards:hover {
-      background-color: rgba(255, 255, 255, 0.2);
-      border-radius: 10px;
-    }
-}
+.container_drawer {
   
-.sidebar-desactive {
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  transition: grid-template-columns 0.3s ease;  
-  height: 100%;
-  background-color: red;
-  border: 4px solid black;
-  grid-template-columns: 0fr;
-  width: 20px;
-  transition: width 0.3s ease; /* Animación suave cuando se cambia la posición */
-
-  header {
-    display: flex;
-    justify-content: space-between;
-    .logo-and-text {
-      display: none;
-    }
-
-    .btn-open-close-sidebar {
-      color: white;
-      border: none;
+  .header_drawer {
+    button {
       padding: 5px;
-      margin: 10px;
-      cursor: pointer;
-      transform: translateX(-10px);
       border-radius: 50%;
+      
+      &:hover {
+        background-color: #2e2e2e;
+      }
+    }
+  }
 
-      color: rgba(255, 255, 255);
-      transition: .5s;
-      border-radius: 11px;
-      box-shadow: inset 1px 0px 0px orange;
-
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0));
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border-radius: 20px;
-      border:1px solid rgba(255, 255, 255, 0.18);
-      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-      border: none;
-
-      i {
-        font-size: 16px;
-        color: #ccc;
+  .container_btns_sidebar {
+    li {
+  
+      &:hover {
+        background-color: #2e2e2e;
       }
     }
   }
 }
 
-.sidebar-desactive, .sidebar {
-  color: rgba(255, 255, 255);
-    transition: .5s;
-    box-shadow: inset 1px 0px 0px orange;
-
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0));
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border:1px solid rgba(255, 255, 255, 0.18);
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-    border: none;
+@media screen and (max-width: 768px) {
+  // .container_drawer div,
+  // .MuiBox-root {
+  //   margin: 0 !important;
+  //   width: 0 !important;
+  //   display: none;
+  // }
 }
+
+// @media screen and (max-width: 768px) {
+//   .container_drawer > div { // afecta el contenido del Drawer (MuiDrawer-paper)
+//     width: 100vw !important;
+//     height: 60px;
+//     flex-direction: row !important;
+//     align-items: center;
+//     justify-content: flex-start;
+//     // justify-content: space-around;
+//     padding: 0 10px;
+//     position: fixed;
+//     top: 0;
+//     left: 0;
+//     z-index: 1300; // para asegurarte que quede encima de otros elementos
+//   }
+
+//   .header_drawer {
+//     // display: none; // oculta botón de colapsar en móvil
+//   }
+
+//   .container_btns_sidebar {
+//     display: flex;
+//     flex-direction: row !important;
+//     flex-direction: column !important;
+//     // align-items: center;
+//     // justify-content: space-around;
+//     width: 100%;
+//     padding: 0;
+
+//     li {
+//       // display: flex !important;
+//       // justify-content: center ;
+//       // justify-content: flex-start !important;
+//       // flex-grow: 1;
+//       min-width: 30px !important;
+//       max-width: auto !important;
+//       width: 100%;
+//       // display: inline !important;
+//       border: 1px solid;
+
+//       .MuiListItemButton-root {
+//         padding: 0;
+//         border: 1px solid red;
+//       }
+
+//       .MuiListItemIcon-root {
+//         min-width: unset !important;
+//         margin-right: 4px;
+//       }
+
+//       .MuiListItemText-root {
+//         // display: none; // oculta el texto, deja solo los íconos
+//       }
+
+//     }
+
+//   }
+// }
