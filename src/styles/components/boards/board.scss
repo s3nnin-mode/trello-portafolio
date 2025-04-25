@@ -1,13 +1,31 @@
 .board {
-  // min-height: 100%;
   width: 100%;
-  // overflow: hidden;
   overflow-y: hidden;
-
 
   .header_board {
     padding: 10px;  
     height: 10vh; 
+
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    button {
+      border: none;
+      background: transparent;
+      color: white;
+      font-size: 2rem;
+      display: flex;
+      align-items: center;
+      border-radius: 6px;
+      cursor: pointer;
+      
+      display: none;
+
+      &:hover {
+        background-color: #2E2E2E;
+      }
+    }
 
     h2 {
       color: #ccc;
@@ -63,5 +81,15 @@
 @keyframes spin {
   to {
     transform: rotate(360deg);
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .board {
+    .header_board {
+      button {
+        display: flex;
+      }
+    }
   }
 }

@@ -27,6 +27,8 @@ import { getCardsFirebase, getListsFirebase, getTagsFirebase } from '../../servi
 import { useTagsStore } from '../../store/tagsStore';
 import { Sidebar } from './sidebar';
 
+import { MdChevronLeft } from "react-icons/md";
+
 const useCustomBoard = () => {
   const { listsGroup, loadLists } = useListsStore();
   const { boards, loadBoards } = useBoardsStore();
@@ -539,7 +541,11 @@ export const Tablero = () => {
     <>
     <Sidebar />
     <div className='board' >
+      
       <header className='header_board'>
+        <button>
+          <MdChevronLeft onClick={() => navigate('/kanbaX')} className='icon_back_home' />
+        </button>
         <h2 className='inter_title'>{currentBoard?.nameBoard}</h2>                                     {/* NAME BOARD */}
       </header>
       <DndContext
