@@ -28,6 +28,7 @@ import { useTagsStore } from '../../store/tagsStore';
 import { Sidebar } from './sidebar';
 
 import { MdChevronLeft } from "react-icons/md";
+import { snapCenterToCursor,  } from '@dnd-kit/modifiers';
 
 const useCustomBoard = () => {
   const { listsGroup, loadLists } = useListsStore();
@@ -187,13 +188,15 @@ export const Tablero = () => {
   // );
 
   const sensors = useSensors(
-    useSensor(PointerSensor),
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 1
+      }
+    }),
     useSensor(TouchSensor, {
       activationConstraint: {
-        // espera 150 ms de pulsación larga antes de arrancar
         delay: 150,
-        // tolerancia de movimiento para no activar scroll
-        tolerance: 3,
+        tolerance: 5,
       },
     })
   );
@@ -318,7 +321,11 @@ export const Tablero = () => {
     console.log('inicia onDragEnd')
     const { active, over } = event;
     if (!over) {
-      console.log('NO HAY OVERRR')
+      console.log('NO HAY OVERRR');
+      setActiveCard(null);
+      origenGroupRef.current = null;
+      setActiveList(null);
+      setListToActiveCard(null);
       return
     }
   
@@ -477,12 +484,19 @@ export const Tablero = () => {
     //Para el arrastre de listas
     if (typeActive === 'list' && typeOver === 'list') {
       console.log('se estan arrastrando listas')
-      if (!currentLists) return;
+      if (!currentLists) {
+        console.log('se retornó porque no hay currentLists');
+        return
+      }
 
       const oldIndex = currentLists.findIndex(list => list.idList === active.id);
       const newIndex = currentLists.findIndex(list => list.idList === over?.id);
 
       if (oldIndex === -1 || newIndex === -1 || oldIndex === newIndex) {
+        setActiveCard(null);
+        origenGroupRef.current = null;
+        setActiveList(null);
+        setListToActiveCard(null);
         console.log('Se canceló el drag (no hay cambios en la posición)');
         return;
       }
@@ -535,8 +549,8 @@ export const Tablero = () => {
       listsService({
         updateFn: (listsGroup) => listsGroup.map((listGroup) => listGroup.idBoard === idBoard ? { ...listGroup, lists: lists } : listGroup)
       });
-
     }
+    setListToActiveCard(null);
     setActiveList(null);
     console.log('finalizó dragEnd');
   };
@@ -552,7 +566,7 @@ export const Tablero = () => {
   return (
     <>
     <Sidebar />
-    <div className='board' >
+    <div className={`board ${activeCard || activeList ? 'is_dragging' : ''}`} >
       
       <header className='header_board'>
         <button>
@@ -561,6 +575,13 @@ export const Tablero = () => {
         <h2 className='inter_title'>{currentBoard?.nameBoard}</h2>                                     {/* NAME BOARD */}
       </header>
       <DndContext
+        // modifiers={[
+        //   {
+        //     ...transform,
+        //     x: transform.x - 50, // desplaza 50px a la izquierda
+        //     y: transform.y - 20, // desplaza 20px hacia arriba
+        //   }
+        // ]}
         sensors={sensors}
         onDragStart={onDragStart}
         onDragEnd={onDragEnd}

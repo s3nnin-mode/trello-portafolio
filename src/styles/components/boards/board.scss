@@ -2,6 +2,10 @@
   width: 100%;
   overflow-y: hidden;
 
+  perspective: 1200px;
+  transform-style: preserve-3d;
+  transition: transform 250ms ease;
+
   .header_board {
     padding: 10px;  
     height: 10vh; 
@@ -53,6 +57,14 @@
     }
 
   }
+}
+
+.is_dragging {
+  /* Aleja la “cámara” y aplica un leve giro (opcional) */
+  // transform: translateZ(1000px) rotateX(5deg) scale(0.7);
+  transform: scale(0.95);
+  /* Bajar un poco el contraste/saturación ayuda a resaltar la tarjeta activa */
+  // filter: brightness(0.95) saturate(0.9);
 }
 
 .container_loader_board {
