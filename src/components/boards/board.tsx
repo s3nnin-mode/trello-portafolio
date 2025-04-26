@@ -197,6 +197,7 @@ export const Tablero = () => {
       activationConstraint: {
         delay: 150,
         tolerance: 5,
+        distance: 5
       },
     })
   );
