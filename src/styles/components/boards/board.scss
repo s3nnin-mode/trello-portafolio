@@ -7,7 +7,7 @@
     height: 10vh; 
 
     display: flex;
-    align-items: center;
+    // align-items: center;
     gap: 5px;
 
     button {
@@ -16,10 +16,11 @@
       color: white;
       font-size: 2rem;
       display: flex;
-      align-items: center;
       border-radius: 6px;
       cursor: pointer;
-      
+      align-self: flex-start;
+      color: orange;
+
       display: none;
 
       &:hover {
