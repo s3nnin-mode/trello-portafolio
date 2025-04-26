@@ -7,7 +7,7 @@ import { List } from '../list/list';
 import { Card } from '../card/card';
 import { BtnAdd } from '../reusables/btnAgregar';
 //DND-KIT
-import {  DragOverlay, DndContext, DragEndEvent, DragOverEvent, DragStartEvent, PointerSensor, useSensor, useSensors, pointerWithin } from '@dnd-kit/core';
+import {  DragOverlay, DndContext, DragEndEvent, DragOverEvent, DragStartEvent, PointerSensor, useSensor, useSensors, pointerWithin, TouchSensor } from '@dnd-kit/core';
 import { arrayMove, horizontalListSortingStrategy, SortableContext } from '@dnd-kit/sortable';
 
 //STORES
@@ -178,11 +178,23 @@ export const Tablero = () => {
     }
   }, [listsGroup]);
 
+  // const sensors = useSensors(
+  //   useSensor(PointerSensor, {  //esto es para que el drag empiece cuando el mouse este a 15px de distancia, en otras palabras
+  //     activationConstraint: {
+  //       distance: 1
+  //     }
+  //   })
+  // );
+
   const sensors = useSensors(
-    useSensor(PointerSensor, {  //esto es para que el drag empiece cuando el mouse este a 15px de distancia, en otras palabras
+    useSensor(PointerSensor),
+    useSensor(TouchSensor, {
       activationConstraint: {
-        distance: 1
-      }
+        // espera 150 ms de pulsación larga antes de arrancar
+        delay: 150,
+        // tolerancia de movimiento para no activar scroll
+        tolerance: 5,
+      },
     })
   );
 
