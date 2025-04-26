@@ -181,7 +181,7 @@ export const Tablero = () => {
   const sensors = useSensors(
     useSensor(PointerSensor, {  //esto es para que el drag empiece cuando el mouse este a 15px de distancia, en otras palabras
       activationConstraint: {
-        distance: 3
+        distance: 1
       }
     })
   );

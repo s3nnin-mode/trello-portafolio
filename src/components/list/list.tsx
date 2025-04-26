@@ -106,12 +106,15 @@ export const List: React.FC<ListPropsComponent> = ({ board, list }) => {
   return (
     <div 
       style={style}
-      ref={setNodeRef}
-      {...attributes}
-      {...listeners}
+      // ref={setNodeRef}
+      // {...attributes}
+      // {...listeners}
       className='list' 
     >
       <header 
+      ref={setNodeRef}
+      {...attributes}
+      {...listeners}
         className='header_list'
       >  
         <NameComponent 
