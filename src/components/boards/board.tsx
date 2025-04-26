@@ -193,7 +193,7 @@ export const Tablero = () => {
         // espera 150 ms de pulsación larga antes de arrancar
         delay: 150,
         // tolerancia de movimiento para no activar scroll
-        tolerance: 5,
+        tolerance: 3,
       },
     })
   );
