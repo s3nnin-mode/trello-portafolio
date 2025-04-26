@@ -111,10 +111,16 @@ export const List: React.FC<ListPropsComponent> = ({ board, list }) => {
       // {...listeners}
       className='list' 
     >
+      <div 
+        className='dragForMobile'
+        ref={setNodeRef}
+        {...attributes}
+        {...listeners}
+      >
+        Arrastrame
+      </div>
       <header 
-      ref={setNodeRef}
-      {...attributes}
-      {...listeners}
+      
         className='header_list'
       >  
         <NameComponent 
