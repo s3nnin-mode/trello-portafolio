@@ -28,7 +28,7 @@ import { useTagsStore } from '../../store/tagsStore';
 import { Sidebar } from './sidebar';
 
 import { MdChevronLeft } from "react-icons/md";
-import { snapCenterToCursor,  } from '@dnd-kit/modifiers';
+// import { snapCenterToCursor,  } from '@dnd-kit/modifiers';
 
 const useCustomBoard = () => {
   const { listsGroup, loadLists } = useListsStore();
