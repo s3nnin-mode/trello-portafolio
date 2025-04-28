@@ -195,7 +195,7 @@ export const Tablero = () => {
     }),
     useSensor(TouchSensor, {
       activationConstraint: {
-        delay: 1500,
+        delay: 5000,
         tolerance: 5,
         distance: 5
       },
