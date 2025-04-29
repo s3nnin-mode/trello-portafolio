@@ -164,5 +164,10 @@
 
 .is_overlay_list {
     opacity: 0.7 !important;
-    transform: scale(0.90);
+}
+
+@media screen and (max-width: 600px) {
+    .is_overlay_list {
+        transform-origin: top left;
+    }
 }
