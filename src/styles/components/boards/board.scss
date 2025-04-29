@@ -102,6 +102,7 @@
     }
 
     .is_dragging_list {
+      transform: scale(0.90);
       .list {
         transform: scale(0.70);
       }
