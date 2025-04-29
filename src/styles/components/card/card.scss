@@ -22,7 +22,7 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
     border: 1px solid rgba(255, 255, 255, 0.1); /* si fondo oscuro */
 
-    touch-action: auto; /* anula gestos nativos mientras se arrastra */
+    touch-action: pan-y pan-x; /* anula gestos nativos mientras se arrastra */
     user-select: none;
     
     .card_cover {

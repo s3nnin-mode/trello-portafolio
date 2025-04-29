@@ -85,22 +85,22 @@
   }
 }
 
-@media screen and (max-width: 600px) {
-  .board {
-    perspective: 1200px;
-    transform-style: preserve-3d;
-    transition: transform 250ms ease;
+// @media screen and (max-width: 600px) {
+//   .board {
+//     perspective: 1200px;
+//     transform-style: preserve-3d;
+//     transition: transform 250ms ease;
 
-    .header_board {
-      button {
-        display: flex;
-      }
-    }
-  }
+//     .header_board {
+//       button {
+//         display: flex;
+//       }
+//     }
+//   }
 
-  .is_dragging {
+//   .is_dragging {
     
-    transform: scale(0.7);
+//     transform: scale(0.7);
     
-  }
-}
+//   }
+// }
