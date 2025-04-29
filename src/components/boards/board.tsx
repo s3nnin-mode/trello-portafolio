@@ -98,6 +98,15 @@ export const Tablero = () => {
   }
 
   useEffect(() => {
+
+    // const esPalindromo = (str: String) => {
+    //   console.log(str.split(' '));
+    //   console.log(str.split(' ').join('').toLowerCase())
+    //   return str.split(' ').reverse().join('').toLowerCase() === str.split(' ').join('').toLowerCase();
+    // }
+
+    // console.log('es palindromo?: ', esPalindromo('anita lava la tina'));
+
     const fetchData = async () => {
       const user_Auth = await getUserAuthState();
       if (user_Auth) {
@@ -187,19 +196,33 @@ export const Tablero = () => {
   //   })
   // );
 
+  function isTouchDevice() {
+    if (typeof window !== "undefined") {
+      return (
+        "ontouchstart" in window ||
+        navigator.maxTouchPoints > 0
+      );
+    }
+    return false;
+  }
+
+  const isTouch = isTouchDevice()
+
   const sensors = useSensors(
-    useSensor(PointerSensor, {
-      activationConstraint: {
-        distance: 1
-      }
-    }),
-    useSensor(TouchSensor, {
-      activationConstraint: {
-        delay: 5000,
-        tolerance: 5,
-        distance: 5
-      },
-    })
+    isTouch ? 
+      useSensor(TouchSensor, {
+        activationConstraint: {
+          delay: 350,
+          tolerance: 5,
+          distance: 5
+        },
+      })
+    :
+      useSensor(PointerSensor, {
+        activationConstraint: {
+          distance: 1
+        }
+      })
   );
 
   const [listToActiveCard, setListToActiveCard] = useState<ListProps | null>(null);
