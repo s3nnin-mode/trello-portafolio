@@ -24,6 +24,7 @@
 
     touch-action: pan-y pan-x; /* anula gestos nativos mientras se arrastra */
     user-select: none;
+    cursor: pointer;
     
     .card_cover {
         // border: 1px solid red;
@@ -341,6 +342,7 @@
 .card_overlay {
     backdrop-filter: blur(1px);
     opacity: .7;
+    cursor: grab;
 }
 
 .card_over {

@@ -41,7 +41,6 @@ const useCustomBoard = () => {
     const nameList = value;
     const idList = (nameList + Date.now()).toString();
 
-
     const listGroup = listsGroup.find(listGroup => listGroup.idBoard === idBoard)?.lists;
     if (!listGroup) return
     const lastList = listGroup[listGroup.length - 1];
@@ -70,12 +69,40 @@ const useCustomBoard = () => {
     //para saber que estas cartas pertenece a este tablero y a esta lista
   }
 
-  return { addNewList, boards, listsGroup, loadLists, loadBoards, getUserAuthState }
+  const isTouchDevice = () => {
+    if (typeof window !== "undefined") {
+      return (
+        "ontouchstart" in window
+        // navigator.maxTouchPoints > 0 Quité esta linea porque en mi laptop me da '1', y me bloquea el hacer drag
+      );
+    }
+    return false;
+  }
+
+  const isTouch = isTouchDevice();
+
+  const sensors = useSensors(
+    isTouch 
+    ? useSensor(TouchSensor, {
+        activationConstraint: {
+          delay: 350,
+          tolerance: 5,
+          distance: 5
+        },
+      })
+    : useSensor(PointerSensor, {
+        activationConstraint: {
+          distance: 1
+        }
+      })
+  );
+
+  return { addNewList, boards, listsGroup, loadLists, loadBoards, getUserAuthState, sensors }
 }
 
 export const Tablero = () => {
   const { listsService } = useListsServices();
-  const { boards, listsGroup, addNewList, loadLists, loadBoards, getUserAuthState } = useCustomBoard();
+  const { boards, listsGroup, addNewList, loadLists, loadBoards, getUserAuthState, sensors } = useCustomBoard();
   const [currentBoard, setCurrentBoard] = useState<BoardProps>();
   const [idBoard, setIdBoard] = useState('');
   const { userAuth } = useAuthContext();
@@ -89,7 +116,9 @@ export const Tablero = () => {
 
   const [activeList, setActiveList] = useState<ListProps | null>(null); //esto es para saber que lista esta siendo arrastrada y crear un efecto visual
   const [activeCard, setActiveCard] = useState<CardProps | null>(null);
+  const [listToActiveCard, setListToActiveCard] = useState<ListProps | null>(null);
   let origenGroupRef = useRef<CardGroupProps | null>(null);
+
   const navigate = useNavigate();
   const [loader, setLoader] = useState(true);
 
@@ -98,16 +127,6 @@ export const Tablero = () => {
   }
 
   useEffect(() => {
-
-    // const esPalindromo = (str: String) => {
-    //   console.log(str.split(' '));
-    //   console.log(str.split(' ').join('').toLowerCase())
-    //   return str.split(' ').reverse().join('').toLowerCase() === str.split(' ').join('').toLowerCase();
-    // }
-
-    // console.log('es palindromo?: ', esPalindromo('anita lava la tina'));
-    console.log(window.navigator.maxTouchPoints); 
-
 
     const fetchData = async () => {
       const user_Auth = await getUserAuthState();
@@ -189,37 +208,6 @@ export const Tablero = () => {
       setCurrentLists(listsGroup[indexListGroup].lists);
     }
   }, [listsGroup]);
-
-  function isTouchDevice() {
-    if (typeof window !== "undefined") {
-      return (
-        "ontouchstart" in window
-        // navigator.maxTouchPoints > 0 Quité esta linea porque en mi laptop me da '1', y me bloquea el hacer drag
-      );
-    }
-    return false;
-  }
-
-  const isTouch = isTouchDevice();
-
-  const sensors = useSensors(
-    isTouch ? 
-      useSensor(TouchSensor, {
-        activationConstraint: {
-          delay: 350,
-          tolerance: 5,
-          distance: 5
-        },
-      })
-    :
-      useSensor(PointerSensor, {
-        activationConstraint: {
-          distance: 1
-        }
-      })
-  );
-
-  const [listToActiveCard, setListToActiveCard] = useState<ListProps | null>(null);
 
   const onDragStart = (event: DragStartEvent) => {
 
@@ -617,9 +605,7 @@ export const Tablero = () => {
           )
           }
 
-          <DragOverlay 
-            dropAnimation={null}
-            >
+          <DragOverlay dropAnimation={null}>
             { activeList && currentBoard && <List board={currentBoard} list={activeList} />}
             { activeCard && currentBoard && listToActiveCard && <Card className='card_overlay' board={currentBoard} list={listToActiveCard} card={activeCard} /> }
           </DragOverlay>
