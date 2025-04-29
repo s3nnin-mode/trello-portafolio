@@ -593,13 +593,6 @@ export const Tablero = () => {
         <h2 className='inter_title'>{currentBoard?.nameBoard}</h2>                                     {/* NAME BOARD */}
       </header>
       <DndContext
-        // modifiers={[
-        //   {
-        //     ...transform,
-        //     x: transform.x - 50, // desplaza 50px a la izquierda
-        //     y: transform.y - 20, // desplaza 20px hacia arriba
-        //   }
-        // ]}
         sensors={sensors}
         onDragStart={onDragStart}
         onDragEnd={onDragEnd}
@@ -628,7 +621,7 @@ export const Tablero = () => {
             dropAnimation={null}
             >
             { activeList && currentBoard && <List board={currentBoard} list={activeList} />}
-            { activeCard && currentBoard && listToActiveCard && <Card board={currentBoard} list={listToActiveCard} card={activeCard} /> }
+            { activeCard && currentBoard && listToActiveCard && <Card className='card_overlay' board={currentBoard} list={listToActiveCard} card={activeCard} /> }
           </DragOverlay>
 
           <BtnAdd

@@ -23,9 +23,10 @@ interface TargetComponentProps {
   card: CardProps
   board: BoardProps
   list: ListProps
+  className?: 'card_overlay'
 }
 
-export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
+export const Card: React.FC<TargetComponentProps> = ({card, board, list, className}) => {
   const { tags } = useTagsStore();
   const [showDescription, setShowDescription] = useState(false);
   const { cardsServices } = useCardsServices();
@@ -52,8 +53,7 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
   const style = { 
     transform: CSS.Transform.toString(transform),
     transition: 'none',
-    opacity: isDragging ? 0.3 : 1,
-    cursor: isDragging ? 'grabbing' : 'pointer',
+    background: isDragging ? '#9696961a' : 'transparent',
   };
 
   const isActive = ({tag}: {tag: TagsProps}) => tag.cardsThatUseIt.some((item) => item.idCard === card.idCard);
@@ -90,7 +90,7 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
       )
     })
   }
-
+  
   return(
     <>
       <article
@@ -98,7 +98,8 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
         style={style}
         {...attributes}
         {...listeners}
-        className='cardItem'
+        // className={`${isDragging ? 'card_over' : 'cardItem'} ${className}`}
+        className={`cardItem ${className}`}
         onClick={() => navigate(`list/${list.idList}/card/${card.idCard}`)}
       >
         {
@@ -106,7 +107,7 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
             ?
             <>
               {/* <CardCover idBoard={board.idBoard} list={list} card={card} isPlaying={isPlaying} /> */}
-              <div className='card_cover'>
+              <div style={{opacity: isDragging ? 0 : 1}} className='card_cover'>
                 <div className='color_indicator_and_img'>
                   <div 
                     style={{
@@ -153,7 +154,7 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
                   }
                 </div>
               </div>
-              <div className='content_card'>
+              <div style={{opacity: isDragging ? 0 : 1}} className='content_card'>
                 <p className='cardName inter_subtitle'>
                   {card.nameCard}
                 </p>
@@ -194,6 +195,7 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list}) => {
             <Fade in={showDescription}>
               <Box 
                 onClick={(e) => e.stopPropagation()}
+                style={{opacity: isDragging ? 0 : 1}}
                 className='description_modal'
               >
                 <div className='description_header'>
