@@ -106,7 +106,7 @@
     .is_dragging {
     
       transform: scale(0.9);
-      
+      touch-action: none;
     }
   }
 
