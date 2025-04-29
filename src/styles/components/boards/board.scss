@@ -105,11 +105,10 @@
       transform-style: preserve-3d;
       transition: transform 250ms ease;
 
-      padding: 100px;
     }
 
     .is_dragging {
-    
+      padding: 100px;
       transform: scale(0.95);
       touch-action: none;
     }
