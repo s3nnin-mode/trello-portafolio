@@ -605,7 +605,13 @@ export const Tablero = () => {
           )
           }
 
-          <DragOverlay dropAnimation={null}>
+          <DragOverlay 
+          // style={{
+          //   transform: activeList ? 'scale(0.95)' : 'none',
+          //   transformOrigin: 'top left',
+          // }}
+            dropAnimation={null}
+          >
             { activeList && currentBoard && <List board={currentBoard} list={activeList} />}
             { activeCard && currentBoard && listToActiveCard && <Card className='card_overlay' board={currentBoard} list={listToActiveCard} card={activeCard} /> }
           </DragOverlay>

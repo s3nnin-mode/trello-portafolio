@@ -101,15 +101,14 @@
     }
 
     .board_content {
-      perspective: 1200px;
-      transform-style: preserve-3d;
+      // perspective: 1200px;
+      // transform-style: preserve-3d;
       transition: transform 250ms ease;
-
     }
 
     .is_dragging_list {
       padding: 100px;
-      transform: scale(0.95);
+      transform: scale(0.90);
       touch-action: none;
     }
   }
