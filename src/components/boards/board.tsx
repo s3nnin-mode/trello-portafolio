@@ -5,7 +5,7 @@ import { Route, Routes, useNavigate, useParams } from 'react-router-dom';
 //COMPONENTS
 import { List } from '../list/list';
 import { Card } from '../card/card';
-import { BtnAdd } from '../reusables/btnAgregar';
+// import { BtnAdd } from '../reusables/btnAgregar';
 //DND-KIT
 import {  DragOverlay, DndContext, DragEndEvent, DragOverEvent, DragStartEvent, PointerSensor, useSensor, useSensors, pointerWithin, TouchSensor } from '@dnd-kit/core';
 import { arrayMove, horizontalListSortingStrategy, SortableContext } from '@dnd-kit/sortable';
@@ -102,7 +102,7 @@ const useCustomBoard = () => {
 
 export const Tablero = () => {
   const { listsService } = useListsServices();
-  const { boards, listsGroup, addNewList, loadLists, loadBoards, getUserAuthState, sensors } = useCustomBoard();
+  const { boards, listsGroup, loadLists, loadBoards, getUserAuthState, sensors } = useCustomBoard();
   const [currentBoard, setCurrentBoard] = useState<BoardProps>();
   const [idBoard, setIdBoard] = useState('');
   const { userAuth } = useAuthContext();
