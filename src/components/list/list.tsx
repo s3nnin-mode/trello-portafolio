@@ -109,7 +109,7 @@ export const List: React.FC<ListPropsComponent> = ({ board, list, className }) =
       ref={setNodeRef}
       {...attributes}
       {...listeners}
-      className={`list ${className}`} 
+      className={`list ${isDragging ? 'list_dragging' : ''} ${className}`} 
     >
       <header className='header_list'>  
         <NameComponent 
