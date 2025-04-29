@@ -106,6 +106,8 @@ export const Tablero = () => {
     // }
 
     // console.log('es palindromo?: ', esPalindromo('anita lava la tina'));
+    console.log(window.navigator.maxTouchPoints); 
+
 
     const fetchData = async () => {
       const user_Auth = await getUserAuthState();
@@ -188,25 +190,17 @@ export const Tablero = () => {
     }
   }, [listsGroup]);
 
-  // const sensors = useSensors(
-  //   useSensor(PointerSensor, {  //esto es para que el drag empiece cuando el mouse este a 15px de distancia, en otras palabras
-  //     activationConstraint: {
-  //       distance: 1
-  //     }
-  //   })
-  // );
-
   function isTouchDevice() {
     if (typeof window !== "undefined") {
       return (
-        "ontouchstart" in window ||
-        navigator.maxTouchPoints > 0
+        "ontouchstart" in window
+        // navigator.maxTouchPoints > 0
       );
     }
     return false;
   }
 
-  const isTouch = isTouchDevice()
+  const isTouch = isTouchDevice();
 
   const sensors = useSensors(
     isTouch ? 
