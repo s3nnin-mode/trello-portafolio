@@ -25,6 +25,7 @@ import { useAuthContext } from "../../customHooks/useAuthContext";
 interface ListPropsComponent {
   list: ListProps
   board: BoardProps
+  className?: 'is_overlay_list'
 }
 
 export const useList = () => {
@@ -67,10 +68,9 @@ export const useList = () => {
   return { addNewCard, cardsServices };
 }
 
-export const List: React.FC<ListPropsComponent> = ({ board, list }) => {               
+export const List: React.FC<ListPropsComponent> = ({ board, list, className }) => {               
   const { addNewCard } = useList();
   const { cardsGroup } = useCardsStore();
-  // const [isListCollapse, setIsListCollapse] = useState(false);
   const [currentCards, setCurrentCards] = useState<CardProps[]>([]);
 
   const { 
@@ -109,7 +109,7 @@ export const List: React.FC<ListPropsComponent> = ({ board, list }) => {
       ref={setNodeRef}
       {...attributes}
       {...listeners}
-      className='list' 
+      className={`list ${className}`} 
     >
       <header 
         className='header_list'

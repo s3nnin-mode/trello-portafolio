@@ -612,7 +612,7 @@ export const Tablero = () => {
           // }}
             dropAnimation={null}
           >
-            { activeList && currentBoard && <List board={currentBoard} list={activeList} />}
+            { activeList && currentBoard && <List className='is_overlay_list' board={currentBoard} list={activeList} />}
             { activeCard && currentBoard && listToActiveCard && <Card className='card_overlay' board={currentBoard} list={listToActiveCard} card={activeCard} /> }
           </DragOverlay>
 
