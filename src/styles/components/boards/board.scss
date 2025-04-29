@@ -102,9 +102,13 @@
     }
 
     .is_dragging_list {
+
+      .list {
+        transform: scale(0.90);
+      }
       // padding: 100px;
-      transform: scale(0.90);
-      touch-action: none;
+      // transform: scale(0.90);
+      // touch-action: none;
       
     }
   }
