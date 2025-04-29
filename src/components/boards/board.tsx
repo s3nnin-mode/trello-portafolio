@@ -605,22 +605,16 @@ export const Tablero = () => {
           )
           }
 
-          <DragOverlay 
-          // style={{
-          //   transform: activeList ? 'scale(0.95)' : 'none',
-          //   transformOrigin: 'top left',
-          // }}
-            dropAnimation={null}
-          >
+          <DragOverlay dropAnimation={null}>
             { activeList && currentBoard && <List className='is_overlay_list' board={currentBoard} list={activeList} />}
             { activeCard && currentBoard && listToActiveCard && <Card className='card_overlay' board={currentBoard} list={listToActiveCard} card={activeCard} /> }
           </DragOverlay>
 
-          <BtnAdd
+          {/* <BtnAdd
             className='form_add_list'
             createListOrTargetName={(value: string) => addNewList({value, idBoard})}
             nameComponentToAdd='list'
-          />
+          /> */}
 
         </div>
       </DndContext>
