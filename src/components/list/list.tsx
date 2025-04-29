@@ -111,9 +111,7 @@ export const List: React.FC<ListPropsComponent> = ({ board, list, className }) =
       {...listeners}
       className={`list ${className}`} 
     >
-      <header 
-        className='header_list'
-      >  
+      <header className='header_list'>  
         <NameComponent 
           idBoard={board.idBoard} 
           list={list} 
@@ -127,12 +125,11 @@ export const List: React.FC<ListPropsComponent> = ({ board, list, className }) =
           <SettingsList idBoard={board.idBoard} list={list} />
         </div>
       </header>
-      <div 
-        className='content_list' >
+      <div className='content_list'>
         <SortableContext 
           items={currentCards.map(card => card.idCard)}
           strategy={verticalListSortingStrategy}
-          > 
+        > 
           {
             currentCards.map((card) => (
               <Card 
