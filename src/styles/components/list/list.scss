@@ -154,12 +154,6 @@
             }
         }
     }
-} 
-
-.list_dragging {
-    opacity: 0.5;
-    background-color: #f4f5f7;
-    border: 2px solid black;
 }
 
 .is_overlay_list {
@@ -168,6 +162,6 @@
 
 @media screen and (max-width: 600px) {
     .is_overlay_list {
-        transform-origin: top center;
+        top: 15px;
     }
 }
