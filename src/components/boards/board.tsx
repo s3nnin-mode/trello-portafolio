@@ -194,7 +194,7 @@ export const Tablero = () => {
     if (typeof window !== "undefined") {
       return (
         "ontouchstart" in window
-        // navigator.maxTouchPoints > 0
+        // navigator.maxTouchPoints > 0 Quité esta linea porque en mi laptop me da '1', y me bloquea el hacer drag
       );
     }
     return false;
