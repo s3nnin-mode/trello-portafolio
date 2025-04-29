@@ -91,8 +91,9 @@ export const List: React.FC<ListPropsComponent> = ({ board, list, className }) =
   const style = { 
     transform: CSS.Transform.toString(transform), 
     backgroundColor: list.colorList,
-    opacity: isDragging ? 0.4 : 1,
-    border: `1px solid ${list.colorList}`
+    opacity: isDragging ? 0.3 : 1,
+    border: `1px solid ${list.colorList}`,
+    // background: isDragging ? '' : list.colorList
   }
     
   useEffect(() => {
@@ -111,21 +112,21 @@ export const List: React.FC<ListPropsComponent> = ({ board, list, className }) =
       {...listeners}
       className={`list ${isDragging ? 'list_dragging' : ''} ${className}`} 
     >
-      <header className='header_list'>  
+      <header style={{opacity: isDragging ? 0 : 1}} className='header_list'>  
         <NameComponent 
           idBoard={board.idBoard} 
           list={list} 
           componentType='list'
           className='listName_container' 
         />                     
-        <div className='btns_header_list'>
+        <div style={{opacity: isDragging ? 0 : 1}} className='btns_header_list'>
           {/* <IconButton className='btn_collapse_list' onClick={() => setIsListCollapse(!isListCollapse)}>
             <RiCollapseHorizontalLine className='icon_collapse_list' /> //ESTA FUNCION FALTA POR HACER
           </IconButton> */}
           <SettingsList idBoard={board.idBoard} list={list} />
         </div>
       </header>
-      <div className='content_list'>
+      <div style={{opacity: isDragging ? 0 : 1}} className='content_list'>
         <SortableContext 
           items={currentCards.map(card => card.idCard)}
           strategy={verticalListSortingStrategy}
@@ -142,7 +143,7 @@ export const List: React.FC<ListPropsComponent> = ({ board, list, className }) =
           }
         </SortableContext>
       </div>
-      <footer>
+      <footer style={{opacity: isDragging ? 0 : 1}}>
         {
           list && (
             <BtnAdd 
