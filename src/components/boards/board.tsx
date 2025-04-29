@@ -567,12 +567,12 @@ export const Tablero = () => {
         <div className='loader_board'></div>
       </div>
     )
-  }
+  } 
   
   return (
     <>
     <Sidebar />
-    <div className={`board ${activeCard || activeList ? 'is_dragging' : ''}`} >
+    <div className={`board`} >
       
       <header className='header_board'>
         <button>
@@ -587,7 +587,7 @@ export const Tablero = () => {
         onDragOver={onDragOver}
         collisionDetection={pointerWithin}
       >
-        <div className='board_content'>
+        <div className={`board_content ${activeCard || activeList ? 'is_dragging' : ''}`}>
           {
           currentLists !== undefined && (
             <SortableContext 

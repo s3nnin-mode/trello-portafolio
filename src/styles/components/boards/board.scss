@@ -96,11 +96,19 @@
         display: flex;
       }
     }
+
+    .board_content {
+      perspective: 1200px;
+      transform-style: preserve-3d;
+      transition: transform 250ms ease;
+    }
+
+    .is_dragging {
+    
+      transform: scale(0.9);
+      
+    }
   }
 
-  .is_dragging {
-    
-    transform: scale(0.7);
-    
-  }
+  
 }
