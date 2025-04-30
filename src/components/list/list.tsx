@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import '../../styles/components/list/list.scss';
 //REACT-ICONS
 // import { RiCollapseHorizontalLine } from "react-icons/ri";
