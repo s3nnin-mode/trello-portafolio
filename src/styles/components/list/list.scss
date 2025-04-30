@@ -168,14 +168,14 @@
     // transform: scale(0.70);
 }
 
-@media screen and (max-width: 600px) {
-    .is_overlay_list {
-        transform: scale(0.70);
-        transform-origin: top center;
-    }
+// @media screen and (max-width: 600px) {
+//     .is_overlay_list {
+//         transform: scale(0.70);
+//         transform-origin: top center;
+//     }
 
-    .list_dragging {
-        transform-origin: top center;
-        transform: scale(0.70);
-    }
-}
+//     .list_dragging {
+//         transform-origin: top center;
+//         transform: scale(0.70);
+//     }
+// }

@@ -589,7 +589,10 @@ export const Tablero = () => {
         onDragOver={onDragOver}
         collisionDetection={pointerWithin}
       >
-        <div className={`board_content ${activeList ? 'is_dragging_list' : ''}`}>
+        <div 
+        // className={`board_content ${activeList ? 'is_dragging_list' : ''}`}
+        className='board_content'
+        >
           {
           currentLists !== undefined && (
             <SortableContext 
