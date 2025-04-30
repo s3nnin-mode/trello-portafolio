@@ -89,15 +89,15 @@ export const List: React.FC<ListPropsComponent> = ({ board, list, className, isA
     animateLayoutChanges: () => false,
   });
 
+  const isTouch = isTouchDevice();
+
   const style = { 
-    transform: CSS.Transform.toString(transform),
+    transform: `${CSS.Transform.toString(transform)} ${isDragging && isTouch ? 'scale(0.80)' : ''}`,
     // transform: test ? `scale(0.70) ${CSS.Transform.toString(transform)}` : CSS.Transform.toString(transform), 
     backgroundColor: list.colorList,
     opacity: isDragging ? 0.3 : 1,
     border: `1px solid ${list.colorList}`,
   }
-
-  const isTouch = isTouchDevice()
     
   useEffect(() => {
     const indexCardGroup = cardsGroup.findIndex((cardGroup) => 
@@ -109,15 +109,15 @@ export const List: React.FC<ListPropsComponent> = ({ board, list, className, isA
 
   return (
     <div 
-    style={{
-      transform: isActiveList && isTouch ? 'scale(0.80)' : ''
-    }}
+      style={{
+        transform: isActiveList && isTouch ? 'scale(0.80)' : ''
+      }}
       // style={style}
       ref={setNodeRef}
       {...attributes}
       {...listeners}
       // className={`list ${isDragging ? 'list_dragging' : ''} ${className}`} 
-    > 
+    >
     <div 
     style={style}
     // ref={setNodeRef}
