@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import '../../styles/components/list/list.scss';
 //REACT-ICONS
 // import { RiCollapseHorizontalLine } from "react-icons/ri";
@@ -19,13 +19,14 @@ import { useCardsServices } from "../../services/cardsServices";
 import { SortableContext } from '@dnd-kit/sortable';
 import { addCardFirebase } from "../../services/firebase/updateData/updateCards";
 import { useAuthContext } from "../../customHooks/useAuthContext";
+import { isTouchDevice } from "../boards/board";
 // import { IconButton } from "@mui/material";
-
 
 interface ListPropsComponent {
   list: ListProps
   board: BoardProps
   className?: 'is_overlay_list'
+  isActiveList?: boolean
 }
 
 export const useList = () => {
@@ -68,7 +69,7 @@ export const useList = () => {
   return { addNewCard, cardsServices };
 }
 
-export const List: React.FC<ListPropsComponent> = ({ board, list, className }) => {               
+export const List: React.FC<ListPropsComponent> = ({ board, list, className, isActiveList }) => {               
   const { addNewCard } = useList();
   const { cardsGroup } = useCardsStore();
   const [currentCards, setCurrentCards] = useState<CardProps[]>([]);
@@ -86,15 +87,17 @@ export const List: React.FC<ListPropsComponent> = ({ board, list, className }) =
       list, 
     },
     animateLayoutChanges: () => false,
-  }); 
+  });
 
   const style = { 
-    transform: CSS.Transform.toString(transform), 
+    transform: CSS.Transform.toString(transform),
+    // transform: test ? `scale(0.70) ${CSS.Transform.toString(transform)}` : CSS.Transform.toString(transform), 
     backgroundColor: list.colorList,
     opacity: isDragging ? 0.3 : 1,
     border: `1px solid ${list.colorList}`,
-    // background: isDragging ? '' : list.colorList
   }
+
+  const isTouch = isTouchDevice()
     
   useEffect(() => {
     const indexCardGroup = cardsGroup.findIndex((cardGroup) => 
@@ -106,11 +109,21 @@ export const List: React.FC<ListPropsComponent> = ({ board, list, className }) =
 
   return (
     <div 
-      style={style}
+    style={{
+      transform: isActiveList && isTouch ? 'scale(0.80)' : ''
+    }}
+      // style={style}
       ref={setNodeRef}
       {...attributes}
       {...listeners}
-      className={`list ${isDragging ? 'list_dragging' : ''} ${className}`} 
+      // className={`list ${isDragging ? 'list_dragging' : ''} ${className}`} 
+    > 
+    <div 
+    style={style}
+    // ref={setNodeRef}
+    // {...attributes}
+    // {...listeners}
+    className={`list ${isDragging ? 'list_dragging' : ''} ${className}`} 
     >
       <header style={{opacity: isDragging ? 0 : 1}} className='header_list'>  
         <NameComponent 
@@ -154,6 +167,7 @@ export const List: React.FC<ListPropsComponent> = ({ board, list, className }) =
           )
         }
       </footer>
+      </div>
     </div>
   )
 }

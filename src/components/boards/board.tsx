@@ -5,7 +5,7 @@ import { Route, Routes, useNavigate, useParams } from 'react-router-dom';
 //COMPONENTS
 import { List } from '../list/list';
 import { Card } from '../card/card';
-// import { BtnAdd } from '../reusables/btnAgregar';
+import { BtnAdd } from '../reusables/btnAgregar';
 //DND-KIT
 import {  DragOverlay, DndContext, DragEndEvent, DragOverEvent, DragStartEvent, PointerSensor, useSensor, useSensors, pointerWithin, TouchSensor } from '@dnd-kit/core';
 import { arrayMove, horizontalListSortingStrategy, SortableContext } from '@dnd-kit/sortable';
@@ -29,6 +29,16 @@ import { Sidebar } from './sidebar';
 
 import { MdChevronLeft } from "react-icons/md";
 // import { snapCenterToCursor,  } from '@dnd-kit/modifiers';
+
+export const isTouchDevice = () => {
+  if (typeof window !== "undefined") {
+    return (
+      "ontouchstart" in window
+      // navigator.maxTouchPoints > 0 Quité esta linea porque en mi laptop me da '1', y me bloquea el hacer drag
+    );
+  }
+  return false;
+}
 
 const useCustomBoard = () => {
   const { listsGroup, loadLists } = useListsStore();
@@ -69,15 +79,7 @@ const useCustomBoard = () => {
     //para saber que estas cartas pertenece a este tablero y a esta lista
   }
 
-  const isTouchDevice = () => {
-    if (typeof window !== "undefined") {
-      return (
-        "ontouchstart" in window
-        // navigator.maxTouchPoints > 0 Quité esta linea porque en mi laptop me da '1', y me bloquea el hacer drag
-      );
-    }
-    return false;
-  }
+  
 
   const isTouch = isTouchDevice();
 
@@ -102,7 +104,7 @@ const useCustomBoard = () => {
 
 export const Tablero = () => {
   const { listsService } = useListsServices();
-  const { boards, listsGroup, loadLists, loadBoards, getUserAuthState, sensors } = useCustomBoard();
+  const { boards, listsGroup, loadLists, loadBoards, getUserAuthState, sensors, addNewList } = useCustomBoard();
   const [currentBoard, setCurrentBoard] = useState<BoardProps>();
   const [idBoard, setIdBoard] = useState('');
   const { userAuth } = useAuthContext();
@@ -597,7 +599,7 @@ export const Tablero = () => {
               {
                 currentBoard && (               //antes de pasar board verifico que exista
                   currentLists.map((list) => {
-                    return <List board={currentBoard} list={list} key={list.idList} />
+                    return <List isActiveList={activeList ? true : false} board={currentBoard} list={list} key={list.idList} />
                   })
                 )
               }
@@ -610,11 +612,11 @@ export const Tablero = () => {
             { activeCard && currentBoard && listToActiveCard && <Card className='card_overlay' board={currentBoard} list={listToActiveCard} card={activeCard} /> }
           </DragOverlay>
 
-          {/* <BtnAdd
+          <BtnAdd
             className='form_add_list'
             createListOrTargetName={(value: string) => addNewList({value, idBoard})}
             nameComponentToAdd='list'
-          /> */}
+          />
 
         </div>
       </DndContext>

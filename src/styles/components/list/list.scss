@@ -3,6 +3,8 @@
     // max-width: 280px;
     
     min-width: 190px;
+
+    min-width: 280px;
     max-width: 280px;
     width: 100%;
 
@@ -156,8 +158,14 @@
     }
 }
 
-.is_overlay_list {
+.is_overlay_list { //Lista 'flotante' que inicia el drag
     opacity: 0.7 !important;
+    // transform: scale(0.70);
+}
+
+.list_dragging {
+    transform-origin: top center;
+    // transform: scale(0.70);
 }
 
 @media screen and (max-width: 600px) {

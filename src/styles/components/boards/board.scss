@@ -47,6 +47,8 @@
     height: 90vh;
     padding: 10px;
 
+    transition: transform 250ms ease; //!!!!!
+
     .form_add_list {
       min-width: 250px !important;
       max-width: 250px;
@@ -85,6 +87,14 @@
   }
 }
 
+// .is_dragging_list {
+//   transform-origin: top center;
+
+//   .list {
+//     transform: scale(0.80);
+//   }
+// }
+
 @media screen and (max-width: 600px) {
   .board {
 
@@ -100,9 +110,8 @@
 
     .is_dragging_list {
       .list {
-        transform: scale(0.70) !important;
+        // transform: scale(0.70) !important;
       }
-      
     }
   }
   
