@@ -87,9 +87,6 @@
 
 @media screen and (max-width: 600px) {
   .board {
-    // perspective: 1200px;
-    // transform-style: preserve-3d;
-    // transition: transform 250ms ease;
 
     .header_board {
       button {
@@ -102,13 +99,9 @@
     }
 
     .is_dragging_list {
-      transform: scale(0.90);
       .list {
-        transform: scale(0.70);
+        transform: scale(0.70) !important;
       }
-      // padding: 100px;
-      // transform: scale(0.90);
-      // touch-action: none;
       
     }
   }
