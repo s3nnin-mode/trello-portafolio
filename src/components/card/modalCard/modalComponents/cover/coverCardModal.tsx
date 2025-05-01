@@ -107,7 +107,7 @@ export const CardModalCover: React.FC<CardModalCoverProps> = ({card, idList, idB
           <IoMdClose />
         </button>
 
-        
+       
       </header>
 
       {

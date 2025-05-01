@@ -59,7 +59,8 @@ const useCustomBoard = () => {
       idList: idList,
       nameList: nameList,
       colorList: '#252526',
-      order: lastList ? lastList.order + 10 : 0
+      order: lastList ? lastList.order + 10 : 0,
+      archived: false
     }
     
     if (userAuth) {
@@ -78,8 +79,6 @@ const useCustomBoard = () => {
     //se inializa las cards con [] y un idBoard e idList
     //para saber que estas cartas pertenece a este tablero y a esta lista
   }
-
-  
 
   const isTouch = isTouchDevice();
 
@@ -207,7 +206,7 @@ export const Tablero = () => {
   useEffect(() => {
     const indexListGroup = listsGroup.findIndex((listGroup) => listGroup.idBoard === currentIdBoard);
     if (indexListGroup > -1) {
-      setCurrentLists(listsGroup[indexListGroup].lists);
+      setCurrentLists(listsGroup[indexListGroup].lists.filter(list => list.archived === false));
     }
   }, [listsGroup]);
 

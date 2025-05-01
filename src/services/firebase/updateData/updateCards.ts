@@ -1,13 +1,13 @@
-import { collection, deleteDoc, doc, getDoc, setDoc, updateDoc, writeBatch } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDoc, getDocs, setDoc, updateDoc, writeBatch } from "firebase/firestore";
 import { auth, db, storage } from "../firebaseConfig"
 import { CardProps } from "../../../types/boardProps";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 export const addCardFirebase = async ({idBoard, idList, card}: {idBoard: string, idList: string, card: CardProps}) => {
-    const userId = auth.currentUser?.uid;
-    const cardsRef = doc(collection(db, `users/${userId}/boards/${idBoard}/lists/${idList}/cards`), card.idCard);
-    await setDoc(cardsRef, card);
-    console.log('se agregó la card en firebase');
+  const userId = auth.currentUser?.uid;
+  const cardsRef = doc(collection(db, `users/${userId}/boards/${idBoard}/lists/${idList}/cards`), card.idCard);
+  await setDoc(cardsRef, card);
+  console.log('se agregó la card en firebase');
 }
 
 export const addCardAtTopFirebase = async (
@@ -190,3 +190,24 @@ export const getCardFirebase = async ({ idBoard, idList, idCard }: { idBoard: st
 
   return card.data() as CardProps;
 };
+
+//ARCHIVED CARDS FUNCTIONS
+
+export const archivedCard = async ({idBoard, idList, idCard, archived}: {idBoard: string, idList: string, idCard: string, archived: boolean}) => {
+  const userId = auth.currentUser?.uid;
+  const cardRef = doc(db, `users/${userId}/boards/${idBoard}/lists/${idList}/cards/${idCard}`);
+
+  await updateDoc(cardRef, { archived });
+  console.log('se archivó correctamente la card');
+}
+
+export const getArchivedCards = async ({idBoard}:{idBoard: string}) => {
+  const userId = auth.currentUser?.uid;
+
+  const archivedCardsCollection = collection(db, `users/${userId}/boards/${idBoard}/archivedCards`);
+  const archivedCardsSnapshot = await getDocs(archivedCardsCollection);
+
+  const archivedCards = archivedCardsSnapshot.docs.map(doc => doc.data() as CardProps);
+  console.log('cards archivadas obtenidas: ', archivedCards);
+  return archivedCards;
+}

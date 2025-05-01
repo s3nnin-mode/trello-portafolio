@@ -61,3 +61,11 @@ export const getListFirebase = async ({idBoard, idList}: {idBoard: string, idLis
 
     return list.data() as ListProps;
 }
+
+export const archivedList = async ({idBoard, idList, archived}: {idBoard: string, idList: string, archived: boolean}) => {
+    const userId = auth.currentUser?.uid;
+    const cardRef = doc(db, `users/${userId}/boards/${idBoard}/lists/${idList}`);
+
+    await updateDoc(cardRef, { archived });
+    console.log('se archivó correctamente la lista');
+}

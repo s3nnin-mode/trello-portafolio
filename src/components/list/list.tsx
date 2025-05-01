@@ -49,7 +49,8 @@ export const useList = () => {
       coverCardImgs: [],
       complete: false,
       description: null,
-      order: cards.length === 0 ? 0 : cards[cards.length - 1].order + 10
+      order: cards.length === 0 ? 0 : cards[cards.length - 1].order + 10,
+      archived: false
     };
     
     cardsServices({
@@ -88,7 +89,6 @@ export const List: React.FC<ListPropsComponent> = ({ board, list, className }) =
     animateLayoutChanges: () => false,
   });
 
-
   const style = { 
     transform: CSS.Transform.toString(transform),
     backgroundColor: list.colorList,
@@ -100,7 +100,7 @@ export const List: React.FC<ListPropsComponent> = ({ board, list, className }) =
     const indexCardGroup = cardsGroup.findIndex((cardGroup) => 
       cardGroup.idBoard === board.idBoard && cardGroup.idList === list.idList);
     if (indexCardGroup > -1) {
-      setCurrentCards(cardsGroup[indexCardGroup].cards);
+      setCurrentCards(cardsGroup[indexCardGroup].cards.filter(card => card.archived === false));
     }
   }, [cardsGroup]);
 

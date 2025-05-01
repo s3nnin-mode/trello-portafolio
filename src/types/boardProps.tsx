@@ -13,6 +13,7 @@ export interface ListProps {
     nameList: string
     colorList: string
     order: number
+    archived: boolean
 }
 
 //Lists: ListsGroup[] donde cada lista en ralidad es un grupo de lista enlazado al idBoard para saber que pertenece a el
@@ -40,6 +41,7 @@ export interface CardProps {
     complete: boolean
     description: string | null
     order: number
+    archived: boolean
 }
 
 export interface CardGroupProps {

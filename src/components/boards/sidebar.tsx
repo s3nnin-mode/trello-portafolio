@@ -21,6 +21,7 @@ import { FiLogIn } from 'react-icons/fi';
 import { useAuthContext } from "../../customHooks/useAuthContext";
 import { logoutFirebase } from "../../services/firebase/firebaseFunctions";
 import { useMediaQuery } from "@mui/material";
+import { ArchivedElements } from "../reusables/archivedElements";
 
 const drawerWidth = 240;
 
@@ -63,6 +64,7 @@ export const Sidebar = () => {
   const { userAuth } = useAuthContext();
   const location = useLocation();
   const { currentIdBoard } = useParams();
+  const [showArchivedElements, setShowArchivedElements] = useState(false);
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -77,22 +79,21 @@ export const Sidebar = () => {
   useEffect(() => {
     console.log('location', location);
     console.log('params', currentIdBoard);
+    
   },[location, currentIdBoard]);
 
   return (
     <Box
       className='container_sidebar'
       sx={{
-        display: isMobile && currentIdBoard ? 'none' : 'flex', // para pantallas medianas en adelante,, 
-        // ml: {
-        //   // xs: 0, // para moviles (max-width: 600px)
-        //   sm: isMobile && currentIdBoard ? '0px' : open ? '240px' : '55px', // para pantallas medianas en adelante,
-        //   // md: '0'
-        // }, 
+        display: isMobile && currentIdBoard ? 'none' : 'flex', // para pantallas medianas en adelante, 
         ml: isMobile && currentIdBoard ? '0px' : open ? '240px' : '55px', // para pantallas medianas en adelante,
         transition: '.3s linear',
       }}
     >
+      {showArchivedElements && currentIdBoard && (
+        <ArchivedElements idBoard={currentIdBoard} close={() => setShowArchivedElements(false)} />
+      )}
       <Drawer className='container_drawer' variant='permanent' open={open}>
         <DrawerHeader className='header_drawer'>
           <IconButton onClick={() => setOpen(!open)}>
@@ -117,6 +118,24 @@ export const Sidebar = () => {
               />}
             </ListItemButton>
           </ListItem>
+          {currentIdBoard && (
+            <ListItem className='btn_sidebar' disablePadding >
+              <ListItemButton onClick={() => setShowArchivedElements(true)}>
+                <ListItemIcon sx={{color: '#ccc'}}>
+                  <IoClipboardSharp />
+                </ListItemIcon>
+
+                {open && <ListItemText 
+                  primary={'Archivados'} 
+                  slotProps={{
+                    primary: {
+                      className: 'inter'
+                    },
+                  }}
+                />}
+              </ListItemButton>
+            </ListItem>
+          )}
           { !userAuth ? (
             <ListItem disablePadding>
               <ListItemButton onClick={() => navigate('/auth/login')}>

@@ -14,13 +14,14 @@ import Fade from '@mui/material/Fade';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getBoardFirebase } from '../../../services/firebase/updateData/updateBoards';
 import { getListFirebase } from '../../../services/firebase/updateData/updateLists';
-import { getCardFirebase } from '../../../services/firebase/updateData/updateCards';
+import { archivedCard, deleteCard, getCardFirebase } from '../../../services/firebase/updateData/updateCards';
 import { useAuthContext } from '../../../customHooks/useAuthContext';
 import { useListsStore } from '../../../store/listsStore';
 import { useBoardsStore } from '../../../store/boardsStore';
 import { useCardsStore } from '../../../store/cardsStore';
 import { useTagsStore } from '../../../store/tagsStore';
 import { getCardsFirebase, getListsFirebase, getTagsFirebase } from '../../../services/firebase/firebaseFunctions';
+import { useCardsServices } from '../../../services/cardsServices';
 
 // interface ModalTargetComponentProps {
 //   card: CardProps
@@ -55,6 +56,8 @@ export const getCard = async ({ idBoard, idList, idCard }: { idBoard: string, id
 
 export const CardModal = () => {
 
+  const { userAuth } = useAuthContext();
+  const { cardsServices } = useCardsServices();
   const { getUserAuthState } = useAuthContext();
   const { currentIdBoard, idCard, idList } = useParams();
   const { listsGroup } = useListsStore();
@@ -195,18 +198,51 @@ export const CardModal = () => {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    // background: `linear-gradient(135deg, #121212 50%, ${card?.coverColorCard} 100%)`,
-    // backgroundColor: card?.coverColorCard,
-    // opacity: 0.1, // para que no opaque el contenido
-    // backdropFilter: 'blur(4px)',
-    // borderLeft: `6px solid ${list?.colorList}`
-    // boxShadow: 24,
     backgroundColor: '#1E1E1E',
     borderRadius: '12px',
-    boxShadow: `0 0 7px ${list?.colorList}55`,
     borderLeft: `6px solid ${card?.coverColorCard}`,
-
   };
+
+  const handleArchivedCard = () => {
+    if (!board || !list || !card) return;
+
+    if (userAuth) {
+      archivedCard({idBoard: board.idBoard, idList: list.idList, idCard: card.idCard, archived: !card.archived})
+    }
+
+    cardsServices({
+      updateFn: (cardsGroup) => cardsGroup.map((cardGroup) =>
+        cardGroup.idBoard === board?.idBoard && cardGroup.idList === list?.idList
+        ? {...cardGroup, 
+          cards: cardGroup.cards.map(itemCard => itemCard.idCard === card?.idCard
+            ? { ...itemCard, archived: !card.archived}
+            : itemCard
+          )
+        }
+        : cardGroup
+      )
+    });
+  }
+
+  const handleDeleteCard = (card: CardProps) => {
+    closeModal();
+    const idList = cardsGroup.find(cardGroup => cardGroup.cards.some(c => c.idCard === card.idCard))?.idList;
+    if (!idList || !board) return;
+
+    if (userAuth) {
+      deleteCard({idBoard: board.idBoard, idList, idCard: card.idCard});
+    }
+
+    cardsServices({
+      updateFn: (cardsGroup) => cardsGroup.map(cardGroup => 
+        cardGroup.idBoard === board.idBoard && cardGroup.idList == idList
+        ? 
+        {...cardGroup, cards: cardGroup.cards.filter(c => c.idCard !== card.idCard)}
+        :
+        cardGroup
+      )
+    });
+  }
 
 	return (
     <Modal
@@ -236,7 +272,17 @@ export const CardModal = () => {
           card && board && list && !loader ?
             <>
               <CardModalCover card={card} idBoard={board.idBoard} idList={list.idList} closeModal={closeModal} />
+
               <div className='modal_content_container'> 
+                <div className='modal_card_actions'>
+                  <button 
+                    className='btn_archive_card' 
+                    onClick={handleArchivedCard}
+                  >
+                    {card.archived ? 'Desarchivar' : 'Archivar'}
+                  </button>
+                  {card.archived && <button className='btn_remove_card' onClick={() => handleDeleteCard(card)}>Eliminar tarjeta</button>}
+                </div>
                 <TitleModalCard board={board} list={list} card={card} /> 
                 <div className='modal_content'>
                   <ActiveTags board={board} list={list} card={card} /> 

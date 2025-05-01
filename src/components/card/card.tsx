@@ -98,7 +98,6 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list, classNa
         style={style}
         {...attributes}
         {...listeners}
-        // className={`${isDragging ? 'card_over' : 'cardItem'} ${className}`}
         className={`cardItem ${className}`}
         onClick={() => navigate(`list/${list.idList}/card/${card.idCard}`)}
       >
@@ -117,22 +116,21 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list, classNa
                     }}
                     className={card.coverImgCard ? 'container_color_card_with_img' : 'container_color_card'} >
                     {
-                      card.complete ? 
-                      <CheckAnimation 
-                        isPlaying={true} 
-                        handleClick={(e) => {e.stopPropagation(); cardComplete()}} 
-                        className='card_complete' 
-                      />
-                      :
-                      <input 
-                        type="checkbox"
-                        onClick={(e) => e.stopPropagation()}
-                        onChange={cardComplete}
-                        // className={card.complete ? 'card_complete' : 'checked_card_animation'} 
-                        className='checkbox_card_complete'
-                        // handleClick={cardComplete} 
-                        // isPlaying={card.complete ? card.complete : isPlaying}
-                      /> 
+                      card.complete 
+                      ? <CheckAnimation 
+                          isPlaying={true} 
+                          handleClick={(e) => {e.stopPropagation(); cardComplete()}} 
+                          className='card_complete' 
+                        />
+                      : <input 
+                          type="checkbox"
+                          onClick={(e) => e.stopPropagation()}
+                          onChange={cardComplete}
+                          // className={card.complete ? 'card_complete' : 'checked_card_animation'} 
+                          className='checkbox_card_complete'
+                          // handleClick={cardComplete} 
+                          // isPlaying={card.complete ? card.complete : isPlaying}
+                        /> 
                     }
                     {
                       card.coverColorCard !== null && (
@@ -203,16 +201,10 @@ export const Card: React.FC<TargetComponentProps> = ({card, board, list, classNa
                     <span>Descripción de </span><span>{card.nameCard}</span>:
                   </p>
                   <button 
-                  style={{
-                    // background: list.colorList,
-                    border: `1px solid ${list.colorList}`,
-                    
-                  }}
-                  onClick={(e) => { e.stopPropagation(); setShowDescription(false); }}>
-                    <GoEyeClosed 
-                    
-                      className='icon_close_description' 
-                    />
+                    style={{ border: `1px solid ${list.colorList}` }}
+                    onClick={(e) => { e.stopPropagation(); setShowDescription(false); }}
+                  >
+                    <GoEyeClosed className='icon_close_description' />
                   </button>
                 </div>
 
