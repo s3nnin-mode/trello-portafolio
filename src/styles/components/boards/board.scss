@@ -44,15 +44,17 @@
     }
 
     div:nth-child(2) {
-      display: none;
+      // display: none;
       button {
         background: transparent;
+        // background: #2E2E2E;
+        // background: #121212;
         display: flex;
         border-radius: 5px;
         cursor: pointer;
-        align-self: flex-start;
         color: #ccc;
         padding: 5px;
+        border: none;
         border: 1px solid rgba(255, 255, 255, 0.2);
         box-shadow: 0 1px 1px black;
 
