@@ -19,8 +19,8 @@ export const ArchivedElements = ({idBoard, close}: {idBoard: string, close: () =
 
   const { userAuth } = useAuthContext();
 
-  const [cards, setCards] = useState<CardProps[]>();
-  const [lists, setLists] = useState<ListProps[]>();
+  const [cards, setCards] = useState<CardProps[]>([]);
+  const [lists, setLists] = useState<ListProps[]>([]);
 
   const [showArchivedCards, setShowArchivedCards] = useState(true);
 
@@ -130,6 +130,7 @@ export const ArchivedElements = ({idBoard, close}: {idBoard: string, close: () =
         {/* <input></input> */}
         <div className='inter'>
           <button 
+          className='inter'
             onClick={() => setShowArchivedCards(true)}
             style={{
               background: showArchivedCards ? '#fff' : 'transparent',
@@ -139,6 +140,7 @@ export const ArchivedElements = ({idBoard, close}: {idBoard: string, close: () =
             Tarjetas
           </button>
           <button 
+            className='inter'
             onClick={() => setShowArchivedCards(false)}
             style={{
               background: !showArchivedCards ? '#fff' : 'transparent',
@@ -151,41 +153,44 @@ export const ArchivedElements = ({idBoard, close}: {idBoard: string, close: () =
       </header>
       <ul>
         {showArchivedCards
-        ? cards?.map(card => (
-          <li key={card.idCard}>
-            <article>
-              <div className='visualizador_container'>
-                {/* <input type='checkbox' /> */}
-                <span style={{background: card.coverColorCard || 'grey'}} className='circle' />
-                <span style={{background: card.coverColorCard || 'grey'}} className='circle' />
-              </div>
-              <h1 className='inter'>{card.nameCard}</h1>
-              <div>
-                <button onClick={() => handleArchivedCard(card)}>
-                  Desarchivar
-                </button>
-                <button onClick={() => handleRemoveCard(card)}>
-                  Eliminar
-                </button>
-              </div>
-            </article>
-          </li>
-        ))
-        : lists?.map(list => (
-          <li key={list.idList}>
-            <article style={{background: list.colorList}}>
-              <h1>{list.nameList}</h1>
-              <div>
-                <button onClick={() => handleArchivedList(list)}>
-                  Desarchivar
-                </button>
-                <button onClick={() => handleRemoveList(list)}>
-                  Eliminar
-                </button>
-              </div>
-            </article>
-          </li>
-        ))
+          ? cards.length > 0
+            ? cards?.map(card => (
+            <li key={card.idCard}>
+              <article>
+                <div className='visualizador_container'>
+                  {/* <input type='checkbox' /> */}
+                  <span style={{background: card.coverColorCard || 'grey'}} className='circle' />
+                  <span style={{background: card.coverColorCard || 'grey'}} className='circle' />
+                </div>
+                <h1 className='inter'>{card.nameCard}</h1>
+                <div>
+                  <button onClick={() => handleArchivedCard(card)}>
+                    Desarchivar
+                  </button>
+                  <button onClick={() => handleRemoveCard(card)}>
+                    Eliminar
+                  </button>
+                </div>
+              </article>
+            </li>
+          )) : <li className='text_no_archived_cards roboto_light'>No hay tarjetas archivadas.</li>
+          : lists.length > 0 
+          ? lists.map(list => (
+            <li key={list.idList}>
+              <article style={{background: list.colorList}}>
+                <h1>{list.nameList}</h1>
+                <div>
+                  <button onClick={() => handleArchivedList(list)}>
+                    Desarchivar
+                  </button>
+                  <button onClick={() => handleRemoveList(list)}>
+                    Eliminar
+                  </button>
+                </div>
+              </article>
+            </li>
+          ))
+          : <li className='text_no_archived_lists roboto_light'>No hay listas archivadas.</li>
       }
       </ul>
     </article>

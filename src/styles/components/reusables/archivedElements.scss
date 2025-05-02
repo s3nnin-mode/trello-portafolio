@@ -81,6 +81,15 @@
     overflow-y: auto;
     overflow-x: hidden;
 
+    .text_no_archived_lists,
+    .text_no_archived_cards {
+      padding: 1em 0;
+      text-align: center;
+      font-style: italic;
+      border-radius: 5px;
+      border: 1px solid rgba(255, 255, 255, .15);
+    }
+
     li {
       article {
         border-radius: 5px;
@@ -158,8 +167,11 @@
           }
 
           button:nth-child(2) {
+            background: #FF4D4D;
+            color: #fff;
             &:hover {
-              background: #FF4D4D;
+              background: rgb(255, 77, 77, .85);
+              // background: rgba(255, 255, 255, .15);
             }
           }
 

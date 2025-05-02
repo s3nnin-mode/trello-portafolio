@@ -4,33 +4,63 @@
 
   .header_board {
     padding: 10px;  
-    height: 10vh; 
+    // height: 10vh; 
 
     display: flex;
-    // align-items: center;
-    gap: 5px;
+    gap: 10px;
+    flex-direction: column;
 
-    button {
-      border: none;
-      background: transparent;
-      color: white;
-      font-size: 2rem;
+    div:nth-child(1) {
       display: flex;
-      border-radius: 6px;
-      cursor: pointer;
-      align-self: flex-start;
-      color: orange;
+      justify-self: flex-start;
+      gap: 5px;
+      padding: 0 !important;
 
-      display: none;
-
-      &:hover {
-        background-color: #2E2E2E;
+      button {
+        border: none;
+        background: transparent;
+        color: white;
+        font-size: 2rem;
+        display: flex;
+        border-radius: 6px;
+        cursor: pointer;
+        align-self: flex-start;
+        color: orange;
+        margin: 0 !important;
+  
+        // display: none;
+  
+        &:hover {
+          background-color: #2E2E2E;
+        }
+      }
+  
+      h2 {
+        margin: 0 !important;
+        color: #ccc;
+        color: #EAEAEA;
+        overflow-wrap: break-word;
       }
     }
 
-    h2 {
-      color: #ccc;
-      color: #EAEAEA;
+    div:nth-child(2) {
+      display: none;
+      button {
+        background: #2E2E2E;
+        display: flex;
+        border-radius: 6px;
+        cursor: pointer;
+        align-self: flex-start;
+        color: #ccc;
+        padding: 5px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 0 1px black;
+
+        &:hover {
+          background-color: #2E2E2E;
+          color: white;
+        }
+      }
     }
   }
 
@@ -101,6 +131,10 @@
     .header_board {
       button {
         display: flex;
+      }
+
+      div:nth-child(2) {
+        display: block;
       }
     }
 

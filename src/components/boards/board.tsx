@@ -28,6 +28,7 @@ import { useTagsStore } from '../../store/tagsStore';
 import { Sidebar } from './sidebar';
 
 import { MdChevronLeft } from "react-icons/md";
+import { ArchivedElements } from '../reusables/archivedElements';
 // import { snapCenterToCursor,  } from '@dnd-kit/modifiers';
 
 export const isTouchDevice = () => {
@@ -111,6 +112,8 @@ export const Tablero = () => {
   const { cardsServices } = useCardsServices();
   const { cardsGroup, loadCards } = useCardsStore();
   const { loadTags } = useTagsStore();
+
+  const [showArchivedElements, setShowArchivedElements] = useState(false);
 
   const [currentLists, setCurrentLists] = useState<ListProps[]>()
   const { currentIdBoard } = useParams(); //RUTA ACTUAL
@@ -574,12 +577,19 @@ export const Tablero = () => {
     <>
     <Sidebar />
     <div className={`board`} >
-      
+      {showArchivedElements && <ArchivedElements idBoard={currentIdBoard} close={() => setShowArchivedElements(false)} />}
       <header className='header_board'>
-        <button>
-          <MdChevronLeft onClick={() => navigate('/kanbaX')} className='icon_back_home' />
-        </button>
-        <h2 className='inter_title'>{currentBoard?.nameBoard}</h2>                                     {/* NAME BOARD */}
+        <div>
+          <button>
+            <MdChevronLeft onClick={() => navigate('/kanbaX')} className='icon_back_home' />
+          </button>
+          <h2 className='inter_title'>{currentBoard?.nameBoard}</h2> 
+        </div>
+        <div>
+          <button onClick={() => setShowArchivedElements(true)}>
+            Elementos archivados
+          </button>
+        </div>                                 
       </header>
       <DndContext
         sensors={sensors}
