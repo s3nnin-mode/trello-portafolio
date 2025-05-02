@@ -586,7 +586,7 @@ export const Tablero = () => {
           <h2 className='inter_title'>{currentBoard?.nameBoard}</h2> 
         </div>
         <div>
-          <button onClick={() => setShowArchivedElements(true)}>
+          <button className='inter' onClick={() => setShowArchivedElements(true)}>
             Elementos archivados
           </button>
         </div>                                 
