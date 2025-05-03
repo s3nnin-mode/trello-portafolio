@@ -56,7 +56,7 @@ export const Home = () => {
 
   return(
     <div className='container_home'>
-      <div className='mensaje_proyecto_en_construccion'>
+      {/* <div className='mensaje_proyecto_en_construccion'>
         <p>
           Este proyecto está aún en desarrollo, aun asi, ya puedes usar todas las funcionalidades existentes.
           <br />
@@ -68,7 +68,7 @@ export const Home = () => {
           <br />
           Mi correo: leyderlevel1@gmail.com
         </p>
-      </div>
+      </div> */}
       <Box className='box'>
         <div className="card_left">
             <Fade in={!animation} timeout={500} >
