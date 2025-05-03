@@ -99,7 +99,7 @@ export const Sidebar = () => {
       )}
       <Drawer className='container_drawer' variant='permanent' open={open}>
         <DrawerHeader className='header_drawer'>
-          <h1 className='inter_title'>KanbaX</h1>
+          {open && <h1 className='inter_title'>KanbaX</h1>}
           <IconButton onClick={() => setOpen(!open)}>
             { open ? <MdChevronLeft className='collapse_sidebar' style={{color: 'white'}}/> : <MdChevronRight className='open_sidebar' style={{color: 'white'}} /> }
           </IconButton>
