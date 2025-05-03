@@ -1,9 +1,10 @@
 .archived_elements {
   position: absolute;
   background-color: #2E2E2E;
+  background: #1E1E1E;
   // border: 1px solid rgba(255, 255, 255, .1);
-  box-shadow: 0 0 3px black;
-  border-radius: 5px;
+  // box-shadow: 0 0 3px black;
+  border-radius: 0 0 5px 5px;
   padding: 8px;
   max-width: 300px;
   width: 100%;
@@ -28,6 +29,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      color: #fff;
 
       h1 {
         font-size: 1rem;

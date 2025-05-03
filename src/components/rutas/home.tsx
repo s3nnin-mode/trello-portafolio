@@ -71,7 +71,7 @@ export const Home = () => {
       </div> */}
       <Box className='box'>
         <div className="card_left">
-            <Fade in={!animation} timeout={500} >
+          <Fade in={!animation} timeout={500} >
             <div className='card_presentation'>
               <h2 className='inter_title'>
                 Organiza tus tareas y proyectos de manera fácil y rápida.
@@ -89,8 +89,7 @@ export const Home = () => {
                 Comenzar
               </Button>
             </div>
-          </Fade> 
-          
+          </Fade>
         </div>
       </Box>
     </div>

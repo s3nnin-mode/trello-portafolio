@@ -3,6 +3,8 @@ import '../../styles/components/boards/sidebar.scss';
 import '../../App.css';
 
 import { MdChevronRight } from "react-icons/md";
+import { MdArchive } from "react-icons/md";
+
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 import { styled, useTheme } from "@mui/material/styles";
@@ -28,7 +30,7 @@ const drawerWidth = 240;
 const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== "open",
 })(({ open }: { theme?: any; open?: boolean }) => ({  //theme?: any; open?: boolean quitado por el momento
-  width: 15,
+  width: 0,
   flexShrink: 0,
   whiteSpace: "nowrap",
   boxSizing: "border-box",
@@ -38,14 +40,15 @@ const Drawer = styled(MuiDrawer, {
           width: drawerWidth, 
           backgroundColor: '#1E1E1E', 
           transition: '.3s linear',
-          color: 'white' 
+          color: 'white',
+          border: 'none'
         },
       }
     : {
         "& .MuiDrawer-paper": { 
           width: 60,
           backgroundColor: '#1E1E1E',
-          transition: '.3s linear' 
+          transition: '.3s linear' ,
         },
       }),
 }));
@@ -96,6 +99,7 @@ export const Sidebar = () => {
       )}
       <Drawer className='container_drawer' variant='permanent' open={open}>
         <DrawerHeader className='header_drawer'>
+          <h1 className='inter_title'>KanbaX</h1>
           <IconButton onClick={() => setOpen(!open)}>
             { open ? <MdChevronLeft className='collapse_sidebar' style={{color: 'white'}}/> : <MdChevronRight className='open_sidebar' style={{color: 'white'}} /> }
           </IconButton>
@@ -122,7 +126,7 @@ export const Sidebar = () => {
             <ListItem className='btn_sidebar' disablePadding >
               <ListItemButton onClick={() => setShowArchivedElements(true)}>
                 <ListItemIcon sx={{color: '#ccc'}}>
-                  <IoClipboardSharp />
+                  <MdArchive />
                 </ListItemIcon>
 
                 {open && <ListItemText 

@@ -1,6 +1,17 @@
 .container_drawer {
-  
+
   .header_drawer {
+    display: flex;
+    justify-content: space-between;
+
+    h1 {
+      // color: ;
+
+      &::first-letter {
+        color: orange;
+      }
+    }
+
     button {
       padding: 5px;
       border-radius: 50%;
