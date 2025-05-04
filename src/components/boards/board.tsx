@@ -27,7 +27,6 @@ import { getCardsFirebase, getListsFirebase, getTagsFirebase } from '../../servi
 import { useTagsStore } from '../../store/tagsStore';
 import { Sidebar } from './sidebar';
 
-import { MdChevronLeft } from "react-icons/md";
 import { FaHome } from "react-icons/fa";
 import { ArchivedElements } from '../reusables/archivedElements';
 // import { snapCenterToCursor,  } from '@dnd-kit/modifiers';

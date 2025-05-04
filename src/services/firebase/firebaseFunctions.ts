@@ -36,7 +36,8 @@ const initialData = async (userId: string) => {
       idList: 'primerlistid',
       nameList: 'lista de ejemplo',
       colorList: '#252526',
-      order: 0
+      order: 0,
+      archived: false
     };
 
     await setDoc(listsRef, initialList);
@@ -53,7 +54,8 @@ const initialData = async (userId: string) => {
       coverCardImgs: [],
       complete: false,
       description: '',
-      order: 0
+      order: 0,
+      archived: false
     };
 
     await setDoc(cardsRef, initialCard);
