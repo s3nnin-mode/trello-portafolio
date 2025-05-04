@@ -1,7 +1,7 @@
 import '../../styles/components/boards/board.scss';
 //HOOKS
 import { useEffect, useRef, useState } from "react";
-import { Route, Routes, useNavigate, useParams } from 'react-router-dom';
+import { Route, Routes, useLocation, useNavigate, useParams } from 'react-router-dom';
 //COMPONENTS
 import { List } from '../list/list';
 import { Card } from '../card/card';
@@ -112,6 +112,7 @@ export const Tablero = () => {
   const { cardsServices } = useCardsServices();
   const { cardsGroup, loadCards } = useCardsStore();
   const { loadTags } = useTagsStore();
+  const location = useLocation();
 
   const [showArchivedElements, setShowArchivedElements] = useState(false);
 
@@ -125,6 +126,8 @@ export const Tablero = () => {
 
   const navigate = useNavigate();
   const [loader, setLoader] = useState(true);
+
+  const [isBoardNotFound, setIsBoardNotFound] = useState(false);
 
   if (!currentIdBoard) {
     return <p>Tablero no encontrado</p>
@@ -196,12 +199,13 @@ export const Tablero = () => {
 
   useEffect(()=> {
     const indexBoard = boards.findIndex(b => b.idBoard === currentIdBoard);
+    setIsBoardNotFound(false);
     if (indexBoard > -1) {
-      console.log('se halló indexBoard', indexBoard, boards[indexBoard]);
       setCurrentBoard(boards[indexBoard]);
       setIdBoard(boards[indexBoard].idBoard);
       return
     } else {
+      setIsBoardNotFound(true);
       console.log('no hay indexBoard', indexBoard, currentIdBoard, boards);
     }
   }, [boards, currentIdBoard]);
@@ -571,13 +575,56 @@ export const Tablero = () => {
         <div className='loader_board'></div>
       </div>
     )
-  } 
+  }
+
+  if (isBoardNotFound) {
+    return (
+      <div className='msg_is_board_not_found inter'>
+        <div>
+        <h1>Tablero no encontrado</h1>
+
+        {userAuth 
+          ? <p className='text_rout_not_found'>Ruta al que intentas acceder estando logeado: <span>{location.pathname}</span></p>
+          : <p className='text_rout_not_found'>Ruta al que intentas acceder desde el modo demo: <span>{location.pathname}</span></p>
+        }
+
+        <ol>
+          <li>
+            Es posible que estés accediendo un tablero mediante una una ruta guardada en el navegador 
+            que corresponde a un modo anterior (como la Demo o una Cuenta).
+          </li>
+          <li>
+            El tablero no existe.
+          </li>
+          <li>
+            Es algún error de servidor. De ser asi, intenta refrescar la pagina o acceder al tablero desde la sección de tableros.
+          </li>
+        </ol>
+
+        <p>
+          Por lo general la ruta de los tableros se base en su mismos nombres, verifica si la ruta coincide con el nombre de uno de tus tableros.
+          <br />
+          <br />
+          Si el problema persiste, avisame por correo: leyderlevel1@gmail.com
+        </p>
+        {/* <p>
+          Es posible que estés accediendo un tablero mediante una una ruta guardada en el navegador 
+          que corresponde a un modo anterior (como la Demo o una Cuenta).
+        </p> */}
+        {/* <span>Ó</span> */}
+        {/* <p>Simplemente el tablero no existe.</p>
+        <br />
+        <p>Si </p> */}
+      </div>
+      </div>
+    );
+  };
   
   return (
     <>
     <Sidebar />
     <div className={`board`} >
-      {showArchivedElements && <ArchivedElements idBoard={currentIdBoard} close={() => setShowArchivedElements(false)} />}
+      {showArchivedElements && currentIdBoard && <ArchivedElements idBoard={currentIdBoard} close={() => setShowArchivedElements(false)} />}
       <header className='header_board'>
         <div>
           <button>

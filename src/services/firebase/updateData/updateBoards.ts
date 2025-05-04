@@ -9,8 +9,15 @@ export const addBoardFirebase = async (board: BoardProps) => {
 }
 
 export const getBoardFirebase = async (idBoard: string) => {
-  const userId = auth.currentUser?.uid;
-  const boardRef = doc(db, `users/${userId}/boards/${idBoard}`);
-  const board = await getDoc(boardRef);
-  return board.data() as BoardProps;
+  try {
+    const userId = auth.currentUser?.uid;
+    const boardRef = doc(db, `users/${userId}/boards/${idBoard}`);
+    const board = await getDoc(boardRef);
+    if (!board.exists()) {
+      throw new Error
+    }
+    return board.data() as BoardProps;
+    } catch(err) {
+      throw new Error('NO SE HALLÓ TABLERO')
+  }
 }
