@@ -28,6 +28,7 @@ import { useTagsStore } from '../../store/tagsStore';
 import { Sidebar } from './sidebar';
 
 import { MdChevronLeft } from "react-icons/md";
+import { FaHome } from "react-icons/fa";
 import { ArchivedElements } from '../reusables/archivedElements';
 // import { snapCenterToCursor,  } from '@dnd-kit/modifiers';
 
@@ -581,7 +582,7 @@ export const Tablero = () => {
       <header className='header_board'>
         <div>
           <button>
-            <MdChevronLeft onClick={() => navigate('/kanbaX')} className='icon_back_home' />
+            <FaHome onClick={() => navigate('/kanbaX')} className='icon_back_home' />
           </button>
           <h2 className='inter_title'>{currentBoard?.nameBoard}</h2> 
         </div>

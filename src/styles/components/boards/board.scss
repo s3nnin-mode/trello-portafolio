@@ -13,26 +13,27 @@
 
     div:nth-child(1) {
       display: flex;
+      align-items: flex-end;
       justify-self: flex-start;
       gap: 5px;
       padding: 0 !important;
+      padding: 0 10px !important;
 
       button {
         border: none;
         background: transparent;
         color: white;
-        font-size: 2rem;
+        font-size: 1.7rem;
         display: flex;
         border-radius: 6px;
         cursor: pointer;
         align-self: flex-start;
         color: orange;
         margin: 0 !important;
-  
-        // display: none;
-  
+        transition: transform 0.5s ease;
+    
         &:hover {
-          background-color: #2E2E2E;
+          transform: scale(1.07);
         }
       }
   
