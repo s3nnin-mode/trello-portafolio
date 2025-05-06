@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import '../../styles/components/boards/sidebar.scss';
 import '../../App.css';
 
 import { MdChevronRight } from "react-icons/md";
 import { MdArchive } from "react-icons/md";
 
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
@@ -64,8 +64,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 export const Sidebar = () => {
   const [open, setOpen] = useState(true);
   const navigate = useNavigate();
-  const { userAuth } = useAuthContext();
-  const location = useLocation();
+  const { userAuth, setUserAuth } = useAuthContext();
   const { currentIdBoard } = useParams();
   const [showArchivedElements, setShowArchivedElements] = useState(false);
 
@@ -74,16 +73,13 @@ export const Sidebar = () => {
 
   const logout = async () => {
     const logoutState = await logoutFirebase();
+   
     if (logoutState) {
+      setUserAuth(false);
       navigate('/');
     }
-  }
 
-  useEffect(() => {
-    console.log('location', location);
-    console.log('params', currentIdBoard);
-    
-  },[location, currentIdBoard]);
+  }
 
   return (
     <Box

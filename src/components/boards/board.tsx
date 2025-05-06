@@ -1,7 +1,7 @@
 import '../../styles/components/boards/board.scss';
 //HOOKS
 import { useEffect, useRef, useState } from "react";
-import { Route, Routes, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { Route, Routes, useNavigate, useParams } from 'react-router-dom';
 //COMPONENTS
 import { List } from '../list/list';
 import { Card } from '../card/card';
@@ -29,6 +29,7 @@ import { Sidebar } from './sidebar';
 
 import { FaHome } from "react-icons/fa";
 import { ArchivedElements } from '../reusables/archivedElements';
+import { MsgRoutNotFound } from '../reusables/msgRoutNotFound';
 // import { snapCenterToCursor,  } from '@dnd-kit/modifiers';
 
 export const isTouchDevice = () => {
@@ -112,7 +113,6 @@ export const Tablero = () => {
   const { cardsServices } = useCardsServices();
   const { cardsGroup, loadCards } = useCardsStore();
   const { loadTags } = useTagsStore();
-  const location = useLocation();
 
   const [showArchivedElements, setShowArchivedElements] = useState(false);
 
@@ -131,6 +131,13 @@ export const Tablero = () => {
 
   if (!currentIdBoard) {
     return <p>Tablero no encontrado</p>
+  }
+
+  const resetDataDragAndDrop = () => {
+    setActiveCard(null);
+    origenGroupRef.current = null;
+    setActiveList(null);
+    setListToActiveCard(null);
   }
 
   useEffect(() => {
@@ -336,10 +343,7 @@ export const Tablero = () => {
     const { active, over } = event;
     if (!over) {
       console.log('NO HAY OVERRR');
-      setActiveCard(null);
-      origenGroupRef.current = null;
-      setActiveList(null);
-      setListToActiveCard(null);
+      resetDataDragAndDrop();
       return
     }
   
@@ -357,27 +361,18 @@ export const Tablero = () => {
       console.log('activeId y overId son iguales');
       console.log('activeId', activeId);
       console.log('overId', overId);
-      setActiveCard(null);
-      origenGroupRef.current = null;
-      setActiveList(null);
-      setListToActiveCard(null);
+      resetDataDragAndDrop();
       console.log('se dio null a todos los estados del drag');
       return;
     }
   
     if (typeActive === 'card' && typeOver === 'card' || typeActive === 'card' && typeOver === 'list') {
       console.log('si entra a condicional');
-
-      // const idList = cardsGroup.find((cardGroup) => cardGroup.cards.some((card) => card.idCard === activeId))?.idList; //este idList de la lista en donde se dejó caer la card, no se usa la de origen group porque ese es el origen
-      // if (!idList) return;
   
       const cards = cardsGroup.find((group) => group.idBoard === idBoard && group.idList === idListDestiny)?.cards; //aqui usabas idList
       if (!cards) {
         console.log('no se encontró cards');
-        setActiveCard(null);
-        origenGroupRef.current = null;
-        setActiveList(null);
-        setListToActiveCard(null);
+        resetDataDragAndDrop();
         return;
       }
       
@@ -388,19 +383,13 @@ export const Tablero = () => {
   
       if (oldIndex === -1 || newIndex === -1) {
         console.log('index no encontrados')
-        setActiveCard(null);
-        origenGroupRef.current = null;
-        setActiveList(null);
-        setListToActiveCard(null);
+        resetDataDragAndDrop();
         return;
       }
 
       if (oldIndex === newIndex && origenGroupRef.current?.idList === idListDestiny) { //aqui usabas idList
         console.log('index iguales');
-        setActiveCard(null);
-        origenGroupRef.current = null;
-        setActiveList(null);
-        setListToActiveCard(null);
+        resetDataDragAndDrop();
         return;
       }
       
@@ -431,19 +420,13 @@ export const Tablero = () => {
 
       if (!idListDestiny) {
         console.log('no se halló overGroup');
-        setActiveCard(null);
-        origenGroupRef.current = null;
-        setActiveList(null);
-        setListToActiveCard(null);
+        resetDataDragAndDrop();
         return
       }
 
       if (!origenGroupRef.current) {
         console.log('no se halló origenCardGroup')
-        setActiveCard(null);
-        origenGroupRef.current = null;
-        setActiveList(null);
-        setListToActiveCard(null);
+        resetDataDragAndDrop();
         return
       }
 
@@ -479,9 +462,7 @@ export const Tablero = () => {
         }
       }
 
-      origenGroupRef.current = null;
-      setActiveCard(null);
-      setListToActiveCard(null);
+      resetDataDragAndDrop();
 
       return;
 
@@ -490,10 +471,6 @@ export const Tablero = () => {
       console.log('activeId y overId', activeId, overId);
       console.log('types', typeActive, typeOver)
     }
-
-    // origenGroupRef.current = null;
-    // setActiveCard(null);
-    // setListToActiveCard(null);
     
     //Para el arrastre de listas
     if (typeActive === 'list' && typeOver === 'list') {
@@ -507,10 +484,7 @@ export const Tablero = () => {
       const newIndex = currentLists.findIndex(list => list.idList === over?.id);
 
       if (oldIndex === -1 || newIndex === -1 || oldIndex === newIndex) {
-        setActiveCard(null);
-        origenGroupRef.current = null;
-        setActiveList(null);
-        setListToActiveCard(null);
+        resetDataDragAndDrop();
         console.log('Se canceló el drag (no hay cambios en la posición)');
         return;
       }
@@ -564,8 +538,7 @@ export const Tablero = () => {
         updateFn: (listsGroup) => listsGroup.map((listGroup) => listGroup.idBoard === idBoard ? { ...listGroup, lists: lists } : listGroup)
       });
     }
-    setListToActiveCard(null);
-    setActiveList(null);
+    resetDataDragAndDrop();
     console.log('finalizó dragEnd');
   };
 
@@ -578,46 +551,7 @@ export const Tablero = () => {
   }
 
   if (isBoardNotFound) {
-    return (
-      <div className='msg_is_board_not_found inter'>
-        <div>
-        <h1>Tablero no encontrado</h1>
-
-        {userAuth 
-          ? <p className='text_rout_not_found'>Ruta al que intentas acceder estando logeado: <span>{location.pathname}</span></p>
-          : <p className='text_rout_not_found'>Ruta al que intentas acceder desde el modo demo: <span>{location.pathname}</span></p>
-        }
-
-        <ol>
-          <li>
-            Es posible que estés accediendo un tablero mediante una una ruta guardada en el navegador 
-            que corresponde a un modo anterior (como la Demo o una Cuenta).
-          </li>
-          <li>
-            El tablero no existe.
-          </li>
-          <li>
-            Es algún error de servidor. De ser asi, intenta refrescar la pagina o acceder al tablero desde la sección de tableros.
-          </li>
-        </ol>
-
-        <p>
-          Por lo general la ruta de los tableros se base en su mismos nombres, verifica si la ruta coincide con el nombre de uno de tus tableros.
-          <br />
-          <br />
-          Si el problema persiste, avisame por correo: leyderlevel1@gmail.com
-        </p>
-        {/* <p>
-          Es posible que estés accediendo un tablero mediante una una ruta guardada en el navegador 
-          que corresponde a un modo anterior (como la Demo o una Cuenta).
-        </p> */}
-        {/* <span>Ó</span> */}
-        {/* <p>Simplemente el tablero no existe.</p>
-        <br />
-        <p>Si </p> */}
-      </div>
-      </div>
-    );
+    return <MsgRoutNotFound routToElement='board' />
   };
   
   return (

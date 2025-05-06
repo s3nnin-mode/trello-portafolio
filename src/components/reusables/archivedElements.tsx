@@ -10,11 +10,62 @@ import { useCardsServices } from '../../services/cardsServices';
 import { archivedList, deleteListFirebase } from '../../services/firebase/updateData/updateLists';
 import { useListsServices } from '../../services/listsServices';
 
+export const useArchivedElements = () => {
+  const { userAuth } = useAuthContext();
+  const { cardsServices } = useCardsServices();
+  const { cardsGroup } = useCardsStore();
+
+  const handleArchivedCard = ({idBoard, idList, idCard, card}: {idBoard: string, idList: string, idCard: string, card: CardProps}) => {
+
+    if (userAuth) {
+      archivedCard({idBoard, idList, idCard, archived: !card.archived});
+    }
+
+    cardsServices({
+      updateFn: (cardsGroup) => cardsGroup.map(cardGroup => 
+        cardGroup.idBoard === idBoard && cardGroup.idList == idList
+        ? 
+        {...cardGroup, cards: cardGroup.cards.map(c => c.idCard === card.idCard
+          ?
+          {...c, archived: !c.archived}
+          :
+          c
+        )}
+        :
+        cardGroup
+      )
+    });
+
+  }
+
+  const handleRemoveCard = ({idBoard, card}:{idBoard: string, card: CardProps}) => {
+    const idList = cardsGroup.find(cardGroup => cardGroup.cards.some(c => c.idCard === card.idCard))?.idList;
+    if (!idList) return;
+
+    if (userAuth) {
+      deleteCard({idBoard, idList, idCard: card.idCard});
+    }
+
+    cardsServices({
+      updateFn: (cardsGroup) => cardsGroup.map(cardGroup => 
+        cardGroup.idBoard === idBoard && cardGroup.idList == idList
+        ? 
+        {...cardGroup, cards: cardGroup.cards.filter(c => c.idCard !== card.idCard)}
+        :
+        cardGroup
+      )
+    });
+  }
+
+  return { handleArchivedCard, handleRemoveCard }
+}
+
 export const ArchivedElements = ({idBoard, close}: {idBoard: string, close: () => void}) => {
+  const { handleArchivedCard, handleRemoveCard } = useArchivedElements();
+
   const { cardsGroup } = useCardsStore();
   const { listsGroup } = useListsStore();
 
-  const { cardsServices } = useCardsServices();
   const { listsService } = useListsServices();
 
   const { userAuth } = useAuthContext();
@@ -38,49 +89,6 @@ export const ArchivedElements = ({idBoard, close}: {idBoard: string, close: () =
     });
     
   }, [cardsGroup, listsGroup]);
-
-  const handleArchivedCard = (card: CardProps) => {
-    const idList = cardsGroup.find(cardGroup => cardGroup.cards.some(c => c.idCard === card.idCard))?.idList;
-    if (!idList) return;
-
-    if (userAuth) {
-      archivedCard({idBoard, idList, idCard: card.idCard, archived: !card.idCard});
-    }
-
-    cardsServices({
-      updateFn: (cardsGroup) => cardsGroup.map(cardGroup => 
-        cardGroup.idBoard === idBoard && cardGroup.idList == idList
-        ? 
-        {...cardGroup, cards: cardGroup.cards.map(c => c.idCard === card.idCard
-          ?
-          {...c, archived: !c.archived}
-          :
-          c
-        )}
-        :
-        cardGroup
-      )
-    });
-  }
-
-  const handleRemoveCard = (card: CardProps) => {
-    const idList = cardsGroup.find(cardGroup => cardGroup.cards.some(c => c.idCard === card.idCard))?.idList;
-    if (!idList) return;
-
-    if (userAuth) {
-      deleteCard({idBoard, idList, idCard: card.idCard});
-    }
-
-    cardsServices({
-      updateFn: (cardsGroup) => cardsGroup.map(cardGroup => 
-        cardGroup.idBoard === idBoard && cardGroup.idList == idList
-        ? 
-        {...cardGroup, cards: cardGroup.cards.filter(c => c.idCard !== card.idCard)}
-        :
-        cardGroup
-      )
-    });
-  }
 
   const handleArchivedList = (list: ListProps) => {
     if (userAuth) {
@@ -116,6 +124,10 @@ export const ArchivedElements = ({idBoard, close}: {idBoard: string, close: () =
       listGroup
       )
     });
+  }
+
+  const findIdList = (card: CardProps) => {
+    return cardsGroup.find(cardGroup => cardGroup.cards.some(c => c.idCard === card.idCard))?.idList;
   }
 
   return (
@@ -154,26 +166,32 @@ export const ArchivedElements = ({idBoard, close}: {idBoard: string, close: () =
       <ul>
         {showArchivedCards
           ? cards.length > 0
-            ? cards?.map(card => (
-            <li key={card.idCard}>
-              <article>
-                <div className='visualizador_container'>
-                  {/* <input type='checkbox' /> */}
-                  <span style={{background: card.coverColorCard || 'grey'}} className='circle' />
-                  <span style={{background: card.coverColorCard || 'grey'}} className='circle' />
-                </div>
-                <h1 className='inter'>{card.nameCard}</h1>
-                <div>
-                  <button onClick={() => handleArchivedCard(card)}>
-                    Desarchivar
-                  </button>
-                  <button onClick={() => handleRemoveCard(card)}>
-                    Eliminar
-                  </button>
-                </div>
-              </article>
-            </li>
-          )) : <li className='text_no_archived_cards roboto_light'>No hay tarjetas archivadas.</li>
+            ? cards.map(card => {
+              const idList = findIdList(card);
+              if (!idList) {
+                return <li>No se pudo generar la tarjeta archivada {card.nameCard}</li>
+              }
+              return (
+                <li key={card.idCard}>
+                  <article>
+                    <div className='visualizador_container'>
+                      {/* <input type='checkbox' /> */}
+                      <span style={{background: card.coverColorCard || 'grey'}} className='circle' />
+                      <span style={{background: card.coverColorCard || 'grey'}} className='circle' />
+                    </div>
+                    <h1 className='inter'>{card.nameCard}</h1>
+                    <div>
+                      <button onClick={() => handleArchivedCard({idBoard, idList, idCard: card.idCard, card})}>
+                        Desarchivar
+                      </button>
+                      <button onClick={() => handleRemoveCard({idBoard, card})}>
+                        Eliminar
+                      </button>
+                    </div>
+                  </article>
+                </li>
+              )
+          }) : <li className='text_no_archived_cards roboto_light'>No hay tarjetas archivadas.</li>
           : lists.length > 0 
           ? lists.map(list => (
             <li key={list.idList}>
