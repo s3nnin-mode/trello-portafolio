@@ -1,12 +1,12 @@
 import '../../styles/components/reusables/modalToRemoveItem.scss';
 import { CardProps, ListProps } from "../../types/boardProps";
+import { Backdrop, Box, Modal } from '@mui/material';
+import { IoMdClose } from 'react-icons/io';
 import { useListsServices } from '../../services/listsServices';
-import { useCardsServices } from "../../services/cardsServices";
 import { useAuthContext } from '../../customHooks/useAuthContext';
 import { deleteListFirebase } from '../../services/firebase/updateData/updateLists';
 import { deleteCard } from '../../services/firebase/updateData/updateCards';
-import { Backdrop, Box, Modal } from '@mui/material';
-import { IoMdClose } from 'react-icons/io';
+import { useCardsServices } from '../../services/cardsServices';
 
 interface ModalRemoveListProps {
   show: boolean
@@ -17,50 +17,57 @@ interface ModalRemoveListProps {
   itemToRemove: 'card' | 'list'
 }
 
-//AGREGAR ANIMACION DE ELIMINACION SUAVES
-
 export const ModalToRemoveItem: React.FC<ModalRemoveListProps> = ({show, onHide, card, list, idBoard, itemToRemove}) => {
   const { listsService } = useListsServices();
   const { cardsServices } = useCardsServices();
   const { userAuth } = useAuthContext();
 
   const handleRemoveList = () => {
-    const idList = list.idList;
+
     if (userAuth) {
-      deleteListFirebase({idBoard, idList});
+      deleteListFirebase({idBoard, idList: list.idList});
     }
+
     listsService({
       updateFn: (state) => state.map((listGroup) => 
       listGroup.idBoard === idBoard ?
-      {...listGroup, lists: listGroup.lists.filter(list => list.idList !== idList)} :
+      {...listGroup, lists: listGroup.lists.filter(l => l.idList !== list.idList)} :
       listGroup
       )
     });
+
     onHide();
   }
 
-  const handleRemoveCard = () => {
-    const idCardToRemove = card?.idCard;
-    if (userAuth && card) {
-      deleteCard({
-        idBoard,
-        idList: list.idList,
-        idCard: card?.idCard
-      });
+  const handleRemoveCard = ({idBoard, card}:{idBoard: string, card: CardProps}) => {
+    // const idList = cardsGroup.find(cardGroup => cardGroup.cards.some(c => c.idCard === card.idCard))?.idList;
+    // if (!idList) return;
+
+    if (userAuth) {
+      deleteCard({idBoard, idList: list.idList, idCard: card.idCard});
     }
 
     cardsServices({
-      updateFn: (cardsGroup) => cardsGroup.map((cardGroup) =>
-      (cardGroup.idBoard === idBoard && cardGroup.idList === list.idList) ? 
-      {...cardGroup, cards: cardGroup.cards.filter((card) => card.idCard !== idCardToRemove)} :
-      cardGroup
+      updateFn: (cardsGroup) => cardsGroup.map(cardGroup => 
+        cardGroup.idBoard === idBoard && cardGroup.idList == list.idList
+        ? 
+        {...cardGroup, cards: cardGroup.cards.filter(c => c.idCard !== card.idCard)}
+        :
+        cardGroup
       )
     });
+
+    onHide();
   }
+
+  const handleRemoveItemCard = () => {
+    if (!card) return;
+    handleRemoveCard({idBoard, card});
+  };
 
   const actions = {
     list: handleRemoveList,
-    card: handleRemoveCard
+    card: handleRemoveItemCard
   }
 
   return (
@@ -96,4 +103,5 @@ export const ModalToRemoveItem: React.FC<ModalRemoveListProps> = ({show, onHide,
       </Box>
     </Modal>
   )
+
 };

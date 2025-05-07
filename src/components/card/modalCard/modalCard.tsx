@@ -23,6 +23,7 @@ import { useTagsStore } from '../../../store/tagsStore';
 import { getCardsFirebase, getListsFirebase, getTagsFirebase } from '../../../services/firebase/firebaseFunctions';
 import { useArchivedElements } from '../../reusables/archivedElements';
 import { MsgRoutNotFound } from '../../reusables/msgRoutNotFound';
+import { ModalToRemoveItem } from '../../reusables/modalToRemoveItem';
 
 export const getBoard = async (idBoard: string) => {
   try {
@@ -52,8 +53,9 @@ export const CardModal = () => {
   const { loadLists } = useListsStore();
   const { loadTags } = useTagsStore();
   const [isCardNotFound, setIsCardNotFound] = React.useState(false);
+  const [showModalToRemoveCard, setShowModalToRemoveCard] = React.useState(false);
 
-  const { handleArchivedCard, handleRemoveCard } = useArchivedElements();
+  const { handleArchivedCard } = useArchivedElements();
 
   const [open, setOpen] = React.useState(true);
   const navigate = useNavigate();
@@ -61,47 +63,6 @@ export const CardModal = () => {
   const [list, setList] = React.useState<ListProps>();
   const [board, setBoard] = React.useState<BoardProps | undefined>();
   const [card, setCard] = React.useState<CardProps>();
-
-
-  // React.useEffect(() => {
-    
-  //   if (userAuth) {
-  //     // const fetchAll = async () => {
-  //     //   if (!currentIdBoard || !idList || !idCard) return;
-    
-  //     //   const [board, list, card] = await Promise.all([
-  //     //     getBoard(currentIdBoard),
-  //     //     getList({ idBoard: currentIdBoard, idList }),
-  //     //     getCard({ idBoard: currentIdBoard, idList, idCard })
-  //     //   ]);
-    
-  //     //   if (board) setBoard(board);
-  //     //   if (list) setList(list);
-  //     //   if (card) setCard(card);
-        
-  //     // };
-    
-  //     fetchAll();
-
-  //     return;
-  //   }
-
-  //   const boardsLS = localStorage.getItem('boards-storage');
-  //   const listsLS = localStorage.getItem('lists-storage');
-  //   const cardsLS = localStorage.getItem('cards-storage');
-  //   const tagsLS = localStorage.getItem('tags-storage');
-
-  //   if (boardsLS && listsLS && cardsLS && tagsLS) {
-  //     loadBoards(JSON.parse(boardsLS));
-  //     loadLists(JSON.parse(listsLS));
-  //     loadCards(JSON.parse(cardsLS));
-  //     loadTags(JSON.parse(tagsLS));
-  //     return
-  //   }
-
-  //   navigate('/');
-    
-  // }, []);
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -229,67 +190,86 @@ export const CardModal = () => {
     borderRadius: '12px',
     borderLeft: `6px solid ${card?.coverColorCard}`,
   };
+  
+  const archivedCardItem = () => {
+    if (!board || !list || !card) return;
+
+    handleArchivedCard({idBoard: board.idBoard, idList: list.idList, idCard: card.idCard, card});
+    setCard({...card, archived: !card.archived});
+  }
 
 	return (
-    <Modal
-      sx={{
-        minHeight: '100vh',
-        overflowY: 'auto', 
-      }}
-      aria-labelledby="transition-modal-title"
-      aria-describedby="transition-modal-description"
-      open={open}
-      onClose={closeModal}
-      closeAfterTransition
-      slots={{ backdrop: Backdrop }}
-      slotProps={{
-        backdrop: {
-          timeout: 350,
-        },
-      }}
-    >
-    <Fade in={open}>
-      <Box
-        onPointerDown={(e) => e.stopPropagation()} //Para que no se pueda arrastrar items con el modal abierto
-        sx={{...style}}
-        className='card_modal'
+    <>
+      <Modal
+        sx={{
+          minHeight: '100vh',
+          overflowY: 'auto', 
+        }}
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        open={open}
+        onClose={closeModal}
+        closeAfterTransition
+        slots={{ backdrop: Backdrop }}
+        slotProps={{
+          backdrop: {
+            timeout: 350,
+          },
+        }}
       >
-        {
-          card && list && board ? (
-            <>
-              <CardModalCover card={card} idBoard={board.idBoard} idList={list.idList} closeModal={closeModal} />
+      <Fade in={open}>
+        <Box
+          onPointerDown={(e) => e.stopPropagation()} //Para que no se pueda arrastrar items con el modal abierto
+          sx={{...style}}
+          className='card_modal'
+        >
+          {
+            card && list && board ? (
+              <>
+                <CardModalCover card={card} idBoard={board.idBoard} idList={list.idList} closeModal={closeModal} />
 
-              <div className='modal_content_container'> 
-                <div className='modal_card_actions'>
-                  <button 
-                    className='btn_archive_card' 
-                    onClick={() => handleArchivedCard({idBoard: board.idBoard, idList: list.idList, idCard: card.idCard, card})}
-                  >
-                    {card.archived ? 'Desarchivar' : 'Archivar'}
-                  </button>
-                  {card.archived && <button className='btn_remove_card' onClick={() => handleRemoveCard({idBoard: board.idBoard, card})}>Eliminar tarjeta</button>}
+                <div className='modal_content_container'> 
+                  <div className='modal_card_actions'>
+                    <button 
+                      className='btn_archive_card' 
+                      onClick={archivedCardItem}
+                    >
+                      {card.archived ? 'Desarchivar' : 'Archivar'}
+                    </button>
+                    {card.archived && <button className='btn_remove_card' onClick={() => setShowModalToRemoveCard(true)}>Eliminar tarjeta</button>}
+                  </div>
+                  <TitleModalCard board={board} list={list} card={card} /> 
+                  <div className='modal_content'>
+                    <ActiveTags board={board} list={list} card={card} /> 
+                    <CardDescription card={card} idList={list.idList} idBoard={board.idBoard} /> 
+                  </div>
+                  <div className='sidebar_tags' />
                 </div>
-                <TitleModalCard board={board} list={list} card={card} /> 
-                <div className='modal_content'>
-                  <ActiveTags board={board} list={list} card={card} /> 
-                  <CardDescription card={card} idList={list.idList} idBoard={board.idBoard} /> 
-                </div>
-                <div className='sidebar_tags' />
-              </div>
-            </>
-          )
-          : isCardNotFound 
-          ? <MsgRoutNotFound routToElement='card' />
-          : <div className='loader_test'></div>
-        }
-
-        {/* {isCardNotFound 
+              </>
+            )
+            : isCardNotFound 
             ? <MsgRoutNotFound routToElement='card' />
-            : <div className='loader_test'></div>} */}
-      
-      </Box>
-    </Fade>
-  </Modal>
+            : <div className='loader_test'></div>
+          }
+        
+        </Box>
+      </Fade>
+      </Modal>
+
+      {
+        showModalToRemoveCard && list && currentIdBoard && (
+          <ModalToRemoveItem 
+            idBoard={currentIdBoard}
+            list={list}
+            card={card}
+            onHide={() => { closeModal(); setShowModalToRemoveCard(false); }}
+            show={showModalToRemoveCard}
+            itemToRemove='card'
+          />
+        )
+      }
+
+    </>
 	)
 }
 

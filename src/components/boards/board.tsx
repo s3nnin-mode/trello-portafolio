@@ -30,7 +30,6 @@ import { Sidebar } from './sidebar';
 import { FaHome } from "react-icons/fa";
 import { ArchivedElements } from '../reusables/archivedElements';
 import { MsgRoutNotFound } from '../reusables/msgRoutNotFound';
-// import { snapCenterToCursor,  } from '@dnd-kit/modifiers';
 
 export const isTouchDevice = () => {
   if (typeof window !== "undefined") {

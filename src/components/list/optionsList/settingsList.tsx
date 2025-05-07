@@ -26,8 +26,7 @@ import { useCardsStore } from "../../../store/cardsStore";
 import { useAuthContext } from "../../../customHooks/useAuthContext";
 import { addCardAtTopFirebase } from "../../../services/firebase/updateData/updateCards";
 import { IconButton } from "@mui/material";
-import { archivedList } from "../../../services/firebase/updateData/updateLists";
-import { useListsServices } from "../../../services/listsServices";
+import { useArchivedElements } from "../../reusables/archivedElements";
 
 interface SettingsListProps {
   idBoard: string
@@ -45,8 +44,9 @@ export const SettingsList: React.FC<SettingsListProps> = ({ idBoard, list }) => 
   const { showFormMoveList, openFormMoveList, closeFormMoveList, closeAllMoveList, callbackHandleMoveList } = useFormMoveList({setIsModalOptionsActive});
   const [ showModalToRemoveList, setShowModalToRemoveList ] = useState(false);
   const { cardsServices } = useCardsServices();
-  const { listsService } = useListsServices();
   const { userAuth } = useAuthContext();
+
+  const { handleArchivedList } = useArchivedElements();
 
   const addNewCardAtTop = (nameCard: string) => {
     const cardToAdd: CardProps = {
@@ -83,28 +83,6 @@ export const SettingsList: React.FC<SettingsListProps> = ({ idBoard, list }) => 
     } //aqui en vez de reordenar las cards en firebase puedes obtener order de la card que estaba primero y dividirlo en 2 y asignarselo a la nueva card
   }
 
-  const handleArchivedList = () => {
-    if (userAuth) {
-      archivedList({idBoard, idList: list.idList, archived: !list.archived})
-    }
-
-    listsService({
-      updateFn: (listsGroup) => listsGroup.map(listGroup =>
-        listGroup.idBoard === idBoard
-        ? 
-        {...listGroup, lists: listGroup.lists.map(l => 
-          l.idList === list.idList
-          ?
-          {...l, archived: !list.archived}
-          : l
-        )}
-        :
-        listGroup
-      )
-    });
-    // setIsModalOptionsActive(false);
-  }
-
   return (
     <div className='options' onPointerDown={(e) => e.stopPropagation()}>       
       <IconButton onClick={() => setIsModalOptionsActive(true)} className='btn_active_options'>
@@ -133,7 +111,7 @@ export const SettingsList: React.FC<SettingsListProps> = ({ idBoard, list }) => 
 
         <ColorsToList idBoard={idBoard} list={list} />                              {/*CHANGE COLOR LIST*/}
 
-        <button className='btn_setting_list inter_light' onClick={handleArchivedList}>             {/* REMOVE LIST */}
+        <button className='btn_setting_list inter_light' onClick={() => handleArchivedList({idBoard, idList: list.idList, archived: !list.archived})}>             {/* REMOVE LIST */}
           Archivar lista
         </button> 
 
@@ -177,6 +155,7 @@ export const SettingsList: React.FC<SettingsListProps> = ({ idBoard, list }) => 
         list={list} 
         itemToRemove='list'
       />
+      
     </div>
   )
 }
