@@ -19,18 +19,16 @@ export const useArchivedElements = () => {
   const handleArchivedCard = ({idBoard, idList, idCard, card}: {idBoard: string, idList: string, idCard: string, card: CardProps}) => {
 
     if (userAuth) {
+      console.log('se archivará la card', card);
       archivedCard({idBoard, idList, idCard, archived: !card.archived});
     }
 
     cardsServices({
       updateFn: (cardsGroup) => cardsGroup.map(cardGroup => 
-        cardGroup.idBoard === idBoard && cardGroup.idList == idList
-        ? 
-        {...cardGroup, cards: cardGroup.cards.map(c => c.idCard === card.idCard
-          ?
-          {...c, archived: !c.archived}
-          :
-          c
+        cardGroup.idBoard === idBoard && cardGroup.idList === idList
+        ? {...cardGroup, cards: cardGroup.cards.map(c => c.idCard === idCard
+          ? {...c, archived: !c.archived}
+          : c
         )}
         :
         cardGroup
@@ -91,19 +89,25 @@ export const ArchivedElements = ({idBoard, close}: {idBoard: string, close: () =
   const [showModalToRemoveCard, setShowModalToRemoveCard] = useState<StateToRemoveCard>();
 
   useEffect(() => {
+    const archivedCards: CardProps[] = [];
     cardsGroup.forEach(cardGroup => {
       if (cardGroup.idBoard === idBoard) {
-        setCards(cardGroup.cards.filter(card => card.archived === true));
+        const newArchiveCards = cardGroup.cards.filter(card => card.archived === true);
+        archivedCards.push(...newArchiveCards);
       }
     });
+    setCards(archivedCards)
+  }, [cardsGroup]);
 
+  useEffect(() => {
+    const archivedLists: ListProps[] = [];
     listsGroup.forEach(listGroup => {
       if (listGroup.idBoard === idBoard) {
-        setLists(listGroup.lists.filter(list => list.archived === true));
+        archivedLists.push(...listGroup.lists.filter(list => list.archived === true));
       }
     });
-    
-  }, [cardsGroup, listsGroup]);
+    setLists(archivedLists);
+  }, [listsGroup]);
 
   const findIdList = (card: CardProps) => {
     return cardsGroup.find(cardGroup => cardGroup.cards.some(c => c.idCard === card.idCard))?.idList;

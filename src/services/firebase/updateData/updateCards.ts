@@ -198,7 +198,7 @@ export const archivedCard = async ({idBoard, idList, idCard, archived}: {idBoard
   const cardRef = doc(db, `users/${userId}/boards/${idBoard}/lists/${idList}/cards/${idCard}`);
 
   await updateDoc(cardRef, { archived });
-  console.log('se archivó correctamente la card');
+  console.log('se archivó correctamente la card: ', idCard);
 }
 
 export const getArchivedCards = async ({idBoard}:{idBoard: string}) => {
