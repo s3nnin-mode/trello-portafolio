@@ -72,17 +72,17 @@ export const CardDescription: React.FC<CardDescriptionProps> = ({card, idList, i
       </h2>
       {
         !showTextarea && (
-          card.description !== null ?
+          inputValue !== null ?
           <div className='container_description_text'>
             
             <p className='description_text'>
-              {card.description.length > 40 ?
+              {inputValue.length > 40 ?
               <>
-                {!showAllDescription ? card.description.slice(0, 39) : card.description}
+                {!showAllDescription ? inputValue.slice(0, 39) : inputValue}
                 {!showAllDescription && <span style={{color: card?.coverColorCard || '#ccc'}} className='span_expand_text' onClick={() => setShowAllDescription(true)}> ...ver mas</span>}
               </>
               :
-                `${card.description}.`
+                `${inputValue}.`
               }
             </p>
             <footer>

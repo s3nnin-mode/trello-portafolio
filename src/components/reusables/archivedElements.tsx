@@ -192,7 +192,7 @@ export const ArchivedElements = ({idBoard, close}: {idBoard: string, close: () =
             ? lists.map(list => (
               <li key={list.idList}>
                 <article style={{background: list.colorList}}>
-                  <h1>{list.nameList}</h1>
+                  <h1 className='inter'>{list.nameList}</h1>
                   <div>
                     <button onClick={() => handleArchivedList({idBoard, idList: list.idList, archived: !list.archived})}>
                       Desarchivar
