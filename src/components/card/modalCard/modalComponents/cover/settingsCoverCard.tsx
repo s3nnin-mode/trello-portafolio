@@ -35,9 +35,10 @@ interface SettingsCoverProps {
   card: CardProps
   closeComponent: () => void
   openSettingsCover: boolean
+  updatedLocalCard: (cardUpdated: CardProps) => void
 }
 
-export const SettingsCover: React.FC<SettingsCoverProps> = ({ card, idList, idBoard, closeComponent, openSettingsCover}) => {
+export const SettingsCover: React.FC<SettingsCoverProps> = ({ card, idList, idBoard, closeComponent, openSettingsCover, updatedLocalCard}) => {
   const { cardsServices } = useCardsServices();
   const { userAuth } = useAuthContext();
   const [file, setFile] = useState<File | null>(null); //este file es para firebase sino mal recuerdo
@@ -74,19 +75,18 @@ export const SettingsCover: React.FC<SettingsCoverProps> = ({ card, idList, idBo
         updateFn: (cardsGroup) => cardsGroup.map((cardGroup) => 
           (cardGroup.idBoard === idBoard && cardGroup.idList === idList) ?
             { ...cardGroup,
-              cards: cardGroup.cards.map((card) => 
-                card.idCard === idCard ?
-                { ...card, coverColorCard: colorSelect} :
-                card
+              cards: cardGroup.cards.map((card) => card.idCard === idCard 
+              ? { ...card, coverColorCard: colorSelect} 
+              : card
               )
             } :
             cardGroup
         )
       });
 
-      if (userAuth) {
-        updateColorCoverCard({idBoard, idList, idCard, color: colorSelect ? colorSelect : null})
-      }
+      if (userAuth) updateColorCoverCard({idBoard, idList, idCard, color: colorSelect ? colorSelect : null})
+      
+      updatedLocalCard({...card, coverColorCard: colorSelect});
     }
 
 

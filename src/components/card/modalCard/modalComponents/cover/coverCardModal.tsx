@@ -24,7 +24,7 @@ export const CardModalCover: React.FC<CardModalCoverProps> = ({card, idList, idB
   const [isEditCover, setIsEditCover] = useState(false);
   const { cardsServices } = useCardsServices();
   const { userAuth } = useAuthContext();
-  const [currentCard, setCurrentCard] = useState<CardProps>();
+  const [currentCard, setCurrentCard] = useState<CardProps | null>(null);
 
   useEffect(() => {
     setCurrentCard(card);
@@ -47,21 +47,12 @@ export const CardModalCover: React.FC<CardModalCoverProps> = ({card, idList, idB
     cardsServices({
       updateFn: (cardsGroup) => cardsGroup.map((cardGroup) =>
         cardGroup.idBoard === idBoard && cardGroup.idList === idList
-        ?
-        {
-          ...cardGroup,
-          cards: cardGroup.cards.map((card) =>
-            card.idCard === idCard 
-            ?
-            { ...card,
-              complete: !card.complete
-            }
-            :
-            card
+        ? {...cardGroup, cards: cardGroup.cards.map((card) => card.idCard === idCard 
+            ? { ...card, complete: !card.complete }
+            : card
           )
         }
-        :
-        cardGroup
+        : cardGroup
       )
     })
   }
@@ -71,33 +62,23 @@ export const CardModalCover: React.FC<CardModalCoverProps> = ({card, idList, idB
       <header className='header_modal_card' >
         <div className='container_color_card' onClick={() => setIsEditCover(true)}>
           {
-            currentCard && currentCard.complete ? 
-            <CheckAnimation 
+            currentCard && currentCard.complete 
+            ? <CheckAnimation 
               isPlaying={true} 
               handleClick={(e) => {e.stopPropagation(); cardComplete()}} 
               className='card_complete' 
             />
-            :
-            <input 
+            : <input 
               type="checkbox"
               onClick={(e) => e.stopPropagation()}
               onChange={cardComplete}
-              // className={card.complete ? 'card_complete' : 'checked_card_animation'} 
               className='checkbox_header_modal'
-              // handleClick={cardComplete} 
-              // isPlaying={card.complete ? card.complete : isPlaying}
             /> 
           }
-          <div style={{backgroundColor: card.coverColorCard ? card.coverColorCard : 'grey'}} />
-          <div style={{backgroundColor: card.coverColorCard ? card.coverColorCard : 'grey'}} />
+          <div style={{backgroundColor: currentCard?.coverColorCard ? currentCard?.coverColorCard : 'grey'}} />
+          <div style={{backgroundColor: currentCard?.coverColorCard ? currentCard?.coverColorCard : 'grey'}} />
           <IoMdSettings className='icon_open_settings_cover' />
         </div>
-
-        {/* {
-          card.complete && (
-          <p className='text_card_complete roboto'>Tarjeta completada</p>
-        )
-        } */}
         
         {
           currentCard && currentCard.coverImgCard !== null ? <img className='img_cover_modal' src={currentCard.coverImgCard} alt='cover card' /> : <div></div>
@@ -106,13 +87,22 @@ export const CardModalCover: React.FC<CardModalCoverProps> = ({card, idList, idB
         <button className='btn_close_modal_card' onClick={closeModal} >
           <IoMdClose />
         </button>
-
        
       </header>
 
       {
-        isEditCover && <SettingsCover openSettingsCover={isEditCover} idBoard={idBoard} idList={idList} card={card} closeComponent={() => setIsEditCover(false)} />
+        isEditCover && (
+          <SettingsCover 
+            openSettingsCover={isEditCover} 
+            idBoard={idBoard} 
+            idList={idList} 
+            card={card}
+            updatedLocalCard={(cardUpdated: CardProps) => setCurrentCard(cardUpdated)}
+            closeComponent={() => setIsEditCover(false)} 
+          />
+        )
       }
+
     </>
   )
 }
