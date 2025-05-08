@@ -89,7 +89,6 @@ export const SettingsCover: React.FC<SettingsCoverProps> = ({ card, idList, idBo
       updatedLocalCard({...card, coverColorCard: colorSelect});
     }
 
-
     if (coverImgPreview !== card.coverImgCard && userAuth) { //aqui falta verificar si coverImgPreview concuerda con los datos de una imagen
       setLoader(true);
       const isNewImg = !card.coverCardImgs.some(img => img === coverImgPreview);
@@ -101,23 +100,31 @@ export const SettingsCover: React.FC<SettingsCoverProps> = ({ card, idList, idBo
 
         cardsServices({
           updateFn: (cardsGroup) => cardsGroup.map((cardGroup) => 
-            (cardGroup.idBoard === idBoard && cardGroup.idList === idList) ?
-              { ...cardGroup,
-                cards: cardGroup.cards.map((card) => 
-                  card.idCard === idCard ?
-                  { ...card, 
+            (cardGroup.idBoard === idBoard && cardGroup.idList === idList) 
+            ? { ...cardGroup, cards: cardGroup.cards.map((card) => card.idCard === idCard 
+                ? { ...card, 
                     coverImgCard: imgCover?.coverImgCard || null,
                     coverCardImgs: imgCover?.coverCardImgs
-                  } :
-                  card
+                  } 
+                : card
                 )
-              } :
-              cardGroup
+              } 
+            : cardGroup
           )
         });
+
+        updatedLocalCard({
+          ...card, 
+          coverImgCard: imgCover?.coverImgCard || null,
+          coverCardImgs: imgCover?.coverCardImgs
+        });
+
+
       } else {
         updatedCoverImg({idBoard, idList, idCard, img: coverImgPreview}); //si no es nueva imagen, solo se actualiza el estado de coverImgCard
         
+        updatedLocalCard({...card, coverImgCard: coverImgPreview});
+
         cardsServices({
           updateFn: (cardsGroup) => cardsGroup.map((cardGroup) => 
             (cardGroup.idBoard === idBoard && cardGroup.idList === idList) ?

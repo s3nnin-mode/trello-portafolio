@@ -11,6 +11,7 @@ import { CheckAnimation } from '../../../../animations/checked';
 import { useCardsServices } from '../../../../../services/cardsServices';
 import { useAuthContext } from '../../../../../customHooks/useAuthContext';
 import { updateCompleteCard } from '../../../../../services/firebase/updateData/updateCards';
+// import { useCardsStore } from '../../../../../store/cardsStore';
 
 
 interface CardModalCoverProps {
@@ -24,11 +25,12 @@ export const CardModalCover: React.FC<CardModalCoverProps> = ({card, idList, idB
   const [isEditCover, setIsEditCover] = useState(false);
   const { cardsServices } = useCardsServices();
   const { userAuth } = useAuthContext();
+  // const { cardsGroup } = useCardsStore();
   const [currentCard, setCurrentCard] = useState<CardProps | null>(null);
 
   useEffect(() => {
     setCurrentCard(card);
-  }, [card]);
+  }, []);
 
   const cardComplete = () => {
     const idCard = card.idCard;
@@ -69,7 +71,7 @@ export const CardModalCover: React.FC<CardModalCoverProps> = ({card, idList, idB
               className='card_complete' 
             />
             : <input 
-              type="checkbox"
+              type='checkbox'
               onClick={(e) => e.stopPropagation()}
               onChange={cardComplete}
               className='checkbox_header_modal'
@@ -81,7 +83,9 @@ export const CardModalCover: React.FC<CardModalCoverProps> = ({card, idList, idB
         </div>
         
         {
-          currentCard && currentCard.coverImgCard !== null ? <img className='img_cover_modal' src={currentCard.coverImgCard} alt='cover card' /> : <div></div>
+          currentCard && currentCard.coverImgCard !== null 
+          ? <img className='img_cover_modal' src={currentCard.coverImgCard} alt='cover card' /> 
+          : <div />
         }
 
         <button className='btn_close_modal_card' onClick={closeModal} >
@@ -91,12 +95,12 @@ export const CardModalCover: React.FC<CardModalCoverProps> = ({card, idList, idB
       </header>
 
       {
-        isEditCover && (
+        isEditCover && currentCard && (
           <SettingsCover 
             openSettingsCover={isEditCover} 
             idBoard={idBoard} 
             idList={idList} 
-            card={card}
+            card={currentCard}
             updatedLocalCard={(cardUpdated: CardProps) => setCurrentCard(cardUpdated)}
             closeComponent={() => setIsEditCover(false)} 
           />
