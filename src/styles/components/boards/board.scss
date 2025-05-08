@@ -4,9 +4,6 @@
 
   .header_board {
     padding: 15px 0;  
-    // height: 10vh; 
-    // background-color: orange;
-
     display: flex;
     gap: 10px;
     flex-direction: column;
@@ -19,10 +16,9 @@
       padding: 0 !important;
       padding: 0 10px !important;
 
-      button {
+      .btn_icon_home {
         border: none;
         background: transparent;
-        color: white;
         font-size: 1.7rem;
         display: flex;
         border-radius: 6px;
@@ -36,16 +32,18 @@
           transform: scale(1.07);
         }
       }
-  
-      h2 {
-        margin: 0 !important;
-        color: #ccc;
-        color: #EAEAEA;
-        overflow-wrap: break-word;
+
+      .board_name_container {
+        max-width: 100% !important;
+
+        .name_component {
+          color: #fff;
+          font-size: 1.5rem;
+        }
       }
     }
 
-    div:nth-child(2) {
+    .div_responsive {
       overflow-y: hidden;
       overflow-x: auto;
       display: none;

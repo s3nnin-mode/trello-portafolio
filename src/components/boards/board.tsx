@@ -30,6 +30,7 @@ import { Sidebar } from './sidebar';
 import { FaHome } from "react-icons/fa";
 import { ArchivedElements } from '../reusables/archivedElements';
 import { MsgRoutNotFound } from '../reusables/msgRoutNotFound';
+import { NameComponent } from '../reusables/nameComponent';
 
 export const isTouchDevice = () => {
   if (typeof window !== "undefined") {
@@ -560,12 +561,15 @@ export const Tablero = () => {
       {showArchivedElements && currentIdBoard && <ArchivedElements idBoard={currentIdBoard} close={() => setShowArchivedElements(false)} />}
       <header className='header_board'>
         <div>
-          <button>
+          <button className='btn_icon_home'>
             <FaHome onClick={() => navigate('/kanbaX')} className='icon_back_home' />
           </button>
-          <h2 className='inter_title'>{currentBoard?.nameBoard}</h2> 
+          {/* <h2 className='inter_title'>
+            {currentBoard?.nameBoard}
+          </h2>  */}
+          <NameComponent className='board_name_container' componentType='board' idBoard={idBoard} board={currentBoard} />
         </div>
-        <div>
+        <div className='div_responsive'>
           <button className='inter' onClick={() => setShowArchivedElements(true)}>
             Elementos archivados
           </button>

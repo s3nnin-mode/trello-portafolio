@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import '../../styles/components/reusables/nameComponent.scss';
-import { CardProps, ListProps } from "../../types/boardProps";
+import { BoardProps, CardProps, ListProps } from "../../types/boardProps";
 import { useListsServices } from "../../services/listsServices";
 import { useCardsServices } from "../../services/cardsServices";
 import { updateNameListFirebase } from "../../services/firebase/updateData/updateLists";
@@ -8,18 +8,23 @@ import { useAuthContext } from "../../customHooks/useAuthContext";
 import { updateNameCardFirebase } from "../../services/firebase/updateData/updateCards";
 // import { CiEdit } from "react-icons/ci";
 import { FiEdit3 } from "react-icons/fi";
+import { updatedBoardName } from "../../services/firebase/updateData/updateBoards";
+import { useBoardsServices } from "../../services/boardsServices";
 
 interface NameListPropsComponent {
   idBoard: string
-  list: ListProps
+  board?: BoardProps
+  list?: ListProps
   card?: CardProps
-  componentType: 'list' | 'card'
+  componentType: 'list' | 'card' | 'board'
   className?: string
 }
 
-export const NameComponent: React.FC<NameListPropsComponent> = ({idBoard, list, card, componentType, className}) => {
+export const NameComponent: React.FC<NameListPropsComponent> = ({idBoard, list, card, componentType, className, board}) => {
   const { listsService } = useListsServices();
   const { cardsServices } = useCardsServices();
+  const { boardsService } = useBoardsServices();
+
   const [isOpenInput, setIsOpenInput] = useState(false);
   const [nameComponent, setNameComponent] = useState('');
   const { userAuth } = useAuthContext();
@@ -28,12 +33,21 @@ export const NameComponent: React.FC<NameListPropsComponent> = ({idBoard, list, 
   const debounceTimer = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    if (componentType === 'list') {
+
+    if (componentType === 'list' && list) { //!!se agrego list
       setNameComponent(list.nameList);
     } else if (componentType === 'card') {
       if (!card) return
       setNameComponent(card.nameCard);
+    } else if (componentType === 'board') {
+      if (!board) {
+        console.log('NO SE HALLO NINGUN BOARD PARA EL NAME')
+        return
+      }
+      console.log('SE DIO EL NOMBRE', board.nameBoard)
+      setNameComponent(board.nameBoard)
     }
+
   }, []);
 
   useEffect(() => {
@@ -44,6 +58,7 @@ export const NameComponent: React.FC<NameListPropsComponent> = ({idBoard, list, 
 
 
   const handleChangeList = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    if (!list) return;
     const idList = list.idList;
     setNameComponent(e.target.value);
 
@@ -80,7 +95,7 @@ export const NameComponent: React.FC<NameListPropsComponent> = ({idBoard, list, 
 
   const handleChangeCard = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const idCard = card?.idCard;
-    if (!idCard) return;
+    if (!idCard || !list) return;
     setNameComponent(e.target.value);
 
     if (debounceTimer.current) {
@@ -114,6 +129,28 @@ export const NameComponent: React.FC<NameListPropsComponent> = ({idBoard, list, 
     }, 500); // Esperar 500ms antes de ejecutar la función
   }
 
+  const handleChangeBoard = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setNameComponent(e.target.value);
+    if (debounceTimer.current) {
+      clearTimeout(debounceTimer.current);
+    }
+
+    debounceTimer.current = setTimeout(() => {
+
+      if (userAuth) {
+        updatedBoardName({idBoard, name: e.target.value});
+      }
+      
+      boardsService({
+        updateFn: (boardsGroup) => boardsGroup.map(board => board.idBoard === idBoard
+          ? {...board, nameBoard: e.target.value}
+          : board
+        )
+      })
+
+    }, 500); // Esperar 500ms antes de ejecutar la función
+  }
+
   const onInput = (e: React.FormEvent<HTMLTextAreaElement>) => {
     e.stopPropagation();
     const target = e.target as HTMLInputElement;
@@ -123,7 +160,8 @@ export const NameComponent: React.FC<NameListPropsComponent> = ({idBoard, list, 
 
   const actions = {
     list: handleChangeList,
-    card: handleChangeCard
+    card: handleChangeCard,
+    board: handleChangeBoard
   }
 
   return (

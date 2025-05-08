@@ -1,4 +1,4 @@
-import { collection, doc, getDoc, setDoc } from "firebase/firestore"
+import { collection, doc, getDoc, setDoc, updateDoc } from "firebase/firestore"
 import { BoardProps } from "../../../types/boardProps"
 import { auth, db } from "../firebaseConfig"
 
@@ -20,4 +20,11 @@ export const getBoardFirebase = async (idBoard: string) => {
     } catch(err) {
       throw new Error('NO SE HALLÓ TABLERO')
   }
+}
+
+export const updatedBoardName = async ({idBoard, name}:{idBoard: string, name: string}) => {
+  const userId = auth.currentUser?.uid;
+  const boardRef = doc(db, `users/${userId}/boards/${idBoard}`);
+
+  await updateDoc(boardRef, { nameBoard: name });
 }
