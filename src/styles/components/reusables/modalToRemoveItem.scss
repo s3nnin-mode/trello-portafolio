@@ -1,45 +1,65 @@
 .modal_to_remove_item {
-  padding: 6px;
   border-radius: 6px;
   background-color: #fff;
+  background-color: #2E2E2E;
   z-index: 999;
   display: flex;
-  gap: 7px;
+  gap: 15px;
   flex-direction: column;
   outline: none;
-  max-width: 500px;
+  max-width: 600px;
+  padding: 10px 15px;
+  box-shadow: 1px 2px 4px black;
 
-  .icon_close_modal_to_remove_item {
+  button:first-child {
+    display: flex;
+    background: transparent;
+    padding: 5px;
+    color: #ccc;
+    border: none;
     align-self: flex-end;
-    font-size: 22px;
-    cursor: pointer;
     border-radius: 4px;
-    
+    border-radius: 50%;
+
+    .icon_close_modal_to_remove_item {
+      align-self: flex-end;
+      font-size: 22px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+
     &:hover {
-      background-color: rgba(0, 0, 0, .5);
+      background-color: rgba(255, 255, 255, .15);
     }
   }
 
   p {
     font-size: 1.1rem; 
     overflow-wrap: break-word;
+    padding: 0 10px;
+    color: #fff;
 
     span {
       font-weight: bold;
     }
   }
   
-  button {
+  button:last-child {
     align-self: flex-end;
-    background-color:#FF4D4D;
+    background-color: #FF4D4D;
     border: none;
     padding: 7px;
     border-radius: 6px;
     font-weight: bold;
     cursor: pointer;
+    color: #fff;
+
+    font-size: 1rem;
+    letter-spacing: .3px;
 
     &:hover {
-      color: white
+      color: #fff;
+      opacity: .75;
     }
   }
 }

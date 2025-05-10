@@ -34,11 +34,15 @@
       }
 
       .board_name_container {
-        max-width: 100% !important;
+        max-width: 80%;
+        width: 100%;
 
         .name_component {
           color: #fff;
           font-size: 1.5rem;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
       }
     }

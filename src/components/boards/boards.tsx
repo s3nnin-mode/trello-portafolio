@@ -13,6 +13,8 @@ import { addBoardFirebase } from '../../services/firebase/updateData/updateBoard
 import { Box, Skeleton } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { Sidebar } from './sidebar';
+import { MdDelete } from "react-icons/md";
+import { ModalToRemoveItem } from '../reusables/modalToRemoveItem';
 
 const useBoards = () => {
   const { boards, loadBoards } = useBoardsStore();
@@ -27,6 +29,7 @@ const useBoards = () => {
     boardsService({
       updateFn: (boards) => [...boards, newBoard]
     });
+
     createGroupList({idBoard}); //crear grupo de lista con idBoard para saber que pertenece a este board e inicializar un array lists vacio
 
     if (userAuth) {
@@ -44,6 +47,8 @@ export const Tableros = () => {
   const { loadTags } = useTagsStore();
   const { getUserAuthState } = useAuthContext();
   const [loader, setLoader] = useState(false);
+  const [showModalToRemoveBoard, setShowModalToRemoveBoard] = useState(false);
+  const [boardToRemove, setBoardToRemove] = useState<BoardProps | null>(null);
 
   const navigate = useNavigate();
 
@@ -80,6 +85,12 @@ export const Tableros = () => {
     fetchData();
   }, []);
 
+  const handleOpenModal = ({board, e}:{board: BoardProps, e: React.MouseEvent<HTMLButtonElement>}) => {
+    e.stopPropagation();
+    setShowModalToRemoveBoard(true);
+    setBoardToRemove(board);
+  }
+
   if (loader) {
     return (
       <div className='container_loader_board'>
@@ -111,9 +122,14 @@ export const Tableros = () => {
                   onClick={() => navigate(board.idBoard)} 
                   key={board.idBoard}
                 >
-                  <span className='name_board inter'>
-                    {board.nameBoard}
-                  </span>
+                  <span className='name_board inter'>{board.nameBoard}</span>
+
+                  <button 
+                    onClick={(e) => handleOpenModal({board, e})}
+                  >
+                    <MdDelete className='icon_remove_board' />
+                  </button>
+
                 </Box>
               )
             })
@@ -126,6 +142,18 @@ export const Tableros = () => {
         }
       </div>
     </div>
+
+    {
+      showModalToRemoveBoard && boardToRemove && (
+        <ModalToRemoveItem 
+          idBoard={boardToRemove.idBoard} 
+          board={boardToRemove} 
+          itemToRemove='board'
+          show={showModalToRemoveBoard}
+          onHide={() => setShowModalToRemoveBoard(false)} 
+        />
+      )
+    }
     </>
   )
 }
