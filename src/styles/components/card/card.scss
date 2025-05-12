@@ -2,27 +2,17 @@
     border-radius: 11px;
     display: flex;
     flex-direction: column;
-    // gap: 5px;
-
     padding: 4px 6px;
     position: relative;
-    // border: 1px solid rgb(255, 255, 255, .08);
 
-    // background-color: #303030;
-    // background-color: rgb(48, 48, 48);
-    // background-color: transparent;
-    // backdrop-filter: blur(5px);
     cursor: default;
     background-color: #9696961a;
     background-color: rgba(255, 255, 255, .03);
-    // background-color: rgb(136, 136, 136, .2);
-    // background-color: rgb(18, 18, 18, .17);
-    // background-color: rgb(204, 204, 204, .3);
  
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
     border: 1px solid rgba(255, 255, 255, 0.1);
 
-    touch-action: pan-y pan-x; /* anula gestos nativos mientras se arrastra */
+    touch-action: pan-y pan-x;
     user-select: none;
     cursor: pointer;
     
@@ -241,11 +231,7 @@
         .description_header {
             position: sticky;
             top: 0;
-
             overflow: hidden;
-
-            // background-color: #ccc;
-            // box-shadow: 0 0 4px #2e2e2e;
             padding: 5px 0;
 
             .description_title {
@@ -315,7 +301,6 @@
     backdrop-filter: blur(1px);
     opacity: .7;
     cursor: grab;
-    // transform: scale(0.95);
 }
 
 .card_over {
@@ -335,7 +320,9 @@
 
 .cardItem:hover {
     // background-color: rgb(48, 48, 48, .1);
-    background-color: rgba(255, 255, 255, .01);
+    // background-color: rgba(255, 255, 255, .01);
+    // box-shadow: inset 5px 10px 15px rgba(255, 255, 255, 0.1);
+    border: 3px solid rgba(255, 255, 255, 0.1);
 
     .card_cover {
         .container_color_card,
@@ -352,6 +339,12 @@
         }
         // scale: 1.3;
         //     filter: drop-shadow(0px 0px 3px rgba(0, 0, 0, 0.5)); // Agrega grosor simulando un borde
+    }
+
+    .content_card {
+        .cardName {
+            color: orange;
+        }
     }
 }
 

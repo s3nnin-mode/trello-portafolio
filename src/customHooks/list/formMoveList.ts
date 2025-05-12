@@ -96,7 +96,7 @@ export const useFormMoveList = ({ setIsModalOptionsActive}: UseFormMoveList) => 
 
   const callbackHandleMoveList = ({idBoard, list, position}: {idBoard: string, list: ListProps, position: number}) => {
     moveList({idBoard, list, position});
-    setIsModalOptionsActive(true);
+    // setIsModalOptionsActive(true);
     setShowFormMoveList(false);
   }
     

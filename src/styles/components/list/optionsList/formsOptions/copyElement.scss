@@ -1,32 +1,32 @@
-.interfaz_copy_element {
-    // background-color: antiquewhite;
-    
+.interfaz_copy_element {    
     position: absolute;
     top: 10px;
     left: 0;
     z-index: 10;
-    width: 250px;
+    width: 280px;
     cursor: default;
 
     background-color: #252526 !important;
     color: #ccc;
     border-radius: 9px;
-    padding: 3px;
+    padding: 5px;
 
     header {
         display: flex;
+        align-items: center;
         justify-content: space-between;
-        height: auto;
-        padding: 5px;
+        padding: 5px 0;
 
         button {
             color: #ccc;
             border: none;
             background: transparent;
-            border-radius: 9px;
+            border-radius: 50%;
             cursor: pointer;
-            padding: 4px;
-            
+            padding: 8px;
+
+            font-size: 1rem;
+            display: flex;
         }
 
         button:hover {
@@ -52,16 +52,17 @@
         }
 
         button {
-            margin-top: 3px;
-            padding: 4px 6px;
+            margin-top: 7px;
             color: #ccc;
             border: none;
             border-radius: 9px;
-            box-shadow: 0 3px 5px #121212;
+            box-shadow: 0 2px 4px #121212;
             background-color: rgb(128, 128, 128, .1);
-            padding: 4px 6px;
+            padding: 6px 8px;
             color: #4A90E2;
             font-weight: bold;
+            font-size: 1.1rem;
+            cursor: pointer;
         }
 
         button:hover {

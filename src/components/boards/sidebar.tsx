@@ -46,9 +46,9 @@ const Drawer = styled(MuiDrawer, {
       }
     : {
         "& .MuiDrawer-paper": { 
-          width: 60,
+          width: 51,
           backgroundColor: '#1E1E1E',
-          transition: '.3s linear' ,
+          transition: '.3s linear',
         },
       }),
 }));
@@ -103,7 +103,7 @@ export const Sidebar = () => {
         <Divider />
         <List className='container_btns_sidebar' sx={{overflow: 'hidden'}}>
           <ListItem className='btn_sidebar' disablePadding >
-            <ListItemButton onClick={() => navigate('/kanbaX')}>
+            <ListItemButton onClick={() => navigate('/kanbaX')} aria-label='Ver tus tableros' title='Ver tus tableros' >
               <ListItemIcon sx={{color: '#ccc'}}>
                 <IoClipboardSharp />
               </ListItemIcon>
@@ -120,7 +120,7 @@ export const Sidebar = () => {
           </ListItem>
           {currentIdBoard && (
             <ListItem className='btn_sidebar' disablePadding >
-              <ListItemButton onClick={() => setShowArchivedElements(true)}>
+              <ListItemButton onClick={() => setShowArchivedElements(true)} aria-label='Ver elementos archivados' title='Ver elementos archivados'>
                 <ListItemIcon sx={{color: '#ccc'}}>
                   <MdArchive />
                 </ListItemIcon>
@@ -148,8 +148,8 @@ export const Sidebar = () => {
             )
             :
             (
-              <ListItem disablePadding>
-                <ListItemButton onClick={logout} >
+              <ListItem className='listItem_logout' disablePadding>
+                <ListItemButton onClick={logout} aria-label='Cerrar sesión' title='Cerrar sesión'>
                   <ListItemIcon sx={{color: '#ccc'}}>
                     <FiLogIn />
                   </ListItemIcon>

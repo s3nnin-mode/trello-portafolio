@@ -20,19 +20,13 @@ export const FormMoveList: React.FC<FormMoveListProps> = ({idBoard, list, closeF
   const [newPosition, setNewPosition] = useState<number | null>(null);
 
   const [currentLists, setCurrentLists] = useState<ListProps[]>();
-  // const [showPositions, setShowPositions] = useState(false);
 
   useEffect(() => {
-    const indexListGroup = listsGroup.findIndex(listGroup => listGroup.idBoard === idBoard);
-    if (indexListGroup > -1) {
-      setCurrentLists(listsGroup[indexListGroup].lists);      //listas actuales para iterar y saber su posicion
+    const listsRef = listsGroup.find(listGroup => listGroup.idBoard === idBoard);
+    if (listsRef) setCurrentLists(listsRef?.lists);
 
-      const indexList = listsGroup[indexListGroup].lists.findIndex(l => l.idList === list.idList); //index/posicion actual
-      if (indexList > -1) {
-        const currentPosition = indexList + 1;
-        setCurrentPosition(currentPosition);
-      }
-    }
+    const indexList = listsRef?.lists.findIndex(l => l.idList === list.idList);
+    if (indexList) setCurrentPosition(indexList + 1);
   }, []);
 
   const handleClick = (newPosition: number) => {
@@ -49,9 +43,7 @@ export const FormMoveList: React.FC<FormMoveListProps> = ({idBoard, list, closeF
   const styleCurrenPosition = {
     background: 'cadetblue',
     border: '2px solid cadetblue',
-    // color: 'cadetblue',
     color: '#2e2e2e',
-
     borderRadius: '5px'
   }
 
@@ -59,7 +51,6 @@ export const FormMoveList: React.FC<FormMoveListProps> = ({idBoard, list, closeF
     currentLists?.map((list, index) => (
       <button
         className='roboto'
-        // className='inter_subtitle'
         style={index + 1 === currentPosition ? styleCurrenPosition : index + 1 === newPosition ? styleNewPosition : {}}
         type='button' 
         key={list.idList} 
@@ -85,15 +76,13 @@ export const FormMoveList: React.FC<FormMoveListProps> = ({idBoard, list, closeF
 
         <form>
           <h2>Posición actual: <span> {currentPosition}</span></h2>
-          {/* <button type='button' className='btn_handle_positions' onClick={() => setShowPositions(!showPositions)}>
-            <span>{currentPosition || 'cargando..'}</span>
-            {showPositions ? <FaChevronUp /> : <FaChevronDown />}
-          </button> */}
+
           {
             newPosition !== null && (
-              <h2>Mover a la posición: <span>{newPosition}</span></h2>
+              <h2 className='move_to_this_position'>Mover a la posición: <span>{newPosition}</span></h2>
             )
           }
+
           <h2>Seleccione la nueva posición:</h2>
           <div className='positions'>
             {

@@ -85,7 +85,7 @@ export const SettingsList: React.FC<SettingsListProps> = ({ idBoard, list }) => 
 
   return (
     <div className='options' onPointerDown={(e) => e.stopPropagation()}>       
-      <IconButton onClick={() => setIsModalOptionsActive(true)} className='btn_active_options'>
+      <IconButton onClick={() => setIsModalOptionsActive(true)} className='btn_active_options' aria-label='ver opciones de lista' title='ver opciones de lista'>
         <PiDotsThreeOutlineFill className='icon_options_list' />
       </IconButton>
 

@@ -24,7 +24,9 @@ export const CheckAnimation: React.FC<CheckAnimationProps> = ({className, isPlay
     }, [isPlaying]);
 
     return (
-        <Lottie 
+        <Lottie
+            aria-label='Desmarcar esta tarjeta'
+            title='Desmarcar esta tarjeta'
             onPointerDown={(e) => e.stopPropagation()}
             lottieRef={lottieRef}
             className={className} 
