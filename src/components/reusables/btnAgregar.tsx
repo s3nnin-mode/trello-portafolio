@@ -26,6 +26,12 @@ export const BtnAdd: React.FC<BtnAddProps> = ({ createListOrTargetName, nameComp
     setInputValue('');
   }
 
+  const handleKeyDown = (e:React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleClick();
+    }
+  }
+
   const componentsPlaceholder = {
     board: 'el tablero',
     list: 'la lista',
@@ -49,7 +55,6 @@ export const BtnAdd: React.FC<BtnAddProps> = ({ createListOrTargetName, nameComp
   return (
     <div 
       className={`container_btn_add ${className}`} 
-      // style={{backgroundColor: showForm ? '#f4f5f7' : 'transparent'}} 
       onPointerDown={(e) => e.stopPropagation()}
     >
       {
@@ -68,10 +73,9 @@ export const BtnAdd: React.FC<BtnAddProps> = ({ createListOrTargetName, nameComp
       }
       {
         showForm && (
-          <form className='form_add_some'>
+          <form onSubmit={(e) => e.preventDefault()} className='form_add_some'>
             <input
               ref={inputRef}
-              // onPointerDown={(e) => e.stopPropagation()}
               onKeyDown={(e) => e.stopPropagation()}
               type='text'
               className='input_add work_sans'
@@ -80,7 +84,7 @@ export const BtnAdd: React.FC<BtnAddProps> = ({ createListOrTargetName, nameComp
               onChange={(e) => setInputValue(e.target.value)}
             />
             <div className='actions'>
-              <Button type='button' className='btn_add' onClick={handleClick} >Agregar</Button>
+              <Button type='submit' className='btn_add' onKeyDown={handleKeyDown} onClick={handleClick} >Agregar</Button>
               <Button type='button' className='btn_cancel' onClick={cancel} >Cancelar</Button>
             </div>
           </form>

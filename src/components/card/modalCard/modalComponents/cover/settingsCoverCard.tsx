@@ -278,9 +278,11 @@ export const SettingsCover: React.FC<SettingsCoverProps> = ({ card, idList, idBo
                   <input disabled={!userAuth} type='file' id='inputFile' onChange={(e) => handleUpdateImg(e)} style={{display: 'none'}} />
                   <button onClick={() => setCoverImgPreview(null)}>Quitar imagen</button>
                 </div>
-                <span className='msg_user_need_auth'>
-                  Para agregar una imagen desde tu PC necesitas registrarte.
-                </span>
+                {!userAuth && (
+                  <span className='msg_user_need_auth'>
+                    Para agregar una imagen desde tu PC necesitas registrarte.
+                  </span>
+                )}
               </div>
             </main>
             <footer>

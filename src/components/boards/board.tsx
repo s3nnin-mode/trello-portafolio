@@ -220,7 +220,7 @@ export const Tablero = () => {
   useEffect(() => {
     const indexListGroup = listsGroup.findIndex((listGroup) => listGroup.idBoard === currentIdBoard);
     if (indexListGroup > -1) {
-      setCurrentLists(listsGroup[indexListGroup].lists.filter(list => list.archived === false));
+      setCurrentLists(listsGroup[indexListGroup].lists);
     }
   }, [listsGroup]);
 
@@ -594,7 +594,7 @@ export const Tablero = () => {
             >
               {
                 currentBoard && (               //antes de pasar board verifico que exista
-                  currentLists.map((list) => {
+                  currentLists.filter(l => l.archived === false).map((list) => {
                     return <List isActiveList={activeList ? true : false} board={currentBoard} list={list} key={list.idList} />
                   })
                 )

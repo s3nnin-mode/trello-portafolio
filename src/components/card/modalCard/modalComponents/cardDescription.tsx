@@ -18,7 +18,7 @@ export const CardDescription: React.FC<CardDescriptionProps> = ({card, idList, i
   const { cardsServices } = useCardsServices();
   const [showTextarea, setShowTextarea] = useState(false);
   const [showAllDescription, setShowAllDescription] = useState(false);
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState<string | null>(null);
   const { userAuth } = useAuthContext();
 
   useEffect(() => {
@@ -72,7 +72,7 @@ export const CardDescription: React.FC<CardDescriptionProps> = ({card, idList, i
       </h2>
       {
         !showTextarea && (
-          inputValue !== null ?
+          inputValue !== null && inputValue?.length > 0 ?
           <div className='container_description_text'>
             
             <p className='description_text'>
@@ -82,12 +82,11 @@ export const CardDescription: React.FC<CardDescriptionProps> = ({card, idList, i
                 {!showAllDescription && <span style={{color: card?.coverColorCard || '#ccc'}} className='span_expand_text' onClick={() => setShowAllDescription(true)}> ...ver mas</span>}
               </>
               :
-                `${inputValue}.`
+                `${inputValue}`
               }
             </p>
             <footer>
               <button className='btn_open_textarea' onClick={() => setShowTextarea(!showTextarea)}>
-                {/* <MdEditDocument className='icon_description_card_modal'/> */}
                 <TbFileDescription className='icon_description_card_modal' />
                 <span className='roboto_medium'>Editar descripción</span>
               </button>
@@ -123,7 +122,7 @@ export const CardDescription: React.FC<CardDescriptionProps> = ({card, idList, i
               placeholder='Agrega una descripción para tu tarjeta, por ejemplo'
               onKeyDown={(e) => e.stopPropagation()} 
               onInput={onInput}
-              value={inputValue} 
+              value={inputValue || ''} 
               onChange={(e) => setInputValue(e.target.value)} 
             />
               <div>

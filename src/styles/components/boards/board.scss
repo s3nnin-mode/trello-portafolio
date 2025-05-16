@@ -3,7 +3,7 @@
   overflow-y: hidden;
 
   .header_board {
-    padding: 15px 0;  
+    padding: 17px 0;  
     display: flex;
     gap: 10px;
     flex-direction: column;
@@ -19,7 +19,7 @@
       .btn_icon_home {
         border: none;
         background: transparent;
-        font-size: 1.7rem;
+        font-size: 1.5rem;
         display: flex;
         border-radius: 6px;
         cursor: pointer;
@@ -35,14 +35,17 @@
 
       .board_name_container {
         max-width: 80%;
-        width: 100%;
 
         .name_component {
           color: #fff;
-          font-size: 1.5rem;
+          font-size: 1.35rem;
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
+        }
+
+        textarea {
+          
         }
       }
     }
@@ -81,11 +84,10 @@
     overflow-y: auto;
     
     display: flex;
-    // align-items: flex-start;
     gap: 10px;
     height: 100%;
     height: 90vh;
-    padding: 10px;
+    padding: 0 10px;
 
     transition: transform 250ms ease; //!!!!!
 
